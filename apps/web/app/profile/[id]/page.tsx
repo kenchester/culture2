@@ -1,6 +1,7 @@
 import { notFound } from "next/navigation";
 import Image from "next/image";
 import { createClient } from "@/lib/supabase/server";
+import { getAvatarUrl, getDisplayName } from "@/lib/profiles";
 import { updateProfile } from "@/app/profile/actions";
 import { AvatarUpload } from "@/app/profile/[id]/avatar-upload";
 
@@ -30,14 +31,8 @@ export default async function ProfilePage({
   } = await supabase.auth.getUser();
   const isOwnProfile = user?.id === profile.id;
 
-  const avatarUrl = profile.img_path
-    ? supabase.storage.from("avatars").getPublicUrl(profile.img_path).data.publicUrl
-    : null;
-
-  const displayName =
-    [profile.first_name, profile.last_name].filter(Boolean).join(" ") ||
-    profile.username ||
-    "CultureMesh member";
+  const avatarUrl = getAvatarUrl(supabase, profile.img_path);
+  const displayName = getDisplayName(profile);
 
   return (
     <div className="mx-auto flex w-full max-w-lg flex-1 flex-col gap-6 px-4 py-12">

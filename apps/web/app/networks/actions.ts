@@ -41,3 +41,31 @@ export async function leaveNetwork(formData: FormData) {
 
   revalidatePath(`/networks/${networkId}`);
 }
+
+export async function createPost(formData: FormData) {
+  const networkId = formData.get("networkId") as string;
+  const body = formData.get("body") as string;
+  const videoUrl = formData.get("videoUrl") as string;
+
+  const supabase = await createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
+  if (!user) {
+    redirect(`/sign-in?error=${encodeURIComponent("Sign in to post.")}`);
+  }
+
+  const { error } = await supabase.from("posts").insert({
+    network_id: Number(networkId),
+    user_id: user.id,
+    body,
+    video_url: videoUrl || null,
+  });
+
+  if (error) {
+    redirect(`/networks/${networkId}?error=${encodeURIComponent(error.message)}`);
+  }
+
+  revalidatePath(`/networks/${networkId}`);
+}
