@@ -20,12 +20,12 @@ export default function Home() {
   return (
     <div className="flex flex-1 flex-col">
       <section className="border-b border-border bg-surface">
-        <div className="mx-auto flex w-full max-w-5xl flex-col items-center gap-10 px-4 py-20 text-center sm:py-28">
-          <div className="flex flex-col gap-4">
-            <h1 className="font-display text-5xl leading-tight text-ink sm:text-6xl">
+        <div className="mx-auto flex w-full max-w-5xl flex-col items-center gap-6 px-4 py-10 text-center sm:py-12">
+          <div className="flex flex-col gap-2">
+            <h1 className="font-display text-4xl leading-tight text-ink sm:text-5xl">
               Find your diaspora network
             </h1>
-            <p className="mx-auto max-w-xl text-lg text-body">
+            <p className="mx-auto max-w-xl text-base text-body">
               CultureMesh connects people by where they&apos;re from and
               where they live now — search a language or place of origin
               and a location to find your network, or launch a new one if
@@ -33,7 +33,7 @@ export default function Home() {
             </p>
           </div>
 
-          <div className="w-full max-w-sm rounded-lg border border-border bg-background p-6 text-left shadow-sm">
+          <div className="w-full max-w-sm rounded-lg border border-border bg-background p-5 text-left shadow-sm">
             <SearchForm />
           </div>
 

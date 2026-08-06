@@ -1,6 +1,8 @@
+import { headers } from "next/headers";
 import { createClient } from "@/lib/supabase/server";
 import { createPartner, deletePartner } from "@/app/admin/embed-partners/actions";
 import { AdminPartnerForm } from "@/app/admin/embed-partners/admin-partner-form";
+import { EmbedCode } from "@/app/admin/embed-partners/embed-code";
 
 type PartnerRow = {
   id: number;
@@ -48,6 +50,11 @@ export default async function AdminEmbedPartnersPage({
     )
     .order("created_at", { ascending: false })) as unknown as { data: PartnerRow[] | null };
 
+  const headersList = await headers();
+  const host = headersList.get("host");
+  const protocol = host?.startsWith("localhost") || host?.startsWith("127.0.0.1") ? "http" : "https";
+  const origin = `${protocol}://${host}`;
+
   return (
     <div className="mx-auto flex w-full max-w-lg flex-1 flex-col gap-8 px-4 py-12">
       <h1 className="font-display text-3xl text-ink">Embed partners</h1>
@@ -71,6 +78,9 @@ export default async function AdminEmbedPartnersPage({
                 /embed/{partner.slug} &mdash; locked to {lockedOrigin?.name ?? "?"}, jurisdiction:{" "}
                 {jurisdictionNames.join(", ") || "none"}
               </p>
+              <EmbedCode
+                snippet={`<iframe src="${origin}/embed/${partner.slug}" style="width: 100%; height: 640px; border: none;" title="CultureMesh"></iframe>`}
+              />
               <form action={deletePartner}>
                 <input type="hidden" name="partnerId" value={partner.id} />
                 <button type="submit" className="self-start text-sm text-error underline">

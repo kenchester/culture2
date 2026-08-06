@@ -34,6 +34,7 @@ export async function updateProfile(formData: FormData) {
   }
 
   revalidatePath(`/profile/${user.id}`);
+  redirect(`/profile/${user.id}?saved=1`);
 }
 
 export async function updateAvatarPath(imgPath: string) {

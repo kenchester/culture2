@@ -25,15 +25,36 @@ function NavLink({ href, children }: { href: string; children: React.ReactNode }
 
 export function Nav() {
   const [user, setUser] = useState<User | null>(null);
+  const [isAdmin, setIsAdmin] = useState(false);
   const pathname = usePathname();
 
   useEffect(() => {
     const supabase = createClient();
-    supabase.auth.getUser().then(({ data }) => setUser(data.user));
+
+    async function loadAdminFlag(userId: string) {
+      const { data } = await supabase
+        .from("profiles")
+        .select("is_admin")
+        .eq("id", userId)
+        .single();
+      setIsAdmin(data?.is_admin ?? false);
+    }
+
+    supabase.auth.getUser().then(({ data }) => {
+      setUser(data.user);
+      if (data.user) {
+        loadAdminFlag(data.user.id);
+      }
+    });
     const {
       data: { subscription },
     } = supabase.auth.onAuthStateChange((_event, session) => {
       setUser(session?.user ?? null);
+      if (session?.user) {
+        loadAdminFlag(session.user.id);
+      } else {
+        setIsAdmin(false);
+      }
     });
     return () => subscription.unsubscribe();
   }, []);
@@ -57,6 +78,7 @@ export function Nav() {
             <NavLink href="/messages">Messages</NavLink>
             <NavLink href={`/profile/${user.id}`}>Profile</NavLink>
             <NavLink href="/settings">Settings</NavLink>
+            {isAdmin && <NavLink href="/admin/embed-partners">Admin</NavLink>}
             <form action={signOut}>
               <button
                 type="submit"

@@ -8,7 +8,7 @@ export function SearchForm() {
   const [originKind, setOriginKind] = useState<"place" | "language">("language");
 
   return (
-    <form action="/search/results" className="flex flex-col gap-6">
+    <form action="/search/results" className="flex flex-col gap-4">
       <input type="hidden" name="originKind" value={originKind} />
       <div className="inline-flex w-fit rounded-md border border-border bg-surface p-1 text-sm">
         <button

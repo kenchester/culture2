@@ -13,10 +13,10 @@ export default async function ProfilePage({
   searchParams,
 }: {
   params: Promise<{ id: string }>;
-  searchParams: Promise<{ error?: string }>;
+  searchParams: Promise<{ error?: string; saved?: string }>;
 }) {
   const { id } = await params;
-  const { error } = await searchParams;
+  const { error, saved } = await searchParams;
   const supabase = await createClient();
 
   const { data: profile } = await supabase
@@ -70,6 +70,11 @@ export default async function ProfilePage({
       {isOwnProfile && (
         <div className="flex flex-col gap-6 border-t border-border pt-6">
           <AvatarUpload userId={profile.id} />
+          {saved && (
+            <p className="rounded-md bg-success-bg px-3 py-2 text-sm text-success">
+              Profile saved.
+            </p>
+          )}
           {error && (
             <p className="rounded-md bg-error-bg px-3 py-2 text-sm text-error">{error}</p>
           )}
