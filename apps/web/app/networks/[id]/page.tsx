@@ -79,6 +79,10 @@ export default async function NetworkPage({
         {network.member_count} members, {network.post_count} posts
       </p>
 
+      <Link href={`/networks/${network.id}/events`} className="text-sm underline">
+        Events
+      </Link>
+
       {user ? (
         <form action={isMember ? leaveNetwork : joinNetwork}>
           <input type="hidden" name="networkId" value={network.id} />
