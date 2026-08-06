@@ -2,7 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
-import { getAvatarUrl, getDisplayName } from "@/lib/profiles";
+import { type Author, getAvatarUrl, getDisplayName } from "@/lib/profiles";
 import { createPost, joinNetwork, leaveNetwork } from "@/app/networks/actions";
 
 export default async function NetworkPage({
@@ -116,13 +116,7 @@ export default async function NetworkPage({
 
         <div className="flex flex-col gap-4">
           {posts?.map((post) => {
-            const author = post.author as unknown as {
-              id: string;
-              username: string | null;
-              first_name: string | null;
-              last_name: string | null;
-              img_path: string | null;
-            } | null;
+            const author = post.author as unknown as Author | null;
             const avatarUrl = author ? getAvatarUrl(supabase, author.img_path) : null;
 
             return (
