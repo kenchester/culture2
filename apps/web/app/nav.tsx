@@ -31,6 +31,9 @@ export function Nav() {
         </Link>
         {user ? (
           <>
+            <Link href="/messages" className="underline">
+              Messages
+            </Link>
             <Link href={`/profile/${user.id}`} className="underline">
               Profile
             </Link>

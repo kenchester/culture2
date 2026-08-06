@@ -4,6 +4,7 @@ import { createClient } from "@/lib/supabase/server";
 import { getAvatarUrl, getDisplayName } from "@/lib/profiles";
 import { updateProfile } from "@/app/profile/actions";
 import { AvatarUpload } from "@/app/profile/[id]/avatar-upload";
+import { startConversation } from "@/app/messages/actions";
 
 export default async function ProfilePage({
   params,
@@ -58,6 +59,15 @@ export default async function ProfilePage({
       </div>
 
       {profile.about_me && <p>{profile.about_me}</p>}
+
+      {user && !isOwnProfile && (
+        <form action={startConversation}>
+          <input type="hidden" name="otherUserId" value={profile.id} />
+          <button type="submit" className="rounded bg-black px-3 py-2 text-white">
+            Message
+          </button>
+        </form>
+      )}
 
       {isOwnProfile && (
         <div className="flex flex-col gap-6 border-t pt-6">
