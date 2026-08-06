@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import type { User } from "@supabase/supabase-js";
 import { createClient } from "@/lib/supabase/client";
@@ -8,6 +9,7 @@ import { signOut } from "@/app/(auth)/actions";
 
 export function Nav() {
   const [user, setUser] = useState<User | null>(null);
+  const pathname = usePathname();
 
   useEffect(() => {
     const supabase = createClient();
@@ -19,6 +21,12 @@ export function Nav() {
     });
     return () => subscription.unsubscribe();
   }, []);
+
+  // Embed pages must render with no CultureMesh chrome - they're meant to
+  // be indistinguishable from the partner's own site when iframed.
+  if (pathname?.startsWith("/embed/")) {
+    return null;
+  }
 
   return (
     <nav className="flex items-center justify-between border-b px-4 py-3">
