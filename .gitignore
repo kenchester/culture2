@@ -1,0 +1,40 @@
+# dependencies
+node_modules/
+/.pnp
+.pnp.*
+
+# next.js
+.next/
+out/
+
+# misc
+.DS_Store
+*.pem
+
+# debug
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.pnpm-debug.log*
+
+# env files (never commit real secrets)
+.env
+.env.local
+.env.*.local
+
+# vercel
+.vercel
+
+# typescript
+*.tsbuildinfo
+next-env.d.ts
+
+# supabase local dev
+supabase/.branches
+supabase/.temp
+
+# legacy reference material — large SQL dump (16MB) and legacy PHP tree
+# (1.3GB incl. vendor/, images, cache) are kept locally for Phase 7 migration
+# work but must never enter the new repo's git history
+5Aug2026_culturp7_ktc.sql
+/htdocs/
