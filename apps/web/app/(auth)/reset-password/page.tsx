@@ -1,9 +1,13 @@
+import Link from "next/link";
 import { createClient } from "@/lib/supabase/server";
 import {
   requestPasswordReset,
   resetPasswordWithToken,
   updatePassword,
 } from "@/app/(auth)/actions";
+import { AuthCard } from "@/components/auth-card";
+import { Button } from "@/components/ui/button";
+import { Field, Input, Label } from "@/components/ui/input";
 
 export default async function ResetPasswordPage({
   searchParams,
@@ -14,29 +18,21 @@ export default async function ResetPasswordPage({
 
   if (token_hash) {
     return (
-      <div className="mx-auto flex w-full max-w-sm flex-1 flex-col justify-center gap-6 px-4">
-        <h1 className="text-2xl font-semibold">Set a new password</h1>
-        {error && <p className="text-sm text-red-600">{error}</p>}
+      <AuthCard title="Set a new password">
+        {error && (
+          <p className="rounded-md bg-error-bg px-3 py-2 text-sm text-error">{error}</p>
+        )}
         <form action={resetPasswordWithToken} className="flex flex-col gap-4">
           <input type="hidden" name="token_hash" value={token_hash} />
-          <div className="flex flex-col gap-1">
-            <label htmlFor="password" className="text-sm font-medium">
-              New password
-            </label>
-            <input
-              id="password"
-              name="password"
-              type="password"
-              required
-              minLength={6}
-              className="rounded border px-3 py-2"
-            />
-          </div>
-          <button type="submit" className="rounded bg-black px-3 py-2 text-white">
+          <Field>
+            <Label htmlFor="password">New password</Label>
+            <Input id="password" name="password" type="password" required minLength={6} />
+          </Field>
+          <Button type="submit" className="w-full">
             Update password
-          </button>
+          </Button>
         </form>
-      </div>
+      </AuthCard>
     );
   }
 
@@ -47,57 +43,50 @@ export default async function ResetPasswordPage({
 
   if (user) {
     return (
-      <div className="mx-auto flex w-full max-w-sm flex-1 flex-col justify-center gap-6 px-4">
-        <h1 className="text-2xl font-semibold">Set a new password</h1>
-        {error && <p className="text-sm text-red-600">{error}</p>}
+      <AuthCard title="Set a new password">
+        {error && (
+          <p className="rounded-md bg-error-bg px-3 py-2 text-sm text-error">{error}</p>
+        )}
         <form action={updatePassword} className="flex flex-col gap-4">
-          <div className="flex flex-col gap-1">
-            <label htmlFor="password" className="text-sm font-medium">
-              New password
-            </label>
-            <input
-              id="password"
-              name="password"
-              type="password"
-              required
-              minLength={6}
-              className="rounded border px-3 py-2"
-            />
-          </div>
-          <button type="submit" className="rounded bg-black px-3 py-2 text-white">
+          <Field>
+            <Label htmlFor="password">New password</Label>
+            <Input id="password" name="password" type="password" required minLength={6} />
+          </Field>
+          <Button type="submit" className="w-full">
             Update password
-          </button>
+          </Button>
         </form>
-      </div>
+      </AuthCard>
     );
   }
 
   return (
-    <div className="mx-auto flex w-full max-w-sm flex-1 flex-col justify-center gap-6 px-4">
-      <h1 className="text-2xl font-semibold">Reset your password</h1>
+    <AuthCard
+      title="Reset your password"
+      subtitle="We'll email you a link to get back in."
+      footer={
+        <Link href="/sign-in" className="font-medium text-primary hover:underline">
+          Back to sign in
+        </Link>
+      }
+    >
       {sent && (
-        <p className="text-sm text-green-700">
+        <p className="rounded-md bg-success-bg px-3 py-2 text-sm text-success">
           Check your email for a reset link.
         </p>
       )}
-      {error && <p className="text-sm text-red-600">{error}</p>}
+      {error && (
+        <p className="rounded-md bg-error-bg px-3 py-2 text-sm text-error">{error}</p>
+      )}
       <form action={requestPasswordReset} className="flex flex-col gap-4">
-        <div className="flex flex-col gap-1">
-          <label htmlFor="email" className="text-sm font-medium">
-            Email
-          </label>
-          <input
-            id="email"
-            name="email"
-            type="email"
-            required
-            className="rounded border px-3 py-2"
-          />
-        </div>
-        <button type="submit" className="rounded bg-black px-3 py-2 text-white">
+        <Field>
+          <Label htmlFor="email">Email</Label>
+          <Input id="email" name="email" type="email" required />
+        </Field>
+        <Button type="submit" className="w-full">
           Send reset link
-        </button>
+        </Button>
       </form>
-    </div>
+    </AuthCard>
   );
 }

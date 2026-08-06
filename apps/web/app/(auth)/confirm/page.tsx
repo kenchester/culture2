@@ -1,4 +1,6 @@
 import { confirmEmail } from "@/app/(auth)/actions";
+import { AuthCard } from "@/components/auth-card";
+import { Button } from "@/components/ui/button";
 
 export default async function ConfirmPage({
   searchParams,
@@ -9,25 +11,25 @@ export default async function ConfirmPage({
 
   if (!token_hash) {
     return (
-      <div className="mx-auto flex w-full max-w-sm flex-1 flex-col justify-center gap-2 px-4 text-center">
-        <h1 className="text-2xl font-semibold">Check your email</h1>
-        <p className="text-sm text-zinc-600">
+      <AuthCard title="Check your email">
+        <p className="text-center text-sm text-body">
           We sent you a confirmation link. Click it to finish signing up.
         </p>
-      </div>
+      </AuthCard>
     );
   }
 
   return (
-    <div className="mx-auto flex w-full max-w-sm flex-1 flex-col justify-center gap-6 px-4 text-center">
-      <h1 className="text-2xl font-semibold">Confirm your email</h1>
-      {error && <p className="text-sm text-red-600">{error}</p>}
+    <AuthCard title="Confirm your email">
+      {error && (
+        <p className="rounded-md bg-error-bg px-3 py-2 text-sm text-error">{error}</p>
+      )}
       <form action={confirmEmail}>
         <input type="hidden" name="token_hash" value={token_hash} />
-        <button type="submit" className="w-full rounded bg-black px-3 py-2 text-white">
+        <Button type="submit" className="w-full">
           Confirm email address
-        </button>
+        </Button>
       </form>
-    </div>
+    </AuthCard>
   );
 }

@@ -1,4 +1,8 @@
+import Link from "next/link";
 import { signUp } from "@/app/(auth)/actions";
+import { AuthCard } from "@/components/auth-card";
+import { Button } from "@/components/ui/button";
+import { Field, Input, Label } from "@/components/ui/input";
 
 export default async function SignUpPage({
   searchParams,
@@ -8,39 +12,34 @@ export default async function SignUpPage({
   const { error } = await searchParams;
 
   return (
-    <div className="mx-auto flex w-full max-w-sm flex-1 flex-col justify-center gap-6 px-4">
-      <h1 className="text-2xl font-semibold">Sign up</h1>
-      {error && <p className="text-sm text-red-600">{error}</p>}
+    <AuthCard
+      title="Create your account"
+      subtitle="Find your people, wherever you are."
+      footer={
+        <>
+          Already have an account?{" "}
+          <Link href="/sign-in" className="font-medium text-primary hover:underline">
+            Sign in
+          </Link>
+        </>
+      }
+    >
+      {error && (
+        <p className="rounded-md bg-error-bg px-3 py-2 text-sm text-error">{error}</p>
+      )}
       <form action={signUp} className="flex flex-col gap-4">
-        <div className="flex flex-col gap-1">
-          <label htmlFor="email" className="text-sm font-medium">
-            Email
-          </label>
-          <input
-            id="email"
-            name="email"
-            type="email"
-            required
-            className="rounded border px-3 py-2"
-          />
-        </div>
-        <div className="flex flex-col gap-1">
-          <label htmlFor="password" className="text-sm font-medium">
-            Password
-          </label>
-          <input
-            id="password"
-            name="password"
-            type="password"
-            required
-            minLength={6}
-            className="rounded border px-3 py-2"
-          />
-        </div>
-        <button type="submit" className="rounded bg-black px-3 py-2 text-white">
+        <Field>
+          <Label htmlFor="email">Email</Label>
+          <Input id="email" name="email" type="email" required />
+        </Field>
+        <Field>
+          <Label htmlFor="password">Password</Label>
+          <Input id="password" name="password" type="password" required minLength={6} />
+        </Field>
+        <Button type="submit" className="w-full">
           Sign up
-        </button>
+        </Button>
       </form>
-    </div>
+    </AuthCard>
   );
 }

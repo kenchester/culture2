@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { AutocompleteField } from "@/components/autocomplete-field";
+import { Button } from "@/components/ui/button";
 
 export function SearchForm() {
   const [originKind, setOriginKind] = useState<"place" | "language">("language");
@@ -9,23 +10,29 @@ export function SearchForm() {
   return (
     <form action="/search/results" className="flex flex-col gap-6">
       <input type="hidden" name="originKind" value={originKind} />
-      <div className="flex gap-4 text-sm">
-        <label className="flex items-center gap-1">
-          <input
-            type="radio"
-            checked={originKind === "language"}
-            onChange={() => setOriginKind("language")}
-          />
+      <div className="inline-flex w-fit rounded-md border border-border bg-surface p-1 text-sm">
+        <button
+          type="button"
+          onClick={() => setOriginKind("language")}
+          className={`rounded px-3 py-1.5 transition-colors ${
+            originKind === "language"
+              ? "bg-primary text-white"
+              : "text-body hover:text-primary"
+          }`}
+        >
           Speak
-        </label>
-        <label className="flex items-center gap-1">
-          <input
-            type="radio"
-            checked={originKind === "place"}
-            onChange={() => setOriginKind("place")}
-          />
+        </button>
+        <button
+          type="button"
+          onClick={() => setOriginKind("place")}
+          className={`rounded px-3 py-1.5 transition-colors ${
+            originKind === "place"
+              ? "bg-primary text-white"
+              : "text-body hover:text-primary"
+          }`}
+        >
           From
-        </label>
+        </button>
       </div>
       <AutocompleteField
         key={originKind}
@@ -34,9 +41,9 @@ export function SearchForm() {
         hiddenName="originId"
       />
       <AutocompleteField label="Location" kind="place" hiddenName="locationId" />
-      <button type="submit" className="rounded bg-black px-3 py-2 text-white">
+      <Button type="submit" className="w-full">
         Search
-      </button>
+      </Button>
     </form>
   );
 }

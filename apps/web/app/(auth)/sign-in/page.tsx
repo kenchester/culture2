@@ -1,5 +1,8 @@
 import Link from "next/link";
 import { signIn } from "@/app/(auth)/actions";
+import { AuthCard } from "@/components/auth-card";
+import { Button } from "@/components/ui/button";
+import { Field, Input, Label } from "@/components/ui/input";
 
 export default async function SignInPage({
   searchParams,
@@ -9,46 +12,42 @@ export default async function SignInPage({
   const { error, reset } = await searchParams;
 
   return (
-    <div className="mx-auto flex w-full max-w-sm flex-1 flex-col justify-center gap-6 px-4">
-      <h1 className="text-2xl font-semibold">Sign in</h1>
+    <AuthCard
+      title="Sign in"
+      subtitle="Welcome back to your diaspora network."
+      footer={
+        <>
+          Don&apos;t have an account?{" "}
+          <Link href="/sign-up" className="font-medium text-primary hover:underline">
+            Sign up
+          </Link>
+        </>
+      }
+    >
       {reset && (
-        <p className="text-sm text-green-700">
+        <p className="rounded-md bg-success-bg px-3 py-2 text-sm text-success">
           Password updated. Sign in with your new password.
         </p>
       )}
-      {error && <p className="text-sm text-red-600">{error}</p>}
+      {error && (
+        <p className="rounded-md bg-error-bg px-3 py-2 text-sm text-error">{error}</p>
+      )}
       <form action={signIn} className="flex flex-col gap-4">
-        <div className="flex flex-col gap-1">
-          <label htmlFor="email" className="text-sm font-medium">
-            Email
-          </label>
-          <input
-            id="email"
-            name="email"
-            type="email"
-            required
-            className="rounded border px-3 py-2"
-          />
-        </div>
-        <div className="flex flex-col gap-1">
-          <label htmlFor="password" className="text-sm font-medium">
-            Password
-          </label>
-          <input
-            id="password"
-            name="password"
-            type="password"
-            required
-            className="rounded border px-3 py-2"
-          />
-        </div>
-        <button type="submit" className="rounded bg-black px-3 py-2 text-white">
+        <Field>
+          <Label htmlFor="email">Email</Label>
+          <Input id="email" name="email" type="email" required />
+        </Field>
+        <Field>
+          <Label htmlFor="password">Password</Label>
+          <Input id="password" name="password" type="password" required />
+        </Field>
+        <Button type="submit" className="w-full">
           Sign in
-        </button>
+        </Button>
       </form>
-      <Link href="/reset-password" className="text-sm text-zinc-600 underline">
+      <Link href="/reset-password" className="text-center text-sm text-muted hover:text-primary">
         Forgot your password?
       </Link>
-    </div>
+    </AuthCard>
   );
 }

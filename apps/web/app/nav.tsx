@@ -6,6 +6,22 @@ import { useEffect, useState } from "react";
 import type { User } from "@supabase/supabase-js";
 import { createClient } from "@/lib/supabase/client";
 import { signOut } from "@/app/(auth)/actions";
+import { LogoMark } from "@/components/logo";
+
+function NavLink({ href, children }: { href: string; children: React.ReactNode }) {
+  const pathname = usePathname();
+  const isActive = pathname === href || pathname?.startsWith(`${href}/`);
+  return (
+    <Link
+      href={href}
+      className={`transition-colors hover:text-primary ${
+        isActive ? "font-medium text-primary" : "text-body"
+      }`}
+    >
+      {children}
+    </Link>
+  );
+}
 
 export function Nav() {
   const [user, setUser] = useState<User | null>(null);
@@ -29,37 +45,34 @@ export function Nav() {
   }
 
   return (
-    <nav className="flex flex-wrap items-center justify-between gap-y-2 border-b px-4 py-3">
-      <Link href="/" className="font-semibold">
-        CultureMesh
+    <nav className="sticky top-0 z-10 flex flex-wrap items-center justify-between gap-y-3 border-b border-border bg-surface/90 px-4 py-3 backdrop-blur-sm sm:px-6">
+      <Link href="/" className="flex items-center gap-2 text-ink">
+        <LogoMark className="h-6 w-6 text-primary" />
+        <span className="text-lg font-semibold tracking-tight">CultureMesh</span>
       </Link>
-      <div className="flex flex-wrap items-center gap-x-4 gap-y-2 text-sm">
-        <Link href="/search" className="underline">
-          Search
-        </Link>
+      <div className="flex flex-wrap items-center gap-x-5 gap-y-2 text-sm">
+        <NavLink href="/search">Search</NavLink>
         {user ? (
           <>
-            <Link href="/messages" className="underline">
-              Messages
-            </Link>
-            <Link href={`/profile/${user.id}`} className="underline">
-              Profile
-            </Link>
-            <Link href="/settings" className="underline">
-              Settings
-            </Link>
+            <NavLink href="/messages">Messages</NavLink>
+            <NavLink href={`/profile/${user.id}`}>Profile</NavLink>
+            <NavLink href="/settings">Settings</NavLink>
             <form action={signOut}>
-              <button type="submit" className="underline">
+              <button
+                type="submit"
+                className="text-body transition-colors hover:text-primary"
+              >
                 Sign out
               </button>
             </form>
           </>
         ) : (
           <>
-            <Link href="/sign-in" className="underline">
-              Sign in
-            </Link>
-            <Link href="/sign-up" className="underline">
+            <NavLink href="/sign-in">Sign in</NavLink>
+            <Link
+              href="/sign-up"
+              className="rounded-md bg-primary px-3 py-1.5 font-medium text-white transition-colors hover:bg-primary-hover"
+            >
               Sign up
             </Link>
           </>

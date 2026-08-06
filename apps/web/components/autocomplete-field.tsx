@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useId, useState } from "react";
+import { Field, Input, Label } from "@/components/ui/input";
 
 export type PlaceOption = {
   id: number;
@@ -60,11 +61,9 @@ export function AutocompleteField({
   const visibleOptions = selected ? [] : options;
 
   return (
-    <div className="flex flex-col gap-1">
-      <label htmlFor={inputId} className="text-sm font-medium">
-        {label}
-      </label>
-      <input
+    <Field>
+      <Label htmlFor={inputId}>{label}</Label>
+      <Input
         id={inputId}
         type="text"
         value={selected ? optionLabel(selected) : query}
@@ -74,11 +73,10 @@ export function AutocompleteField({
           setQuery(e.target.value);
         }}
         placeholder={kind === "language" ? "e.g. Mandarin" : "e.g. Michigan"}
-        className="rounded border px-3 py-2"
       />
       {hiddenName && <input type="hidden" name={hiddenName} value={selected?.id ?? ""} />}
       {visibleOptions.length > 0 && (
-        <ul className="rounded border">
+        <ul className="overflow-hidden rounded-md border border-border bg-surface shadow-sm">
           {visibleOptions.map((option) => (
             <li key={option.id}>
               <button
@@ -88,17 +86,17 @@ export function AutocompleteField({
                   setOptions([]);
                   onSelect?.(option);
                 }}
-                className="w-full px-3 py-2 text-left hover:bg-zinc-100"
+                className="w-full px-3 py-2 text-left hover:bg-primary-light"
               >
                 {optionLabel(option)}
                 {"type" in option && (
-                  <span className="ml-2 text-xs text-zinc-500">{option.type}</span>
+                  <span className="ml-2 text-xs text-muted">{option.type}</span>
                 )}
               </button>
             </li>
           ))}
         </ul>
       )}
-    </div>
+    </Field>
   );
 }
