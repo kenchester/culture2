@@ -38,3 +38,8 @@ supabase/.temp
 # work but must never enter the new repo's git history
 5Aug2026_culturp7_ktc.sql
 /htdocs/
+
+# migration script output: real legacy user PII (emails, names) - never
+# belongs in git, regardless of how the scripts in scripts/migration/ are
+# invoked
+/scripts/migration/output/
