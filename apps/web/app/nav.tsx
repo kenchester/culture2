@@ -29,11 +29,11 @@ export function Nav() {
   }
 
   return (
-    <nav className="flex items-center justify-between border-b px-4 py-3">
+    <nav className="flex flex-wrap items-center justify-between gap-y-2 border-b px-4 py-3">
       <Link href="/" className="font-semibold">
         CultureMesh
       </Link>
-      <div className="flex items-center gap-4 text-sm">
+      <div className="flex flex-wrap items-center gap-x-4 gap-y-2 text-sm">
         <Link href="/search" className="underline">
           Search
         </Link>
