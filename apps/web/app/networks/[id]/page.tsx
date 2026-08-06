@@ -101,17 +101,28 @@ export default async function NetworkPage({
           <form action={createPost} className="flex flex-col gap-2">
             <input type="hidden" name="networkId" value={network.id} />
             {error && <p className="text-sm text-red-600">{error}</p>}
-            <textarea
-              name="body"
-              placeholder="Share something with this network..."
-              required
-              className="rounded border px-3 py-2"
-            />
-            <input
-              name="videoUrl"
-              placeholder="Video link (optional)"
-              className="rounded border px-3 py-2"
-            />
+            <div className="flex flex-col gap-1">
+              <label htmlFor="post-body" className="text-sm font-medium">
+                Post
+              </label>
+              <textarea
+                id="post-body"
+                name="body"
+                placeholder="Share something with this network..."
+                required
+                className="rounded border px-3 py-2"
+              />
+            </div>
+            <div className="flex flex-col gap-1">
+              <label htmlFor="post-video-url" className="text-sm font-medium">
+                Video link (optional)
+              </label>
+              <input
+                id="post-video-url"
+                name="videoUrl"
+                className="rounded border px-3 py-2"
+              />
+            </div>
             <button type="submit" className="self-start rounded bg-black px-3 py-2 text-white">
               Post
             </button>

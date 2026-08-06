@@ -124,12 +124,18 @@ export default async function PostPage({
           <input type="hidden" name="postId" value={post.id} />
           <input type="hidden" name="networkId" value={id} />
           {error && <p className="text-sm text-red-600">{error}</p>}
-          <textarea
-            name="body"
-            placeholder="Write a reply..."
-            required
-            className="rounded border px-3 py-2"
-          />
+          <div className="flex flex-col gap-1">
+            <label htmlFor="reply-body" className="text-sm font-medium">
+              Reply
+            </label>
+            <textarea
+              id="reply-body"
+              name="body"
+              placeholder="Write a reply..."
+              required
+              className="rounded border px-3 py-2"
+            />
+          </div>
           <button type="submit" className="self-start rounded bg-black px-3 py-2 text-white">
             Reply
           </button>

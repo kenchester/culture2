@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useId, useState } from "react";
 
 export type PlaceOption = {
   id: number;
@@ -36,6 +36,7 @@ export function AutocompleteField({
   const [query, setQuery] = useState("");
   const [options, setOptions] = useState<AutocompleteOption[]>([]);
   const [selected, setSelected] = useState<AutocompleteOption | null>(null);
+  const inputId = useId();
 
   useEffect(() => {
     if (selected || query.trim().length < 2) {
@@ -60,8 +61,11 @@ export function AutocompleteField({
 
   return (
     <div className="flex flex-col gap-1">
-      <label className="text-sm font-medium">{label}</label>
+      <label htmlFor={inputId} className="text-sm font-medium">
+        {label}
+      </label>
       <input
+        id={inputId}
         type="text"
         value={selected ? optionLabel(selected) : query}
         onChange={(e) => {

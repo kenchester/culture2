@@ -74,30 +74,50 @@ export default async function ProfilePage({
           <AvatarUpload userId={profile.id} />
           {error && <p className="text-sm text-red-600">{error}</p>}
           <form action={updateProfile} className="flex flex-col gap-4">
-            <input
-              name="username"
-              defaultValue={profile.username ?? ""}
-              placeholder="Username"
-              className="rounded border px-3 py-2"
-            />
-            <input
-              name="firstName"
-              defaultValue={profile.first_name ?? ""}
-              placeholder="First name"
-              className="rounded border px-3 py-2"
-            />
-            <input
-              name="lastName"
-              defaultValue={profile.last_name ?? ""}
-              placeholder="Last name"
-              className="rounded border px-3 py-2"
-            />
-            <textarea
-              name="aboutMe"
-              defaultValue={profile.about_me ?? ""}
-              placeholder="About me"
-              className="rounded border px-3 py-2"
-            />
+            <div className="flex flex-col gap-1">
+              <label htmlFor="username" className="text-sm font-medium">
+                Username
+              </label>
+              <input
+                id="username"
+                name="username"
+                defaultValue={profile.username ?? ""}
+                className="rounded border px-3 py-2"
+              />
+            </div>
+            <div className="flex flex-col gap-1">
+              <label htmlFor="firstName" className="text-sm font-medium">
+                First name
+              </label>
+              <input
+                id="firstName"
+                name="firstName"
+                defaultValue={profile.first_name ?? ""}
+                className="rounded border px-3 py-2"
+              />
+            </div>
+            <div className="flex flex-col gap-1">
+              <label htmlFor="lastName" className="text-sm font-medium">
+                Last name
+              </label>
+              <input
+                id="lastName"
+                name="lastName"
+                defaultValue={profile.last_name ?? ""}
+                className="rounded border px-3 py-2"
+              />
+            </div>
+            <div className="flex flex-col gap-1">
+              <label htmlFor="aboutMe" className="text-sm font-medium">
+                About me
+              </label>
+              <textarea
+                id="aboutMe"
+                name="aboutMe"
+                defaultValue={profile.about_me ?? ""}
+                className="rounded border px-3 py-2"
+              />
+            </div>
             <button type="submit" className="rounded bg-black px-3 py-2 text-white">
               Save
             </button>

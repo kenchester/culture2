@@ -60,23 +60,38 @@ export default async function EventsPage({
         <form action={createEvent} className="flex flex-col gap-2 border-b pb-6">
           <input type="hidden" name="networkId" value={network.id} />
           {error && <p className="text-sm text-red-600">{error}</p>}
-          <input
-            name="title"
-            placeholder="Event title"
-            required
-            className="rounded border px-3 py-2"
-          />
-          <textarea
-            name="description"
-            placeholder="Description (optional)"
-            className="rounded border px-3 py-2"
-          />
+          <div className="flex flex-col gap-1">
+            <label htmlFor="event-title" className="text-sm font-medium">
+              Event title
+            </label>
+            <input
+              id="event-title"
+              name="title"
+              required
+              className="rounded border px-3 py-2"
+            />
+          </div>
+          <div className="flex flex-col gap-1">
+            <label htmlFor="event-description" className="text-sm font-medium">
+              Description (optional)
+            </label>
+            <textarea
+              id="event-description"
+              name="description"
+              className="rounded border px-3 py-2"
+            />
+          </div>
           <EventDateField />
-          <input
-            name="location"
-            placeholder="Location (optional)"
-            className="rounded border px-3 py-2"
-          />
+          <div className="flex flex-col gap-1">
+            <label htmlFor="event-location" className="text-sm font-medium">
+              Location (optional)
+            </label>
+            <input
+              id="event-location"
+              name="location"
+              className="rounded border px-3 py-2"
+            />
+          </div>
           <button type="submit" className="self-start rounded bg-black px-3 py-2 text-white">
             Host event
           </button>

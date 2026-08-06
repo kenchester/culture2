@@ -92,6 +92,7 @@ export function MessageThread({
           value={body}
           onChange={(e) => setBody(e.target.value)}
           placeholder="Write a message..."
+          aria-label="Message"
           className="flex-1 rounded border px-3 py-2"
         />
         <button

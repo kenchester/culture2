@@ -12,8 +12,12 @@ export function EventDateField() {
   const iso = localValue ? new Date(localValue).toISOString() : "";
 
   return (
-    <>
+    <div className="flex flex-col gap-1">
+      <label htmlFor="event-date" className="text-sm font-medium">
+        Date and time
+      </label>
       <input
+        id="event-date"
         type="datetime-local"
         required
         value={localValue}
@@ -21,6 +25,6 @@ export function EventDateField() {
         className="rounded border px-3 py-2"
       />
       <input type="hidden" name="eventDate" value={iso} />
-    </>
+    </div>
   );
 }

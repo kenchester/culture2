@@ -23,18 +23,30 @@ export function AdminPartnerForm({
         name="jurisdictionPlaceIds"
         value={JSON.stringify(jurisdictions.map((j) => j.id))}
       />
-      <input
-        name="name"
-        placeholder="Partner name, e.g. Embassy of Indonesia"
-        required
-        className="rounded border px-3 py-2"
-      />
-      <input
-        name="slug"
-        placeholder="URL slug, e.g. indonesia"
-        required
-        className="rounded border px-3 py-2"
-      />
+      <div className="flex flex-col gap-1">
+        <label htmlFor="partner-name" className="text-sm font-medium">
+          Partner name
+        </label>
+        <input
+          id="partner-name"
+          name="name"
+          placeholder="e.g. Embassy of Indonesia"
+          required
+          className="rounded border px-3 py-2"
+        />
+      </div>
+      <div className="flex flex-col gap-1">
+        <label htmlFor="partner-slug" className="text-sm font-medium">
+          URL slug
+        </label>
+        <input
+          id="partner-slug"
+          name="slug"
+          placeholder="e.g. indonesia"
+          required
+          className="rounded border px-3 py-2"
+        />
+      </div>
 
       <div className="flex gap-4 text-sm">
         <label className="flex items-center gap-1">

@@ -23,18 +23,30 @@ export default async function SuggestNetworkPage({
       )}
       {error && <p className="text-sm text-red-600">{error}</p>}
       <form action={suggestNetwork} className="flex flex-col gap-4">
-        <input
-          name="originText"
-          placeholder="Language or origin, e.g. Tagalog"
-          required
-          className="rounded border px-3 py-2"
-        />
-        <input
-          name="locationText"
-          placeholder="Location, e.g. Austin, Texas"
-          required
-          className="rounded border px-3 py-2"
-        />
+        <div className="flex flex-col gap-1">
+          <label htmlFor="originText" className="text-sm font-medium">
+            Language or origin
+          </label>
+          <input
+            id="originText"
+            name="originText"
+            placeholder="e.g. Tagalog"
+            required
+            className="rounded border px-3 py-2"
+          />
+        </div>
+        <div className="flex flex-col gap-1">
+          <label htmlFor="locationText" className="text-sm font-medium">
+            Location
+          </label>
+          <input
+            id="locationText"
+            name="locationText"
+            placeholder="e.g. Austin, Texas"
+            required
+            className="rounded border px-3 py-2"
+          />
+        </div>
         <button type="submit" className="rounded bg-black px-3 py-2 text-white">
           Submit suggestion
         </button>

@@ -18,20 +18,30 @@ export default async function SignInPage({
       )}
       {error && <p className="text-sm text-red-600">{error}</p>}
       <form action={signIn} className="flex flex-col gap-4">
-        <input
-          name="email"
-          type="email"
-          placeholder="Email"
-          required
-          className="rounded border px-3 py-2"
-        />
-        <input
-          name="password"
-          type="password"
-          placeholder="Password"
-          required
-          className="rounded border px-3 py-2"
-        />
+        <div className="flex flex-col gap-1">
+          <label htmlFor="email" className="text-sm font-medium">
+            Email
+          </label>
+          <input
+            id="email"
+            name="email"
+            type="email"
+            required
+            className="rounded border px-3 py-2"
+          />
+        </div>
+        <div className="flex flex-col gap-1">
+          <label htmlFor="password" className="text-sm font-medium">
+            Password
+          </label>
+          <input
+            id="password"
+            name="password"
+            type="password"
+            required
+            className="rounded border px-3 py-2"
+          />
+        </div>
         <button type="submit" className="rounded bg-black px-3 py-2 text-white">
           Sign in
         </button>
