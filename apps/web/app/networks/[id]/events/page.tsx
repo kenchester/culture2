@@ -3,6 +3,8 @@ import { notFound } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import { createEvent } from "@/app/networks/[id]/events/actions";
 import { EventDateField } from "@/app/networks/[id]/events/event-date-field";
+import { Button } from "@/components/ui/button";
+import { Field, Input, Label, Textarea } from "@/components/ui/input";
 
 export default async function EventsPage({
   params,
@@ -50,51 +52,34 @@ export default async function EventsPage({
   return (
     <div className="mx-auto flex w-full max-w-lg flex-1 flex-col gap-6 px-4 py-12">
       <div>
-        <Link href={`/networks/${network.id}`} className="text-sm text-zinc-500 underline">
+        <Link href={`/networks/${network.id}`} className="text-sm text-muted underline">
           Back to network
         </Link>
-        <h1 className="text-2xl font-semibold">{network.title} events</h1>
+        <h1 className="font-display text-3xl text-ink">{network.title} events</h1>
       </div>
 
       {isMember && (
-        <form action={createEvent} className="flex flex-col gap-2 border-b pb-6">
+        <form action={createEvent} className="flex flex-col gap-2 border-b border-border pb-6">
           <input type="hidden" name="networkId" value={network.id} />
-          {error && <p className="text-sm text-red-600">{error}</p>}
-          <div className="flex flex-col gap-1">
-            <label htmlFor="event-title" className="text-sm font-medium">
-              Event title
-            </label>
-            <input
-              id="event-title"
-              name="title"
-              required
-              className="rounded border px-3 py-2"
-            />
-          </div>
-          <div className="flex flex-col gap-1">
-            <label htmlFor="event-description" className="text-sm font-medium">
-              Description (optional)
-            </label>
-            <textarea
-              id="event-description"
-              name="description"
-              className="rounded border px-3 py-2"
-            />
-          </div>
+          {error && (
+            <p className="rounded-md bg-error-bg px-3 py-2 text-sm text-error">{error}</p>
+          )}
+          <Field>
+            <Label htmlFor="event-title">Event title</Label>
+            <Input id="event-title" name="title" required />
+          </Field>
+          <Field>
+            <Label htmlFor="event-description">Description (optional)</Label>
+            <Textarea id="event-description" name="description" />
+          </Field>
           <EventDateField />
-          <div className="flex flex-col gap-1">
-            <label htmlFor="event-location" className="text-sm font-medium">
-              Location (optional)
-            </label>
-            <input
-              id="event-location"
-              name="location"
-              className="rounded border px-3 py-2"
-            />
-          </div>
-          <button type="submit" className="self-start rounded bg-black px-3 py-2 text-white">
+          <Field>
+            <Label htmlFor="event-location">Location (optional)</Label>
+            <Input id="event-location" name="location" />
+          </Field>
+          <Button type="submit" className="self-start">
             Host event
-          </button>
+          </Button>
         </form>
       )}
 
@@ -103,18 +88,18 @@ export default async function EventsPage({
           <Link
             key={event.id}
             href={`/networks/${network.id}/events/${event.id}`}
-            className="flex flex-col gap-1 border-b pb-3"
+            className="flex flex-col gap-1 border-b border-border pb-3"
           >
-            <span className="font-medium underline">{event.title}</span>
-            <span className="text-sm text-zinc-600">
+            <span className="font-medium text-ink underline hover:text-primary">
+              {event.title}
+            </span>
+            <span className="text-sm text-muted">
               {new Date(event.event_date).toLocaleString()}
               {event.location ? ` · ${event.location}` : ""}
             </span>
           </Link>
         ))}
-        {events?.length === 0 && (
-          <p className="text-sm text-zinc-500">No events yet.</p>
-        )}
+        {events?.length === 0 && <p className="text-sm text-muted">No events yet.</p>}
       </div>
     </div>
   );

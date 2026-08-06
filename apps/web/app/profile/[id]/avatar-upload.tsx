@@ -4,6 +4,7 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { createClient } from "@/lib/supabase/client";
 import { updateAvatarPath } from "@/app/profile/actions";
+import { Field, Input, Label } from "@/components/ui/input";
 
 export function AvatarUpload({ userId }: { userId: string }) {
   const [uploading, setUploading] = useState(false);
@@ -37,11 +38,13 @@ export function AvatarUpload({ userId }: { userId: string }) {
   }
 
   return (
-    <div className="flex flex-col gap-1">
-      <label className="text-sm font-medium">Profile picture</label>
-      <input type="file" accept="image/*" onChange={handleChange} disabled={uploading} />
-      {uploading && <p className="text-sm text-zinc-600">Uploading...</p>}
-      {error && <p className="text-sm text-red-600">{error}</p>}
-    </div>
+    <Field>
+      <Label>Profile picture</Label>
+      <Input type="file" accept="image/*" onChange={handleChange} disabled={uploading} />
+      {uploading && <p className="text-sm text-muted">Uploading...</p>}
+      {error && (
+        <p className="rounded-md bg-error-bg px-3 py-2 text-sm text-error">{error}</p>
+      )}
+    </Field>
   );
 }

@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import { getDisplayName } from "@/lib/profiles";
 import { cancelRsvp, rsvp } from "@/app/networks/[id]/events/[eventId]/actions";
+import { Button } from "@/components/ui/button";
 
 const STATUSES = ["going", "interested", "declined"] as const;
 
@@ -59,33 +60,35 @@ export default async function EventPage({
 
   return (
     <div className="mx-auto flex w-full max-w-lg flex-1 flex-col gap-6 px-4 py-12">
-      <Link href={`/networks/${id}/events`} className="text-sm text-zinc-500 underline">
+      <Link href={`/networks/${id}/events`} className="text-sm text-muted underline">
         Back to events
       </Link>
 
       <div>
-        <h1 className="text-2xl font-semibold">{event.title}</h1>
-        <p className="text-sm text-zinc-600">
+        <h1 className="font-display text-3xl text-ink">{event.title}</h1>
+        <p className="text-sm text-muted">
           {new Date(event.event_date).toLocaleString()}
           {event.location ? ` · ${event.location}` : ""}
         </p>
         {host && (
-          <p className="text-sm text-zinc-600">
+          <p className="text-sm text-muted">
             Hosted by{" "}
-            <Link href={`/profile/${host.id}`} className="underline">
+            <Link href={`/profile/${host.id}`} className="text-ink underline hover:text-primary">
               {getDisplayName(host)}
             </Link>
           </p>
         )}
       </div>
 
-      {event.description && <p>{event.description}</p>}
+      {event.description && <p className="text-body">{event.description}</p>}
 
-      <p className="text-sm text-zinc-600">
+      <p className="text-sm text-muted">
         {counts.going} going, {counts.interested} interested, {counts.declined} declined
       </p>
 
-      {error && <p className="text-sm text-red-600">{error}</p>}
+      {error && (
+        <p className="rounded-md bg-error-bg px-3 py-2 text-sm text-error">{error}</p>
+      )}
 
       {user ? (
         <div className="flex flex-col gap-2">
@@ -95,16 +98,13 @@ export default async function EventPage({
                 <input type="hidden" name="eventId" value={event.id} />
                 <input type="hidden" name="networkId" value={id} />
                 <input type="hidden" name="status" value={status} />
-                <button
+                <Button
                   type="submit"
-                  className={`rounded px-3 py-2 capitalize ${
-                    myRsvp?.status === status
-                      ? "bg-black text-white"
-                      : "border"
-                  }`}
+                  variant={myRsvp?.status === status ? "primary" : "secondary"}
+                  className="capitalize"
                 >
                   {status}
-                </button>
+                </Button>
               </form>
             ))}
           </div>
@@ -112,14 +112,14 @@ export default async function EventPage({
             <form action={cancelRsvp}>
               <input type="hidden" name="eventId" value={event.id} />
               <input type="hidden" name="networkId" value={id} />
-              <button type="submit" className="text-sm text-zinc-500 underline">
+              <button type="submit" className="text-sm text-muted underline hover:text-primary">
                 Remove my RSVP
               </button>
             </form>
           )}
         </div>
       ) : (
-        <a href="/sign-in" className="text-sm underline">
+        <a href="/sign-in" className="text-sm font-medium text-primary hover:underline">
           Sign in to RSVP
         </a>
       )}

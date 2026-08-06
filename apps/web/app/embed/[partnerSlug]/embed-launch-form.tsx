@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { launchNetworkForEmbed } from "@/app/embed/[partnerSlug]/actions";
+import { Button } from "@/components/ui/button";
 
 export function EmbedLaunchForm({
   originKind,
@@ -45,15 +46,13 @@ export function EmbedLaunchForm({
   }
 
   return (
-    <form onSubmit={handleSubmit}>
-      {error && <p className="text-sm text-red-600">{error}</p>}
-      <button
-        type="submit"
-        disabled={pending}
-        className="rounded bg-black px-3 py-2 text-white"
-      >
+    <form onSubmit={handleSubmit} className="flex flex-col gap-2">
+      {error && (
+        <p className="rounded-md bg-error-bg px-3 py-2 text-sm text-error">{error}</p>
+      )}
+      <Button type="submit" disabled={pending}>
         Launch this network
-      </button>
+      </Button>
     </form>
   );
 }

@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { createClient } from "@/lib/supabase/server";
 import { launchNetwork } from "@/app/search/actions";
+import { Button } from "@/components/ui/button";
 
 type SearchResultsParams = {
   originKind?: string;
@@ -28,9 +29,9 @@ export default async function SearchResultsPage({
 
   if (!originId || !locationId) {
     return (
-      <div className="mx-auto max-w-lg px-4 py-12">
+      <div className="mx-auto max-w-lg px-4 py-12 text-body">
         Missing search parameters.{" "}
-        <Link href="/search" className="underline">
+        <Link href="/search" className="text-primary underline">
           Try again
         </Link>
         .
@@ -56,7 +57,7 @@ export default async function SearchResultsPage({
 
   if (error) {
     return (
-      <div className="mx-auto max-w-lg px-4 py-12">
+      <div className="mx-auto max-w-lg px-4 py-12 text-body">
         Something went wrong: {error.message}
       </div>
     );
@@ -75,40 +76,42 @@ export default async function SearchResultsPage({
 
   return (
     <div className="mx-auto flex w-full max-w-lg flex-1 flex-col gap-8 px-4 py-12">
-      <h1 className="text-2xl font-semibold">{title}</h1>
+      <h1 className="font-display text-3xl text-ink">{title}</h1>
 
       {exact ? (
-        <section className="flex flex-col gap-2 rounded border p-4">
+        <section className="flex flex-col gap-2 rounded-lg border border-border bg-surface p-4">
           <Link
             href={`/networks/${exact.network_id}`}
-            className="text-lg font-medium underline"
+            className="text-lg font-medium text-ink underline hover:text-primary"
           >
             {exact.network_title}
           </Link>
-          <p className="text-sm text-zinc-600">
+          <p className="text-sm text-muted">
             {exact.member_count} members, {exact.post_count} posts
           </p>
         </section>
       ) : (
-        <section className="flex flex-col gap-3 rounded border p-4">
-          <p>No network exists yet for this combination.</p>
+        <section className="flex flex-col gap-3 rounded-lg border border-border bg-surface p-4">
+          <p className="text-body">No network exists yet for this combination.</p>
           <form action={launchNetwork}>
             <input type="hidden" name="originKind" value={originKind} />
             <input type="hidden" name="originId" value={originId} />
             <input type="hidden" name="locationId" value={locationId} />
             <input type="hidden" name="title" value={title} />
-            <button type="submit" className="rounded bg-black px-3 py-2 text-white">
-              Launch this network
-            </button>
+            <Button type="submit">Launch this network</Button>
           </form>
         </section>
       )}
 
       {broader.length > 0 && (
         <section className="flex flex-col gap-2">
-          <h2 className="text-sm font-medium text-zinc-600">Related (broader)</h2>
+          <h2 className="text-sm font-medium text-muted">Related (broader)</h2>
           {broader.map((m) => (
-            <Link key={m.network_id} href={`/networks/${m.network_id}`} className="underline">
+            <Link
+              key={m.network_id}
+              href={`/networks/${m.network_id}`}
+              className="text-ink underline hover:text-primary"
+            >
               {m.network_title}
             </Link>
           ))}
@@ -117,9 +120,13 @@ export default async function SearchResultsPage({
 
       {narrower.length > 0 && (
         <section className="flex flex-col gap-2">
-          <h2 className="text-sm font-medium text-zinc-600">Related (narrower)</h2>
+          <h2 className="text-sm font-medium text-muted">Related (narrower)</h2>
           {narrower.map((m) => (
-            <Link key={m.network_id} href={`/networks/${m.network_id}`} className="underline">
+            <Link
+              key={m.network_id}
+              href={`/networks/${m.network_id}`}
+              className="text-ink underline hover:text-primary"
+            >
               {m.network_title}
             </Link>
           ))}

@@ -45,7 +45,7 @@ export default async function EmbedPage({
   if (!locationId) {
     return (
       <div className="mx-auto flex w-full max-w-sm flex-1 flex-col justify-center gap-6 px-4 py-12">
-        <h1 className="text-2xl font-semibold">
+        <h1 className="text-2xl font-semibold text-ink">
           {partner.hide_origin_label ? partner.name : `${partner.name} — ${originName}`}
         </h1>
         <EmbedLocationForm partnerSlug={partnerSlug} />
@@ -77,28 +77,28 @@ export default async function EmbedPage({
   return (
     <div className="mx-auto flex w-full max-w-lg flex-1 flex-col gap-8 px-4 py-12">
       <div>
-        <Link href={`/embed/${partnerSlug}`} className="text-sm text-zinc-500 underline">
+        <Link href={`/embed/${partnerSlug}`} className="text-sm text-muted underline">
           Back
         </Link>
-        <h1 className="text-2xl font-semibold">{title}</h1>
+        <h1 className="text-2xl font-semibold text-ink">{title}</h1>
       </div>
 
       {exact ? (
-        <section className="flex flex-col gap-2 rounded border p-4">
+        <section className="flex flex-col gap-2 rounded-lg border border-border bg-surface p-4">
           <a
             href={`/networks/${exact.network_id}`}
             target="_top"
-            className="text-lg font-medium underline"
+            className="text-lg font-medium text-ink underline"
           >
             {exact.network_title}
           </a>
-          <p className="text-sm text-zinc-600">
+          <p className="text-sm text-muted">
             {exact.member_count} members, {exact.post_count} posts
           </p>
         </section>
       ) : (
-        <section className="flex flex-col gap-3 rounded border p-4">
-          <p>No network exists yet for this location.</p>
+        <section className="flex flex-col gap-3 rounded-lg border border-border bg-surface p-4">
+          <p className="text-body">No network exists yet for this location.</p>
           <EmbedLaunchForm
             originKind={isLanguage ? "language" : "place"}
             originId={
@@ -116,13 +116,13 @@ export default async function EmbedPage({
 
       {broader.length > 0 && (
         <section className="flex flex-col gap-2">
-          <h2 className="text-sm font-medium text-zinc-600">Related (broader)</h2>
+          <h2 className="text-sm font-medium text-muted">Related (broader)</h2>
           {broader.map((m) => (
             <a
               key={m.network_id}
               href={`/networks/${m.network_id}`}
               target="_top"
-              className="underline"
+              className="text-ink underline"
             >
               {m.network_title}
             </a>
@@ -132,13 +132,13 @@ export default async function EmbedPage({
 
       {narrower.length > 0 && (
         <section className="flex flex-col gap-2">
-          <h2 className="text-sm font-medium text-zinc-600">Related (narrower)</h2>
+          <h2 className="text-sm font-medium text-muted">Related (narrower)</h2>
           {narrower.map((m) => (
             <a
               key={m.network_id}
               href={`/networks/${m.network_id}`}
               target="_top"
-              className="underline"
+              className="text-ink underline"
             >
               {m.network_title}
             </a>

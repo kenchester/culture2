@@ -4,6 +4,8 @@ import { notFound } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import { type Author, getAvatarUrl, getDisplayName } from "@/lib/profiles";
 import { createPost, joinNetwork, leaveNetwork } from "@/app/networks/actions";
+import { Button } from "@/components/ui/button";
+import { Field, Input, Label, Textarea } from "@/components/ui/input";
 
 export default async function NetworkPage({
   params,
@@ -69,63 +71,57 @@ export default async function NetworkPage({
   return (
     <div className="mx-auto flex w-full max-w-lg flex-1 flex-col gap-6 px-4 py-12">
       <div>
-        <h1 className="text-2xl font-semibold">{network.title}</h1>
-        <p className="text-sm text-zinc-600">
+        <h1 className="font-display text-3xl text-ink">{network.title}</h1>
+        <p className="text-sm text-muted">
           {originName} in {location?.name ?? "?"}
         </p>
       </div>
 
-      <p className="text-sm text-zinc-600">
+      <p className="text-sm text-muted">
         {network.member_count} members, {network.post_count} posts
       </p>
 
-      <Link href={`/networks/${network.id}/events`} className="text-sm underline">
+      <Link
+        href={`/networks/${network.id}/events`}
+        className="text-sm font-medium text-primary hover:underline"
+      >
         Events
       </Link>
 
       {user ? (
         <form action={isMember ? leaveNetwork : joinNetwork}>
           <input type="hidden" name="networkId" value={network.id} />
-          <button type="submit" className="rounded bg-black px-3 py-2 text-white">
-            {isMember ? "Leave network" : "Join network"}
-          </button>
+          <Button type="submit">{isMember ? "Leave network" : "Join network"}</Button>
         </form>
       ) : (
-        <a href="/sign-in" className="text-sm underline">
+        <a href="/sign-in" className="text-sm font-medium text-primary hover:underline">
           Sign in to join
         </a>
       )}
 
-      <div className="flex flex-col gap-4 border-t pt-6">
+      <div className="flex flex-col gap-4 border-t border-border pt-6">
         {isMember && (
           <form action={createPost} className="flex flex-col gap-2">
             <input type="hidden" name="networkId" value={network.id} />
-            {error && <p className="text-sm text-red-600">{error}</p>}
-            <div className="flex flex-col gap-1">
-              <label htmlFor="post-body" className="text-sm font-medium">
-                Post
-              </label>
-              <textarea
+            {error && (
+              <p className="rounded-md bg-error-bg px-3 py-2 text-sm text-error">{error}</p>
+            )}
+            <Field>
+              <Label htmlFor="post-body">Post</Label>
+              <Textarea
                 id="post-body"
                 name="body"
                 placeholder="Share something with this network..."
                 required
-                className="rounded border px-3 py-2"
               />
-            </div>
-            <div className="flex flex-col gap-1">
-              <label htmlFor="post-video-url" className="text-sm font-medium">
-                Video link (optional)
-              </label>
-              <input
-                id="post-video-url"
-                name="videoUrl"
-                className="rounded border px-3 py-2"
-              />
-            </div>
-            <button type="submit" className="self-start rounded bg-black px-3 py-2 text-white">
+            </Field>
+            <Field>
+              <Label htmlFor="post-video-url">Video link (optional)</Label>
+              <Input id="post-video-url" name="videoUrl" />
+            </Field>
+            <Button type="submit" className="self-start">
               Post
-            </button>
+            </Button>
           </form>
         )}
 
@@ -135,7 +131,7 @@ export default async function NetworkPage({
             const avatarUrl = author ? getAvatarUrl(supabase, author.img_path) : null;
 
             return (
-              <div key={post.id} className="flex gap-3 border-b pb-4">
+              <div key={post.id} className="flex gap-3 border-b border-border pb-4">
                 {avatarUrl ? (
                   <Image
                     src={avatarUrl}
@@ -145,20 +141,20 @@ export default async function NetworkPage({
                     className="h-8 w-8 shrink-0 rounded-full object-cover"
                   />
                 ) : (
-                  <div className="h-8 w-8 shrink-0 rounded-full bg-zinc-200" />
+                  <div className="h-8 w-8 shrink-0 rounded-full bg-border" />
                 )}
                 <div className="flex flex-col gap-1">
                   <Link
                     href={author ? `/profile/${author.id}` : "#"}
-                    className="text-sm font-medium underline"
+                    className="text-sm font-medium text-ink underline hover:text-primary"
                   >
                     {author ? getDisplayName(author) : "Someone"}
                   </Link>
-                  <p>{post.body}</p>
+                  <p className="text-body">{post.body}</p>
                   {post.video_url && (
                     <a
                       href={post.video_url}
-                      className="text-sm text-blue-600 underline"
+                      className="text-sm text-primary underline"
                       target="_blank"
                       rel="noreferrer"
                     >
@@ -167,7 +163,7 @@ export default async function NetworkPage({
                   )}
                   <Link
                     href={`/networks/${network.id}/posts/${post.id}`}
-                    className="text-sm text-zinc-500 underline"
+                    className="text-sm text-muted underline hover:text-primary"
                   >
                     Replies
                   </Link>
@@ -175,9 +171,7 @@ export default async function NetworkPage({
               </div>
             );
           })}
-          {posts?.length === 0 && (
-            <p className="text-sm text-zinc-500">No posts yet.</p>
-          )}
+          {posts?.length === 0 && <p className="text-sm text-muted">No posts yet.</p>}
         </div>
       </div>
     </div>

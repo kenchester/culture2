@@ -1,6 +1,7 @@
 "use client";
 
 import { AutocompleteField } from "@/components/autocomplete-field";
+import { Button } from "@/components/ui/button";
 
 export function EmbedLocationForm({ partnerSlug }: { partnerSlug: string }) {
   return (
@@ -11,9 +12,7 @@ export function EmbedLocationForm({ partnerSlug }: { partnerSlug: string }) {
         hiddenName="locationId"
         searchUrl={`/api/embed/${partnerSlug}/places/search`}
       />
-      <button type="submit" className="rounded bg-black px-3 py-2 text-white">
-        Search
-      </button>
+      <Button type="submit">Search</Button>
     </form>
   );
 }

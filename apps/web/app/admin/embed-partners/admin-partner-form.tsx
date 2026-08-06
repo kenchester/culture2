@@ -6,6 +6,8 @@ import {
   optionLabel,
   type AutocompleteOption,
 } from "@/components/autocomplete-field";
+import { Button } from "@/components/ui/button";
+import { Field, Input, Label } from "@/components/ui/input";
 
 export function AdminPartnerForm({
   action,
@@ -23,32 +25,21 @@ export function AdminPartnerForm({
         name="jurisdictionPlaceIds"
         value={JSON.stringify(jurisdictions.map((j) => j.id))}
       />
-      <div className="flex flex-col gap-1">
-        <label htmlFor="partner-name" className="text-sm font-medium">
-          Partner name
-        </label>
-        <input
+      <Field>
+        <Label htmlFor="partner-name">Partner name</Label>
+        <Input
           id="partner-name"
           name="name"
           placeholder="e.g. Embassy of Indonesia"
           required
-          className="rounded border px-3 py-2"
         />
-      </div>
-      <div className="flex flex-col gap-1">
-        <label htmlFor="partner-slug" className="text-sm font-medium">
-          URL slug
-        </label>
-        <input
-          id="partner-slug"
-          name="slug"
-          placeholder="e.g. indonesia"
-          required
-          className="rounded border px-3 py-2"
-        />
-      </div>
+      </Field>
+      <Field>
+        <Label htmlFor="partner-slug">URL slug</Label>
+        <Input id="partner-slug" name="slug" placeholder="e.g. indonesia" required />
+      </Field>
 
-      <div className="flex gap-4 text-sm">
+      <div className="flex gap-4 text-sm text-body">
         <label className="flex items-center gap-1">
           <input
             type="radio"
@@ -88,7 +79,7 @@ export function AdminPartnerForm({
           {jurisdictions.map((j) => (
             <li
               key={j.id}
-              className="flex items-center justify-between rounded border px-3 py-2 text-sm"
+              className="flex items-center justify-between rounded-md border border-border bg-surface px-3 py-2 text-sm text-ink"
             >
               {optionLabel(j)}
               <button
@@ -96,7 +87,7 @@ export function AdminPartnerForm({
                 onClick={() =>
                   setJurisdictions((prev) => prev.filter((x) => x.id !== j.id))
                 }
-                className="text-red-600 underline"
+                className="text-error underline"
               >
                 Remove
               </button>
@@ -105,14 +96,14 @@ export function AdminPartnerForm({
         </ul>
       )}
 
-      <label className="flex items-center gap-2 text-sm">
+      <label className="flex items-center gap-2 text-sm text-body">
         <input type="checkbox" name="hideOriginLabel" defaultChecked />
         Hide origin label (white-label)
       </label>
 
-      <button type="submit" className="self-start rounded bg-black px-3 py-2 text-white">
+      <Button type="submit" className="self-start">
         Create partner
-      </button>
+      </Button>
     </form>
   );
 }

@@ -2,6 +2,8 @@
 
 import { useEffect, useRef, useState } from "react";
 import { createClient } from "@/lib/supabase/client";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 
 type Message = {
   id: number;
@@ -76,10 +78,10 @@ export function MessageThread({
         {messages.map((m) => (
           <div
             key={m.id}
-            className={`max-w-[80%] rounded px-3 py-2 ${
+            className={`max-w-[80%] rounded-md px-3 py-2 ${
               m.sender_id === currentUserId
-                ? "self-end bg-black text-white"
-                : "self-start bg-zinc-100"
+                ? "self-end bg-primary text-white"
+                : "self-start border border-border bg-surface text-ink"
             }`}
           >
             {m.body}
@@ -88,20 +90,16 @@ export function MessageThread({
         <div ref={bottomRef} />
       </div>
       <form onSubmit={handleSubmit} className="flex gap-2">
-        <input
+        <Input
           value={body}
           onChange={(e) => setBody(e.target.value)}
           placeholder="Write a message..."
           aria-label="Message"
-          className="flex-1 rounded border px-3 py-2"
+          className="flex-1"
         />
-        <button
-          type="submit"
-          disabled={sending}
-          className="rounded bg-black px-3 py-2 text-white"
-        >
+        <Button type="submit" disabled={sending}>
           Send
-        </button>
+        </Button>
       </form>
     </div>
   );

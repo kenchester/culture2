@@ -4,6 +4,8 @@ import { notFound } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import { type Author, getAvatarUrl, getDisplayName } from "@/lib/profiles";
 import { createReply } from "./actions";
+import { Button } from "@/components/ui/button";
+import { Field, Label, Textarea } from "@/components/ui/input";
 
 export default async function PostPage({
   params,
@@ -45,11 +47,11 @@ export default async function PostPage({
 
   return (
     <div className="mx-auto flex w-full max-w-lg flex-1 flex-col gap-6 px-4 py-12">
-      <Link href={`/networks/${id}`} className="text-sm text-zinc-500 underline">
+      <Link href={`/networks/${id}`} className="text-sm text-muted underline">
         Back to network
       </Link>
 
-      <div className="flex gap-3 border-b pb-4">
+      <div className="flex gap-3 border-b border-border pb-4">
         {avatarUrl ? (
           <Image
             src={avatarUrl}
@@ -59,20 +61,20 @@ export default async function PostPage({
             className="h-8 w-8 shrink-0 rounded-full object-cover"
           />
         ) : (
-          <div className="h-8 w-8 shrink-0 rounded-full bg-zinc-200" />
+          <div className="h-8 w-8 shrink-0 rounded-full bg-border" />
         )}
         <div className="flex flex-col gap-1">
           <Link
             href={author ? `/profile/${author.id}` : "#"}
-            className="text-sm font-medium underline"
+            className="text-sm font-medium text-ink underline hover:text-primary"
           >
             {author ? getDisplayName(author) : "Someone"}
           </Link>
-          <p>{post.body}</p>
+          <p className="text-body">{post.body}</p>
           {post.video_url && (
             <a
               href={post.video_url}
-              className="text-sm text-blue-600 underline"
+              className="text-sm text-primary underline"
               target="_blank"
               rel="noreferrer"
             >
@@ -100,48 +102,45 @@ export default async function PostPage({
                   className="h-6 w-6 shrink-0 rounded-full object-cover"
                 />
               ) : (
-                <div className="h-6 w-6 shrink-0 rounded-full bg-zinc-200" />
+                <div className="h-6 w-6 shrink-0 rounded-full bg-border" />
               )}
               <div className="flex flex-col gap-1">
                 <Link
                   href={replyAuthor ? `/profile/${replyAuthor.id}` : "#"}
-                  className="text-sm font-medium underline"
+                  className="text-sm font-medium text-ink underline hover:text-primary"
                 >
                   {replyAuthor ? getDisplayName(replyAuthor) : "Someone"}
                 </Link>
-                <p>{reply.body}</p>
+                <p className="text-body">{reply.body}</p>
               </div>
             </div>
           );
         })}
-        {replies?.length === 0 && (
-          <p className="text-sm text-zinc-500">No replies yet.</p>
-        )}
+        {replies?.length === 0 && <p className="text-sm text-muted">No replies yet.</p>}
       </div>
 
       {user ? (
-        <form action={createReply} className="flex flex-col gap-2 border-t pt-6">
+        <form action={createReply} className="flex flex-col gap-2 border-t border-border pt-6">
           <input type="hidden" name="postId" value={post.id} />
           <input type="hidden" name="networkId" value={id} />
-          {error && <p className="text-sm text-red-600">{error}</p>}
-          <div className="flex flex-col gap-1">
-            <label htmlFor="reply-body" className="text-sm font-medium">
-              Reply
-            </label>
-            <textarea
+          {error && (
+            <p className="rounded-md bg-error-bg px-3 py-2 text-sm text-error">{error}</p>
+          )}
+          <Field>
+            <Label htmlFor="reply-body">Reply</Label>
+            <Textarea
               id="reply-body"
               name="body"
               placeholder="Write a reply..."
               required
-              className="rounded border px-3 py-2"
             />
-          </div>
-          <button type="submit" className="self-start rounded bg-black px-3 py-2 text-white">
+          </Field>
+          <Button type="submit" className="self-start">
             Reply
-          </button>
+          </Button>
         </form>
       ) : (
-        <a href="/sign-in" className="text-sm underline">
+        <a href="/sign-in" className="text-sm font-medium text-primary hover:underline">
           Sign in to reply
         </a>
       )}

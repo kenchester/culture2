@@ -32,7 +32,7 @@ export default async function MessagesPage() {
 
   return (
     <div className="mx-auto flex w-full max-w-lg flex-1 flex-col gap-6 px-4 py-12">
-      <h1 className="text-2xl font-semibold">Messages</h1>
+      <h1 className="font-display text-3xl text-ink">Messages</h1>
       <div className="flex flex-col gap-3">
         {conversations?.map((c) => {
           const avatarUrl = getAvatarUrl(supabase, c.other_img_path);
@@ -46,7 +46,7 @@ export default async function MessagesPage() {
             <Link
               key={c.conversation_id}
               href={`/messages/${c.conversation_id}`}
-              className="flex items-center gap-3 border-b pb-3"
+              className="flex items-center gap-3 border-b border-border pb-3"
             >
               {avatarUrl ? (
                 <Image
@@ -57,16 +57,16 @@ export default async function MessagesPage() {
                   className="h-10 w-10 shrink-0 rounded-full object-cover"
                 />
               ) : (
-                <div className="h-10 w-10 shrink-0 rounded-full bg-zinc-200" />
+                <div className="h-10 w-10 shrink-0 rounded-full bg-border" />
               )}
               <div className="min-w-0 flex-1">
-                <p className="font-medium">{displayName}</p>
+                <p className="font-medium text-ink">{displayName}</p>
                 {c.last_message_body && (
-                  <p className="truncate text-sm text-zinc-600">{c.last_message_body}</p>
+                  <p className="truncate text-sm text-muted">{c.last_message_body}</p>
                 )}
               </div>
               {c.unread_count > 0 && (
-                <span className="shrink-0 rounded-full bg-black px-2 py-0.5 text-xs text-white">
+                <span className="shrink-0 rounded-full bg-primary px-2 py-0.5 text-xs text-white">
                   {c.unread_count}
                 </span>
               )}
@@ -74,7 +74,7 @@ export default async function MessagesPage() {
           );
         })}
         {conversations?.length === 0 && (
-          <p className="text-sm text-zinc-500">No conversations yet.</p>
+          <p className="text-sm text-muted">No conversations yet.</p>
         )}
       </div>
     </div>

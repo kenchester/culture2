@@ -25,7 +25,9 @@ export default async function AdminEmbedPartnersPage({
 
   if (!user) {
     return (
-      <div className="mx-auto max-w-lg px-4 py-12">Sign in as an admin to continue.</div>
+      <div className="mx-auto max-w-lg px-4 py-12 text-body">
+        Sign in as an admin to continue.
+      </div>
     );
   }
 
@@ -36,7 +38,7 @@ export default async function AdminEmbedPartnersPage({
     .single();
 
   if (!profile?.is_admin) {
-    return <div className="mx-auto max-w-lg px-4 py-12">Not authorized.</div>;
+    return <div className="mx-auto max-w-lg px-4 py-12 text-body">Not authorized.</div>;
   }
 
   const { data: partners } = (await supabase
@@ -48,34 +50,37 @@ export default async function AdminEmbedPartnersPage({
 
   return (
     <div className="mx-auto flex w-full max-w-lg flex-1 flex-col gap-8 px-4 py-12">
-      <h1 className="text-2xl font-semibold">Embed partners</h1>
-      {error && <p className="text-sm text-red-600">{error}</p>}
+      <h1 className="font-display text-3xl text-ink">Embed partners</h1>
+      {error && (
+        <p className="rounded-md bg-error-bg px-3 py-2 text-sm text-error">{error}</p>
+      )}
       <AdminPartnerForm action={createPartner} />
 
-      <div className="flex flex-col gap-4 border-t pt-6">
+      <div className="flex flex-col gap-4 border-t border-border pt-6">
         {partners?.map((partner) => {
           const lockedOrigin = partner.locked_language ?? partner.locked_origin_place;
           const jurisdictionNames = partner.jurisdictions.map((j) => j.place.name);
 
           return (
-            <div key={partner.id} className="flex flex-col gap-1 border-b pb-4">
-              <p className="font-medium">{partner.name}</p>
-              <p className="text-sm text-zinc-600">
+            <div
+              key={partner.id}
+              className="flex flex-col gap-1 border-b border-border pb-4"
+            >
+              <p className="font-medium text-ink">{partner.name}</p>
+              <p className="text-sm text-muted">
                 /embed/{partner.slug} &mdash; locked to {lockedOrigin?.name ?? "?"}, jurisdiction:{" "}
                 {jurisdictionNames.join(", ") || "none"}
               </p>
               <form action={deletePartner}>
                 <input type="hidden" name="partnerId" value={partner.id} />
-                <button type="submit" className="self-start text-sm text-red-600 underline">
+                <button type="submit" className="self-start text-sm text-error underline">
                   Delete
                 </button>
               </form>
             </div>
           );
         })}
-        {partners?.length === 0 && (
-          <p className="text-sm text-zinc-500">No partners yet.</p>
-        )}
+        {partners?.length === 0 && <p className="text-sm text-muted">No partners yet.</p>}
       </div>
     </div>
   );
