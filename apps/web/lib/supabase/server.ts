@@ -7,7 +7,7 @@ export async function createClient() {
 
   return createServerClient(
     env.NEXT_PUBLIC_SUPABASE_URL,
-    env.NEXT_PUBLIC_SUPABASE_ANON_KEY,
+    env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY,
     {
       cookies: {
         getAll() {
@@ -19,8 +19,8 @@ export async function createClient() {
               cookieStore.set(name, value, options);
             }
           } catch {
-            // setAll is called from a Server Component; ignore when a
-            // middleware is also refreshing the session on this request.
+            // setAll is called from a Server Component; ignore when
+            // proxy.ts is also refreshing the session on this request.
           }
         },
       },
