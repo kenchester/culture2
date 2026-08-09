@@ -13,21 +13,25 @@ export default function AboutPage() {
       </p>
 
       <p className="text-body">
-        CultureMesh launched in 2014 as a simple way for diaspora
-        communities to organize by state. It found real traction the way
-        good community tools often do: organically. Indonesia&apos;s embassy
-        in the U.S. started linking directly to CultureMesh&apos;s per-state
-        Indonesian networks from their own site, connecting people with no
-        marketing spend and no partnership deal &mdash; just a useful page
-        that was easy to point people to.
+        Every move, whether across an ocean or across a country, brings the
+        challenge of carrying home with you. It&apos;s in the dishes you
+        long to cook, the colloquialisms you miss speaking out loud, and
+        the quiet understanding of shared traditions. CultureMesh creates
+        spaces where those dual identities can thrive together. By pairing
+        where you come from with where you are today, it transforms
+        sprawling cities into intimate, localized communities where shared
+        roots become immediate bridges to belonging.
       </p>
 
       <p className="text-body">
-        Like a lot of good ideas built by a small team, the site went quiet
-        for a while. This is CultureMesh rebuilt from the ground up: a
-        modern platform under the same idea, with real accounts, events,
-        messaging, and a white-label option for embassies and cultural
-        organizations who want to offer this to their own communities.
+        Through these tailored networks, neighbors become lifelong
+        friends, mentors, and cultural anchors. Whether it&apos;s
+        organizing local gatherings, exchanging advice on navigating a new
+        environment, or simply sharing a laugh in a native tongue,
+        CultureMesh turns the isolation of relocation into a celebration
+        of shared identity. It is more than just an index of locations
+        &mdash; it is a global web of belonging that ensures no matter how
+        far you travel, you are never truly far from home.
       </p>
 
       <p className="text-body">
