@@ -4,7 +4,7 @@ import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 
-export async function createPartner(formData: FormData) {
+async function insertPartnerFromForm(formData: FormData) {
   const name = formData.get("name") as string;
   const slug = formData.get("slug") as string;
   const originKind = formData.get("originKind") as string;
@@ -55,7 +55,20 @@ export async function createPartner(formData: FormData) {
     }
   }
 
+  return slug;
+}
+
+export async function createPartner(formData: FormData) {
+  await insertPartnerFromForm(formData);
   revalidatePath("/admin/embed-partners");
+}
+
+// Same as createPartner, but for previewing a pitch to a prospective partner:
+// creates the same real, working embed and jumps straight to a mocked-up
+// "diplomatic sector" showcase page instead of back to the admin list.
+export async function createPartnerDemo(formData: FormData) {
+  const slug = await insertPartnerFromForm(formData);
+  redirect(`/embed-partners/demo/${slug}`);
 }
 
 export async function deletePartner(formData: FormData) {

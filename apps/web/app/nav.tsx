@@ -174,7 +174,7 @@ export function Nav() {
 
   // Embed pages must render with no CultureMesh chrome - they're meant to
   // be indistinguishable from the partner's own site when iframed.
-  if (pathname?.startsWith("/embed/")) {
+  if (pathname?.startsWith("/embed/") || pathname?.startsWith("/embed-partners/demo/")) {
     return null;
   }
 

@@ -11,8 +11,10 @@ import { Field, Input, Label } from "@/components/ui/input";
 
 export function AdminPartnerForm({
   action,
+  demoAction,
 }: {
   action: (formData: FormData) => void;
+  demoAction: (formData: FormData) => void;
 }) {
   const [originKind, setOriginKind] = useState<"place" | "language">("place");
   const [jurisdictions, setJurisdictions] = useState<AutocompleteOption[]>([]);
@@ -101,9 +103,14 @@ export function AdminPartnerForm({
         Hide origin label (white-label)
       </label>
 
-      <Button type="submit" className="self-start">
-        Create partner
-      </Button>
+      <div className="flex gap-3">
+        <Button type="submit" className="self-start">
+          Create partner
+        </Button>
+        <Button type="submit" formAction={demoAction} variant="secondary" className="self-start">
+          Embed Demo
+        </Button>
+      </div>
     </form>
   );
 }

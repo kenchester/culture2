@@ -1,6 +1,7 @@
+import Link from "next/link";
 import { headers } from "next/headers";
 import { createClient } from "@/lib/supabase/server";
-import { createPartner, deletePartner } from "@/app/admin/embed-partners/actions";
+import { createPartner, createPartnerDemo, deletePartner } from "@/app/admin/embed-partners/actions";
 import { AdminPartnerForm } from "@/app/admin/embed-partners/admin-partner-form";
 import { EmbedCode } from "@/app/admin/embed-partners/embed-code";
 
@@ -61,7 +62,7 @@ export default async function AdminEmbedPartnersPage({
       {error && (
         <p className="rounded-md bg-error-bg px-3 py-2 text-sm text-error">{error}</p>
       )}
-      <AdminPartnerForm action={createPartner} />
+      <AdminPartnerForm action={createPartner} demoAction={createPartnerDemo} />
 
       <div className="flex flex-col gap-4 border-t border-border pt-6">
         {partners?.map((partner) => {
@@ -81,12 +82,21 @@ export default async function AdminEmbedPartnersPage({
               <EmbedCode
                 snippet={`<iframe src="${origin}/embed/${partner.slug}" style="width: 100%; height: 640px; border: none;" title="CultureMesh"></iframe>`}
               />
-              <form action={deletePartner}>
-                <input type="hidden" name="partnerId" value={partner.id} />
-                <button type="submit" className="self-start text-sm text-error underline">
-                  Delete
-                </button>
-              </form>
+              <div className="flex items-center gap-4">
+                <Link
+                  href={`/embed-partners/demo/${partner.slug}`}
+                  target="_blank"
+                  className="text-sm text-primary underline"
+                >
+                  View demo
+                </Link>
+                <form action={deletePartner}>
+                  <input type="hidden" name="partnerId" value={partner.id} />
+                  <button type="submit" className="text-sm text-error underline">
+                    Delete
+                  </button>
+                </form>
+              </div>
             </div>
           );
         })}
