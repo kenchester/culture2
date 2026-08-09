@@ -7,7 +7,7 @@ import { useEffect, useRef, useState } from "react";
 import type { User } from "@supabase/supabase-js";
 import { createClient } from "@/lib/supabase/client";
 import { signOut } from "@/app/(auth)/actions";
-import { LogoMark } from "@/components/logo";
+import { Logo } from "@/components/logo";
 import { getAvatarUrl, getDisplayName } from "@/lib/profiles";
 
 function NavLink({ href, children }: { href: string; children: React.ReactNode }) {
@@ -180,9 +180,8 @@ export function Nav() {
 
   return (
     <nav className="sticky top-0 z-10 flex flex-wrap items-center justify-between gap-y-3 border-b border-border bg-surface/90 px-4 py-3 backdrop-blur-sm sm:px-6">
-      <Link href="/" className="flex items-center gap-2 text-ink">
-        <LogoMark className="h-6 w-6 text-primary" />
-        <span className="text-lg font-semibold tracking-tight">CultureMesh</span>
+      <Link href="/" className="flex items-center">
+        <Logo className="h-8" priority />
       </Link>
       <div className="flex flex-wrap items-center gap-x-5 gap-y-2 text-sm">
         <NavLink href="/search">Search</NavLink>
