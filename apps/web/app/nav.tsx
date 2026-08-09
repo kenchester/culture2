@@ -158,8 +158,17 @@ export function Nav() {
       setUser(data.user);
       if (data.user) {
         loadProfile(data.user.id);
+      } else {
+        setProfile(null);
       }
     });
+    // Every sign-in/sign-up/sign-out in this app happens through a server
+    // action, not a client-side supabase.auth call, so onAuthStateChange
+    // below never actually fires for them - it only reacts to auth calls
+    // made by this same browser client. What does reliably follow a
+    // server action is a pathname change (the redirect() at the end of
+    // each one), so re-checking on every navigation is what actually
+    // keeps this in sync instead of requiring a full page reload.
     const {
       data: { subscription },
     } = supabase.auth.onAuthStateChange((_event, session) => {
@@ -171,7 +180,7 @@ export function Nav() {
       }
     });
     return () => subscription.unsubscribe();
-  }, []);
+  }, [pathname]);
 
   // Embed pages, and any page reached while staying inside a partner's
   // iframe (?embed=1), must render with no CultureMesh chrome - they're
