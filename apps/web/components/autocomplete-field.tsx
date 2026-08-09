@@ -27,12 +27,14 @@ export function AutocompleteField({
   hiddenName,
   searchUrl = "/api/places/search",
   onSelect,
+  placeholder,
 }: {
   label: string;
   kind: "place" | "language";
   hiddenName?: string;
   searchUrl?: string;
   onSelect?: (option: AutocompleteOption | null) => void;
+  placeholder?: string;
 }) {
   const [query, setQuery] = useState("");
   const [options, setOptions] = useState<AutocompleteOption[]>([]);
@@ -72,7 +74,7 @@ export function AutocompleteField({
           onSelect?.(null);
           setQuery(e.target.value);
         }}
-        placeholder={kind === "language" ? "e.g. Mandarin" : "e.g. Michigan"}
+        placeholder={placeholder ?? (kind === "language" ? "e.g. Mandarin" : "e.g. Michigan")}
       />
       {hiddenName && <input type="hidden" name={hiddenName} value={selected?.id ?? ""} />}
       {visibleOptions.length > 0 && (

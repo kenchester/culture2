@@ -2,6 +2,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import { EmbedLocationForm } from "@/app/embed/[partnerSlug]/embed-location-form";
+import { EmbedSearchForm } from "@/app/embed/[partnerSlug]/embed-search-form";
 import { EmbedLaunchForm } from "@/app/embed/[partnerSlug]/embed-launch-form";
 
 type NetworkMatch = {
@@ -20,16 +21,17 @@ export default async function EmbedPage({
   searchParams,
 }: {
   params: Promise<{ partnerSlug: string }>;
-  searchParams: Promise<{ locationId?: string }>;
+  searchParams: Promise<{ locationId?: string; originKind?: string; originId?: string }>;
 }) {
   const { partnerSlug } = await params;
-  const { locationId } = await searchParams;
+  const { locationId, originKind: visitorOriginKind, originId: visitorOriginId } =
+    await searchParams;
   const supabase = await createClient();
 
   const { data: partner } = await supabase
     .from("embed_partners")
     .select(
-      "id, name, slug, hide_origin_label, locked_language_id, locked_origin_place_id, locked_language:locked_language_id(name), locked_origin_place:locked_origin_place_id(name)",
+      "id, name, slug, hide_origin_label, origin_is_global, locked_language_id, locked_origin_place_id, locked_language:locked_language_id(name), locked_origin_place:locked_origin_place_id(name)",
     )
     .eq("slug", partnerSlug)
     .single();
@@ -38,11 +40,45 @@ export default async function EmbedPage({
     notFound();
   }
 
-  const isLanguage = partner.locked_language_id !== null;
-  const lockedOrigin = partner.locked_language ?? partner.locked_origin_place;
-  const originName = (lockedOrigin as unknown as { name: string } | null)?.name ?? "?";
+  const globalOrigin = partner.origin_is_global;
 
-  if (!locationId) {
+  // A global-origin partner has no fixed origin - the visitor's own choice
+  // (from the query string) stands in for what would otherwise be the
+  // partner's locked language/place.
+  const isLanguage = globalOrigin
+    ? visitorOriginKind === "language"
+    : partner.locked_language_id !== null;
+  const originId = globalOrigin
+    ? visitorOriginId
+      ? Number(visitorOriginId)
+      : null
+    : (isLanguage ? partner.locked_language_id : partner.locked_origin_place_id);
+
+  let originName = "?";
+  if (!globalOrigin) {
+    const lockedOrigin = partner.locked_language ?? partner.locked_origin_place;
+    originName = (lockedOrigin as unknown as { name: string } | null)?.name ?? "?";
+  } else if (originId) {
+    const { data: originRow } = await supabase
+      .from(isLanguage ? "languages" : "places")
+      .select("name")
+      .eq("id", originId)
+      .single();
+    originName = originRow?.name ?? "?";
+  }
+
+  if (globalOrigin && (!originId || !locationId)) {
+    return (
+      <div className="mx-auto flex w-full max-w-sm flex-1 flex-col justify-center gap-6 px-4 py-12">
+        <h1 className="text-2xl font-semibold text-ink">
+          Join the local network of {partner.name}
+        </h1>
+        <EmbedSearchForm partnerSlug={partnerSlug} />
+      </div>
+    );
+  }
+
+  if (!globalOrigin && !locationId) {
     return (
       <div className="mx-auto flex w-full max-w-sm flex-1 flex-col justify-center gap-6 px-4 py-12">
         <h1 className="text-2xl font-semibold text-ink">
@@ -55,11 +91,18 @@ export default async function EmbedPage({
     );
   }
 
+  if (!locationId) {
+    // Unreachable: both branches above already return whenever locationId
+    // is missing. This narrows the type for the code below instead of
+    // asserting it.
+    notFound();
+  }
+
   const [{ data: location }, { data: matches }] = await Promise.all([
     supabase.from("places").select("name").eq("id", locationId).single(),
     supabase.rpc("search_networks", {
-      p_language_id: isLanguage ? partner.locked_language_id : null,
-      p_origin_place_id: isLanguage ? null : partner.locked_origin_place_id,
+      p_language_id: isLanguage ? originId : null,
+      p_origin_place_id: isLanguage ? null : originId,
       p_location_place_id: Number(locationId),
     }),
   ]);
@@ -70,11 +113,16 @@ export default async function EmbedPage({
   const narrower = results.filter((m) => m.match_kind === "related_narrower");
 
   const locationName = location?.name ?? "?";
-  const title = partner.hide_origin_label
-    ? locationName
-    : isLanguage
+  // A global-origin partner has no branding to imply the origin, so it
+  // always shows in results regardless of hide_origin_label - unlike
+  // locked mode, where the origin is already implied by the partner
+  // itself and hiding it is the whole point of white-labeling.
+  const originVisible = globalOrigin || !partner.hide_origin_label;
+  const title = originVisible
+    ? isLanguage
       ? `${originName} speakers in ${locationName}`
-      : `People from ${originName} in ${locationName}`;
+      : `People from ${originName} in ${locationName}`
+    : locationName;
 
   return (
     <div className="mx-auto flex w-full max-w-lg flex-1 flex-col gap-8 px-4 py-12">
@@ -102,9 +150,7 @@ export default async function EmbedPage({
           <p className="text-body">No network exists yet for this location.</p>
           <EmbedLaunchForm
             originKind={isLanguage ? "language" : "place"}
-            originId={
-              (isLanguage ? partner.locked_language_id : partner.locked_origin_place_id) ?? 0
-            }
+            originId={originId ?? 0}
             locationId={locationId}
             title={
               isLanguage

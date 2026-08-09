@@ -10,8 +10,9 @@ async function insertPartnerFromForm(formData: FormData) {
   const originKind = formData.get("originKind") as string;
   const originId = formData.get("originId") as string;
   const hideOriginLabel = formData.get("hideOriginLabel") === "on";
-  const isGlobal = formData.get("isGlobal") === "on";
-  const jurisdictionPlaceIds = isGlobal
+  const originIsGlobal = formData.get("originIsGlobal") === "on";
+  const jurisdictionIsGlobal = formData.get("jurisdictionIsGlobal") === "on";
+  const jurisdictionPlaceIds = jurisdictionIsGlobal
     ? []
     : (JSON.parse((formData.get("jurisdictionPlaceIds") as string) || "[]") as number[]);
 
@@ -31,10 +32,11 @@ async function insertPartnerFromForm(formData: FormData) {
     .insert({
       name,
       slug,
-      locked_language_id: isLanguage ? Number(originId) : null,
-      locked_origin_place_id: isLanguage ? null : Number(originId),
+      locked_language_id: !originIsGlobal && isLanguage ? Number(originId) : null,
+      locked_origin_place_id: !originIsGlobal && !isLanguage ? Number(originId) : null,
       hide_origin_label: hideOriginLabel,
-      is_global: isGlobal,
+      origin_is_global: originIsGlobal,
+      is_global: jurisdictionIsGlobal,
     })
     .select("id")
     .single();

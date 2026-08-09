@@ -4,11 +4,16 @@ import { useState } from "react";
 import { AutocompleteField } from "@/components/autocomplete-field";
 import { Button } from "@/components/ui/button";
 
-export function SearchForm() {
+// Used only for a "global origin" partner - one without a single locked
+// origin, so the visitor has to pick their own, same shape as the main
+// site's search form. The origin field is intentionally unrestricted
+// (any language/place in the world); only the location field is scoped to
+// the partner's jurisdiction.
+export function EmbedSearchForm({ partnerSlug }: { partnerSlug: string }) {
   const [originKind, setOriginKind] = useState<"place" | "language">("place");
 
   return (
-    <form action="/search/results" className="flex flex-col gap-4">
+    <form action={`/embed/${partnerSlug}`} className="flex flex-col gap-4">
       <input type="hidden" name="originKind" value={originKind} />
       <div className="inline-flex w-fit rounded-md border border-border bg-surface p-1 text-sm">
         <button
@@ -40,10 +45,13 @@ export function SearchForm() {
         kind={originKind}
         hiddenName="originId"
       />
-      <AutocompleteField label="Location" kind="place" hiddenName="locationId" />
-      <Button type="submit" className="w-full">
-        Search
-      </Button>
+      <AutocompleteField
+        label="Your Location"
+        kind="place"
+        hiddenName="locationId"
+        searchUrl={`/api/embed/${partnerSlug}/places/search`}
+      />
+      <Button type="submit">Search</Button>
     </form>
   );
 }

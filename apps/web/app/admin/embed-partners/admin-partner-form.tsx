@@ -1,10 +1,11 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   AutocompleteField,
   optionLabel,
   type AutocompleteOption,
+  type PlaceOption,
 } from "@/components/autocomplete-field";
 import { Button } from "@/components/ui/button";
 import { Field, Input, Label } from "@/components/ui/input";
@@ -17,8 +18,39 @@ export function AdminPartnerForm({
   demoAction: (formData: FormData) => void;
 }) {
   const [originKind, setOriginKind] = useState<"place" | "language">("place");
+  const [lockedOrigin, setLockedOrigin] = useState<AutocompleteOption | null>(null);
   const [jurisdictions, setJurisdictions] = useState<AutocompleteOption[]>([]);
-  const [isGlobal, setIsGlobal] = useState(false);
+  const [isOriginGlobal, setIsOriginGlobal] = useState(false);
+  const [isJurisdictionGlobal, setIsJurisdictionGlobal] = useState(false);
+  const [jurisdictionPlaceholder, setJurisdictionPlaceholder] = useState<string | undefined>();
+
+  // Suggest a realistic jurisdiction example nested inside whatever origin
+  // place is locked, instead of a generic "e.g. Michigan" that has nothing
+  // to do with the partner being configured.
+  useEffect(() => {
+    const originPlace =
+      originKind === "place" && lockedOrigin && "type" in lockedOrigin
+        ? (lockedOrigin as PlaceOption)
+        : null;
+
+    let cancelled = false;
+    const request: Promise<{ name: string } | null> = originPlace
+      ? fetch(`/api/places/${originPlace.id}/example-child`).then((r) => r.json())
+      : Promise.resolve(null);
+
+    request
+      .then((child) => {
+        if (!cancelled) {
+          setJurisdictionPlaceholder(child ? `e.g. ${child.name}` : undefined);
+        }
+      })
+      .catch(() => {
+        if (!cancelled) setJurisdictionPlaceholder(undefined);
+      });
+    return () => {
+      cancelled = true;
+    };
+  }, [originKind, lockedOrigin]);
 
   return (
     <form action={action} className="flex flex-col gap-4">
@@ -42,47 +74,69 @@ export function AdminPartnerForm({
         <Input id="partner-slug" name="slug" placeholder="e.g. indonesia" required />
       </Field>
 
-      <div className="flex gap-4 text-sm text-body">
-        <label className="flex items-center gap-1">
-          <input
-            type="radio"
-            checked={originKind === "language"}
-            onChange={() => setOriginKind("language")}
+      <label className="flex items-center gap-2 text-sm text-body">
+        <input
+          type="checkbox"
+          name="originIsGlobal"
+          checked={isOriginGlobal}
+          onChange={(e) => setIsOriginGlobal(e.target.checked)}
+        />
+        Global (no origin restriction &mdash; visitor picks their own origin)
+      </label>
+
+      {!isOriginGlobal && (
+        <>
+          <div className="flex gap-4 text-sm text-body">
+            <label className="flex items-center gap-1">
+              <input
+                type="radio"
+                checked={originKind === "language"}
+                onChange={() => {
+                  setOriginKind("language");
+                  setLockedOrigin(null);
+                }}
+              />
+              Locked language
+            </label>
+            <label className="flex items-center gap-1">
+              <input
+                type="radio"
+                checked={originKind === "place"}
+                onChange={() => {
+                  setOriginKind("place");
+                  setLockedOrigin(null);
+                }}
+              />
+              Locked origin place
+            </label>
+          </div>
+          <AutocompleteField
+            key={originKind}
+            label="Locked origin"
+            kind={originKind}
+            hiddenName="originId"
+            onSelect={setLockedOrigin}
           />
-          Locked language
-        </label>
-        <label className="flex items-center gap-1">
-          <input
-            type="radio"
-            checked={originKind === "place"}
-            onChange={() => setOriginKind("place")}
-          />
-          Locked origin place
-        </label>
-      </div>
-      <AutocompleteField
-        key={originKind}
-        label="Locked origin"
-        kind={originKind}
-        hiddenName="originId"
-      />
+        </>
+      )}
 
       <label className="flex items-center gap-2 text-sm text-body">
         <input
           type="checkbox"
-          name="isGlobal"
-          checked={isGlobal}
-          onChange={(e) => setIsGlobal(e.target.checked)}
+          name="jurisdictionIsGlobal"
+          checked={isJurisdictionGlobal}
+          onChange={(e) => setIsJurisdictionGlobal(e.target.checked)}
         />
         Global (no jurisdiction restriction &mdash; any location worldwide)
       </label>
 
-      {!isGlobal && (
+      {!isJurisdictionGlobal && (
         <>
           <AutocompleteField
             key={jurisdictions.length}
             label="Add a jurisdiction place"
             kind="place"
+            placeholder={jurisdictionPlaceholder}
             onSelect={(option) => {
               if (option && !jurisdictions.some((j) => j.id === option.id)) {
                 setJurisdictions((prev) => [...prev, option]);

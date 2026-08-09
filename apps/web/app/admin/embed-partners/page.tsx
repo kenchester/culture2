@@ -10,6 +10,7 @@ type PartnerRow = {
   name: string;
   slug: string;
   is_global: boolean;
+  origin_is_global: boolean;
   locked_language: { name: string } | null;
   locked_origin_place: { name: string } | null;
   jurisdictions: { place: { name: string } }[];
@@ -48,7 +49,7 @@ export default async function AdminEmbedPartnersPage({
   const { data: partners } = (await supabase
     .from("embed_partners")
     .select(
-      "id, name, slug, is_global, locked_language:locked_language_id(name), locked_origin_place:locked_origin_place_id(name), jurisdictions:embed_partner_jurisdictions(place:place_id(name))",
+      "id, name, slug, is_global, origin_is_global, locked_language:locked_language_id(name), locked_origin_place:locked_origin_place_id(name), jurisdictions:embed_partner_jurisdictions(place:place_id(name))",
     )
     .order("created_at", { ascending: false })) as unknown as { data: PartnerRow[] | null };
 
@@ -77,7 +78,8 @@ export default async function AdminEmbedPartnersPage({
             >
               <p className="font-medium text-ink">{partner.name}</p>
               <p className="text-sm text-muted">
-                /embed/{partner.slug} &mdash; locked to {lockedOrigin?.name ?? "?"}, jurisdiction:{" "}
+                /embed/{partner.slug} &mdash; locked to{" "}
+                {partner.origin_is_global ? "Global" : lockedOrigin?.name ?? "?"}, jurisdiction:{" "}
                 {partner.is_global ? "Global" : jurisdictionNames.join(", ") || "none"}
               </p>
               <EmbedCode
