@@ -46,7 +46,9 @@ export default async function EmbedPage({
     return (
       <div className="mx-auto flex w-full max-w-sm flex-1 flex-col justify-center gap-6 px-4 py-12">
         <h1 className="text-2xl font-semibold text-ink">
-          {partner.hide_origin_label ? partner.name : `${partner.name} — ${originName}`}
+          {partner.hide_origin_label
+            ? `Join the local network of ${partner.name}`
+            : `Join the local network of ${partner.name} — ${originName}`}
         </h1>
         <EmbedLocationForm partnerSlug={partnerSlug} />
       </div>
