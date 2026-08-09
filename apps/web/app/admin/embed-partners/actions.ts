@@ -10,9 +10,10 @@ async function insertPartnerFromForm(formData: FormData) {
   const originKind = formData.get("originKind") as string;
   const originId = formData.get("originId") as string;
   const hideOriginLabel = formData.get("hideOriginLabel") === "on";
-  const jurisdictionPlaceIds = JSON.parse(
-    (formData.get("jurisdictionPlaceIds") as string) || "[]",
-  ) as number[];
+  const isGlobal = formData.get("isGlobal") === "on";
+  const jurisdictionPlaceIds = isGlobal
+    ? []
+    : (JSON.parse((formData.get("jurisdictionPlaceIds") as string) || "[]") as number[]);
 
   const supabase = await createClient();
   const {
@@ -33,6 +34,7 @@ async function insertPartnerFromForm(formData: FormData) {
       locked_language_id: isLanguage ? Number(originId) : null,
       locked_origin_place_id: isLanguage ? null : Number(originId),
       hide_origin_label: hideOriginLabel,
+      is_global: isGlobal,
     })
     .select("id")
     .single();

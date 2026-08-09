@@ -9,6 +9,7 @@ type PartnerRow = {
   id: number;
   name: string;
   slug: string;
+  is_global: boolean;
   locked_language: { name: string } | null;
   locked_origin_place: { name: string } | null;
   jurisdictions: { place: { name: string } }[];
@@ -47,7 +48,7 @@ export default async function AdminEmbedPartnersPage({
   const { data: partners } = (await supabase
     .from("embed_partners")
     .select(
-      "id, name, slug, locked_language:locked_language_id(name), locked_origin_place:locked_origin_place_id(name), jurisdictions:embed_partner_jurisdictions(place:place_id(name))",
+      "id, name, slug, is_global, locked_language:locked_language_id(name), locked_origin_place:locked_origin_place_id(name), jurisdictions:embed_partner_jurisdictions(place:place_id(name))",
     )
     .order("created_at", { ascending: false })) as unknown as { data: PartnerRow[] | null };
 
@@ -77,7 +78,7 @@ export default async function AdminEmbedPartnersPage({
               <p className="font-medium text-ink">{partner.name}</p>
               <p className="text-sm text-muted">
                 /embed/{partner.slug} &mdash; locked to {lockedOrigin?.name ?? "?"}, jurisdiction:{" "}
-                {jurisdictionNames.join(", ") || "none"}
+                {partner.is_global ? "Global" : jurisdictionNames.join(", ") || "none"}
               </p>
               <EmbedCode
                 snippet={`<iframe src="${origin}/embed/${partner.slug}" style="width: 100%; height: 640px; border: none;" title="CultureMesh"></iframe>`}
