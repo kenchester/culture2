@@ -6,13 +6,11 @@ import { launchNetworkForEmbed } from "@/app/embed/[partnerSlug]/actions";
 import { Button } from "@/components/ui/button";
 
 export function EmbedLaunchForm({
-  partnerSlug,
   originKind,
   originId,
   locationId,
   title,
 }: {
-  partnerSlug: string;
   originKind: "language" | "place";
   originId: number;
   locationId: string;
@@ -28,7 +26,6 @@ export function EmbedLaunchForm({
     setError(null);
 
     const formData = new FormData();
-    formData.set("partnerSlug", partnerSlug);
     formData.set("originKind", originKind);
     formData.set("originId", String(originId));
     formData.set("locationId", locationId);

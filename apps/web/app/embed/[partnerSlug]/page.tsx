@@ -99,7 +99,6 @@ export default async function EmbedPage({
         <section className="flex flex-col gap-3 rounded-lg border border-border bg-surface p-4">
           <p className="text-body">No network exists yet for this location.</p>
           <EmbedLaunchForm
-            partnerSlug={partnerSlug}
             originKind={isLanguage ? "language" : "place"}
             originId={
               (isLanguage ? partner.locked_language_id : partner.locked_origin_place_id) ?? 0

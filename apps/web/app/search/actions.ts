@@ -3,6 +3,8 @@
 import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 
+// Launching no longer requires an account - only joining/posting does, via
+// the "Sign in to join" prompt on the resulting network page.
 export async function launchNetwork(formData: FormData) {
   const originKind = formData.get("originKind") as string;
   const originId = Number(formData.get("originId"));
@@ -13,13 +15,6 @@ export async function launchNetwork(formData: FormData) {
   const resultsUrl = `/search/results?originKind=${originKind}&originId=${originId}&locationId=${locationId}`;
 
   const supabase = await createClient();
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
-
-  if (!user) {
-    redirect(`/sign-in?error=${encodeURIComponent("Sign in to launch a network.")}`);
-  }
 
   const { data: networkId, error } = await supabase.rpc("launch_network", {
     p_language_id: isLanguage ? originId : null,

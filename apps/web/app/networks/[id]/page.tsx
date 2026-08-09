@@ -12,10 +12,11 @@ export default async function NetworkPage({
   searchParams,
 }: {
   params: Promise<{ id: string }>;
-  searchParams: Promise<{ error?: string }>;
+  searchParams: Promise<{ error?: string; embed?: string }>;
 }) {
   const { id } = await params;
-  const { error } = await searchParams;
+  const { error, embed } = await searchParams;
+  const isEmbedded = embed === "1";
   const supabase = await createClient();
 
   const {
@@ -68,6 +69,11 @@ export default async function NetworkPage({
   const originName = language?.name ?? originPlace?.name ?? "?";
   const isMember = Boolean(membership);
 
+  const returnTo = `/networks/${network.id}${isEmbedded ? "?embed=1" : ""}`;
+  const signInParams = new URLSearchParams({ returnTo });
+  if (isEmbedded) signInParams.set("embed", "1");
+  const signInHref = `/sign-in?${signInParams.toString()}`;
+
   return (
     <div className="mx-auto flex w-full max-w-lg flex-1 flex-col gap-6 px-4 py-12">
       <div>
@@ -94,9 +100,9 @@ export default async function NetworkPage({
           <Button type="submit">{isMember ? "Leave network" : "Join network"}</Button>
         </form>
       ) : (
-        <a href="/sign-in" className="text-sm font-medium text-primary hover:underline">
+        <Link href={signInHref} className="text-sm font-medium text-primary hover:underline">
           Sign in to join
-        </a>
+        </Link>
       )}
 
       <div className="flex flex-col gap-4 border-t border-border pt-6">
