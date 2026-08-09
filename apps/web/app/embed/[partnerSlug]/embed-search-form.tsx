@@ -44,6 +44,7 @@ export function EmbedSearchForm({ partnerSlug }: { partnerSlug: string }) {
         label={originKind === "language" ? "Language" : "Origin place"}
         kind={originKind}
         hiddenName="originId"
+        placeholder={originKind === "place" ? "e.g. Tamil Nadu, India" : undefined}
       />
       <AutocompleteField
         label="Your Location"
