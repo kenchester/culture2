@@ -1,15 +1,18 @@
 "use client";
 
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { launchNetworkForEmbed } from "@/app/embed/[partnerSlug]/actions";
 import { Button } from "@/components/ui/button";
 
 export function EmbedLaunchForm({
+  partnerSlug,
   originKind,
   originId,
   locationId,
   title,
 }: {
+  partnerSlug: string;
   originKind: "language" | "place";
   originId: number;
   locationId: string;
@@ -17,6 +20,7 @@ export function EmbedLaunchForm({
 }) {
   const [error, setError] = useState<string | null>(null);
   const [pending, setPending] = useState(false);
+  const router = useRouter();
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -24,6 +28,7 @@ export function EmbedLaunchForm({
     setError(null);
 
     const formData = new FormData();
+    formData.set("partnerSlug", partnerSlug);
     formData.set("originKind", originKind);
     formData.set("originId", String(originId));
     formData.set("locationId", locationId);
@@ -38,10 +43,9 @@ export function EmbedLaunchForm({
     }
 
     if (result.redirectPath) {
-      // Absolute URL: window.top's current location may be the partner's
-      // own domain, so a bare relative path would resolve against that
-      // domain instead of ours.
-      window.top!.location.href = `${window.location.origin}${result.redirectPath}`;
+      // Navigate within the iframe itself (never window.top) so the
+      // partner's page never appears to be replaced or left.
+      router.push(result.redirectPath);
     }
   }
 

@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useSearchParams } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import type { User } from "@supabase/supabase-js";
 import { createClient } from "@/lib/supabase/client";
@@ -140,6 +140,7 @@ export function Nav() {
   const [user, setUser] = useState<User | null>(null);
   const [profile, setProfile] = useState<Profile | null>(null);
   const pathname = usePathname();
+  const searchParams = useSearchParams();
 
   useEffect(() => {
     const supabase = createClient();
@@ -172,9 +173,14 @@ export function Nav() {
     return () => subscription.unsubscribe();
   }, []);
 
-  // Embed pages must render with no CultureMesh chrome - they're meant to
-  // be indistinguishable from the partner's own site when iframed.
-  if (pathname?.startsWith("/embed/") || pathname?.startsWith("/embed-partners/demo/")) {
+  // Embed pages, and any page reached while staying inside a partner's
+  // iframe (?embed=1), must render with no CultureMesh chrome - they're
+  // meant to be indistinguishable from the partner's own site.
+  if (
+    pathname?.startsWith("/embed/") ||
+    pathname?.startsWith("/embed-partners/demo/") ||
+    searchParams.get("embed") === "1"
+  ) {
     return null;
   }
 

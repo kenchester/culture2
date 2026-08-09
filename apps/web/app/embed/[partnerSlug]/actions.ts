@@ -2,13 +2,13 @@
 
 import { createClient } from "@/lib/supabase/server";
 
-// Server Actions submit via fetch() inside the iframe's own script context,
-// so a plain <form target="_top"> can never break out to the parent page -
-// the target attribute only affects real (non-JS) browser navigation.
-// Returning the destination and navigating window.top from the client is
-// the only way to actually land the user on the real site instead of
-// trapping them inside the embed.
+// Everything here stays inside the partner's iframe - no window.top
+// breakout. Sign-in/sign-up (and, for existing networks, the resulting
+// network page) render with ?embed=1, which tells Nav/Footer to render no
+// CultureMesh chrome, so the visitor never appears to leave the partner's
+// site even though the iframe's own content changes.
 export async function launchNetworkForEmbed(formData: FormData) {
+  const partnerSlug = formData.get("partnerSlug") as string;
   const originKind = formData.get("originKind") as string;
   const originId = Number(formData.get("originId"));
   const locationId = Number(formData.get("locationId"));
@@ -21,7 +21,11 @@ export async function launchNetworkForEmbed(formData: FormData) {
   } = await supabase.auth.getUser();
 
   if (!user) {
-    return { error: null, redirectPath: "/sign-in" };
+    const returnTo = `/embed/${partnerSlug}?locationId=${locationId}`;
+    return {
+      error: null,
+      redirectPath: `/sign-in?embed=1&returnTo=${encodeURIComponent(returnTo)}`,
+    };
   }
 
   const { data: networkId, error } = await supabase.rpc("launch_network", {
@@ -35,5 +39,5 @@ export async function launchNetworkForEmbed(formData: FormData) {
     return { error: error.message, redirectPath: null };
   }
 
-  return { error: null, redirectPath: `/networks/${networkId}` };
+  return { error: null, redirectPath: `/networks/${networkId}?embed=1` };
 }

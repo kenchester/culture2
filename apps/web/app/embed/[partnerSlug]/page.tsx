@@ -85,13 +85,12 @@ export default async function EmbedPage({
 
       {exact ? (
         <section className="flex flex-col gap-2 rounded-lg border border-border bg-surface p-4">
-          <a
-            href={`/networks/${exact.network_id}`}
-            target="_top"
+          <Link
+            href={`/networks/${exact.network_id}?embed=1`}
             className="text-lg font-medium text-ink underline"
           >
             {exact.network_title}
-          </a>
+          </Link>
           <p className="text-sm text-muted">
             {exact.member_count} members, {exact.post_count} posts
           </p>
@@ -100,6 +99,7 @@ export default async function EmbedPage({
         <section className="flex flex-col gap-3 rounded-lg border border-border bg-surface p-4">
           <p className="text-body">No network exists yet for this location.</p>
           <EmbedLaunchForm
+            partnerSlug={partnerSlug}
             originKind={isLanguage ? "language" : "place"}
             originId={
               (isLanguage ? partner.locked_language_id : partner.locked_origin_place_id) ?? 0
@@ -118,14 +118,13 @@ export default async function EmbedPage({
         <section className="flex flex-col gap-2">
           <h2 className="text-sm font-medium text-muted">Related (broader)</h2>
           {broader.map((m) => (
-            <a
+            <Link
               key={m.network_id}
-              href={`/networks/${m.network_id}`}
-              target="_top"
+              href={`/networks/${m.network_id}?embed=1`}
               className="text-ink underline"
             >
               {m.network_title}
-            </a>
+            </Link>
           ))}
         </section>
       )}
@@ -134,14 +133,13 @@ export default async function EmbedPage({
         <section className="flex flex-col gap-2">
           <h2 className="text-sm font-medium text-muted">Related (narrower)</h2>
           {narrower.map((m) => (
-            <a
+            <Link
               key={m.network_id}
-              href={`/networks/${m.network_id}`}
-              target="_top"
+              href={`/networks/${m.network_id}?embed=1`}
               className="text-ink underline"
             >
               {m.network_title}
-            </a>
+            </Link>
           ))}
         </section>
       )}

@@ -3,23 +3,45 @@
 import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 
+// Only ever redirect to a path on our own site - a bare "/" prefix (and
+// explicitly not "//", which browsers treat as protocol-relative and would
+// send the user to an attacker-controlled host) - never trust returnTo as
+// a full URL.
+function safeReturnTo(value: FormDataEntryValue | null) {
+  if (typeof value !== "string" || !value.startsWith("/") || value.startsWith("//")) {
+    return null;
+  }
+  return value;
+}
+
 export async function signUp(formData: FormData) {
   const email = formData.get("email") as string;
   const password = formData.get("password") as string;
+  const returnTo = safeReturnTo(formData.get("returnTo"));
+  const embed = formData.get("embed") === "1";
 
   const supabase = await createClient();
   const { error } = await supabase.auth.signUp({ email, password });
 
   if (error) {
-    redirect(`/sign-up?error=${encodeURIComponent(error.message)}`);
+    const params = new URLSearchParams({ error: error.message });
+    if (returnTo) params.set("returnTo", returnTo);
+    if (embed) params.set("embed", "1");
+    redirect(`/sign-up?${params.toString()}`);
   }
 
-  redirect("/confirm");
+  const confirmParams = new URLSearchParams();
+  if (returnTo) confirmParams.set("returnTo", returnTo);
+  if (embed) confirmParams.set("embed", "1");
+  const query = confirmParams.toString();
+  redirect(`/confirm${query ? `?${query}` : ""}`);
 }
 
 export async function signIn(formData: FormData) {
   const email = formData.get("email") as string;
   const password = formData.get("password") as string;
+  const returnTo = safeReturnTo(formData.get("returnTo"));
+  const embed = formData.get("embed") === "1";
 
   const supabase = await createClient();
   const { error } = await supabase.auth.signInWithPassword({
@@ -28,10 +50,13 @@ export async function signIn(formData: FormData) {
   });
 
   if (error) {
-    redirect(`/sign-in?error=${encodeURIComponent(error.message)}`);
+    const params = new URLSearchParams({ error: error.message });
+    if (returnTo) params.set("returnTo", returnTo);
+    if (embed) params.set("embed", "1");
+    redirect(`/sign-in?${params.toString()}`);
   }
 
-  redirect("/");
+  redirect(returnTo ?? "/");
 }
 
 export async function signOut() {
@@ -47,6 +72,8 @@ export async function signOut() {
 // person ever clicks it.
 export async function confirmEmail(formData: FormData) {
   const tokenHash = formData.get("token_hash") as string;
+  const returnTo = safeReturnTo(formData.get("returnTo"));
+  const embed = formData.get("embed") === "1";
 
   const supabase = await createClient();
   const { error } = await supabase.auth.verifyOtp({
@@ -55,10 +82,13 @@ export async function confirmEmail(formData: FormData) {
   });
 
   if (error) {
-    redirect(`/confirm?error=${encodeURIComponent(error.message)}`);
+    const params = new URLSearchParams({ error: error.message });
+    if (returnTo) params.set("returnTo", returnTo);
+    if (embed) params.set("embed", "1");
+    redirect(`/confirm?${params.toString()}`);
   }
 
-  redirect("/");
+  redirect(returnTo ?? "/");
 }
 
 export async function requestPasswordReset(formData: FormData) {

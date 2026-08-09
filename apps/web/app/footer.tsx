@@ -1,14 +1,20 @@
 "use client";
 
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useSearchParams } from "next/navigation";
 
 export function Footer() {
   const pathname = usePathname();
+  const searchParams = useSearchParams();
 
-  // Embed pages must render with no CultureMesh chrome - they're meant to
-  // be indistinguishable from the partner's own site when iframed.
-  if (pathname?.startsWith("/embed/") || pathname?.startsWith("/embed-partners/demo/")) {
+  // Embed pages, and any page reached while staying inside a partner's
+  // iframe (?embed=1), must render with no CultureMesh chrome - they're
+  // meant to be indistinguishable from the partner's own site.
+  if (
+    pathname?.startsWith("/embed/") ||
+    pathname?.startsWith("/embed-partners/demo/") ||
+    searchParams.get("embed") === "1"
+  ) {
     return null;
   }
 

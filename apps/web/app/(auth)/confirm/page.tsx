@@ -5,9 +5,9 @@ import { Button } from "@/components/ui/button";
 export default async function ConfirmPage({
   searchParams,
 }: {
-  searchParams: Promise<{ token_hash?: string; error?: string }>;
+  searchParams: Promise<{ token_hash?: string; error?: string; returnTo?: string; embed?: string }>;
 }) {
-  const { token_hash, error } = await searchParams;
+  const { token_hash, error, returnTo, embed } = await searchParams;
 
   if (!token_hash) {
     return (
@@ -26,6 +26,8 @@ export default async function ConfirmPage({
       )}
       <form action={confirmEmail}>
         <input type="hidden" name="token_hash" value={token_hash} />
+        {returnTo && <input type="hidden" name="returnTo" value={returnTo} />}
+        {embed === "1" && <input type="hidden" name="embed" value="1" />}
         <Button type="submit" className="w-full">
           Confirm email address
         </Button>

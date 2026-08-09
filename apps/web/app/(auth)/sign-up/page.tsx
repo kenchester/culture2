@@ -7,9 +7,14 @@ import { Field, Input, Label } from "@/components/ui/input";
 export default async function SignUpPage({
   searchParams,
 }: {
-  searchParams: Promise<{ error?: string }>;
+  searchParams: Promise<{ error?: string; returnTo?: string; embed?: string }>;
 }) {
-  const { error } = await searchParams;
+  const { error, returnTo, embed } = await searchParams;
+  const signInParams = new URLSearchParams();
+  if (returnTo) signInParams.set("returnTo", returnTo);
+  if (embed === "1") signInParams.set("embed", "1");
+  const signInQuery = signInParams.toString();
+  const signInHref = signInQuery ? `/sign-in?${signInQuery}` : "/sign-in";
 
   return (
     <AuthCard
@@ -18,7 +23,7 @@ export default async function SignUpPage({
       footer={
         <>
           Already have an account?{" "}
-          <Link href="/sign-in" className="font-medium text-primary hover:underline">
+          <Link href={signInHref} className="font-medium text-primary hover:underline">
             Sign in
           </Link>
         </>
@@ -28,6 +33,8 @@ export default async function SignUpPage({
         <p className="rounded-md bg-error-bg px-3 py-2 text-sm text-error">{error}</p>
       )}
       <form action={signUp} className="flex flex-col gap-4">
+        {returnTo && <input type="hidden" name="returnTo" value={returnTo} />}
+        {embed === "1" && <input type="hidden" name="embed" value="1" />}
         <Field>
           <Label htmlFor="email">Email</Label>
           <Input id="email" name="email" type="email" required />
