@@ -31,6 +31,8 @@ export default async function AdminTrendingPage({
       { count: "exact" },
     )
     .order("member_count", { ascending: false })
+    .order("post_count", { ascending: false })
+    .order("id", { ascending: true })
     .range(offset, offset + PAGE_SIZE - 1)) as unknown as {
     data: NetworkRow[] | null;
     count: number | null;
