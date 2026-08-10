@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import {
   AutocompleteField,
   optionLabel,
@@ -15,14 +15,16 @@ export function AdminPartnerForm({
   demoAction,
 }: {
   action: (formData: FormData) => void;
-  demoAction: (formData: FormData) => void;
+  demoAction: (formData: FormData) => Promise<{ slug: string }>;
 }) {
+  const formRef = useRef<HTMLFormElement>(null);
   const [originKind, setOriginKind] = useState<"place" | "language">("place");
   const [lockedOrigin, setLockedOrigin] = useState<AutocompleteOption | null>(null);
   const [jurisdictions, setJurisdictions] = useState<AutocompleteOption[]>([]);
   const [isOriginGlobal, setIsOriginGlobal] = useState(false);
   const [isJurisdictionGlobal, setIsJurisdictionGlobal] = useState(false);
   const [jurisdictionPlaceholder, setJurisdictionPlaceholder] = useState<string | undefined>();
+  const [isCreatingDemo, setIsCreatingDemo] = useState(false);
 
   // Suggest a realistic jurisdiction example nested inside whatever origin
   // place is locked, instead of a generic "e.g. Michigan" that has nothing
@@ -53,7 +55,7 @@ export function AdminPartnerForm({
   }, [originKind, lockedOrigin]);
 
   return (
-    <form action={action} className="flex flex-col gap-4">
+    <form ref={formRef} action={action} className="flex flex-col gap-4">
       <input type="hidden" name="originKind" value={originKind} />
       <input
         type="hidden"
@@ -176,8 +178,29 @@ export function AdminPartnerForm({
         <Button type="submit" className="self-start">
           Create partner
         </Button>
-        <Button type="submit" formAction={demoAction} variant="secondary" className="self-start">
-          Embed Demo
+        <Button
+          type="button"
+          variant="secondary"
+          className="self-start"
+          disabled={isCreatingDemo}
+          onClick={() => {
+            if (!formRef.current) return;
+            const formData = new FormData(formRef.current);
+            // Open the tab synchronously, in the click handler itself, so
+            // browsers don't treat it as a blocked popup - then point it at
+            // the demo once the partner is actually created.
+            const demoWindow = window.open("about:blank", "_blank");
+            setIsCreatingDemo(true);
+            demoAction(formData)
+              .then(({ slug }) => {
+                if (demoWindow) {
+                  demoWindow.location.href = `/embed-partners/demo/${slug}`;
+                }
+              })
+              .finally(() => setIsCreatingDemo(false));
+          }}
+        >
+          {isCreatingDemo ? "Creating…" : "Embed Demo"}
         </Button>
       </div>
     </form>

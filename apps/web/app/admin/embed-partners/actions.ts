@@ -68,11 +68,12 @@ export async function createPartner(formData: FormData) {
 }
 
 // Same as createPartner, but for previewing a pitch to a prospective partner:
-// creates the same real, working embed and jumps straight to a mocked-up
-// "diplomatic sector" showcase page instead of back to the admin list.
-export async function createPartnerDemo(formData: FormData) {
+// creates the same real, working embed and returns its slug so the caller
+// can open the demo page in a new tab, keeping the admin page intact.
+export async function createPartnerDemoData(formData: FormData) {
   const slug = await insertPartnerFromForm(formData);
-  redirect(`/embed-partners/demo/${slug}`);
+  revalidatePath("/admin/embed-partners");
+  return { slug };
 }
 
 export async function deletePartner(formData: FormData) {

@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { headers } from "next/headers";
 import { createClient } from "@/lib/supabase/server";
-import { createPartner, createPartnerDemo, deletePartner } from "@/app/admin/embed-partners/actions";
+import { createPartner, createPartnerDemoData, deletePartner } from "@/app/admin/embed-partners/actions";
 import { AdminPartnerForm } from "@/app/admin/embed-partners/admin-partner-form";
 import { EmbedCode } from "@/app/admin/embed-partners/embed-code";
 
@@ -64,7 +64,7 @@ export default async function AdminEmbedPartnersPage({
       {error && (
         <p className="rounded-md bg-error-bg px-3 py-2 text-sm text-error">{error}</p>
       )}
-      <AdminPartnerForm action={createPartner} demoAction={createPartnerDemo} />
+      <AdminPartnerForm action={createPartner} demoAction={createPartnerDemoData} />
 
       <div className="flex flex-col gap-4 border-t border-border pt-6">
         {partners?.map((partner) => {
