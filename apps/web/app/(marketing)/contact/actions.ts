@@ -14,7 +14,7 @@ export async function sendContactMessage(formData: FormData) {
 
   const { error } = await resend.emails.send({
     from: "CultureMesh Contact Form <noreply@culturemesh.com>",
-    to: "hello@culturemesh.com",
+    to: "kenchester2@gmail.com",
     replyTo: email,
     subject: `[Contact form] ${subject}: ${name}`,
     text: `From: ${name} <${email}>\nSubject: ${subject}\n\n${message}`,

@@ -1,6 +1,4 @@
-import { suggestNetwork } from "@/app/suggest-network/actions";
-import { Button } from "@/components/ui/button";
-import { Field, Input, Label } from "@/components/ui/input";
+import { SuggestNetworkForm } from "@/app/suggest-network/suggest-network-form";
 
 export default async function SuggestNetworkPage({
   searchParams,
@@ -27,24 +25,7 @@ export default async function SuggestNetworkPage({
         {error && (
           <p className="rounded-md bg-error-bg px-3 py-2 text-sm text-error">{error}</p>
         )}
-        <form action={suggestNetwork} className="flex flex-col gap-4">
-          <Field>
-            <Label htmlFor="originText">Language or origin</Label>
-            <Input id="originText" name="originText" placeholder="e.g. Tagalog" required />
-          </Field>
-          <Field>
-            <Label htmlFor="locationText">Location</Label>
-            <Input
-              id="locationText"
-              name="locationText"
-              placeholder="e.g. Austin, Texas"
-              required
-            />
-          </Field>
-          <Button type="submit" className="w-full">
-            Submit suggestion
-          </Button>
-        </form>
+        <SuggestNetworkForm />
       </div>
     </div>
   );
