@@ -9,7 +9,13 @@ import { Button } from "@/components/ui/button";
 // site's search form. The origin field is intentionally unrestricted
 // (any language/place in the world); only the location field is scoped to
 // the partner's jurisdiction.
-export function EmbedSearchForm({ partnerSlug }: { partnerSlug: string }) {
+export function EmbedSearchForm({
+  partnerSlug,
+  locationLabel = "Your Location",
+}: {
+  partnerSlug: string;
+  locationLabel?: string;
+}) {
   const [originKind, setOriginKind] = useState<"place" | "language">("place");
 
   return (
@@ -47,7 +53,7 @@ export function EmbedSearchForm({ partnerSlug }: { partnerSlug: string }) {
         placeholder={originKind === "place" ? "e.g. Tamil Nadu, India" : undefined}
       />
       <AutocompleteField
-        label="Your Location"
+        label={locationLabel}
         kind="place"
         hiddenName="locationId"
         searchUrl={`/api/embed/${partnerSlug}/places/search`}
