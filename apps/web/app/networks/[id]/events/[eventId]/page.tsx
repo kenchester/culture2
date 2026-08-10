@@ -12,10 +12,12 @@ export default async function EventPage({
   searchParams,
 }: {
   params: Promise<{ id: string; eventId: string }>;
-  searchParams: Promise<{ error?: string }>;
+  searchParams: Promise<{ error?: string; embed?: string }>;
 }) {
   const { id, eventId } = await params;
-  const { error } = await searchParams;
+  const { error, embed } = await searchParams;
+  const isEmbedded = embed === "1";
+  const embedSuffix = isEmbedded ? "?embed=1" : "";
   const supabase = await createClient();
 
   const { data: event } = await supabase
@@ -58,9 +60,14 @@ export default async function EventPage({
     last_name: string | null;
   } | null;
 
+  const returnTo = `/networks/${id}/events/${eventId}${embedSuffix}`;
+  const signInParams = new URLSearchParams({ returnTo });
+  if (isEmbedded) signInParams.set("embed", "1");
+  const signInHref = `/sign-in?${signInParams.toString()}`;
+
   return (
     <div className="mx-auto flex w-full max-w-lg flex-1 flex-col gap-6 px-4 py-12">
-      <Link href={`/networks/${id}/events`} className="text-sm text-muted underline">
+      <Link href={`/networks/${id}/events${embedSuffix}`} className="text-sm text-muted underline">
         Back to events
       </Link>
 
@@ -98,6 +105,7 @@ export default async function EventPage({
                 <input type="hidden" name="eventId" value={event.id} />
                 <input type="hidden" name="networkId" value={id} />
                 <input type="hidden" name="status" value={status} />
+                {isEmbedded && <input type="hidden" name="embed" value="1" />}
                 <Button
                   type="submit"
                   variant={myRsvp?.status === status ? "primary" : "secondary"}
@@ -112,6 +120,7 @@ export default async function EventPage({
             <form action={cancelRsvp}>
               <input type="hidden" name="eventId" value={event.id} />
               <input type="hidden" name="networkId" value={id} />
+              {isEmbedded && <input type="hidden" name="embed" value="1" />}
               <button type="submit" className="text-sm text-muted underline hover:text-primary">
                 Remove my RSVP
               </button>
@@ -119,9 +128,9 @@ export default async function EventPage({
           )}
         </div>
       ) : (
-        <a href="/sign-in" className="text-sm font-medium text-primary hover:underline">
+        <Link href={signInHref} className="text-sm font-medium text-primary hover:underline">
           Sign in to RSVP
-        </a>
+        </Link>
       )}
     </div>
   );

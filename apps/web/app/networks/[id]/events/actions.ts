@@ -10,6 +10,7 @@ export async function createEvent(formData: FormData) {
   const description = formData.get("description") as string;
   const eventDate = formData.get("eventDate") as string;
   const location = formData.get("location") as string;
+  const embedSuffix = formData.get("embed") === "1" ? "&embed=1" : "";
 
   const supabase = await createClient();
   const {
@@ -30,7 +31,9 @@ export async function createEvent(formData: FormData) {
   });
 
   if (error) {
-    redirect(`/networks/${networkId}/events?error=${encodeURIComponent(error.message)}`);
+    redirect(
+      `/networks/${networkId}/events?error=${encodeURIComponent(error.message)}${embedSuffix}`,
+    );
   }
 
   revalidatePath(`/networks/${networkId}/events`);

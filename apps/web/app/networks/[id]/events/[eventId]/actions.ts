@@ -8,6 +8,7 @@ export async function rsvp(formData: FormData) {
   const eventId = formData.get("eventId") as string;
   const networkId = formData.get("networkId") as string;
   const status = formData.get("status") as string;
+  const embedSuffix = formData.get("embed") === "1" ? "&embed=1" : "";
 
   const supabase = await createClient();
   const {
@@ -27,7 +28,7 @@ export async function rsvp(formData: FormData) {
 
   if (error) {
     redirect(
-      `/networks/${networkId}/events/${eventId}?error=${encodeURIComponent(error.message)}`,
+      `/networks/${networkId}/events/${eventId}?error=${encodeURIComponent(error.message)}${embedSuffix}`,
     );
   }
 

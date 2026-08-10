@@ -13,10 +13,12 @@ export default async function PostPage({
   searchParams,
 }: {
   params: Promise<{ id: string; postId: string }>;
-  searchParams: Promise<{ error?: string }>;
+  searchParams: Promise<{ error?: string; embed?: string }>;
 }) {
   const { id, postId } = await params;
-  const { error } = await searchParams;
+  const { error, embed } = await searchParams;
+  const isEmbedded = embed === "1";
+  const embedSuffix = isEmbedded ? "?embed=1" : "";
   const supabase = await createClient();
 
   const { data: post } = await supabase
@@ -46,9 +48,14 @@ export default async function PostPage({
   const author = post.author as unknown as Author | null;
   const avatarUrl = author ? getAvatarUrl(supabase, author.img_path) : null;
 
+  const returnTo = `/networks/${id}/posts/${postId}${embedSuffix}`;
+  const signInParams = new URLSearchParams({ returnTo });
+  if (isEmbedded) signInParams.set("embed", "1");
+  const signInHref = `/sign-in?${signInParams.toString()}`;
+
   return (
     <div className="mx-auto flex w-full max-w-lg flex-1 flex-col gap-6 px-4 py-12">
-      <Link href={`/networks/${id}`} className="text-sm text-muted underline">
+      <Link href={`/networks/${id}${embedSuffix}`} className="text-sm text-muted underline">
         Back to network
       </Link>
 
@@ -128,6 +135,7 @@ export default async function PostPage({
         <form action={createReply} className="flex flex-col gap-2 border-t border-border pt-6">
           <input type="hidden" name="postId" value={post.id} />
           <input type="hidden" name="networkId" value={id} />
+          {isEmbedded && <input type="hidden" name="embed" value="1" />}
           {error && (
             <p className="rounded-md bg-error-bg px-3 py-2 text-sm text-error">{error}</p>
           )}
@@ -145,9 +153,9 @@ export default async function PostPage({
           </Button>
         </form>
       ) : (
-        <a href="/sign-in" className="text-sm font-medium text-primary hover:underline">
+        <Link href={signInHref} className="text-sm font-medium text-primary hover:underline">
           Sign in to reply
-        </a>
+        </Link>
       )}
     </div>
   );

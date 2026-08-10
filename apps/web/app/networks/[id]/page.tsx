@@ -95,7 +95,7 @@ export default async function NetworkPage({
       </p>
 
       <Link
-        href={`/networks/${network.id}/events`}
+        href={`/networks/${network.id}/events${isEmbedded ? "?embed=1" : ""}`}
         className="text-sm font-medium text-primary hover:underline"
       >
         Events
@@ -104,6 +104,7 @@ export default async function NetworkPage({
       {user ? (
         <form action={isMember ? leaveNetwork : joinNetwork}>
           <input type="hidden" name="networkId" value={network.id} />
+          {isEmbedded && <input type="hidden" name="embed" value="1" />}
           <Button type="submit">{isMember ? "Leave network" : "Join network"}</Button>
         </form>
       ) : (
@@ -116,6 +117,7 @@ export default async function NetworkPage({
         {isMember && (
           <form action={createPost} className="flex flex-col gap-2">
             <input type="hidden" name="networkId" value={network.id} />
+            {isEmbedded && <input type="hidden" name="embed" value="1" />}
             {error && (
               <p className="rounded-md bg-error-bg px-3 py-2 text-sm text-error">{error}</p>
             )}
@@ -179,7 +181,7 @@ export default async function NetworkPage({
                     </a>
                   )}
                   <Link
-                    href={`/networks/${network.id}/posts/${post.id}`}
+                    href={`/networks/${network.id}/posts/${post.id}${isEmbedded ? "?embed=1" : ""}`}
                     className="text-sm text-muted underline hover:text-primary"
                   >
                     {replyLabel(replyCountValue)}

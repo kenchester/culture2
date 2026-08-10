@@ -8,6 +8,7 @@ export async function createReply(formData: FormData) {
   const postId = formData.get("postId") as string;
   const networkId = formData.get("networkId") as string;
   const body = formData.get("body") as string;
+  const embedSuffix = formData.get("embed") === "1" ? "&embed=1" : "";
 
   const supabase = await createClient();
   const {
@@ -26,7 +27,7 @@ export async function createReply(formData: FormData) {
 
   if (error) {
     redirect(
-      `/networks/${networkId}/posts/${postId}?error=${encodeURIComponent(error.message)}`,
+      `/networks/${networkId}/posts/${postId}?error=${encodeURIComponent(error.message)}${embedSuffix}`,
     );
   }
 

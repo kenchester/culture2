@@ -6,13 +6,14 @@ import { createClient } from "@/lib/supabase/server";
 
 export async function joinNetwork(formData: FormData) {
   const networkId = formData.get("networkId") as string;
+  const embedSuffix = formData.get("embed") === "1" ? "&embed=1" : "";
   const supabase = await createClient();
   const {
     data: { user },
   } = await supabase.auth.getUser();
 
   if (!user) {
-    redirect(`/sign-in?error=${encodeURIComponent("Sign in to join a network.")}`);
+    redirect(`/sign-in?error=${encodeURIComponent("Sign in to join a network.")}${embedSuffix}`);
   }
 
   await supabase
@@ -24,13 +25,16 @@ export async function joinNetwork(formData: FormData) {
 
 export async function leaveNetwork(formData: FormData) {
   const networkId = formData.get("networkId") as string;
+  const embedSuffix = formData.get("embed") === "1" ? "&embed=1" : "";
   const supabase = await createClient();
   const {
     data: { user },
   } = await supabase.auth.getUser();
 
   if (!user) {
-    redirect(`/sign-in?error=${encodeURIComponent("Sign in to manage your networks.")}`);
+    redirect(
+      `/sign-in?error=${encodeURIComponent("Sign in to manage your networks.")}${embedSuffix}`,
+    );
   }
 
   await supabase
@@ -45,6 +49,7 @@ export async function leaveNetwork(formData: FormData) {
 export async function createPost(formData: FormData) {
   const networkId = formData.get("networkId") as string;
   const body = formData.get("body") as string;
+  const embedSuffix = formData.get("embed") === "1" ? "&embed=1" : "";
 
   const supabase = await createClient();
   const {
@@ -52,7 +57,7 @@ export async function createPost(formData: FormData) {
   } = await supabase.auth.getUser();
 
   if (!user) {
-    redirect(`/sign-in?error=${encodeURIComponent("Sign in to post.")}`);
+    redirect(`/sign-in?error=${encodeURIComponent("Sign in to post.")}${embedSuffix}`);
   }
 
   const { error } = await supabase.from("posts").insert({
@@ -62,7 +67,7 @@ export async function createPost(formData: FormData) {
   });
 
   if (error) {
-    redirect(`/networks/${networkId}?error=${encodeURIComponent(error.message)}`);
+    redirect(`/networks/${networkId}?error=${encodeURIComponent(error.message)}${embedSuffix}`);
   }
 
   revalidatePath(`/networks/${networkId}`);
