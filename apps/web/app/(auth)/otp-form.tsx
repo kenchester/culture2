@@ -41,26 +41,22 @@ function stripEmbedParam(path: string): string {
 }
 
 // Returning users who already set a password get offered the faster
-// password path; brand-new emails get asked their name before the code is
-// sent (profiles start out blank otherwise, showing up everywhere as
-// "CultureMesh member"); anyone else already registered but passwordless
-// goes straight to a code. Either the password or code path can fall back
-// to the other - "use a code instead" if a password's forgotten, no
-// separate reset flow needed. Runs entirely through direct server-action
-// calls (no <form action> redirects) so it never leaves the page it's
-// rendered on - critical for embeds, where a real navigation would either
-// break out of the iframe or swap it to a page that doesn't match the
-// embed's look.
+// password path; everyone else goes straight to a code. The name field on
+// the first screen only ever applies to a brand-new account - typing
+// something there for an email that turns out to already exist is silently
+// ignored, so an existing user's real name can never get clobbered by a
+// stray autofill or habit of always filling it in. A single "Name" field
+// rather than split first/last, since a first/last split assumes a naming
+// order that doesn't hold for everyone (e.g. East Asian family-name-first
+// conventions). Runs entirely through direct server-action calls (no <form
+// action> redirects) so it never leaves the page it's rendered on -
+// critical for embeds, where a real navigation would either break out of
+// the iframe or swap it to a page that doesn't match the embed's look.
 export function OtpForm({ returnTo }: { returnTo?: string }) {
   const router = useRouter();
-  const [step, setStep] = useState<"email" | "name" | "password" | "code" | "bridge">(
-    "email",
-  );
+  const [step, setStep] = useState<"email" | "password" | "code" | "bridge">("email");
   const [email, setEmail] = useState("");
-  const [pendingName, setPendingName] = useState<{
-    firstName: string;
-    lastName: string;
-  } | null>(null);
+  const [pendingName, setPendingName] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [isPending, setIsPending] = useState(false);
 
@@ -85,8 +81,7 @@ export function OtpForm({ returnTo }: { returnTo?: string }) {
   async function applyPendingName() {
     if (!pendingName) return;
     const formData = new FormData();
-    formData.set("firstName", pendingName.firstName);
-    formData.set("lastName", pendingName.lastName);
+    formData.set("name", pendingName);
     await setDisplayName(formData);
   }
 
@@ -103,6 +98,7 @@ export function OtpForm({ returnTo }: { returnTo?: string }) {
 
   async function handleContinue(formData: FormData) {
     const submittedEmail = formData.get("email") as string;
+    const submittedName = ((formData.get("name") as string) || "").trim();
     setError(null);
     setIsPending(true);
     void tryRequestStorageAccess();
@@ -113,24 +109,8 @@ export function OtpForm({ returnTo }: { returnTo?: string }) {
         setStep("password");
         return;
       }
-      if (!exists) {
-        setStep("name");
-        return;
-      }
+      setPendingName(!exists && submittedName ? submittedName : null);
       await sendCode(submittedEmail);
-    } finally {
-      setIsPending(false);
-    }
-  }
-
-  async function handleContinueWithName(formData: FormData) {
-    const firstName = (formData.get("firstName") as string) || "";
-    const lastName = (formData.get("lastName") as string) || "";
-    setError(null);
-    setIsPending(true);
-    try {
-      setPendingName({ firstName, lastName });
-      await sendCode(email);
     } finally {
       setIsPending(false);
     }
@@ -266,41 +246,6 @@ export function OtpForm({ returnTo }: { returnTo?: string }) {
     );
   }
 
-  if (step === "name") {
-    return (
-      <form action={handleContinueWithName} className="flex flex-col gap-4">
-        <p className="text-center text-sm text-body">
-          Creating an account for <span className="font-medium text-ink">{email}</span>.
-        </p>
-        {error && (
-          <p className="rounded-md bg-error-bg px-3 py-2 text-sm text-error">{error}</p>
-        )}
-        <Field>
-          <Label htmlFor="firstName">First name</Label>
-          <Input id="firstName" name="firstName" required autoFocus />
-        </Field>
-        <Field>
-          <Label htmlFor="lastName">Last name</Label>
-          <Input id="lastName" name="lastName" />
-        </Field>
-        <Button type="submit" className="w-full" disabled={isPending}>
-          {isPending ? "Continuing…" : "Continue"}
-        </Button>
-        <button
-          type="button"
-          onClick={() => {
-            setError(null);
-            setPendingName(null);
-            setStep("email");
-          }}
-          className="text-center text-sm text-muted underline hover:text-primary"
-        >
-          Use a different email
-        </button>
-      </form>
-    );
-  }
-
   if (step === "code") {
     return (
       <form action={handleVerify} className="flex flex-col gap-4">
@@ -348,6 +293,10 @@ export function OtpForm({ returnTo }: { returnTo?: string }) {
       <Field>
         <Label htmlFor="email">Email</Label>
         <Input id="email" name="email" type="email" required autoFocus />
+      </Field>
+      <Field>
+        <Label htmlFor="name">Name</Label>
+        <Input id="name" name="name" placeholder="Only needed if you're new here" />
       </Field>
       <Button type="submit" className="w-full" disabled={isPending}>
         {isPending ? "Continuing…" : "Continue"}

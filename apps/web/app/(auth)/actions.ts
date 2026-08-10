@@ -60,10 +60,13 @@ export async function checkEmailStatus(
 // attach the name collected during the registration flow - profiles start
 // out blank (just an id) from the auth.users trigger, so without this a
 // brand-new user shows up everywhere as "CultureMesh member" until they
-// separately find their way to the profile editor.
+// separately find their way to the profile editor. Stored as a single
+// string in first_name (last_name left null) rather than split into
+// first/last - a "First name"/"Last name" split assumes an ordering
+// convention that doesn't hold for everyone (e.g. East Asian family-name-
+// first naming), and getDisplayName already just joins whatever's present.
 export async function setDisplayName(formData: FormData): Promise<ActionResult> {
-  const firstName = formData.get("firstName") as string;
-  const lastName = formData.get("lastName") as string;
+  const name = formData.get("name") as string;
 
   const supabase = await createClient();
   const {
@@ -76,7 +79,7 @@ export async function setDisplayName(formData: FormData): Promise<ActionResult> 
 
   const { error } = await supabase
     .from("profiles")
-    .update({ first_name: firstName || null, last_name: lastName || null })
+    .update({ first_name: name || null, last_name: null })
     .eq("id", user.id);
 
   if (error) {
