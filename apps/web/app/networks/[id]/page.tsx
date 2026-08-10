@@ -4,9 +4,9 @@ import { notFound } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import { type Author, getAvatarUrl, getDisplayName } from "@/lib/profiles";
 import { createPost, joinNetwork, leaveNetwork } from "@/app/networks/actions";
+import { EditableEntry } from "@/app/networks/editable-entry";
 import { Button } from "@/components/ui/button";
 import { Field, Label, Textarea } from "@/components/ui/input";
-import { Linkify } from "@/lib/linkify";
 
 function replyLabel(count: number): string {
   if (count === 0) return "Reply";
@@ -160,16 +160,19 @@ export default async function NetworkPage({
                 ) : (
                   <div className="h-8 w-8 shrink-0 rounded-full bg-border" />
                 )}
-                <div className="flex flex-col gap-1">
+                <div className="flex flex-1 flex-col gap-1">
                   <Link
                     href={author ? `/profile/${author.id}` : "#"}
                     className="text-sm font-medium text-ink underline hover:text-primary"
                   >
                     {author ? getDisplayName(author) : "Someone"}
                   </Link>
-                  <p className="text-body">
-                    <Linkify text={post.body} />
-                  </p>
+                  <EditableEntry
+                    kind="post"
+                    itemId={post.id}
+                    body={post.body}
+                    canModify={user?.id === author?.id}
+                  />
                   {post.video_url && (
                     <a
                       href={post.video_url}

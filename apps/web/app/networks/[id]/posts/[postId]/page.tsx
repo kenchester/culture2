@@ -4,9 +4,9 @@ import { notFound } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import { type Author, getAvatarUrl, getDisplayName } from "@/lib/profiles";
 import { createReply } from "./actions";
+import { EditableEntry } from "@/app/networks/editable-entry";
 import { Button } from "@/components/ui/button";
 import { Field, Label, Textarea } from "@/components/ui/input";
-import { Linkify } from "@/lib/linkify";
 
 export default async function PostPage({
   params,
@@ -71,16 +71,20 @@ export default async function PostPage({
         ) : (
           <div className="h-8 w-8 shrink-0 rounded-full bg-border" />
         )}
-        <div className="flex flex-col gap-1">
+        <div className="flex flex-1 flex-col gap-1">
           <Link
             href={author ? `/profile/${author.id}` : "#"}
             className="text-sm font-medium text-ink underline hover:text-primary"
           >
             {author ? getDisplayName(author) : "Someone"}
           </Link>
-          <p className="text-body">
-            <Linkify text={post.body} />
-          </p>
+          <EditableEntry
+            kind="post"
+            itemId={post.id}
+            body={post.body}
+            canModify={user?.id === author?.id}
+            redirectAfterDelete={`/networks/${id}${embedSuffix}`}
+          />
           {post.video_url && (
             <a
               href={post.video_url}
@@ -94,7 +98,7 @@ export default async function PostPage({
         </div>
       </div>
 
-      <div className="flex flex-col gap-4">
+      <div className="flex flex-col gap-4 pl-8">
         {replies?.map((reply) => {
           const replyAuthor = reply.author as unknown as Author | null;
           const replyAvatarUrl = replyAuthor
@@ -114,16 +118,19 @@ export default async function PostPage({
               ) : (
                 <div className="h-6 w-6 shrink-0 rounded-full bg-border" />
               )}
-              <div className="flex flex-col gap-1">
+              <div className="flex flex-1 flex-col gap-1">
                 <Link
                   href={replyAuthor ? `/profile/${replyAuthor.id}` : "#"}
                   className="text-sm font-medium text-ink underline hover:text-primary"
                 >
                   {replyAuthor ? getDisplayName(replyAuthor) : "Someone"}
                 </Link>
-                <p className="text-body">
-                  <Linkify text={reply.body} />
-                </p>
+                <EditableEntry
+                  kind="reply"
+                  itemId={reply.id}
+                  body={reply.body}
+                  canModify={user?.id === replyAuthor?.id}
+                />
               </div>
             </div>
           );

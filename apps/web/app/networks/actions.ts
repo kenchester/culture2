@@ -72,3 +72,51 @@ export async function createPost(formData: FormData) {
 
   revalidatePath(`/networks/${networkId}`);
 }
+
+type ActionResult = { ok: true } | { error: string };
+
+export async function updatePost(postId: number, body: string): Promise<ActionResult> {
+  const supabase = await createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
+  if (!user) {
+    return { error: "Not signed in." };
+  }
+
+  const { error } = await supabase
+    .from("posts")
+    .update({ body })
+    .eq("id", postId)
+    .eq("user_id", user.id);
+
+  if (error) {
+    return { error: error.message };
+  }
+
+  return { ok: true };
+}
+
+export async function deletePost(postId: number): Promise<ActionResult> {
+  const supabase = await createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
+  if (!user) {
+    return { error: "Not signed in." };
+  }
+
+  const { error } = await supabase
+    .from("posts")
+    .delete()
+    .eq("id", postId)
+    .eq("user_id", user.id);
+
+  if (error) {
+    return { error: error.message };
+  }
+
+  return { ok: true };
+}
