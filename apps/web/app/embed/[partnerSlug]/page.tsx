@@ -4,6 +4,7 @@ import { createClient } from "@/lib/supabase/server";
 import { EmbedLocationForm } from "@/app/embed/[partnerSlug]/embed-location-form";
 import { EmbedSearchForm } from "@/app/embed/[partnerSlug]/embed-search-form";
 import { EmbedLaunchForm } from "@/app/embed/[partnerSlug]/embed-launch-form";
+import { AutocompleteField } from "@/components/autocomplete-field";
 
 type NetworkMatch = {
   match_kind: "exact" | "related_broader" | "related_narrower";
@@ -82,10 +83,16 @@ export default async function EmbedPage({
     return (
       <div className="mx-auto flex w-full max-w-sm flex-1 flex-col justify-center gap-6 px-4 py-12">
         <h1 className="text-2xl font-semibold text-ink">
-          {partner.hide_origin_label
-            ? `Join the local network of ${partner.name}`
-            : `Join the local network of ${partner.name} — ${originName}`}
+          Join the local network of {partner.name}
         </h1>
+        {!partner.hide_origin_label && (
+          <AutocompleteField
+            label="Origin"
+            kind={isLanguage ? "language" : "place"}
+            disabled
+            defaultValue={originName}
+          />
+        )}
         <EmbedLocationForm partnerSlug={partnerSlug} />
       </div>
     );

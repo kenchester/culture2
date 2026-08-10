@@ -28,6 +28,8 @@ export function AutocompleteField({
   searchUrl = "/api/places/search",
   onSelect,
   placeholder,
+  disabled = false,
+  defaultValue,
 }: {
   label: string;
   kind: "place" | "language";
@@ -35,6 +37,8 @@ export function AutocompleteField({
   searchUrl?: string;
   onSelect?: (option: AutocompleteOption | null) => void;
   placeholder?: string;
+  disabled?: boolean;
+  defaultValue?: string;
 }) {
   const [query, setQuery] = useState("");
   const [options, setOptions] = useState<AutocompleteOption[]>([]);
@@ -42,7 +46,7 @@ export function AutocompleteField({
   const inputId = useId();
 
   useEffect(() => {
-    if (selected || query.trim().length < 2) {
+    if (disabled || selected || query.trim().length < 2) {
       return;
     }
     const controller = new AbortController();
@@ -58,9 +62,9 @@ export function AutocompleteField({
       clearTimeout(timeout);
       controller.abort();
     };
-  }, [query, kind, selected, searchUrl]);
+  }, [query, kind, selected, searchUrl, disabled]);
 
-  const visibleOptions = selected ? [] : options;
+  const visibleOptions = disabled || selected ? [] : options;
 
   return (
     <Field>
@@ -68,13 +72,15 @@ export function AutocompleteField({
       <Input
         id={inputId}
         type="text"
-        value={selected ? optionLabel(selected) : query}
+        disabled={disabled}
+        value={disabled ? (defaultValue ?? "") : selected ? optionLabel(selected) : query}
         onChange={(e) => {
           setSelected(null);
           onSelect?.(null);
           setQuery(e.target.value);
         }}
         placeholder={placeholder ?? (kind === "language" ? "e.g. Mandarin" : "e.g. Michigan")}
+        className={disabled ? "cursor-not-allowed bg-background text-muted" : undefined}
       />
       {hiddenName && <input type="hidden" name={hiddenName} value={selected?.id ?? ""} />}
       {visibleOptions.length > 0 && (
