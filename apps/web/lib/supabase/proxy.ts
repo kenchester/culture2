@@ -1,6 +1,7 @@
 import { createServerClient } from "@supabase/ssr";
 import { NextResponse, type NextRequest } from "next/server";
 import { publicEnv } from "@/lib/env.public";
+import { authCookieOptions } from "@/lib/supabase/cookie-options";
 
 export async function updateSession(request: NextRequest) {
   let response = NextResponse.next({ request });
@@ -9,6 +10,7 @@ export async function updateSession(request: NextRequest) {
     publicEnv.NEXT_PUBLIC_SUPABASE_URL,
     publicEnv.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY,
     {
+      cookieOptions: authCookieOptions,
       cookies: {
         getAll() {
           return request.cookies.getAll();
