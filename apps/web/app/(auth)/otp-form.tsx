@@ -3,8 +3,9 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import {
-  checkHasPassword,
+  checkEmailStatus,
   sendOtp,
+  setDisplayName,
   signInWithPassword,
   verifyOtp,
 } from "@/app/(auth)/actions";
@@ -40,17 +41,26 @@ function stripEmbedParam(path: string): string {
 }
 
 // Returning users who already set a password get offered the faster
-// password path; anyone else (the common case for new embed registrations)
-// goes straight to an emailed code. Either path can fall back to the other -
-// "use a code instead" if a password's forgotten, no separate reset flow
-// needed. Runs entirely through direct server-action calls (no <form
-// action> redirects) so it never leaves the page it's rendered on - critical
-// for embeds, where a real navigation would either break out of the iframe
-// or swap it to a page that doesn't match the embed's look.
+// password path; brand-new emails get asked their name before the code is
+// sent (profiles start out blank otherwise, showing up everywhere as
+// "CultureMesh member"); anyone else already registered but passwordless
+// goes straight to a code. Either the password or code path can fall back
+// to the other - "use a code instead" if a password's forgotten, no
+// separate reset flow needed. Runs entirely through direct server-action
+// calls (no <form action> redirects) so it never leaves the page it's
+// rendered on - critical for embeds, where a real navigation would either
+// break out of the iframe or swap it to a page that doesn't match the
+// embed's look.
 export function OtpForm({ returnTo }: { returnTo?: string }) {
   const router = useRouter();
-  const [step, setStep] = useState<"email" | "password" | "code" | "bridge">("email");
+  const [step, setStep] = useState<"email" | "name" | "password" | "code" | "bridge">(
+    "email",
+  );
   const [email, setEmail] = useState("");
+  const [pendingName, setPendingName] = useState<{
+    firstName: string;
+    lastName: string;
+  } | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [isPending, setIsPending] = useState(false);
 
@@ -59,14 +69,25 @@ export function OtpForm({ returnTo }: { returnTo?: string }) {
   // iframe (most often Safari) the browser can silently refuse to store it.
   // Checking our own browser client's session is the only reliable way to
   // tell the two apart, since the server-side result looks identical either
-  // way.
-  async function trySettle(): Promise<boolean> {
+  // way. beforeNavigate runs only once a session is confirmed to exist, so
+  // callers can do authenticated follow-up work (like saving a name) before
+  // the page moves on.
+  async function trySettle(beforeNavigate?: () => Promise<void>): Promise<boolean> {
     const supabase = createClient();
     const { data } = await supabase.auth.getSession();
     if (!data.session) return false;
+    if (beforeNavigate) await beforeNavigate();
     router.push(returnTo ?? "/");
     router.refresh();
     return true;
+  }
+
+  async function applyPendingName() {
+    if (!pendingName) return;
+    const formData = new FormData();
+    formData.set("firstName", pendingName.firstName);
+    formData.set("lastName", pendingName.lastName);
+    await setDisplayName(formData);
   }
 
   async function sendCode(targetEmail: string) {
@@ -86,13 +107,30 @@ export function OtpForm({ returnTo }: { returnTo?: string }) {
     setIsPending(true);
     void tryRequestStorageAccess();
     try {
-      const { hasPassword } = await checkHasPassword(formData);
+      const { exists, hasPassword } = await checkEmailStatus(formData);
       setEmail(submittedEmail);
       if (hasPassword) {
         setStep("password");
         return;
       }
+      if (!exists) {
+        setStep("name");
+        return;
+      }
       await sendCode(submittedEmail);
+    } finally {
+      setIsPending(false);
+    }
+  }
+
+  async function handleContinueWithName(formData: FormData) {
+    const firstName = (formData.get("firstName") as string) || "";
+    const lastName = (formData.get("lastName") as string) || "";
+    setError(null);
+    setIsPending(true);
+    try {
+      setPendingName({ firstName, lastName });
+      await sendCode(email);
     } finally {
       setIsPending(false);
     }
@@ -126,7 +164,7 @@ export function OtpForm({ returnTo }: { returnTo?: string }) {
         setError(result.error);
         return;
       }
-      if (!(await trySettle())) {
+      if (!(await trySettle(applyPendingName))) {
         setStep("bridge");
       }
     } finally {
@@ -138,7 +176,7 @@ export function OtpForm({ returnTo }: { returnTo?: string }) {
     setError(null);
     setIsPending(true);
     await tryRequestStorageAccess();
-    const settled = await trySettle();
+    const settled = await trySettle(applyPendingName);
     setIsPending(false);
     if (!settled) {
       setError("Still not able to stay signed in inside this window.");
@@ -228,6 +266,41 @@ export function OtpForm({ returnTo }: { returnTo?: string }) {
     );
   }
 
+  if (step === "name") {
+    return (
+      <form action={handleContinueWithName} className="flex flex-col gap-4">
+        <p className="text-center text-sm text-body">
+          Creating an account for <span className="font-medium text-ink">{email}</span>.
+        </p>
+        {error && (
+          <p className="rounded-md bg-error-bg px-3 py-2 text-sm text-error">{error}</p>
+        )}
+        <Field>
+          <Label htmlFor="firstName">First name</Label>
+          <Input id="firstName" name="firstName" required autoFocus />
+        </Field>
+        <Field>
+          <Label htmlFor="lastName">Last name</Label>
+          <Input id="lastName" name="lastName" />
+        </Field>
+        <Button type="submit" className="w-full" disabled={isPending}>
+          {isPending ? "Continuing…" : "Continue"}
+        </Button>
+        <button
+          type="button"
+          onClick={() => {
+            setError(null);
+            setPendingName(null);
+            setStep("email");
+          }}
+          className="text-center text-sm text-muted underline hover:text-primary"
+        >
+          Use a different email
+        </button>
+      </form>
+    );
+  }
+
   if (step === "code") {
     return (
       <form action={handleVerify} className="flex flex-col gap-4">
@@ -256,6 +329,7 @@ export function OtpForm({ returnTo }: { returnTo?: string }) {
           type="button"
           onClick={() => {
             setError(null);
+            setPendingName(null);
             setStep("email");
           }}
           className="text-center text-sm text-muted underline hover:text-primary"

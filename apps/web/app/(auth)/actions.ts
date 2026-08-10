@@ -40,16 +40,50 @@ export async function verifyOtp(formData: FormData): Promise<ActionResult> {
   return { ok: true };
 }
 
-// Lets the sign-in form choose between the password field and the code
-// flow for a given email, without ever exposing anything about the account
-// beyond that one boolean.
-export async function checkHasPassword(formData: FormData): Promise<{ hasPassword: boolean }> {
+// Lets the sign-in form choose between the password field, the name step
+// (brand-new registrations only), and the code flow for a given email -
+// without ever exposing anything about the account beyond these two
+// booleans.
+export async function checkEmailStatus(
+  formData: FormData,
+): Promise<{ exists: boolean; hasPassword: boolean }> {
   const email = formData.get("email") as string;
 
   const supabase = await createClient();
-  const { data } = await supabase.rpc("email_has_password", { p_email: email });
+  const { data } = await supabase.rpc("email_account_status", { p_email: email });
+  const status = data as { exists?: boolean; hasPassword?: boolean } | null;
 
-  return { hasPassword: Boolean(data) };
+  return { exists: Boolean(status?.exists), hasPassword: Boolean(status?.hasPassword) };
+}
+
+// Called once a session actually exists (after a successful verify), to
+// attach the name collected during the registration flow - profiles start
+// out blank (just an id) from the auth.users trigger, so without this a
+// brand-new user shows up everywhere as "CultureMesh member" until they
+// separately find their way to the profile editor.
+export async function setDisplayName(formData: FormData): Promise<ActionResult> {
+  const firstName = formData.get("firstName") as string;
+  const lastName = formData.get("lastName") as string;
+
+  const supabase = await createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
+  if (!user) {
+    return { error: "Not signed in." };
+  }
+
+  const { error } = await supabase
+    .from("profiles")
+    .update({ first_name: firstName || null, last_name: lastName || null })
+    .eq("id", user.id);
+
+  if (error) {
+    return { error: error.message };
+  }
+
+  return { ok: true };
 }
 
 export async function signInWithPassword(formData: FormData): Promise<ActionResult> {
