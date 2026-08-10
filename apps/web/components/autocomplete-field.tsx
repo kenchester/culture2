@@ -7,7 +7,8 @@ export type PlaceOption = {
   id: number;
   name: string;
   type: "country" | "region" | "city";
-  parent?: { name: string } | null;
+  parent_id?: number | null;
+  parent?: { name: string; type?: "country" | "region" | "city" } | null;
 };
 
 export type LanguageOption = { id: number; name: string };
@@ -30,6 +31,8 @@ export function AutocompleteField({
   placeholder,
   disabled = false,
   defaultValue,
+  placeType,
+  initialOption = null,
 }: {
   label: string;
   kind: "place" | "language";
@@ -39,10 +42,12 @@ export function AutocompleteField({
   placeholder?: string;
   disabled?: boolean;
   defaultValue?: string;
+  placeType?: "country" | "region" | "city";
+  initialOption?: AutocompleteOption | null;
 }) {
   const [query, setQuery] = useState("");
   const [options, setOptions] = useState<AutocompleteOption[]>([]);
-  const [selected, setSelected] = useState<AutocompleteOption | null>(null);
+  const [selected, setSelected] = useState<AutocompleteOption | null>(initialOption);
   const inputId = useId();
 
   useEffect(() => {
@@ -51,7 +56,8 @@ export function AutocompleteField({
     }
     const controller = new AbortController();
     const timeout = setTimeout(() => {
-      fetch(`${searchUrl}?q=${encodeURIComponent(query)}&kind=${kind}`, {
+      const typeParam = kind === "place" && placeType ? `&type=${placeType}` : "";
+      fetch(`${searchUrl}?q=${encodeURIComponent(query)}&kind=${kind}${typeParam}`, {
         signal: controller.signal,
       })
         .then((r) => r.json())
@@ -62,7 +68,7 @@ export function AutocompleteField({
       clearTimeout(timeout);
       controller.abort();
     };
-  }, [query, kind, selected, searchUrl, disabled]);
+  }, [query, kind, selected, searchUrl, disabled, placeType]);
 
   const visibleOptions = disabled || selected ? [] : options;
 

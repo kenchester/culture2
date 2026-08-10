@@ -24,28 +24,6 @@ export default async function AdminEmbedPartnersPage({
   const { error } = await searchParams;
   const supabase = await createClient();
 
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
-
-  if (!user) {
-    return (
-      <div className="mx-auto max-w-lg px-4 py-12 text-body">
-        Sign in as an admin to continue.
-      </div>
-    );
-  }
-
-  const { data: profile } = await supabase
-    .from("profiles")
-    .select("is_admin")
-    .eq("id", user.id)
-    .single();
-
-  if (!profile?.is_admin) {
-    return <div className="mx-auto max-w-lg px-4 py-12 text-body">Not authorized.</div>;
-  }
-
   const { data: partners } = (await supabase
     .from("embed_partners")
     .select(
@@ -59,8 +37,7 @@ export default async function AdminEmbedPartnersPage({
   const origin = `${protocol}://${host}`;
 
   return (
-    <div className="mx-auto flex w-full max-w-lg flex-1 flex-col gap-8 px-4 py-12">
-      <h1 className="font-display text-3xl text-ink">Embed partners</h1>
+    <div className="flex w-full flex-col gap-8">
       {error && (
         <p className="rounded-md bg-error-bg px-3 py-2 text-sm text-error">{error}</p>
       )}
