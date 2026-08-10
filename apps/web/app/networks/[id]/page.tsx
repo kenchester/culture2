@@ -8,6 +8,12 @@ import { Button } from "@/components/ui/button";
 import { Field, Label, Textarea } from "@/components/ui/input";
 import { Linkify } from "@/lib/linkify";
 
+function replyLabel(count: number): string {
+  if (count === 0) return "Reply";
+  if (count === 1) return "1 Reply";
+  return `${count} Replies`;
+}
+
 export default async function NetworkPage({
   params,
   searchParams,
@@ -61,7 +67,7 @@ export default async function NetworkPage({
     supabase
       .from("posts")
       .select(
-        "id, body, video_url, created_at, author:user_id(id, username, first_name, last_name, img_path)",
+        "id, body, video_url, created_at, author:user_id(id, username, first_name, last_name, img_path), post_replies(count)",
       )
       .eq("network_id", network.id)
       .order("created_at", { ascending: false }),
@@ -132,6 +138,12 @@ export default async function NetworkPage({
           {posts?.map((post) => {
             const author = post.author as unknown as Author | null;
             const avatarUrl = author ? getAvatarUrl(supabase, author.img_path) : null;
+            const replyCount =
+              (post.post_replies as unknown as { count: number } | { count: number }[] | null) ??
+              { count: 0 };
+            const replyCountValue = Array.isArray(replyCount)
+              ? (replyCount[0]?.count ?? 0)
+              : replyCount.count;
 
             return (
               <div key={post.id} className="flex gap-3 border-b border-border pb-4">
@@ -170,7 +182,7 @@ export default async function NetworkPage({
                     href={`/networks/${network.id}/posts/${post.id}`}
                     className="text-sm text-muted underline hover:text-primary"
                   >
-                    Replies
+                    {replyLabel(replyCountValue)}
                   </Link>
                 </div>
               </div>
