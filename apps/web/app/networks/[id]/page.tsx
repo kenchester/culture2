@@ -5,7 +5,8 @@ import { createClient } from "@/lib/supabase/server";
 import { type Author, getAvatarUrl, getDisplayName } from "@/lib/profiles";
 import { createPost, joinNetwork, leaveNetwork } from "@/app/networks/actions";
 import { Button } from "@/components/ui/button";
-import { Field, Input, Label, Textarea } from "@/components/ui/input";
+import { Field, Label, Textarea } from "@/components/ui/input";
+import { Linkify } from "@/lib/linkify";
 
 export default async function NetworkPage({
   params,
@@ -121,10 +122,6 @@ export default async function NetworkPage({
                 required
               />
             </Field>
-            <Field>
-              <Label htmlFor="post-video-url">Video link (optional)</Label>
-              <Input id="post-video-url" name="videoUrl" />
-            </Field>
             <Button type="submit" className="self-start">
               Post
             </Button>
@@ -156,7 +153,9 @@ export default async function NetworkPage({
                   >
                     {author ? getDisplayName(author) : "Someone"}
                   </Link>
-                  <p className="text-body">{post.body}</p>
+                  <p className="text-body">
+                    <Linkify text={post.body} />
+                  </p>
                   {post.video_url && (
                     <a
                       href={post.video_url}

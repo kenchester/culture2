@@ -45,7 +45,6 @@ export async function leaveNetwork(formData: FormData) {
 export async function createPost(formData: FormData) {
   const networkId = formData.get("networkId") as string;
   const body = formData.get("body") as string;
-  const videoUrl = formData.get("videoUrl") as string;
 
   const supabase = await createClient();
   const {
@@ -60,7 +59,6 @@ export async function createPost(formData: FormData) {
     network_id: Number(networkId),
     user_id: user.id,
     body,
-    video_url: videoUrl || null,
   });
 
   if (error) {

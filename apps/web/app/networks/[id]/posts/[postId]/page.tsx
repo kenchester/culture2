@@ -6,6 +6,7 @@ import { type Author, getAvatarUrl, getDisplayName } from "@/lib/profiles";
 import { createReply } from "./actions";
 import { Button } from "@/components/ui/button";
 import { Field, Label, Textarea } from "@/components/ui/input";
+import { Linkify } from "@/lib/linkify";
 
 export default async function PostPage({
   params,
@@ -70,7 +71,9 @@ export default async function PostPage({
           >
             {author ? getDisplayName(author) : "Someone"}
           </Link>
-          <p className="text-body">{post.body}</p>
+          <p className="text-body">
+            <Linkify text={post.body} />
+          </p>
           {post.video_url && (
             <a
               href={post.video_url}
@@ -111,7 +114,9 @@ export default async function PostPage({
                 >
                   {replyAuthor ? getDisplayName(replyAuthor) : "Someone"}
                 </Link>
-                <p className="text-body">{reply.body}</p>
+                <p className="text-body">
+                  <Linkify text={reply.body} />
+                </p>
               </div>
             </div>
           );
