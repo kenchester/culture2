@@ -14,6 +14,7 @@ export function Footer() {
     pathname?.startsWith("/embed/") ||
     pathname?.startsWith("/embed-partners/demo/") ||
     pathname?.startsWith("/embed-partners/travel-demo/") ||
+    pathname?.startsWith("/embed-partners/remittance-demo/") ||
     searchParams.get("embed") === "1"
   ) {
     return null;

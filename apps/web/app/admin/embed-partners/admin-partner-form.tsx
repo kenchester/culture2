@@ -213,6 +213,15 @@ export function AdminPartnerForm({
         >
           {isCreatingDemo ? "Creating…" : "Travel Demo"}
         </Button>
+        <Button
+          type="button"
+          variant="secondary"
+          className="self-start"
+          disabled={isCreatingDemo}
+          onClick={() => openDemo("/embed-partners/remittance-demo")}
+        >
+          {isCreatingDemo ? "Creating…" : "Remittance Demo"}
+        </Button>
       </div>
     </form>
   );

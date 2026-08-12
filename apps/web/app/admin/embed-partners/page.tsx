@@ -77,6 +77,13 @@ export default async function AdminEmbedPartnersPage({
                 >
                   View travel demo
                 </Link>
+                <Link
+                  href={`/embed-partners/remittance-demo/${partner.slug}`}
+                  target="_blank"
+                  className="text-sm text-primary underline"
+                >
+                  View remittance demo
+                </Link>
                 <form action={deletePartner}>
                   <input type="hidden" name="partnerId" value={partner.id} />
                   <button type="submit" className="text-sm text-error underline">
