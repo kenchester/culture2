@@ -191,6 +191,23 @@ export function AdminPartnerForm({
         Hide origin label (white-label)
       </label>
 
+      <div className="flex flex-col gap-1">
+        <span className="text-sm font-medium text-ink">Join heading</span>
+        <label className="flex items-center gap-2 text-sm text-body">
+          <input
+            type="radio"
+            name="joinHeadingStyle"
+            value="partner_name"
+            defaultChecked
+          />
+          &ldquo;Join the local network of [Partner Name]&rdquo;
+        </label>
+        <label className="flex items-center gap-2 text-sm text-body">
+          <input type="radio" name="joinHeadingStyle" value="diaspora_network" />
+          &ldquo;Join our diaspora network&rdquo;
+        </label>
+      </div>
+
       <div className="flex gap-3">
         <Button type="submit" className="self-start">
           Create partner

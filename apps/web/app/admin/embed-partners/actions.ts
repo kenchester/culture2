@@ -12,6 +12,7 @@ async function insertPartnerFromForm(formData: FormData) {
   const hideOriginLabel = formData.get("hideOriginLabel") === "on";
   const originIsGlobal = formData.get("originIsGlobal") === "on";
   const jurisdictionIsGlobal = formData.get("jurisdictionIsGlobal") === "on";
+  const joinHeadingStyle = (formData.get("joinHeadingStyle") as string) || "partner_name";
   const jurisdictionPlaceIds = jurisdictionIsGlobal
     ? []
     : (JSON.parse((formData.get("jurisdictionPlaceIds") as string) || "[]") as number[]);
@@ -37,6 +38,7 @@ async function insertPartnerFromForm(formData: FormData) {
       hide_origin_label: hideOriginLabel,
       origin_is_global: originIsGlobal,
       is_global: jurisdictionIsGlobal,
+      join_heading_style: joinHeadingStyle,
     })
     .select("id")
     .single();

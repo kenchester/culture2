@@ -32,7 +32,7 @@ export default async function EmbedPage({
   const { data: partner } = await supabase
     .from("embed_partners")
     .select(
-      "id, name, slug, hide_origin_label, origin_is_global, is_global, locked_language_id, locked_origin_place_id, locked_language:locked_language_id(name), locked_origin_place:locked_origin_place_id(name), jurisdictions:embed_partner_jurisdictions(place:place_id(name))",
+      "id, name, slug, hide_origin_label, origin_is_global, is_global, join_heading_style, locked_language_id, locked_origin_place_id, locked_language:locked_language_id(name), locked_origin_place:locked_origin_place_id(name), jurisdictions:embed_partner_jurisdictions(place:place_id(name))",
     )
     .eq("slug", partnerSlug)
     .single();
@@ -42,6 +42,10 @@ export default async function EmbedPage({
   }
 
   const globalOrigin = partner.origin_is_global;
+  const joinHeading =
+    partner.join_heading_style === "diaspora_network"
+      ? "Join our diaspora network"
+      : `Join the local network of ${partner.name}`;
 
   // Surfaces the partner's jurisdiction restriction (if any) right in the
   // location field's label, so a visitor isn't left guessing why their
@@ -84,9 +88,7 @@ export default async function EmbedPage({
   if (globalOrigin && (!originId || !locationId)) {
     return (
       <div className="mx-auto flex w-full max-w-sm flex-1 flex-col justify-center gap-6 px-4 py-12">
-        <h1 className="text-2xl font-semibold text-ink">
-          Join the local network of {partner.name}
-        </h1>
+        <h1 className="text-2xl font-semibold text-ink">{joinHeading}</h1>
         <EmbedSearchForm partnerSlug={partnerSlug} locationLabel={locationLabel} />
       </div>
     );
@@ -95,9 +97,7 @@ export default async function EmbedPage({
   if (!globalOrigin && !locationId) {
     return (
       <div className="mx-auto flex w-full max-w-sm flex-1 flex-col justify-center gap-6 px-4 py-12">
-        <h1 className="text-2xl font-semibold text-ink">
-          Join the local network of {partner.name}
-        </h1>
+        <h1 className="text-2xl font-semibold text-ink">{joinHeading}</h1>
         {!partner.hide_origin_label && (
           <AutocompleteField
             label="Origin"
