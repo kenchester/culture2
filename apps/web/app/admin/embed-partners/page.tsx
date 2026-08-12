@@ -68,7 +68,14 @@ export default async function AdminEmbedPartnersPage({
                   target="_blank"
                   className="text-sm text-primary underline"
                 >
-                  View demo
+                  View embassy demo
+                </Link>
+                <Link
+                  href={`/embed-partners/travel-demo/${partner.slug}`}
+                  target="_blank"
+                  className="text-sm text-primary underline"
+                >
+                  View travel demo
                 </Link>
                 <form action={deletePartner}>
                   <input type="hidden" name="partnerId" value={partner.id} />

@@ -54,6 +54,23 @@ export function AdminPartnerForm({
     };
   }, [originKind, lockedOrigin]);
 
+  function openDemo(basePath: string) {
+    if (!formRef.current) return;
+    const formData = new FormData(formRef.current);
+    // Open the tab synchronously, in the click handler itself, so browsers
+    // don't treat it as a blocked popup - then point it at the demo once
+    // the partner is actually created.
+    const demoWindow = window.open("about:blank", "_blank");
+    setIsCreatingDemo(true);
+    demoAction(formData)
+      .then(({ slug }) => {
+        if (demoWindow) {
+          demoWindow.location.href = `${basePath}/${slug}`;
+        }
+      })
+      .finally(() => setIsCreatingDemo(false));
+  }
+
   return (
     <form ref={formRef} action={action} className="flex flex-col gap-4">
       <input type="hidden" name="originKind" value={originKind} />
@@ -183,24 +200,18 @@ export function AdminPartnerForm({
           variant="secondary"
           className="self-start"
           disabled={isCreatingDemo}
-          onClick={() => {
-            if (!formRef.current) return;
-            const formData = new FormData(formRef.current);
-            // Open the tab synchronously, in the click handler itself, so
-            // browsers don't treat it as a blocked popup - then point it at
-            // the demo once the partner is actually created.
-            const demoWindow = window.open("about:blank", "_blank");
-            setIsCreatingDemo(true);
-            demoAction(formData)
-              .then(({ slug }) => {
-                if (demoWindow) {
-                  demoWindow.location.href = `/embed-partners/demo/${slug}`;
-                }
-              })
-              .finally(() => setIsCreatingDemo(false));
-          }}
+          onClick={() => openDemo("/embed-partners/demo")}
         >
-          {isCreatingDemo ? "Creating…" : "Embed Demo"}
+          {isCreatingDemo ? "Creating…" : "Embassy Demo"}
+        </Button>
+        <Button
+          type="button"
+          variant="secondary"
+          className="self-start"
+          disabled={isCreatingDemo}
+          onClick={() => openDemo("/embed-partners/travel-demo")}
+        >
+          {isCreatingDemo ? "Creating…" : "Travel Demo"}
         </Button>
       </div>
     </form>
