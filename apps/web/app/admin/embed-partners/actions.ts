@@ -26,6 +26,16 @@ async function insertPartnerFromForm(formData: FormData) {
     redirect("/sign-in");
   }
 
+  // Backstop for the demo buttons, which build FormData directly and skip
+  // the browser's native required-field validation (only a real form
+  // submit triggers that) - without this, a blank name/slug silently
+  // becomes an empty string instead of failing anywhere.
+  if (!name.trim() || !slug.trim()) {
+    redirect(
+      `/admin/embed-partners?error=${encodeURIComponent("Partner name and URL slug are required.")}`,
+    );
+  }
+
   const isLanguage = originKind === "language";
 
   const { data: partner, error } = await supabase

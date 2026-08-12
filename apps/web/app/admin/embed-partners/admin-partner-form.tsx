@@ -56,6 +56,15 @@ export function AdminPartnerForm({
 
   function openDemo(basePath: string) {
     if (!formRef.current) return;
+    // These buttons are type="button", not type="submit" - clicking one
+    // never fires the form's native submit event, so browser-enforced
+    // required-field validation (and its "please fill out this field"
+    // bubble) never runs on its own. reportValidity() triggers that same
+    // check manually; without it, a blank required field like the URL
+    // slug silently becomes an empty string, and everything downstream
+    // (the insert, the demo URL, the embed code) breaks quietly instead
+    // of stopping here.
+    if (!formRef.current.reportValidity()) return;
     const formData = new FormData(formRef.current);
     // Open the tab synchronously, in the click handler itself, so browsers
     // don't treat it as a blocked popup - then point it at the demo once
