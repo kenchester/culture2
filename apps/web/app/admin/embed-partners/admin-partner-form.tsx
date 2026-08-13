@@ -25,6 +25,17 @@ export function AdminPartnerForm({
   const [isJurisdictionGlobal, setIsJurisdictionGlobal] = useState(false);
   const [jurisdictionPlaceholder, setJurisdictionPlaceholder] = useState<string | undefined>();
   const [isCreatingDemo, setIsCreatingDemo] = useState(false);
+  const [joinHeadingStyle, setJoinHeadingStyle] = useState<
+    "partner_name" | "diaspora_network" | "custom_group"
+  >("partner_name");
+
+  // The regions-only jurisdiction lock only makes sense (and only produces
+  // any results) when the jurisdiction is a single country - a region has
+  // no region-level children, so applying the lock to anything else would
+  // silently zero out every location search result.
+  const soleJurisdiction =
+    jurisdictions.length === 1 && "type" in jurisdictions[0] ? jurisdictions[0] : null;
+  const canLockToRegions = soleJurisdiction?.type === "country";
 
   // Suggest a realistic jurisdiction example nested inside whatever origin
   // place is locked, instead of a generic "e.g. Michigan" that has nothing
@@ -192,6 +203,18 @@ export function AdminPartnerForm({
               ))}
             </ul>
           )}
+          <label
+            className={`flex items-center gap-2 text-sm ${canLockToRegions ? "text-body" : "text-muted"}`}
+          >
+            <input
+              type="checkbox"
+              name="jurisdictionRegionsOnly"
+              disabled={!canLockToRegions}
+              defaultChecked={false}
+            />
+            Lock jurisdiction to only regions and not cities (only works if
+            choosing a country-level jurisdiction)
+          </label>
         </>
       )}
 
@@ -207,14 +230,47 @@ export function AdminPartnerForm({
             type="radio"
             name="joinHeadingStyle"
             value="partner_name"
-            defaultChecked
+            checked={joinHeadingStyle === "partner_name"}
+            onChange={() => setJoinHeadingStyle("partner_name")}
           />
           &ldquo;Join the local network of [Partner Name]&rdquo;
         </label>
         <label className="flex items-center gap-2 text-sm text-body">
-          <input type="radio" name="joinHeadingStyle" value="diaspora_network" />
+          <input
+            type="radio"
+            name="joinHeadingStyle"
+            value="diaspora_network"
+            checked={joinHeadingStyle === "diaspora_network"}
+            onChange={() => setJoinHeadingStyle("diaspora_network")}
+          />
           &ldquo;Join our diaspora network&rdquo;
         </label>
+        <label className="flex items-center gap-2 text-sm text-body">
+          <input
+            type="radio"
+            name="joinHeadingStyle"
+            value="custom_group"
+            checked={joinHeadingStyle === "custom_group"}
+            onChange={() => setJoinHeadingStyle("custom_group")}
+          />
+          &ldquo;Join a local ___ network&rdquo;
+        </label>
+        {joinHeadingStyle === "custom_group" && (
+          <div className="mt-1 max-w-xs">
+            <Field>
+              <Label htmlFor="join-heading-group-name">
+                What does this group call itself? (e.g. &ldquo;Saudis&rdquo;, not
+                &ldquo;Saudi Arabians&rdquo;)
+              </Label>
+              <Input
+                id="join-heading-group-name"
+                name="joinHeadingGroupName"
+                placeholder="e.g. Saudis"
+                required
+              />
+            </Field>
+          </div>
+        )}
       </div>
 
       <div className="flex gap-3">

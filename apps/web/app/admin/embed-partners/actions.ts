@@ -12,7 +12,9 @@ async function insertPartnerFromForm(formData: FormData) {
   const hideOriginLabel = formData.get("hideOriginLabel") === "on";
   const originIsGlobal = formData.get("originIsGlobal") === "on";
   const jurisdictionIsGlobal = formData.get("jurisdictionIsGlobal") === "on";
+  const jurisdictionRegionsOnly = formData.get("jurisdictionRegionsOnly") === "on";
   const joinHeadingStyle = (formData.get("joinHeadingStyle") as string) || "partner_name";
+  const joinHeadingGroupName = formData.get("joinHeadingGroupName") as string | null;
   const jurisdictionPlaceIds = jurisdictionIsGlobal
     ? []
     : (JSON.parse((formData.get("jurisdictionPlaceIds") as string) || "[]") as number[]);
@@ -36,6 +38,12 @@ async function insertPartnerFromForm(formData: FormData) {
     );
   }
 
+  if (joinHeadingStyle === "custom_group" && !joinHeadingGroupName?.trim()) {
+    redirect(
+      `/admin/embed-partners?error=${encodeURIComponent("The 'Join a local ___ network' heading needs a group name filled in.")}`,
+    );
+  }
+
   const isLanguage = originKind === "language";
 
   const { data: partner, error } = await supabase
@@ -48,7 +56,10 @@ async function insertPartnerFromForm(formData: FormData) {
       hide_origin_label: hideOriginLabel,
       origin_is_global: originIsGlobal,
       is_global: jurisdictionIsGlobal,
+      jurisdiction_regions_only: jurisdictionRegionsOnly,
       join_heading_style: joinHeadingStyle,
+      join_heading_group_name:
+        joinHeadingStyle === "custom_group" ? joinHeadingGroupName!.trim() : null,
     })
     .select("id")
     .single();

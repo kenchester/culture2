@@ -32,7 +32,7 @@ export default async function EmbedPage({
   const { data: partner } = await supabase
     .from("embed_partners")
     .select(
-      "id, name, slug, hide_origin_label, origin_is_global, is_global, join_heading_style, locked_language_id, locked_origin_place_id, locked_language:locked_language_id(name), locked_origin_place:locked_origin_place_id(name), jurisdictions:embed_partner_jurisdictions(place:place_id(name))",
+      "id, name, slug, hide_origin_label, origin_is_global, is_global, join_heading_style, join_heading_group_name, locked_language_id, locked_origin_place_id, locked_language:locked_language_id(name), locked_origin_place:locked_origin_place_id(name), jurisdictions:embed_partner_jurisdictions(place:place_id(name))",
     )
     .eq("slug", partnerSlug)
     .single();
@@ -45,7 +45,9 @@ export default async function EmbedPage({
   const joinHeading =
     partner.join_heading_style === "diaspora_network"
       ? "Join our diaspora network"
-      : `Join the local network of ${partner.name}`;
+      : partner.join_heading_style === "custom_group"
+        ? `Join a local ${partner.join_heading_group_name} network`
+        : `Join the local network of ${partner.name}`;
 
   // Surfaces the partner's jurisdiction restriction (if any) right in the
   // location field's label, so a visitor isn't left guessing why their
