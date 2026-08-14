@@ -39,9 +39,15 @@ export function SearchForm() {
         label={originKind === "language" ? "Language" : "Origin place"}
         kind={originKind}
         hiddenName="originId"
+        queryName="originQuery"
         placeholder={originKind === "place" ? "e.g. Tamil Nadu, India" : undefined}
       />
-      <AutocompleteField label="Location" kind="place" hiddenName="locationId" />
+      <AutocompleteField
+        label="Location"
+        kind="place"
+        hiddenName="locationId"
+        queryName="locationQuery"
+      />
       <Button type="submit" className="w-full">
         Search
       </Button>

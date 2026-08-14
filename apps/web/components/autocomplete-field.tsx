@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useId, useState } from "react";
+import { useEffect, useId, useRef, useState } from "react";
 import { Field, Input, Label } from "@/components/ui/input";
 
 export type PlaceOption = {
@@ -26,6 +26,7 @@ export function AutocompleteField({
   label,
   kind,
   hiddenName,
+  queryName,
   searchUrl = "/api/places/search",
   onSelect,
   placeholder,
@@ -37,6 +38,11 @@ export function AutocompleteField({
   label: string;
   kind: "place" | "language";
   hiddenName?: string;
+  // Submits whatever text is currently shown in the input (typed query, or
+  // the selected option's label) under this form field name - lets the
+  // server fall back to guessing a match when the user never picked a
+  // suggestion from the dropdown.
+  queryName?: string;
   searchUrl?: string;
   onSelect?: (option: AutocompleteOption | null) => void;
   placeholder?: string;
@@ -49,6 +55,20 @@ export function AutocompleteField({
   const [options, setOptions] = useState<AutocompleteOption[]>([]);
   const [selected, setSelected] = useState<AutocompleteOption | null>(initialOption);
   const inputId = useId();
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  // Otherwise the suggestion list stays open until the user picks an option
+  // or types something else - clicking anywhere else on the page should
+  // dismiss it too, without touching whatever text they've already typed.
+  useEffect(() => {
+    function handleClickOutside(e: MouseEvent) {
+      if (containerRef.current && !containerRef.current.contains(e.target as Node)) {
+        setOptions([]);
+      }
+    }
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
 
   useEffect(() => {
     if (disabled || selected || query.trim().length < 2) {
@@ -73,44 +93,47 @@ export function AutocompleteField({
   const visibleOptions = disabled || selected ? [] : options;
 
   return (
-    <Field>
-      <Label htmlFor={inputId}>{label}</Label>
-      <Input
-        id={inputId}
-        type="text"
-        disabled={disabled}
-        value={disabled ? (defaultValue ?? "") : selected ? optionLabel(selected) : query}
-        onChange={(e) => {
-          setSelected(null);
-          onSelect?.(null);
-          setQuery(e.target.value);
-        }}
-        placeholder={placeholder ?? (kind === "language" ? "e.g. Mandarin" : "e.g. Michigan")}
-        className={disabled ? "cursor-not-allowed bg-background text-muted" : undefined}
-      />
-      {hiddenName && <input type="hidden" name={hiddenName} value={selected?.id ?? ""} />}
-      {visibleOptions.length > 0 && (
-        <ul className="overflow-hidden rounded-md border border-border bg-surface shadow-sm">
-          {visibleOptions.map((option) => (
-            <li key={option.id}>
-              <button
-                type="button"
-                onClick={() => {
-                  setSelected(option);
-                  setOptions([]);
-                  onSelect?.(option);
-                }}
-                className="w-full px-3 py-2 text-left hover:bg-primary-light"
-              >
-                {optionLabel(option)}
-                {"type" in option && (
-                  <span className="ml-2 text-xs text-muted">{option.type}</span>
-                )}
-              </button>
-            </li>
-          ))}
-        </ul>
-      )}
-    </Field>
+    <div ref={containerRef}>
+      <Field>
+        <Label htmlFor={inputId}>{label}</Label>
+        <Input
+          id={inputId}
+          type="text"
+          name={queryName}
+          disabled={disabled}
+          value={disabled ? (defaultValue ?? "") : selected ? optionLabel(selected) : query}
+          onChange={(e) => {
+            setSelected(null);
+            onSelect?.(null);
+            setQuery(e.target.value);
+          }}
+          placeholder={placeholder ?? (kind === "language" ? "e.g. Mandarin" : "e.g. Michigan")}
+          className={disabled ? "cursor-not-allowed bg-background text-muted" : undefined}
+        />
+        {hiddenName && <input type="hidden" name={hiddenName} value={selected?.id ?? ""} />}
+        {visibleOptions.length > 0 && (
+          <ul className="overflow-hidden rounded-md border border-border bg-surface shadow-sm">
+            {visibleOptions.map((option) => (
+              <li key={option.id}>
+                <button
+                  type="button"
+                  onClick={() => {
+                    setSelected(option);
+                    setOptions([]);
+                    onSelect?.(option);
+                  }}
+                  className="w-full px-3 py-2 text-left hover:bg-primary-light"
+                >
+                  {optionLabel(option)}
+                  {"type" in option && (
+                    <span className="ml-2 text-xs text-muted">{option.type}</span>
+                  )}
+                </button>
+              </li>
+            ))}
+          </ul>
+        )}
+      </Field>
+    </div>
   );
 }
