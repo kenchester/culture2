@@ -5,6 +5,8 @@ import { createPartner, createPartnerDemoData, deletePartner } from "@/app/admin
 import { AdminPartnerForm } from "@/app/admin/embed-partners/admin-partner-form";
 import { EmbedCode } from "@/app/admin/embed-partners/embed-code";
 
+const PAGE_SIZE = 10;
+
 type PartnerRow = {
   id: number;
   name: string;
@@ -19,17 +21,28 @@ type PartnerRow = {
 export default async function AdminEmbedPartnersPage({
   searchParams,
 }: {
-  searchParams: Promise<{ error?: string }>;
+  searchParams: Promise<{ error?: string; page?: string }>;
 }) {
-  const { error } = await searchParams;
+  const { error, page: pageParam } = await searchParams;
+  const page = Math.max(1, Number(pageParam) || 1);
+  const offset = (page - 1) * PAGE_SIZE;
   const supabase = await createClient();
 
-  const { data: partners } = (await supabase
+  const { data: partners, count } = (await supabase
     .from("embed_partners")
     .select(
       "id, name, slug, is_global, origin_is_global, locked_language:locked_language_id(name), locked_origin_place:locked_origin_place_id(name), jurisdictions:embed_partner_jurisdictions(place:place_id(name))",
+      { count: "exact" },
     )
-    .order("created_at", { ascending: false })) as unknown as { data: PartnerRow[] | null };
+    .order("created_at", { ascending: false })
+    .range(offset, offset + PAGE_SIZE - 1)) as unknown as {
+    data: PartnerRow[] | null;
+    count: number | null;
+  };
+
+  const total = count ?? 0;
+  const hasPrev = page > 1;
+  const hasNext = offset + PAGE_SIZE < total;
 
   const headersList = await headers();
   const host = headersList.get("host");
@@ -96,6 +109,31 @@ export default async function AdminEmbedPartnersPage({
         })}
         {partners?.length === 0 && <p className="text-sm text-muted">No partners yet.</p>}
       </div>
+
+      {(hasPrev || hasNext) && (
+        <div className="flex items-center justify-between pt-2">
+          {hasPrev ? (
+            <Link
+              href={`/admin/embed-partners?page=${page - 1}`}
+              className="text-sm font-medium text-primary hover:underline"
+            >
+              &larr; Previous 10
+            </Link>
+          ) : (
+            <span className="text-sm text-muted">&larr; Previous 10</span>
+          )}
+          {hasNext ? (
+            <Link
+              href={`/admin/embed-partners?page=${page + 1}`}
+              className="text-sm font-medium text-primary hover:underline"
+            >
+              Next 10 &rarr;
+            </Link>
+          ) : (
+            <span className="text-sm text-muted">Next 10 &rarr;</span>
+          )}
+        </div>
+      )}
     </div>
   );
 }
