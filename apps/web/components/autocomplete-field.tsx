@@ -60,14 +60,22 @@ export function AutocompleteField({
   // Otherwise the suggestion list stays open until the user picks an option
   // or types something else - clicking anywhere else on the page should
   // dismiss it too, without touching whatever text they've already typed.
+  // Listening on "click" rather than "mousedown" matters here: closing the
+  // dropdown on mousedown reflows the layout (the dropdown collapses,
+  // shifting anything below it - like a Search button - upward) before
+  // mouseup fires, so a click aimed at that button lands on empty space
+  // instead and gets silently swallowed. "click" only fires once mousedown
+  // and mouseup have already resolved against the same element, so the
+  // button's own click (and its form submission) still goes through in the
+  // same click that dismisses the dropdown.
   useEffect(() => {
     function handleClickOutside(e: MouseEvent) {
       if (containerRef.current && !containerRef.current.contains(e.target as Node)) {
         setOptions([]);
       }
     }
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => document.removeEventListener("mousedown", handleClickOutside);
+    document.addEventListener("click", handleClickOutside);
+    return () => document.removeEventListener("click", handleClickOutside);
   }, []);
 
   useEffect(() => {
