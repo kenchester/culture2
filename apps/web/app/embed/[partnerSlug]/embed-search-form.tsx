@@ -50,12 +50,14 @@ export function EmbedSearchForm({
         label={originKind === "language" ? "Language" : "Origin place"}
         kind={originKind}
         hiddenName="originId"
+        queryName="originQuery"
         placeholder={originKind === "place" ? "e.g. Tamil Nadu, India" : undefined}
       />
       <AutocompleteField
         label={locationLabel}
         kind="place"
         hiddenName="locationId"
+        queryName="locationQuery"
         searchUrl={`/api/embed/${partnerSlug}/places/search`}
       />
       <Button type="submit">Search</Button>

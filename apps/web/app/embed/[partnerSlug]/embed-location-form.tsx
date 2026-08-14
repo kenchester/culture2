@@ -16,6 +16,7 @@ export function EmbedLocationForm({
         label={locationLabel}
         kind="place"
         hiddenName="locationId"
+        queryName="locationQuery"
         searchUrl={`/api/embed/${partnerSlug}/places/search`}
       />
       <Button type="submit">Search</Button>
