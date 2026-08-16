@@ -8,6 +8,27 @@ import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/input";
 import { Linkify } from "@/lib/linkify";
 
+// A minimal outline icon (fill toggles solid when liked) rather than an
+// emoji - this site is used by embassies and other professional
+// organizations, so the like control should read closer to YouTube's
+// understated thumbs-up than a colorful 👍.
+function ThumbsUpIcon({ filled }: { filled: boolean }) {
+  return (
+    <svg
+      viewBox="0 0 24 24"
+      fill={filled ? "currentColor" : "none"}
+      stroke="currentColor"
+      strokeWidth="1.6"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      className="h-4 w-4"
+    >
+      <path d="M14 9V5a3 3 0 0 0-3-3l-4 9v11h11.28a2 2 0 0 0 2-1.7l1.38-9a2 2 0 0 0-2-2.3H14Z" />
+      <path d="M7 22H4a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h3v11Z" />
+    </svg>
+  );
+}
+
 // Shared by both posts and replies (the two "kind"s of editable message in
 // a network), since the edit/delete UI is identical - only which server
 // action to call differs. redirectAfterDelete is for the one case where
@@ -127,7 +148,8 @@ export function EditableEntry({
             aria-label={liked ? `Unlike this ${kind}` : `Like this ${kind}`}
             className={`flex items-center gap-1 disabled:opacity-50 ${liked ? "text-primary" : "hover:text-primary"}`}
           >
-            👍{likeCount > 0 && <span>{likeCount}</span>}
+            <ThumbsUpIcon filled={liked} />
+            {likeCount > 0 && <span>{likeCount}</span>}
           </button>
           {canModify && mode === "view" && (
             <div className="flex gap-2">
