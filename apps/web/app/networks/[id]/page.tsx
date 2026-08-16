@@ -5,6 +5,7 @@ import { createClient } from "@/lib/supabase/server";
 import { type Author, getAvatarUrl, getDisplayName } from "@/lib/profiles";
 import { createPost, joinNetwork, leaveNetwork } from "@/app/networks/actions";
 import { EditableEntry } from "@/app/networks/editable-entry";
+import { InviteFriendsBox } from "@/app/networks/[id]/invite-friends-box";
 import { Button } from "@/components/ui/button";
 import { Field, Label, Textarea } from "@/components/ui/input";
 
@@ -19,10 +20,15 @@ export default async function NetworkPage({
   searchParams,
 }: {
   params: Promise<{ id: string }>;
-  searchParams: Promise<{ error?: string; embed?: string }>;
+  searchParams: Promise<{
+    error?: string;
+    embed?: string;
+    invited?: string;
+    inviteError?: string;
+  }>;
 }) {
   const { id } = await params;
-  const { error, embed } = await searchParams;
+  const { error, embed, invited, inviteError } = await searchParams;
   const isEmbedded = embed === "1";
   const supabase = await createClient();
 
@@ -48,6 +54,7 @@ export default async function NetworkPage({
     { data: location },
     { data: membership },
     { data: posts },
+    { data: myLikes },
   ] = await Promise.all([
     network.language_id
       ? supabase.from("languages").select("name").eq("id", network.language_id).single()
@@ -67,14 +74,18 @@ export default async function NetworkPage({
     supabase
       .from("posts")
       .select(
-        "id, body, video_url, created_at, author:user_id(id, username, first_name, last_name, img_path), post_replies(count)",
+        "id, body, video_url, created_at, author:user_id(id, username, first_name, last_name, img_path), post_replies(count), likes(count)",
       )
       .eq("network_id", network.id)
       .order("created_at", { ascending: false }),
+    user
+      ? supabase.from("likes").select("post_id").eq("user_id", user.id).not("post_id", "is", null)
+      : Promise.resolve({ data: null }),
   ]);
 
   const originName = language?.name ?? originPlace?.name ?? "?";
   const isMember = Boolean(membership);
+  const myLikedPostIds = new Set((myLikes ?? []).map((l) => l.post_id as number));
 
   const returnTo = `/networks/${network.id}${isEmbedded ? "?embed=1" : ""}`;
   const signInParams = new URLSearchParams({ returnTo });
@@ -82,120 +93,143 @@ export default async function NetworkPage({
   const signInHref = `/sign-in?${signInParams.toString()}`;
 
   return (
-    <div className="mx-auto flex w-full max-w-lg flex-1 flex-col gap-6 px-4 py-12">
-      <div>
-        <h1 className="font-display text-3xl text-ink">{network.title}</h1>
+    <div className="mx-auto grid w-full max-w-4xl flex-1 grid-cols-1 gap-8 px-4 py-12 lg:grid-cols-[1fr_18rem]">
+      <div className="flex w-full max-w-lg flex-col gap-6">
+        <div>
+          <h1 className="font-display text-3xl text-ink">{network.title}</h1>
+          <p className="text-sm text-muted">
+            {originName} in {location?.name ?? "?"}
+          </p>
+        </div>
+
         <p className="text-sm text-muted">
-          {originName} in {location?.name ?? "?"}
+          {network.member_count} members, {network.post_count} posts
         </p>
-      </div>
 
-      <p className="text-sm text-muted">
-        {network.member_count} members, {network.post_count} posts
-      </p>
-
-      <Link
-        href={`/networks/${network.id}/events${isEmbedded ? "?embed=1" : ""}`}
-        className="text-sm font-medium text-primary hover:underline"
-      >
-        Events
-      </Link>
-
-      {user ? (
-        <form action={isMember ? leaveNetwork : joinNetwork}>
-          <input type="hidden" name="networkId" value={network.id} />
-          {isEmbedded && <input type="hidden" name="embed" value="1" />}
-          <Button type="submit">{isMember ? "Leave network" : "Join network"}</Button>
-        </form>
-      ) : (
-        <Link href={signInHref} className="text-sm font-medium text-primary hover:underline">
-          Sign in to join
+        <Link
+          href={`/networks/${network.id}/events${isEmbedded ? "?embed=1" : ""}`}
+          className="text-sm font-medium text-primary hover:underline"
+        >
+          Events
         </Link>
-      )}
 
-      <div className="flex flex-col gap-4 border-t border-border pt-6">
-        {isMember && (
-          <form action={createPost} className="flex flex-col gap-2">
+        {user ? (
+          <form action={isMember ? leaveNetwork : joinNetwork}>
             <input type="hidden" name="networkId" value={network.id} />
             {isEmbedded && <input type="hidden" name="embed" value="1" />}
-            {error && (
-              <p className="rounded-md bg-error-bg px-3 py-2 text-sm text-error">{error}</p>
-            )}
-            <Field>
-              <Label htmlFor="post-body">Post</Label>
-              <Textarea
-                id="post-body"
-                name="body"
-                placeholder="Share something with this network..."
-                required
-              />
-            </Field>
-            <Button type="submit" className="self-start">
-              Post
-            </Button>
+            <Button type="submit">{isMember ? "Leave network" : "Join network"}</Button>
           </form>
+        ) : (
+          <Link href={signInHref} className="text-sm font-medium text-primary hover:underline">
+            Sign in to join
+          </Link>
         )}
 
-        <div className="flex flex-col gap-4">
-          {posts?.map((post) => {
-            const author = post.author as unknown as Author | null;
-            const avatarUrl = author ? getAvatarUrl(supabase, author.img_path) : null;
-            const replyCount =
-              (post.post_replies as unknown as { count: number } | { count: number }[] | null) ??
-              { count: 0 };
-            const replyCountValue = Array.isArray(replyCount)
-              ? (replyCount[0]?.count ?? 0)
-              : replyCount.count;
+        <div className="flex flex-col gap-4 border-t border-border pt-6">
+          {isMember && (
+            <form action={createPost} className="flex flex-col gap-2">
+              <input type="hidden" name="networkId" value={network.id} />
+              {isEmbedded && <input type="hidden" name="embed" value="1" />}
+              {error && (
+                <p className="rounded-md bg-error-bg px-3 py-2 text-sm text-error">{error}</p>
+              )}
+              <Field>
+                <Label htmlFor="post-body">Post</Label>
+                <Textarea
+                  id="post-body"
+                  name="body"
+                  placeholder="Share something with this network..."
+                  required
+                />
+              </Field>
+              <Button type="submit" className="self-start">
+                Post
+              </Button>
+            </form>
+          )}
 
-            return (
-              <div key={post.id} className="flex gap-3 border-b border-border pb-4">
-                {avatarUrl ? (
-                  <Image
-                    src={avatarUrl}
-                    alt=""
-                    width={32}
-                    height={32}
-                    className="h-8 w-8 shrink-0 rounded-full object-cover"
-                  />
-                ) : (
-                  <div className="h-8 w-8 shrink-0 rounded-full bg-border" />
-                )}
-                <div className="flex flex-1 flex-col gap-1">
-                  <Link
-                    href={author ? `/profile/${author.id}` : "#"}
-                    className="text-sm font-medium text-ink underline hover:text-primary"
-                  >
-                    {author ? getDisplayName(author) : "Someone"}
-                  </Link>
-                  <EditableEntry
-                    kind="post"
-                    itemId={post.id}
-                    body={post.body}
-                    canModify={user?.id === author?.id}
-                  />
-                  {post.video_url && (
-                    <a
-                      href={post.video_url}
-                      className="text-sm text-primary underline"
-                      target="_blank"
-                      rel="noreferrer"
-                    >
-                      {post.video_url}
-                    </a>
+          <div className="flex flex-col gap-4">
+            {posts?.map((post) => {
+              const author = post.author as unknown as Author | null;
+              const avatarUrl = author ? getAvatarUrl(supabase, author.img_path) : null;
+              const replyCount =
+                (post.post_replies as unknown as
+                  | { count: number }
+                  | { count: number }[]
+                  | null) ?? { count: 0 };
+              const replyCountValue = Array.isArray(replyCount)
+                ? (replyCount[0]?.count ?? 0)
+                : replyCount.count;
+              const likeCount =
+                (post.likes as unknown as { count: number } | { count: number }[] | null) ?? {
+                  count: 0,
+                };
+              const likeCountValue = Array.isArray(likeCount)
+                ? (likeCount[0]?.count ?? 0)
+                : likeCount.count;
+
+              return (
+                <div key={post.id} className="flex gap-3 border-b border-border pb-4">
+                  {avatarUrl ? (
+                    <Image
+                      src={avatarUrl}
+                      alt=""
+                      width={32}
+                      height={32}
+                      className="h-8 w-8 shrink-0 rounded-full object-cover"
+                    />
+                  ) : (
+                    <div className="h-8 w-8 shrink-0 rounded-full bg-border" />
                   )}
-                  <Link
-                    href={`/networks/${network.id}/posts/${post.id}${isEmbedded ? "?embed=1" : ""}`}
-                    className="text-sm text-muted underline hover:text-primary"
-                  >
-                    {replyLabel(replyCountValue)}
-                  </Link>
+                  <div className="flex flex-1 flex-col gap-1">
+                    <Link
+                      href={author ? `/profile/${author.id}` : "#"}
+                      className="text-sm font-medium text-ink underline hover:text-primary"
+                    >
+                      {author ? getDisplayName(author) : "Someone"}
+                    </Link>
+                    <EditableEntry
+                      kind="post"
+                      itemId={post.id}
+                      body={post.body}
+                      canModify={user?.id === author?.id}
+                      likeCount={likeCountValue}
+                      liked={myLikedPostIds.has(post.id)}
+                    />
+                    {post.video_url && (
+                      <a
+                        href={post.video_url}
+                        className="text-sm text-primary underline"
+                        target="_blank"
+                        rel="noreferrer"
+                      >
+                        {post.video_url}
+                      </a>
+                    )}
+                    <Link
+                      href={`/networks/${network.id}/posts/${post.id}${isEmbedded ? "?embed=1" : ""}`}
+                      className="text-sm text-muted underline hover:text-primary"
+                    >
+                      {replyLabel(replyCountValue)}
+                    </Link>
+                  </div>
                 </div>
-              </div>
-            );
-          })}
-          {posts?.length === 0 && <p className="text-sm text-muted">No posts yet.</p>}
+              );
+            })}
+            {posts?.length === 0 && <p className="text-sm text-muted">No posts yet.</p>}
+          </div>
         </div>
       </div>
+
+      {user && !isEmbedded && (
+        <aside>
+          <InviteFriendsBox
+            networkId={network.id}
+            invited={invited === "1"}
+            inviteError={inviteError}
+          />
+        </aside>
+      )}
     </div>
   );
 }

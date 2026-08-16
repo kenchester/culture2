@@ -24,7 +24,7 @@ export default async function PostPage({
   const { data: post } = await supabase
     .from("posts")
     .select(
-      "id, body, video_url, created_at, network_id, author:user_id(id, username, first_name, last_name, img_path)",
+      "id, body, video_url, created_at, network_id, author:user_id(id, username, first_name, last_name, img_path), likes(count)",
     )
     .eq("id", postId)
     .single();
@@ -37,13 +37,26 @@ export default async function PostPage({
     data: { user },
   } = await supabase.auth.getUser();
 
-  const { data: replies } = await supabase
-    .from("post_replies")
-    .select(
-      "id, body, created_at, author:user_id(id, username, first_name, last_name, img_path)",
-    )
-    .eq("post_id", postId)
-    .order("created_at", { ascending: true });
+  const [{ data: replies }, { data: myLikes }] = await Promise.all([
+    supabase
+      .from("post_replies")
+      .select(
+        "id, body, created_at, author:user_id(id, username, first_name, last_name, img_path), likes(count)",
+      )
+      .eq("post_id", postId)
+      .order("created_at", { ascending: true }),
+    user
+      ? supabase.from("likes").select("post_id, reply_id").eq("user_id", user.id)
+      : Promise.resolve({ data: null }),
+  ]);
+
+  const myLikedPostIds = new Set((myLikes ?? []).map((l) => l.post_id).filter(Boolean));
+  const myLikedReplyIds = new Set((myLikes ?? []).map((l) => l.reply_id).filter(Boolean));
+
+  function extractCount(value: unknown): number {
+    const count = (value as { count: number } | { count: number }[] | null) ?? { count: 0 };
+    return Array.isArray(count) ? (count[0]?.count ?? 0) : count.count;
+  }
 
   const author = post.author as unknown as Author | null;
   const avatarUrl = author ? getAvatarUrl(supabase, author.img_path) : null;
@@ -83,6 +96,8 @@ export default async function PostPage({
             itemId={post.id}
             body={post.body}
             canModify={user?.id === author?.id}
+            likeCount={extractCount(post.likes)}
+            liked={myLikedPostIds.has(post.id)}
             redirectAfterDelete={`/networks/${id}${embedSuffix}`}
           />
           {post.video_url && (
@@ -130,6 +145,8 @@ export default async function PostPage({
                   itemId={reply.id}
                   body={reply.body}
                   canModify={user?.id === replyAuthor?.id}
+                  likeCount={extractCount(reply.likes)}
+                  liked={myLikedReplyIds.has(reply.id)}
                 />
               </div>
             </div>

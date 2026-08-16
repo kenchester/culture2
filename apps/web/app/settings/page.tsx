@@ -21,7 +21,9 @@ export default async function SettingsPage({
 
   const { data: prefs } = await supabase
     .from("notification_prefs")
-    .select("events_upcoming, events_interested_in, network_activity, product_updates")
+    .select(
+      "events_upcoming, network_activity, product_updates, replies_to_your_posts, likes_on_your_posts",
+    )
     .eq("user_id", user.id)
     .single();
 
@@ -42,15 +44,7 @@ export default async function SettingsPage({
               name="events_upcoming"
               defaultChecked={prefs?.events_upcoming ?? true}
             />
-            Upcoming events
-          </label>
-          <label className="flex items-center gap-2 text-body">
-            <input
-              type="checkbox"
-              name="events_interested_in"
-              defaultChecked={prefs?.events_interested_in ?? true}
-            />
-            Events I&apos;m interested in
+            Events
           </label>
           <label className="flex items-center gap-2 text-body">
             <input
@@ -59,6 +53,22 @@ export default async function SettingsPage({
               defaultChecked={prefs?.network_activity ?? true}
             />
             Network activity
+          </label>
+          <label className="flex items-center gap-2 text-body">
+            <input
+              type="checkbox"
+              name="replies_to_your_posts"
+              defaultChecked={prefs?.replies_to_your_posts ?? true}
+            />
+            Replies to your posts
+          </label>
+          <label className="flex items-center gap-2 text-body">
+            <input
+              type="checkbox"
+              name="likes_on_your_posts"
+              defaultChecked={prefs?.likes_on_your_posts ?? true}
+            />
+            Likes on your posts
           </label>
           <label className="flex items-center gap-2 text-body">
             <input

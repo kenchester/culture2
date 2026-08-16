@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { deletePost, updatePost } from "@/app/networks/actions";
+import { deletePost, toggleLike, updatePost } from "@/app/networks/actions";
 import { deleteReply, updateReply } from "@/app/networks/[id]/posts/[postId]/actions";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/input";
@@ -18,19 +18,35 @@ export function EditableEntry({
   itemId,
   body,
   canModify,
+  likeCount,
+  liked,
   redirectAfterDelete,
 }: {
   kind: "post" | "reply";
   itemId: number;
   body: string;
   canModify: boolean;
+  likeCount: number;
+  liked: boolean;
   redirectAfterDelete?: string;
 }) {
   const router = useRouter();
   const [mode, setMode] = useState<"view" | "edit" | "confirmDelete">("view");
   const [draft, setDraft] = useState(body);
   const [isPending, setIsPending] = useState(false);
+  const [isLiking, setIsLiking] = useState(false);
   const [error, setError] = useState<string | null>(null);
+
+  async function handleToggleLike() {
+    setIsLiking(true);
+    const result = await toggleLike(kind, itemId);
+    setIsLiking(false);
+    if ("error" in result) {
+      setError(result.error);
+      return;
+    }
+    router.refresh();
+  }
 
   async function handleSave() {
     setIsPending(true);
@@ -103,26 +119,37 @@ export function EditableEntry({
         <p className="text-body">
           <Linkify text={body} />
         </p>
-        {canModify && mode === "view" && (
-          <div className="flex shrink-0 gap-2 text-sm text-muted">
-            <button
-              type="button"
-              onClick={() => setMode("edit")}
-              aria-label={`Edit ${kind}`}
-              className="hover:text-primary"
-            >
-              ✎
-            </button>
-            <button
-              type="button"
-              onClick={() => setMode("confirmDelete")}
-              aria-label={`Delete ${kind}`}
-              className="hover:text-error"
-            >
-              ✕
-            </button>
-          </div>
-        )}
+        <div className="flex shrink-0 items-center gap-3 text-sm text-muted">
+          <button
+            type="button"
+            onClick={handleToggleLike}
+            disabled={isLiking}
+            aria-label={liked ? `Unlike this ${kind}` : `Like this ${kind}`}
+            className={`flex items-center gap-1 disabled:opacity-50 ${liked ? "text-primary" : "hover:text-primary"}`}
+          >
+            👍{likeCount > 0 && <span>{likeCount}</span>}
+          </button>
+          {canModify && mode === "view" && (
+            <div className="flex gap-2">
+              <button
+                type="button"
+                onClick={() => setMode("edit")}
+                aria-label={`Edit ${kind}`}
+                className="hover:text-primary"
+              >
+                ✎
+              </button>
+              <button
+                type="button"
+                onClick={() => setMode("confirmDelete")}
+                aria-label={`Delete ${kind}`}
+                className="hover:text-error"
+              >
+                ✕
+              </button>
+            </div>
+          )}
+        </div>
       </div>
       {mode === "confirmDelete" && (
         <div className="flex items-center gap-2 text-sm text-body">

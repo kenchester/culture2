@@ -3,6 +3,9 @@
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
+import { sendEmail } from "@/lib/email";
+import { getOptedInRecipients } from "@/lib/notifications";
+import { getSiteUrl } from "@/lib/site-url";
 
 export async function createReply(formData: FormData) {
   const postId = formData.get("postId") as string;
@@ -29,6 +32,30 @@ export async function createReply(formData: FormData) {
     redirect(
       `/networks/${networkId}/posts/${postId}?error=${encodeURIComponent(error.message)}${embedSuffix}`,
     );
+  }
+
+  // Best-effort - a failed notification must never turn a successful
+  // reply into an error page for the person replying.
+  try {
+    const { data: post } = await supabase
+      .from("posts")
+      .select("user_id")
+      .eq("id", postId)
+      .single();
+
+    if (post && post.user_id !== user.id) {
+      const recipients = await getOptedInRecipients([post.user_id], "replies_to_your_posts");
+      if (recipients.length > 0) {
+        const siteUrl = await getSiteUrl();
+        await sendEmail({
+          to: recipients[0].email,
+          subject: "New reply on your CultureMesh post",
+          text: `Someone replied to your post on CultureMesh.\n\n${siteUrl}/networks/${networkId}/posts/${postId}`,
+        });
+      }
+    }
+  } catch {
+    // notification failure is non-fatal
   }
 
   revalidatePath(`/networks/${networkId}/posts/${postId}`);

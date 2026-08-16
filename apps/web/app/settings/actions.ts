@@ -18,8 +18,9 @@ export async function updateNotificationPrefs(formData: FormData) {
     .from("notification_prefs")
     .update({
       events_upcoming: formData.get("events_upcoming") === "on",
-      events_interested_in: formData.get("events_interested_in") === "on",
       network_activity: formData.get("network_activity") === "on",
+      replies_to_your_posts: formData.get("replies_to_your_posts") === "on",
+      likes_on_your_posts: formData.get("likes_on_your_posts") === "on",
       product_updates: formData.get("product_updates") === "on",
     })
     .eq("user_id", user.id);
