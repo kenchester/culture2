@@ -20,6 +20,7 @@ export function FaithSearchForm() {
         kind="place"
         hiddenName="locationId"
         queryName="locationQuery"
+        placeholder="e.g. Detroit, Michigan"
       />
       <Button type="submit" className="w-full">
         Search
