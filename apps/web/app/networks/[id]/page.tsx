@@ -1,6 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { getTranslations } from "next-intl/server";
 import { createClient } from "@/lib/supabase/server";
 import { type Author, getAvatarUrl, getDisplayName } from "@/lib/profiles";
 import { createPost, joinNetwork, leaveNetwork } from "@/app/networks/actions";
@@ -8,12 +9,6 @@ import { EditableEntry } from "@/app/networks/editable-entry";
 import { InviteFriendsBox } from "@/app/networks/[id]/invite-friends-box";
 import { Button } from "@/components/ui/button";
 import { Field, Label, Textarea } from "@/components/ui/input";
-
-function replyLabel(count: number): string {
-  if (count === 0) return "Reply";
-  if (count === 1) return "1 Reply";
-  return `${count} Replies`;
-}
 
 export default async function NetworkPage({
   params,
@@ -31,6 +26,7 @@ export default async function NetworkPage({
   const { error, embed, invited, inviteError } = await searchParams;
   const isEmbedded = embed === "1";
   const supabase = await createClient();
+  const t = await getTranslations("network");
 
   const {
     data: { user },
@@ -102,30 +98,30 @@ export default async function NetworkPage({
         <div>
           <h1 className="font-display text-3xl text-ink">{network.title}</h1>
           <p className="text-sm text-muted">
-            {originName} in {location?.name ?? "?"}
+            {t("originIn", { origin: originName, location: location?.name ?? "?" })}
           </p>
         </div>
 
         <p className="text-sm text-muted">
-          {network.member_count} members, {network.post_count} posts
+          {t("memberPostCounts", { members: network.member_count, posts: network.post_count })}
         </p>
 
         <Link
           href={`/networks/${network.id}/events${isEmbedded ? "?embed=1" : ""}`}
           className="text-sm font-medium text-primary hover:underline"
         >
-          Events
+          {t("events")}
         </Link>
 
         {user ? (
           <form action={isMember ? leaveNetwork : joinNetwork}>
             <input type="hidden" name="networkId" value={network.id} />
             {isEmbedded && <input type="hidden" name="embed" value="1" />}
-            <Button type="submit">{isMember ? "Leave network" : "Join network"}</Button>
+            <Button type="submit">{isMember ? t("leaveNetwork") : t("joinNetwork")}</Button>
           </form>
         ) : (
           <Link href={signInHref} className="text-sm font-medium text-primary hover:underline">
-            Sign in to join
+            {t("signInToJoin")}
           </Link>
         )}
 
@@ -138,16 +134,16 @@ export default async function NetworkPage({
                 <p className="rounded-md bg-error-bg px-3 py-2 text-sm text-error">{error}</p>
               )}
               <Field>
-                <Label htmlFor="post-body">Post</Label>
+                <Label htmlFor="post-body">{t("postLabel")}</Label>
                 <Textarea
                   id="post-body"
                   name="body"
-                  placeholder="Share something with this network..."
+                  placeholder={t("postPlaceholder")}
                   required
                 />
               </Field>
               <Button type="submit" className="self-start">
-                Post
+                {t("postSubmit")}
               </Button>
             </form>
           )}
@@ -190,7 +186,7 @@ export default async function NetworkPage({
                       href={author ? `/profile/${author.id}` : "#"}
                       className="text-sm font-medium text-ink underline hover:text-primary"
                     >
-                      {author ? getDisplayName(author) : "Someone"}
+                      {author ? getDisplayName(author) : t("someone")}
                     </Link>
                     <EditableEntry
                       kind="post"
@@ -214,13 +210,17 @@ export default async function NetworkPage({
                       href={`/networks/${network.id}/posts/${post.id}${isEmbedded ? "?embed=1" : ""}`}
                       className="text-sm text-muted underline hover:text-primary"
                     >
-                      {replyLabel(replyCountValue)}
+                      {replyCountValue === 0
+                        ? t("replyLabel.zero")
+                        : replyCountValue === 1
+                          ? t("replyLabel.one")
+                          : t("replyLabel.other", { count: replyCountValue })}
                     </Link>
                   </div>
                 </div>
               );
             })}
-            {posts?.length === 0 && <p className="text-sm text-muted">No posts yet.</p>}
+            {posts?.length === 0 && <p className="text-sm text-muted">{t("noPostsYet")}</p>}
           </div>
         </div>
       </div>

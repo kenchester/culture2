@@ -1,4 +1,5 @@
 import { redirect } from "next/navigation";
+import { getTranslations } from "next-intl/server";
 import { createClient } from "@/lib/supabase/server";
 import { updateNotificationPrefs } from "@/app/settings/actions";
 import { Button } from "@/components/ui/button";
@@ -10,6 +11,7 @@ export default async function SettingsPage({
 }) {
   const { error, saved } = await searchParams;
   const supabase = await createClient();
+  const t = await getTranslations("settings");
 
   const {
     data: { user },
@@ -29,10 +31,12 @@ export default async function SettingsPage({
 
   return (
     <div className="mx-auto flex w-full max-w-sm flex-1 flex-col justify-center gap-6 px-4 py-16">
-      <h1 className="text-center font-display text-2xl text-ink">Notification settings</h1>
+      <h1 className="text-center font-display text-2xl text-ink">{t("heading")}</h1>
       <div className="flex flex-col gap-6 rounded-lg border border-border bg-surface p-6 shadow-sm sm:p-8">
         {saved && (
-          <p className="rounded-md bg-success-bg px-3 py-2 text-sm text-success">Saved.</p>
+          <p className="rounded-md bg-success-bg px-3 py-2 text-sm text-success">
+            {t("saved")}
+          </p>
         )}
         {error && (
           <p className="rounded-md bg-error-bg px-3 py-2 text-sm text-error">{error}</p>
@@ -44,7 +48,7 @@ export default async function SettingsPage({
               name="events_upcoming"
               defaultChecked={prefs?.events_upcoming ?? true}
             />
-            Events
+            {t("events")}
           </label>
           <label className="flex items-center gap-2 text-body">
             <input
@@ -52,7 +56,7 @@ export default async function SettingsPage({
               name="network_activity"
               defaultChecked={prefs?.network_activity ?? true}
             />
-            Network activity
+            {t("networkActivity")}
           </label>
           <label className="flex items-center gap-2 text-body">
             <input
@@ -60,7 +64,7 @@ export default async function SettingsPage({
               name="replies_to_your_posts"
               defaultChecked={prefs?.replies_to_your_posts ?? true}
             />
-            Replies to your posts
+            {t("repliesToYourPosts")}
           </label>
           <label className="flex items-center gap-2 text-body">
             <input
@@ -68,7 +72,7 @@ export default async function SettingsPage({
               name="likes_on_your_posts"
               defaultChecked={prefs?.likes_on_your_posts ?? true}
             />
-            Likes on your posts
+            {t("likesOnYourPosts")}
           </label>
           <label className="flex items-center gap-2 text-body">
             <input
@@ -76,10 +80,10 @@ export default async function SettingsPage({
               name="product_updates"
               defaultChecked={prefs?.product_updates ?? true}
             />
-            Product updates
+            {t("productUpdates")}
           </label>
           <Button type="submit" className="w-full">
-            Save
+            {t("save")}
           </Button>
         </form>
       </div>

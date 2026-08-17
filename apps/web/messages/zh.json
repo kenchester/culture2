@@ -1,0 +1,380 @@
+{
+  "nav": {
+    "search": "搜索",
+    "signIn": "登录",
+    "signUp": "注册",
+    "profile": "简介",
+    "messages": "信息",
+    "settings": "背景设定",
+    "admin": "行政",
+    "signOut": "签出",
+    "changeLanguage": "更改语言"
+  },
+  "search": {
+    "speak": "说话",
+    "from": "来自",
+    "language": "语言",
+    "originPlace": "起源地",
+    "originPlacePlaceholder": "例如，印度泰米尔纳德邦",
+    "location": "位置",
+    "locationPlaceholder": "例如密歇根州底特律",
+    "submit": "搜索",
+    "pageHeading": "找到你的人脉",
+    "suggestNetwork": "找不到你想要的东西？建议一个网络。"
+  },
+  "auth": {
+    "title": "登录或创建账户",
+    "subtitle": "无论你身在何处，找到你的人。",
+    "bridge": {
+      "explanation": "你已经验证了，但这个浏览器在嵌入窗口内阻止登录。",
+      "continueNewTab": "在新标签页继续",
+      "checking": "检查中......",
+      "continueHere": "我在新标签页结束了——继续这里",
+      "tryAgain": "再试一次",
+      "stillBlocked": "在这个窗口里登录依然无法。"
+    },
+    "password": {
+      "label": "密码",
+      "signingIn": "正在签到......",
+      "submit": "登录",
+      "emailCode": "给我发个验证码吧",
+      "useDifferentEmail": "用另一个邮箱",
+      "signingInAs": "登录为 <b>{email}</b>。"
+    },
+    "code": {
+      "label": "代码",
+      "verifying": "验证中......",
+      "submit": "验证后继续",
+      "useDifferentEmail": "用另一个邮箱",
+      "weEmailedCode": "我们通过电子邮件发送了一个代码。<b>{email}</b>"
+    },
+    "email": {
+      "label": "电子邮件",
+      "nameLabel": "名称",
+      "namePlaceholder": "只有刚来这里才需要",
+      "continuing": "继续......",
+      "submit": "继续"
+    }
+  },
+  "home": {
+    "heading": "寻找你的侨民网络",
+    "subheading": "CultureMesh 通过人们的家乡和现居地连接他们——搜索语言或原籍地和地点即可找到你的网络，或者如果还不存在的新网络，可以启动它。",
+    "suggestNetwork": "找不到你想要的东西？建议一个网络。",
+    "steps": {
+      "search": {
+        "title": "搜索",
+        "body": "输入一种语言或原籍地，以及你现在居住的地点。"
+      },
+      "joinLaunch": {
+        "title": "加入或启动",
+        "body": "加入现有网络，或者成为第一个为你组合推出的网络。"
+      },
+      "connect": {
+        "title": "连接",
+        "body": "结识新朋友，分享帖子，一起主持或参加活动。"
+      }
+    }
+  },
+  "searchResults": {
+    "noNetworkYet": "目前还没有针对这种组合的网络。",
+    "launchNetwork": "启动这个网络",
+    "relatedBroader": "相关（更广泛）",
+    "relatedNarrower": "相关（更窄）",
+    "missingOrigin": "缺少一个可寻找的起源。",
+    "missingLocation": "缺少一个可以寻找的位置。",
+    "tryAgain": "再试一次",
+    "networksToJoin": "可加入的网络",
+    "notSureWhatYouMeant": "我们不太确定你的具体意思——以下是最接近的匹配。选你想找的那一个。",
+    "titleLanguage": "{origin}演讲者{location}",
+    "titleReligion": "{origin}社区{location}",
+    "titlePlace": "来自{origin} {location}",
+    "somethingWentWrong": "出了点问题： {message}",
+    "memberPostCounts": "{members}成员、{posts}职位",
+    "noMatchFor": "我们找不到“{query}的匹配。"
+  },
+  "settings": {
+    "heading": "通知设置",
+    "saved": "得救了。",
+    "events": "活动",
+    "networkActivity": "网络活动",
+    "repliesToYourPosts": "回复你的帖子",
+    "likesOnYourPosts": "你帖子上的点赞",
+    "productUpdates": "产品更新",
+    "save": "保存"
+  },
+  "eventDetail": {
+    "backToEvents": "回到事件",
+    "statuses": {
+      "going": "出发",
+      "interested": "感兴趣",
+      "declined": "拒绝"
+    },
+    "removeRsvp": "删除我的RSVP",
+    "signInToRsvp": "登录以回复",
+    "hostedBy": "主持人<link>{name}</link>",
+    "rsvpCounts": "{going}去了，{interested}感兴趣，{declined}拒绝了"
+  },
+  "events": {
+    "backToNetwork": "返回网络",
+    "titleLabel": "赛事名称",
+    "dateTimeLabel": "日期和时间",
+    "descriptionLabel": "描述（可选）",
+    "locationLabel": "地点（可选）",
+    "submit": "主办活动",
+    "noEventsYet": "还没有活动。",
+    "heading": "{title}活动"
+  },
+  "inviteFriends": {
+    "heading": "邀请朋友",
+    "intro": "认识想加入这个网络的人吗？输入他们的电子邮件，并用逗号分隔。",
+    "sent": "邀请函已发出。",
+    "emailsLabel": "电子邮件",
+    "emailsPlaceholder": "friend1@email.com，friend2@email.com",
+    "submit": "发送邀请函"
+  },
+  "postDetail": {
+    "backToNetwork": "返回网络",
+    "someone": "有人",
+    "noRepliesYet": "还没有回复。",
+    "replyLabel": "回复",
+    "replyPlaceholder": "写个回复......",
+    "replySubmit": "回复",
+    "signInToReply": "登录以回复"
+  },
+  "network": {
+    "events": "活动",
+    "leaveNetwork": "离职网络",
+    "joinNetwork": "加入网络",
+    "signInToJoin": "登录加入",
+    "postLabel": "帖子",
+    "postPlaceholder": "和这个网络分享点什么......",
+    "postSubmit": "帖子",
+    "someone": "有人",
+    "noPostsYet": "还没有帖子。",
+    "replyLabel": {
+      "zero": "回复",
+      "one": "1 回复",
+      "other": "{count}回复"
+    },
+    "originIn": "{origin}在{location}",
+    "memberPostCounts": "{members}成员、{posts}职位"
+  },
+  "editableEntry": {
+    "save": "保存",
+    "saving": "拯救......",
+    "cancel": "取消",
+    "deleting": "删除......",
+    "yes": "是的",
+    "no": "不",
+    "like": {
+      "post": "点赞这篇帖子",
+      "reply": "喜欢这个回复"
+    },
+    "unlike": {
+      "post": "不像这篇帖子",
+      "reply": "不像这个回复"
+    },
+    "edit": {
+      "post": "编辑帖子",
+      "reply": "编辑回复"
+    },
+    "delete": {
+      "post": "删除帖子",
+      "reply": "删除回复"
+    },
+    "deleteConfirm": {
+      "post": "删除这条帖子？",
+      "reply": "删除这条回复？"
+    },
+    "translate": "翻译",
+    "translating": "翻译......",
+    "translateNotFound": "找不到那篇帖子来翻译。",
+    "translateFailed": "翻译失败了。请再试一次。",
+    "showOriginal": "查看原文"
+  },
+  "suggestNetwork": {
+    "heading": "建议一个网络",
+    "intro": "在搜索中找不到你想要的语言或地点？告诉我们你想看到什么，我们会帮你看看。",
+    "sent": "谢谢！我们会审核你的建议。",
+    "speak": "说话",
+    "from": "来自",
+    "language": "语言",
+    "place": "地点",
+    "languagePlaceholder": "例如他加禄语",
+    "placePlaceholder": "例如，德克萨斯州奥斯汀",
+    "type": "类型",
+    "placeTypes": {
+      "city": "城市",
+      "region": "州/省",
+      "country": "乡村"
+    },
+    "submit": "提交建议"
+  },
+  "redeemed": {
+    "heading": "在世界任何地方找到基督徒社区",
+    "misconfigured": "这里配置有误——请尽快回来查看。",
+    "locationLabel": "您的位置",
+    "locationPlaceholder": "例如密歇根州底特律",
+    "submit": "搜索"
+  },
+  "faith": {
+    "heading": "找到你的信仰社区",
+    "religionLabel": "宗教",
+    "religionPlaceholder": "例如，Christian",
+    "locationLabel": "您的位置",
+    "locationPlaceholder": "例如密歇根州底特律",
+    "submit": "搜索"
+  },
+  "contact": {
+    "heading": "联系我们",
+    "intro": "有问题、账户问题，或者对CultureMesh有想法吗？给我们留言，我们会回复你。",
+    "sent": "消息已发送。我们会尽快回复你。",
+    "nameLabel": "你的名字",
+    "emailLabel": "你的邮箱",
+    "subjectLabel": "主题",
+    "subjectPlaceholder": "选择一个主题",
+    "subjects": {
+      "general": "一般问题",
+      "problem": "举报问题",
+      "embassy": "大使馆或合作伙伴调查",
+      "privacy": "隐私或数据请求",
+      "other": "其他"
+    },
+    "messageLabel": "信息",
+    "submit": "发送消息"
+  },
+  "footer": {
+    "about": "关于我们",
+    "privacy": "隐私政策",
+    "terms": "条款与条件",
+    "contact": "联系我们",
+    "copyright": "© {year} CultureMesh有限责任公司。版权所有。"
+  },
+  "common": {
+    "legalDisclaimer": "本页已自动翻译。英文版是具有法律约束力的版本。"
+  },
+  "terms": {
+    "title": "条款与条件",
+    "lastUpdated": "最后更新于2026年8月9日。",
+    "intro": "这些条款和条件（“条款”）规范您对CultureMesh（“CultureMesh”、“我们”、“我们”或“我们的”）的访问和使用，以及我们提供的网站和服务（合称“服务”）。通过创建账户或以其他方式使用本服务，即表示您同意受本条款约束。如果您不同意，请勿使用本服务。CultureMesh由密歇根州有限责任公司CultureMesh LLC运营。",
+    "eligibility": {
+      "heading": "参赛资格",
+      "body": "您必须年满13岁才能创建账户或使用服务。使用本服务即表示您满足这一要求，并且您提供的所有信息均属准确。"
+    },
+    "whatCultureMeshIs": {
+      "heading": "什么是CultureMesh",
+      "body": "CultureMesh 是一个平台，通过语言或原籍地与他们当前居住地连接人们。你可以搜索该组合的现有网络，加入它，或者如果还不存在的新网络，可以重新启动。在网络内，成员可以发帖、回复、互相发消息，并主持或参加活动。"
+    },
+    "accounts": {
+      "heading": "账号",
+      "body": "您有责任维护账户凭证的机密性以及账户下的所有活动。如果您怀疑账户被未经授权使用，请立即联系我们。你同意在创建账户时提供准确的信息并保持最新。"
+    },
+    "yourContent": {
+      "heading": "你的内容",
+      "p1": "您对通过服务提交的任何个人资料信息、帖子、回复、消息或活动列表的内容负全责。您保留提交内容的所有权，但授予CultureMesh托管、展示和分发该内容以运营服务的许可。",
+      "p2": "我们可能会删除违反这些条款的内容，并可能暂停或终止反复违反条款的账户。"
+    },
+    "communityConduct": {
+      "heading": "社区行为",
+      "body": "您同意：不将服务用于任何非法目的;骚扰、威胁或歧视其他用户;冒充任何人或虚假陈述您与个人或实体的关联;抓取、逆向工程或干扰服务的运作;或利用服务剥削或危害未成年人。"
+    },
+    "embassyAndPartnerEmbeds": {
+      "heading": "大使馆及合作伙伴嵌入",
+      "body": "CultureMesh 提供白标嵌入选项，使使馆和文化组织能够在其网站上展示一个范围明确、无 CultureMesh 品牌化的网络搜索版本。这些合作关系由CultureMesh员工直接配置。通过嵌入页面启动或加入网络仍受这些条款约束。"
+    },
+    "intellectualProperty": {
+      "heading": "知识产权",
+      "body": "该服务，包括其设计、文本、图形及底层软件，均归CultureMesh LLC或我们的许可方所有，并受知识产权法保护。除非服务本身允许，否则你不得复制、修改或分发服务的任何部分。"
+    },
+    "disclaimers": {
+      "heading": "免责声明",
+      "body": "本服务以“现状”和“可得状态”提供，不提供任何明示或暗示的保证，包括适销性、特定用途适用性和不侵权等保证。CultureMesh不控制也不对任何用户的行为负责，无论是在服务上还是服务外。你对与其他用户的互动负全责。"
+    },
+    "limitationOfLiability": {
+      "heading": "责任限制",
+      "body": "在法律允许的最大范围内，CultureMesh不对因您使用服务而产生的任何间接、附带、特殊、后果或惩罚性损害赔偿承担责任。在法律允许的最大范围内，CultureMesh对因本服务产生的或相关索赔的全部责任不得超过100美元。"
+    },
+    "indemnification": {
+      "heading": "赔偿",
+      "body": "您同意对CultureMesh因使用服务、违反本条款或与其他用户互动而产生的任何索赔、损失或费用（包括合理的律师费）给予赔偿并免于伤害。"
+    },
+    "governingLaw": {
+      "heading": "治理法律",
+      "body": "这些条款受密歇根州法律管辖，不考虑其法律冲突原则。任何因本条款或服务相关的争议，将专属在密歇根州的州或联邦法院提出，您同意这些法院的管辖权。"
+    },
+    "termination": {
+      "heading": "终止",
+      "body": "您可以随时通过联系我们停止使用服务并删除您的账户。如果您违反本条款，或因其他合理通知的理由，我们可能会暂停或终止您对服务的访问，除非为保护服务或用户需要立即采取行动。"
+    },
+    "changesToTheseTerms": {
+      "heading": "这些条款的变更",
+      "body": "我们可能会不时更新这些条款。如果我们做出重大变更，将在变更生效前通过服务通知。在变更生效后继续使用服务意味着您接受更新后的条款。"
+    },
+    "miscellaneous": {
+      "heading": "其他",
+      "body": "如果本条款中的任何条款被判定不可执行，其余条款将继续完全有效。我们未能执行任何条款，并不意味着放弃了该条款。本条款连同我们的隐私政策，是您与CultureMesh之间关于本服务的全部协议。"
+    },
+    "contactUs": "有关这些条款的问题可以通过我们的<link>“联系我们</link>”页面发送。"
+  },
+  "privacy": {
+    "title": "隐私政策",
+    "lastUpdated": "最后更新于2026年8月9日。",
+    "intro": "本隐私政策解释了CultureMesh LLC（“CultureMesh”、“我们”、“我们”或“我们的”）在您使用我们的网站和服务（“服务”）时，如何收集、使用和共享信息。使用本服务即表示您同意按照此处所述的信息收集和使用。",
+    "informationWeCollect": {
+      "heading": "我们收集的信息",
+      "account": "<b>账户信息。</b>当您创建账户时，我们会收集您的电子邮件地址和密码。",
+      "profile": "<b>个人资料信息。</b>你可以添加用户名、名字、头像和简短的“关于我”描述。",
+      "networkActivity": "<b>网络活动。</b>我们收集你加入或启动的网络、你写的帖子和回复、你举办或回复的活动，以及你的通知偏好。",
+      "messages": "<b>留言。</b>如果您通过服务给其他用户发送消息，我们会保存该信息的内容。",
+      "suggestedNetwork": "<b>推荐网络投稿。</b>如果您建议的网络尚未存在，我们会收集您提交的来源和位置文本。",
+      "contactForm": "<b>联系表格。</b>如果您联系我们，我们会收集您的姓名、电子邮件地址和信息。",
+      "usage": "<b>使用信息。</b>我们收集运营服务所需的标准技术信息，如您的IP地址、浏览器类型以及访问的页面，主要通过服务器日志收集。"
+    },
+    "howWeUseInformation": {
+      "heading": "我们如何使用信息",
+      "body": "我们利用收集的信息进行：运营和维护服务;连接网络、活动及其他会员;发送你选择接收的通知;与你沟通你的账户;侦测并防止欺诈、滥用及违反我们的条款和条件;并遵守法律义务。我们不出售您的个人信息，目前也不使用追踪您跨网站的广告或分析服务。"
+    },
+    "howWeShareInformation": {
+      "heading": "我们如何共享信息",
+      "intro": "我们与以下服务提供商共享信息，这些服务提供商代表我们处理信息，仅用于本政策所述的目的：",
+      "supabase": "<b>Supabase公司</b>——托管我们的数据库、认证和文件存储，包括个人资料数据、帖子、消息和事件记录。",
+      "resend": "<b>Resend</b> —— 发送事务性邮件，如账户确认和密码重置邮件，以及通过我们的联系表单发送的消息。",
+      "vercel": "<b>Vercel公司</b>——主持并服务。",
+      "legal": "如果法律要求，我们也可能分享信息，以保护CultureMesh、用户或公众的权利、财产或安全，或与资产合并、收购或出售相关，在这种情况下，我们会要求接收方履行本政策中的承诺。",
+      "members": "网络的其他成员可以看到你选择在该网络中展示的个人资料信息、帖子和回复，以及你与他们直接交换的信息内容。如果大使馆或合作组织运营了CultureMesh的白标嵌入，而你通过该平台启动或加入网络，则会收集本政策中描述的信息——合作伙伴不会获得对你账户的任何额外访问权限。"
+    },
+    "cookies": {
+      "heading": "饼干",
+      "body": "我们仅使用必要的Cookie，以确保您登录并安全运营服务。我们目前不使用广告或第三方追踪Cookie。"
+    },
+    "dataRetention": {
+      "heading": "数据保留",
+      "body": "只要您的账户仍然活跃，或根据需要，我们会保留您的信息，以提供服务、遵守法律义务、解决争议并执行协议。"
+    },
+    "yourRightsAndChoices": {
+      "heading": "您的权利与选择",
+      "p1": "你可以直接从账户设置访问和更新大部分个人资料信息。您可以随时联系我们，申请访问、更正或删除您的个人信息。我们会在合理时间内回复已验证的请求。",
+      "p2": "根据你所在的地区，根据适用法律，你可能对个人信息拥有额外的权利。您可以通过联系我们行使这些权利中的任意一项。"
+    },
+    "childrensPrivacy": {
+      "heading": "儿童隐私",
+      "body": "本服务不面向13岁以下人士，也无法使用。我们不会故意收集13岁以下任何人的信息。如果我们发现收集了13岁以下人士的信息，我们会删除。"
+    },
+    "security": {
+      "heading": "安全性",
+      "body": "我们采用合理的技术和组织措施来保护我们所持有的信息。没有任何传输或存储方式是完全安全的，我们也无法保证绝对安全。"
+    },
+    "changesToThisPolicy": {
+      "heading": "该政策的变更",
+      "body": "我们可能会不时更新本隐私政策。如果我们做出重大变更，将在变更生效前通过服务或其他合理方式通知。"
+    },
+    "contactUs": "如果您对本隐私政策有疑问或希望行使上述任何权利，请通过我们的<link>“联系我们</link>”页面与我们联系。"
+  },
+  "about": {
+    "heading": "关于CultureMesh",
+    "paragraph1": "CultureMesh通过两件事连接人们：他们的出身地和他们现在居住的地方。在你当前的城市或州之外搜索一种语言或原籍地，你会发现（或可以开始）一个拥有这种组合的人网络——一个为文化和地理的特殊重叠而设的家，这是其他地方最难找到的。",
+    "paragraph2": "无论是跨越海洋还是跨越国家，每一个动作都带来了带回家的挑战。它存在于你渴望烹饪的菜肴中，存在于你怀念的口语表达中，也体现在对共同传统的默契理解中。CultureMesh创造了这些双重身份能够共同发展的空间。通过将你的出身与现今结合，它将庞大的城市转变为亲密、本地化的社区，共同的根源成为通往归属的直接桥梁。",
+    "paragraph3": "通过这些量身定制的网络，邻居们成为终生的朋友、导师和文化的支柱。无论是组织本地聚会、交流适应新环境的建议，还是用母语分享笑声，CultureMesh 都能将搬迁的孤独转化为共同身份的庆典。它不仅仅是地点索引——它是一个全球性的归属网络，确保无论你走多远，都永远不会真正远离家乡。",
+    "paragraph4": "CultureMesh由密歇根州有限责任公司CultureMesh LLC运营。"
+  }
+}

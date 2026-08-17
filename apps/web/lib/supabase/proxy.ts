@@ -2,6 +2,7 @@ import { createServerClient } from "@supabase/ssr";
 import { NextResponse, type NextRequest } from "next/server";
 import { publicEnv } from "@/lib/env.public";
 import { getAuthCookieOptions } from "@/lib/supabase/cookie-options";
+import { detectLocaleFromCountry } from "@/lib/locale";
 
 // Each sequestered subdomain gets its home/search path rewritten to its
 // own page - faith.culturemesh.com to a full religion picker,
@@ -61,6 +62,18 @@ export async function updateSession(request: NextRequest) {
   // Revalidates the session against Supabase Auth on every request (not just
   // reading the cookie) so a revoked/expired session can't slip through.
   await supabase.auth.getUser();
+
+  // One-time locale bootstrap: only fires while no NEXT_LOCALE cookie exists
+  // yet, so a visitor's own choice (set via the language switcher) always
+  // wins on every later request. x-vercel-ip-country is only populated on
+  // Vercel's network, so local dev always falls back to "en" here.
+  if (!request.cookies.get("NEXT_LOCALE")) {
+    const country = request.headers.get("x-vercel-ip-country");
+    response.cookies.set("NEXT_LOCALE", detectLocaleFromCountry(country), {
+      path: "/",
+      maxAge: 60 * 60 * 24 * 365,
+    });
+  }
 
   return response;
 }

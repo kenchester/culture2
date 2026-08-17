@@ -1,3 +1,4 @@
+import { getTranslations } from "next-intl/server";
 import { sendContactMessage } from "@/app/(marketing)/contact/actions";
 import { Button } from "@/components/ui/button";
 import { Field, fieldClass, Input, Label, Textarea } from "@/components/ui/input";
@@ -8,20 +9,18 @@ export default async function ContactPage({
   searchParams: Promise<{ error?: string; sent?: string }>;
 }) {
   const { error, sent } = await searchParams;
+  const t = await getTranslations("contact");
 
   return (
     <div className="mx-auto flex w-full max-w-lg flex-1 flex-col gap-6 px-4 py-16">
       <div className="flex flex-col gap-2">
-        <h1 className="font-display text-4xl text-ink">Contact Us</h1>
-        <p className="text-body">
-          Have a question, a problem with your account, or an idea for
-          CultureMesh? Send us a message and we&apos;ll get back to you.
-        </p>
+        <h1 className="font-display text-4xl text-ink">{t("heading")}</h1>
+        <p className="text-body">{t("intro")}</p>
       </div>
 
       {sent && (
         <p className="rounded-md bg-success-bg px-3 py-2 text-sm text-success">
-          Message sent. We&apos;ll get back to you soon.
+          {t("sent")}
         </p>
       )}
       {error && (
@@ -30,32 +29,32 @@ export default async function ContactPage({
 
       <form action={sendContactMessage} className="flex flex-col gap-4">
         <Field>
-          <Label htmlFor="name">Your name</Label>
+          <Label htmlFor="name">{t("nameLabel")}</Label>
           <Input id="name" name="name" required />
         </Field>
         <Field>
-          <Label htmlFor="email">Your email</Label>
+          <Label htmlFor="email">{t("emailLabel")}</Label>
           <Input id="email" name="email" type="email" required />
         </Field>
         <Field>
-          <Label htmlFor="subject">Subject</Label>
+          <Label htmlFor="subject">{t("subjectLabel")}</Label>
           <select id="subject" name="subject" required defaultValue="" className={fieldClass}>
             <option value="" disabled>
-              Choose a subject
+              {t("subjectPlaceholder")}
             </option>
-            <option value="General question">General question</option>
-            <option value="Report a problem">Report a problem</option>
-            <option value="Embassy or partner inquiry">Embassy or partner inquiry</option>
-            <option value="Privacy or data request">Privacy or data request</option>
-            <option value="Other">Other</option>
+            <option value="General question">{t("subjects.general")}</option>
+            <option value="Report a problem">{t("subjects.problem")}</option>
+            <option value="Embassy or partner inquiry">{t("subjects.embassy")}</option>
+            <option value="Privacy or data request">{t("subjects.privacy")}</option>
+            <option value="Other">{t("subjects.other")}</option>
           </select>
         </Field>
         <Field>
-          <Label htmlFor="message">Message</Label>
+          <Label htmlFor="message">{t("messageLabel")}</Label>
           <Textarea id="message" name="message" required rows={6} />
         </Field>
         <Button type="submit" className="self-start">
-          Send message
+          {t("submit")}
         </Button>
       </form>
     </div>

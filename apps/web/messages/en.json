@@ -1,0 +1,365 @@
+{
+  "nav": {
+    "search": "Search",
+    "signIn": "Sign in",
+    "signUp": "Sign up",
+    "profile": "Profile",
+    "messages": "Messages",
+    "settings": "Settings",
+    "admin": "Admin",
+    "signOut": "Sign out",
+    "changeLanguage": "Change language"
+  },
+  "search": {
+    "speak": "Speak",
+    "from": "From",
+    "language": "Language",
+    "originPlace": "Origin place",
+    "originPlacePlaceholder": "e.g. Tamil Nadu, India",
+    "location": "Location",
+    "locationPlaceholder": "e.g. Detroit, Michigan",
+    "submit": "Search",
+    "pageHeading": "Find your network",
+    "suggestNetwork": "Can't find what you're looking for? Suggest a network."
+  },
+  "common": {
+    "legalDisclaimer": "This page has been translated automatically. The English version is the legally binding version."
+  },
+  "terms": {
+    "title": "Terms and Conditions",
+    "lastUpdated": "Last updated August 9, 2026.",
+    "intro": "These Terms and Conditions (\"Terms\") govern your access to and use of CultureMesh (\"CultureMesh,\" \"we,\" \"us,\" or \"our\") and the website and services we make available (together, the \"Service\"). By creating an account or otherwise using the Service, you agree to be bound by these Terms. If you do not agree, do not use the Service. CultureMesh is operated by CultureMesh LLC, a Michigan limited liability company.",
+    "eligibility": {
+      "heading": "Eligibility",
+      "body": "You must be at least 13 years old to create an account or use the Service. By using the Service, you represent that you meet this requirement and that all information you provide is accurate."
+    },
+    "whatCultureMeshIs": {
+      "heading": "What CultureMesh Is",
+      "body": "CultureMesh is a platform that connects people by a language or place of origin combined with where they currently live. You can search for an existing network for that combination, join it, or launch a new one if it doesn't exist yet. Within a network, members can post, reply, message each other, and host or attend events."
+    },
+    "accounts": {
+      "heading": "Accounts",
+      "body": "You are responsible for maintaining the confidentiality of your account credentials and for all activity under your account. Notify us immediately if you suspect unauthorized use of your account by contacting us. You agree to provide accurate information when creating your account and to keep it up to date."
+    },
+    "yourContent": {
+      "heading": "Your Content",
+      "p1": "You are solely responsible for the content of any profile information, post, reply, message, or event listing you submit through the Service. You retain ownership of the content you submit, but you grant CultureMesh a license to host, display, and distribute that content as needed to operate the Service.",
+      "p2": "We may remove content that violates these Terms, and we may suspend or terminate accounts that repeatedly violate them."
+    },
+    "communityConduct": {
+      "heading": "Community Conduct",
+      "body": "You agree not to: use the Service for any unlawful purpose; harass, threaten, or discriminate against another user; impersonate any person or misrepresent your affiliation with a person or entity; scrape, reverse-engineer, or interfere with the operation of the Service; or use the Service to exploit or endanger a minor."
+    },
+    "embassyAndPartnerEmbeds": {
+      "heading": "Embassy and Partner Embeds",
+      "body": "CultureMesh offers a white-label embed option that lets embassies and cultural organizations surface a scoped, CultureMesh-branding-free version of network search on their own website. These partnerships are configured directly by CultureMesh staff. Launching or joining a network through an embedded page is still subject to these Terms."
+    },
+    "intellectualProperty": {
+      "heading": "Intellectual Property",
+      "body": "The Service, including its design, text, graphics, and underlying software, is owned by CultureMesh LLC or our licensors and is protected by intellectual property laws. You may not copy, modify, or distribute any part of the Service except as the Service itself permits."
+    },
+    "disclaimers": {
+      "heading": "Disclaimers",
+      "body": "The service is provided \"as is\" and \"as available,\" without warranties of any kind, whether express or implied, including warranties of merchantability, fitness for a particular purpose, and non-infringement. CultureMesh does not control and is not responsible for the conduct of any user, on or off the Service. You are solely responsible for your interactions with other users."
+    },
+    "limitationOfLiability": {
+      "heading": "Limitation of Liability",
+      "body": "To the maximum extent permitted by law, CultureMesh will not be liable for any indirect, incidental, special, consequential, or punitive damages arising out of or related to your use of the Service. To the maximum extent permitted by law, CultureMesh's total liability for any claim arising out of or related to the Service will not exceed one hundred U.S. dollars."
+    },
+    "indemnification": {
+      "heading": "Indemnification",
+      "body": "You agree to indemnify and hold CultureMesh harmless from any claim, loss, or expense (including reasonable attorneys' fees) arising out of your use of the Service, your violation of these Terms, or your interactions with another user."
+    },
+    "governingLaw": {
+      "heading": "Governing Law",
+      "body": "These Terms are governed by the laws of the State of Michigan, without regard to its conflict-of-laws principles. Any dispute arising out of or relating to these Terms or the Service will be brought exclusively in the state or federal courts located in Michigan, and you consent to the jurisdiction of those courts."
+    },
+    "termination": {
+      "heading": "Termination",
+      "body": "You may stop using the Service and delete your account at any time by contacting us. We may suspend or terminate your access to the Service if you violate these Terms, or for any other reason with reasonable notice, except where immediate action is necessary to protect the Service or its users."
+    },
+    "changesToTheseTerms": {
+      "heading": "Changes to These Terms",
+      "body": "We may update these Terms from time to time. If we make material changes, we will provide notice through the Service before the changes take effect. Continuing to use the Service after changes take effect means you accept the updated Terms."
+    },
+    "miscellaneous": {
+      "heading": "Miscellaneous",
+      "body": "If any provision of these Terms is found unenforceable, the remaining provisions will remain in full effect. Our failure to enforce any provision is not a waiver of it. These Terms, together with our Privacy Policy, are the entire agreement between you and CultureMesh regarding the Service."
+    },
+    "contactUs": "Questions about these Terms can be sent through our <link>Contact Us</link> page."
+  },
+  "privacy": {
+    "title": "Privacy Policy",
+    "lastUpdated": "Last updated August 9, 2026.",
+    "intro": "This Privacy Policy explains how CultureMesh LLC (\"CultureMesh,\" \"we,\" \"us,\" or \"our\") collects, uses, and shares information when you use our website and services (the \"Service\"). By using the Service, you agree to the collection and use of information as described here.",
+    "informationWeCollect": {
+      "heading": "Information We Collect",
+      "account": "<b>Account information.</b> When you create an account, we collect your email address and password.",
+      "profile": "<b>Profile information.</b> You may add a username, first and last name, a profile photo, and a short \"about me\" description.",
+      "networkActivity": "<b>Network activity.</b> We collect the networks you join or launch, the posts and replies you write, the events you host or RSVP to, and your notification preferences.",
+      "messages": "<b>Messages.</b> If you message another user through the Service, we store the content of that message.",
+      "suggestedNetwork": "<b>Suggested-network submissions.</b> If you suggest a network that doesn't exist yet, we collect the origin and location text you submit.",
+      "contactForm": "<b>Contact form.</b> If you contact us, we collect your name, email address, and message.",
+      "usage": "<b>Usage information.</b> We collect standard technical information necessary to operate the Service, such as your IP address, browser type, and the pages you visit, primarily through server logs."
+    },
+    "howWeUseInformation": {
+      "heading": "How We Use Information",
+      "body": "We use the information we collect to: operate and maintain the Service; connect you with networks, events, and other members; deliver notifications you've opted into; communicate with you about your account; detect and prevent fraud, abuse, and violations of our Terms and Conditions; and comply with legal obligations. We do not sell your personal information, and we do not currently use advertising or analytics services that track you across other websites."
+    },
+    "howWeShareInformation": {
+      "heading": "How We Share Information",
+      "intro": "We share information with the following service providers, each of which processes information on our behalf and only for the purposes described in this policy:",
+      "supabase": "<b>Supabase, Inc.</b> — hosts our database, authentication, and file storage, including profile data, posts, messages, and event records.",
+      "resend": "<b>Resend</b> — delivers transactional emails, such as account confirmation and password reset emails, and messages sent through our contact form.",
+      "vercel": "<b>Vercel Inc.</b> — hosts and serves the Service.",
+      "legal": "We may also share information if required by law, to protect the rights, property, or safety of CultureMesh, our users, or the public, or in connection with a merger, acquisition, or sale of assets, in which case we will require the recipient to honor the commitments in this policy.",
+      "members": "Other members of a network see the profile information, posts, and replies you choose to make visible within that network, and the content of messages you exchange with them directly. If an embassy or partner organization operates a white-label embed of CultureMesh, and you launch or join a network through it, the same information described in this policy is collected — the partner does not receive any additional access to your account."
+    },
+    "cookies": {
+      "heading": "Cookies",
+      "body": "We use only the cookies necessary to keep you signed in and to operate the Service securely. We do not currently use advertising or third-party tracking cookies."
+    },
+    "dataRetention": {
+      "heading": "Data Retention",
+      "body": "We retain your information for as long as your account is active or as needed to provide the Service, comply with our legal obligations, resolve disputes, and enforce our agreements."
+    },
+    "yourRightsAndChoices": {
+      "heading": "Your Rights and Choices",
+      "p1": "You can access and update most of your profile information directly from your account settings. You may request access to, correction of, or deletion of your personal information at any time by contacting us. We will respond to verified requests within a reasonable time.",
+      "p2": "Depending on where you live, you may have additional rights over your personal information under applicable law. You can exercise any of these rights by contacting us."
+    },
+    "childrensPrivacy": {
+      "heading": "Children's Privacy",
+      "body": "The Service is not directed to, and is not available to, anyone under 13. We do not knowingly collect information from anyone under 13. If we learn that we have collected information from someone under 13, we will delete it."
+    },
+    "security": {
+      "heading": "Security",
+      "body": "We use reasonable technical and organizational measures to protect the information we hold. No method of transmission or storage is completely secure, and we cannot guarantee absolute security."
+    },
+    "changesToThisPolicy": {
+      "heading": "Changes to This Policy",
+      "body": "We may update this Privacy Policy from time to time. If we make material changes, we will provide notice through the Service or by other reasonable means before the changes take effect."
+    },
+    "contactUs": "If you have questions about this Privacy Policy or want to exercise any of the rights described above, reach us through our <link>Contact Us</link> page."
+  },
+  "about": {
+    "heading": "About CultureMesh",
+    "paragraph1": "CultureMesh connects people by two things at once: where they're from, and where they live now. Search a language or a place of origin alongside your current city or state, and you'll find (or can start) a network of people who share that same combination — a home for the specific overlap of culture and geography that's hardest to find anywhere else.",
+    "paragraph2": "Every move, whether across an ocean or across a country, brings the challenge of carrying home with you. It's in the dishes you long to cook, the colloquialisms you miss speaking out loud, and the quiet understanding of shared traditions. CultureMesh creates spaces where those dual identities can thrive together. By pairing where you come from with where you are today, it transforms sprawling cities into intimate, localized communities where shared roots become immediate bridges to belonging.",
+    "paragraph3": "Through these tailored networks, neighbors become lifelong friends, mentors, and cultural anchors. Whether it's organizing local gatherings, exchanging advice on navigating a new environment, or simply sharing a laugh in a native tongue, CultureMesh turns the isolation of relocation into a celebration of shared identity. It is more than just an index of locations — it is a global web of belonging that ensures no matter how far you travel, you are never truly far from home.",
+    "paragraph4": "CultureMesh is operated by CultureMesh LLC, a Michigan limited liability company."
+  },
+  "searchResults": {
+    "titleLanguage": "{origin} speakers in {location}",
+    "titleReligion": "{origin} community in {location}",
+    "titlePlace": "People from {origin} in {location}",
+    "somethingWentWrong": "Something went wrong: {message}",
+    "memberPostCounts": "{members} members, {posts} posts",
+    "noNetworkYet": "No network exists yet for this combination.",
+    "launchNetwork": "Launch this network",
+    "relatedBroader": "Related (broader)",
+    "relatedNarrower": "Related (narrower)",
+    "missingOrigin": "Missing an origin to search for.",
+    "missingLocation": "Missing a location to search for.",
+    "noMatchFor": "We couldn't find a match for \"{query}\".",
+    "tryAgain": "Try again",
+    "networksToJoin": "Networks to Join",
+    "notSureWhatYouMeant": "We weren't sure exactly what you meant — here are the closest matches. Pick the one you were looking for."
+  },
+  "settings": {
+    "heading": "Notification settings",
+    "saved": "Saved.",
+    "events": "Events",
+    "networkActivity": "Network activity",
+    "repliesToYourPosts": "Replies to your posts",
+    "likesOnYourPosts": "Likes on your posts",
+    "productUpdates": "Product updates",
+    "save": "Save"
+  },
+  "eventDetail": {
+    "backToEvents": "Back to events",
+    "hostedBy": "Hosted by <link>{name}</link>",
+    "rsvpCounts": "{going} going, {interested} interested, {declined} declined",
+    "statuses": {
+      "going": "Going",
+      "interested": "Interested",
+      "declined": "Declined"
+    },
+    "removeRsvp": "Remove my RSVP",
+    "signInToRsvp": "Sign in to RSVP"
+  },
+  "events": {
+    "backToNetwork": "Back to network",
+    "heading": "{title} events",
+    "titleLabel": "Event title",
+    "dateTimeLabel": "Date and time",
+    "descriptionLabel": "Description (optional)",
+    "locationLabel": "Location (optional)",
+    "submit": "Host event",
+    "noEventsYet": "No events yet."
+  },
+  "inviteFriends": {
+    "heading": "Invite friends",
+    "intro": "Know someone who'd want to join this network? Enter their emails, separated by commas.",
+    "sent": "Invites sent.",
+    "emailsLabel": "Emails",
+    "emailsPlaceholder": "friend1@email.com, friend2@email.com",
+    "submit": "Send invites"
+  },
+  "postDetail": {
+    "backToNetwork": "Back to network",
+    "someone": "Someone",
+    "noRepliesYet": "No replies yet.",
+    "replyLabel": "Reply",
+    "replyPlaceholder": "Write a reply...",
+    "replySubmit": "Reply",
+    "signInToReply": "Sign in to reply"
+  },
+  "network": {
+    "originIn": "{origin} in {location}",
+    "memberPostCounts": "{members} members, {posts} posts",
+    "events": "Events",
+    "leaveNetwork": "Leave network",
+    "joinNetwork": "Join network",
+    "signInToJoin": "Sign in to join",
+    "postLabel": "Post",
+    "postPlaceholder": "Share something with this network...",
+    "postSubmit": "Post",
+    "someone": "Someone",
+    "noPostsYet": "No posts yet.",
+    "replyLabel": {
+      "zero": "Reply",
+      "one": "1 Reply",
+      "other": "{count} Replies"
+    }
+  },
+  "editableEntry": {
+    "save": "Save",
+    "saving": "Saving…",
+    "cancel": "Cancel",
+    "deleting": "Deleting…",
+    "yes": "Yes",
+    "no": "No",
+    "like": { "post": "Like this post", "reply": "Like this reply" },
+    "unlike": { "post": "Unlike this post", "reply": "Unlike this reply" },
+    "edit": { "post": "Edit post", "reply": "Edit reply" },
+    "delete": { "post": "Delete post", "reply": "Delete reply" },
+    "deleteConfirm": { "post": "Delete this post?", "reply": "Delete this reply?" },
+    "translate": "Translate",
+    "showOriginal": "View original text",
+    "translating": "Translating…",
+    "translateNotFound": "Couldn't find that post to translate.",
+    "translateFailed": "Translation failed. Please try again."
+  },
+  "suggestNetwork": {
+    "heading": "Suggest a network",
+    "intro": "Can't find the language or place you're looking for in search? Tell us what you'd like to see and we'll take a look.",
+    "sent": "Thanks! We'll review your suggestion.",
+    "speak": "Speak",
+    "from": "From",
+    "language": "Language",
+    "place": "Place",
+    "languagePlaceholder": "e.g. Tagalog",
+    "placePlaceholder": "e.g. Austin, Texas",
+    "type": "Type",
+    "placeTypes": {
+      "city": "City",
+      "region": "State/Province",
+      "country": "Country"
+    },
+    "submit": "Submit suggestion"
+  },
+  "redeemed": {
+    "heading": "Find Christian community anywhere in the world",
+    "misconfigured": "Something's misconfigured here - please check back soon.",
+    "locationLabel": "Your Location",
+    "locationPlaceholder": "e.g. Detroit, Michigan",
+    "submit": "Search"
+  },
+  "faith": {
+    "heading": "Find your faith community",
+    "religionLabel": "Religion",
+    "religionPlaceholder": "e.g. Christian",
+    "locationLabel": "Your Location",
+    "locationPlaceholder": "e.g. Detroit, Michigan",
+    "submit": "Search"
+  },
+  "contact": {
+    "heading": "Contact Us",
+    "intro": "Have a question, a problem with your account, or an idea for CultureMesh? Send us a message and we'll get back to you.",
+    "sent": "Message sent. We'll get back to you soon.",
+    "nameLabel": "Your name",
+    "emailLabel": "Your email",
+    "subjectLabel": "Subject",
+    "subjectPlaceholder": "Choose a subject",
+    "subjects": {
+      "general": "General question",
+      "problem": "Report a problem",
+      "embassy": "Embassy or partner inquiry",
+      "privacy": "Privacy or data request",
+      "other": "Other"
+    },
+    "messageLabel": "Message",
+    "submit": "Send message"
+  },
+  "footer": {
+    "copyright": "© {year} CultureMesh LLC. All rights reserved.",
+    "about": "About Us",
+    "privacy": "Privacy Policy",
+    "terms": "Terms and Conditions",
+    "contact": "Contact Us"
+  },
+  "auth": {
+    "title": "Sign in or create an account",
+    "subtitle": "Find your people, wherever you are.",
+    "bridge": {
+      "explanation": "You're verified, but this browser is blocking sign-in inside an embedded window.",
+      "continueNewTab": "Continue in a new tab",
+      "checking": "Checking…",
+      "continueHere": "I finished in the new tab — continue here",
+      "tryAgain": "Try again",
+      "stillBlocked": "Still not able to stay signed in inside this window."
+    },
+    "password": {
+      "signingInAs": "Signing in as <b>{email}</b>.",
+      "label": "Password",
+      "signingIn": "Signing in…",
+      "submit": "Sign in",
+      "emailCode": "Email me a code instead",
+      "useDifferentEmail": "Use a different email"
+    },
+    "code": {
+      "weEmailedCode": "We emailed a code to <b>{email}</b>.",
+      "label": "Code",
+      "verifying": "Verifying…",
+      "submit": "Verify and continue",
+      "useDifferentEmail": "Use a different email"
+    },
+    "email": {
+      "label": "Email",
+      "nameLabel": "Name",
+      "namePlaceholder": "Only needed if you're new here",
+      "continuing": "Continuing…",
+      "submit": "Continue"
+    }
+  },
+  "home": {
+    "heading": "Find your diaspora network",
+    "subheading": "CultureMesh connects people by where they're from and where they live now — search a language or place of origin and a location to find your network, or launch a new one if it doesn't exist yet.",
+    "suggestNetwork": "Can't find what you're looking for? Suggest a network.",
+    "steps": {
+      "search": {
+        "title": "Search",
+        "body": "Enter a language or place of origin, and where you live now."
+      },
+      "joinLaunch": {
+        "title": "Join or launch",
+        "body": "Join an existing network, or be the first to launch one for your combination."
+      },
+      "connect": {
+        "title": "Connect",
+        "body": "Meet people, share posts, and host or attend events together."
+      }
+    }
+  }
+}

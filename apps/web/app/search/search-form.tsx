@@ -1,10 +1,12 @@
 "use client";
 
 import { useState } from "react";
+import { useTranslations } from "next-intl";
 import { AutocompleteField } from "@/components/autocomplete-field";
 import { Button } from "@/components/ui/button";
 
 export function SearchForm() {
+  const t = useTranslations("search");
   const [originKind, setOriginKind] = useState<"place" | "language">("place");
 
   return (
@@ -20,7 +22,7 @@ export function SearchForm() {
               : "text-body hover:text-primary"
           }`}
         >
-          Speak
+          {t("speak")}
         </button>
         <button
           type="button"
@@ -31,26 +33,26 @@ export function SearchForm() {
               : "text-body hover:text-primary"
           }`}
         >
-          From
+          {t("from")}
         </button>
       </div>
       <AutocompleteField
         key={originKind}
-        label={originKind === "language" ? "Language" : "Origin place"}
+        label={originKind === "language" ? t("language") : t("originPlace")}
         kind={originKind}
         hiddenName="originId"
         queryName="originQuery"
-        placeholder={originKind === "place" ? "e.g. Tamil Nadu, India" : undefined}
+        placeholder={originKind === "place" ? t("originPlacePlaceholder") : undefined}
       />
       <AutocompleteField
-        label="Location"
+        label={t("location")}
         kind="place"
         hiddenName="locationId"
         queryName="locationQuery"
-        placeholder="e.g. Detroit, Michigan"
+        placeholder={t("locationPlaceholder")}
       />
       <Button type="submit" className="w-full">
-        Search
+        {t("submit")}
       </Button>
     </form>
   );

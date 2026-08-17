@@ -1,3 +1,4 @@
+import { getTranslations } from "next-intl/server";
 import { createClient } from "@/lib/supabase/server";
 import { RedeemedSearchForm } from "@/app/redeemed/redeemed-search-form";
 
@@ -6,6 +7,7 @@ import { RedeemedSearchForm } from "@/app/redeemed/redeemed-search-form";
 // different ids.
 export default async function RedeemedPage() {
   const supabase = await createClient();
+  const t = await getTranslations("redeemed");
   const { data: religion } = await supabase
     .from("religions")
     .select("id")
@@ -15,15 +17,11 @@ export default async function RedeemedPage() {
   return (
     <div className="mx-auto flex w-full max-w-sm flex-1 flex-col justify-center gap-6 px-4 py-16">
       <div className="flex flex-col gap-6 rounded-lg border border-border bg-surface p-6 shadow-sm sm:p-8">
-        <h1 className="font-display text-2xl text-ink">
-          Find Christian community anywhere in the world
-        </h1>
+        <h1 className="font-display text-2xl text-ink">{t("heading")}</h1>
         {religion ? (
           <RedeemedSearchForm religionId={religion.id} />
         ) : (
-          <p className="text-sm text-error">
-            Something&rsquo;s misconfigured here - please check back soon.
-          </p>
+          <p className="text-sm text-error">{t("misconfigured")}</p>
         )}
       </div>
     </div>

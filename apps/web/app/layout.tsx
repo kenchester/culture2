@@ -1,8 +1,11 @@
 import type { Metadata } from "next";
 import { Suspense } from "react";
 import { Geist, Geist_Mono, Newsreader } from "next/font/google";
+import { NextIntlClientProvider } from "next-intl";
+import { getLocale, getMessages } from "next-intl/server";
 import { Nav } from "@/app/nav";
 import { Footer } from "@/app/footer";
+import { RTL_LOCALES, type Locale } from "@/lib/locale";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -26,20 +29,26 @@ export const metadata: Metadata = {
   description: "Find your diaspora network.",
 };
 
-export default function RootLayout({ children }: LayoutProps<"/">) {
+export default async function RootLayout({ children }: LayoutProps<"/">) {
+  const locale = await getLocale();
+  const messages = await getMessages();
+
   return (
     <html
-      lang="en"
+      lang={locale}
+      dir={RTL_LOCALES.has(locale as Locale) ? "rtl" : "ltr"}
       className={`${geistSans.variable} ${geistMono.variable} ${newsreader.variable} h-full antialiased`}
     >
       <body className="flex min-h-full flex-col font-sans">
-        <Suspense fallback={null}>
-          <Nav />
-        </Suspense>
-        {children}
-        <Suspense fallback={null}>
-          <Footer />
-        </Suspense>
+        <NextIntlClientProvider locale={locale} messages={messages}>
+          <Suspense fallback={null}>
+            <Nav />
+          </Suspense>
+          {children}
+          <Suspense fallback={null}>
+            <Footer />
+          </Suspense>
+        </NextIntlClientProvider>
       </body>
     </html>
   );

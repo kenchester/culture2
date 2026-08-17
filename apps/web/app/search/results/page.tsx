@@ -1,7 +1,10 @@
 import Link from "next/link";
+import { getTranslations } from "next-intl/server";
 import { createClient } from "@/lib/supabase/server";
 import { launchNetwork } from "@/app/search/actions";
 import { Button } from "@/components/ui/button";
+
+type ResultsT = Awaited<ReturnType<typeof getTranslations>>;
 
 type SearchResultsParams = {
   originKind?: string;
@@ -25,12 +28,12 @@ type NetworkMatch = {
 type Candidate = { id: number; name: string };
 type ExistingNetwork = { id: number; title: string; member_count: number; post_count: number };
 
-function MissingParamsMessage({ message }: { message: string }) {
+function MissingParamsMessage({ message, tryAgain }: { message: string; tryAgain: string }) {
   return (
     <div className="mx-auto max-w-lg px-4 py-12 text-body">
       {message}{" "}
       <Link href="/search" className="text-primary underline">
-        Try again
+        {tryAgain}
       </Link>
       .
     </div>
@@ -53,10 +56,19 @@ function originNetworkColumn(originKind: string | undefined) {
   return "origin_place_id";
 }
 
-function buildTitle(originKind: string | undefined, originName: string, locationName: string) {
-  if (originKind === "language") return `${originName} speakers in ${locationName}`;
-  if (originKind === "religion") return `${originName} community in ${locationName}`;
-  return `People from ${originName} in ${locationName}`;
+function buildTitle(
+  t: ResultsT,
+  originKind: string | undefined,
+  originName: string,
+  locationName: string,
+) {
+  if (originKind === "language") {
+    return t("titleLanguage", { origin: originName, location: locationName });
+  }
+  if (originKind === "religion") {
+    return t("titleReligion", { origin: originName, location: locationName });
+  }
+  return t("titlePlace", { origin: originName, location: locationName });
 }
 
 async function guessOriginCandidates(
@@ -79,6 +91,7 @@ export default async function SearchResultsPage({
   const isLanguage = originKind === "language";
   const isReligion = originKind === "religion";
   const supabase = await createClient();
+  const t = await getTranslations("searchResults");
 
   // Both sides were resolved via an autocomplete selection - the original,
   // unambiguous single-result flow, unchanged.
@@ -98,7 +111,7 @@ export default async function SearchResultsPage({
     if (error) {
       return (
         <div className="mx-auto max-w-lg px-4 py-12 text-body">
-          Something went wrong: {error.message}
+          {t("somethingWentWrong", { message: error.message })}
         </div>
       );
     }
@@ -110,7 +123,7 @@ export default async function SearchResultsPage({
 
     const originName = origin?.name ?? "?";
     const locationName = location?.name ?? "?";
-    const title = buildTitle(originKind, originName, locationName);
+    const title = buildTitle(t, originKind, originName, locationName);
 
     return (
       <div className="mx-auto flex w-full max-w-lg flex-1 flex-col gap-8 px-4 py-12">
@@ -125,25 +138,25 @@ export default async function SearchResultsPage({
               {exact.network_title}
             </Link>
             <p className="text-sm text-muted">
-              {exact.member_count} members, {exact.post_count} posts
+              {t("memberPostCounts", { members: exact.member_count, posts: exact.post_count })}
             </p>
           </section>
         ) : (
           <section className="flex flex-col gap-3 rounded-lg border border-border bg-surface p-4">
-            <p className="text-body">No network exists yet for this combination.</p>
+            <p className="text-body">{t("noNetworkYet")}</p>
             <form action={launchNetwork}>
               <input type="hidden" name="originKind" value={originKind} />
               <input type="hidden" name="originId" value={originId} />
               <input type="hidden" name="locationId" value={locationId} />
               <input type="hidden" name="title" value={title} />
-              <Button type="submit">Launch this network</Button>
+              <Button type="submit">{t("launchNetwork")}</Button>
             </form>
           </section>
         )}
 
         {broader.length > 0 && (
           <section className="flex flex-col gap-2">
-            <h2 className="text-sm font-medium text-muted">Related (broader)</h2>
+            <h2 className="text-sm font-medium text-muted">{t("relatedBroader")}</h2>
             {broader.map((m) => (
               <Link
                 key={m.network_id}
@@ -158,7 +171,7 @@ export default async function SearchResultsPage({
 
         {narrower.length > 0 && (
           <section className="flex flex-col gap-2">
-            <h2 className="text-sm font-medium text-muted">Related (narrower)</h2>
+            <h2 className="text-sm font-medium text-muted">{t("relatedNarrower")}</h2>
             {narrower.map((m) => (
               <Link
                 key={m.network_id}
@@ -180,10 +193,10 @@ export default async function SearchResultsPage({
   const trimmedLocationQuery = locationQuery?.trim();
 
   if (!originId && !trimmedOriginQuery) {
-    return <MissingParamsMessage message="Missing an origin to search for." />;
+    return <MissingParamsMessage message={t("missingOrigin")} tryAgain={t("tryAgain")} />;
   }
   if (!locationId && !trimmedLocationQuery) {
-    return <MissingParamsMessage message="Missing a location to search for." />;
+    return <MissingParamsMessage message={t("missingLocation")} tryAgain={t("tryAgain")} />;
   }
 
   const originCandidates: Candidate[] = originId
@@ -210,10 +223,20 @@ export default async function SearchResultsPage({
         []).map((r: { id: number; name: string }) => ({ id: r.id, name: r.name }));
 
   if (originCandidates.length === 0) {
-    return <MissingParamsMessage message={`We couldn't find a match for "${trimmedOriginQuery}".`} />;
+    return (
+      <MissingParamsMessage
+        message={t("noMatchFor", { query: trimmedOriginQuery! })}
+        tryAgain={t("tryAgain")}
+      />
+    );
   }
   if (locationCandidates.length === 0) {
-    return <MissingParamsMessage message={`We couldn't find a match for "${trimmedLocationQuery}".`} />;
+    return (
+      <MissingParamsMessage
+        message={t("noMatchFor", { query: trimmedLocationQuery! })}
+        tryAgain={t("tryAgain")}
+      />
+    );
   }
 
   const combos = originCandidates.flatMap((origin) =>
@@ -234,16 +257,13 @@ export default async function SearchResultsPage({
   return (
     <div className="mx-auto flex w-full max-w-lg flex-1 flex-col gap-8 px-4 py-12">
       <div className="flex flex-col gap-2">
-        <h1 className="font-display text-3xl text-ink">Networks to Join</h1>
-        <p className="text-body">
-          We weren&rsquo;t sure exactly what you meant &mdash; here are the closest
-          matches. Pick the one you were looking for.
-        </p>
+        <h1 className="font-display text-3xl text-ink">{t("networksToJoin")}</h1>
+        <p className="text-body">{t("notSureWhatYouMeant")}</p>
       </div>
 
       <div className="flex flex-col gap-4">
         {combos.map(({ origin, location }, i) => {
-          const title = buildTitle(originKind, origin.name, location.name);
+          const title = buildTitle(t, originKind, origin.name, location.name);
           const existing = existingNetworks[i].data as ExistingNetwork | null;
 
           return (
@@ -260,19 +280,22 @@ export default async function SearchResultsPage({
                     {title}
                   </Link>
                   <p className="text-sm text-muted">
-                    {existing.member_count} members, {existing.post_count} posts
+                    {t("memberPostCounts", {
+                      members: existing.member_count,
+                      posts: existing.post_count,
+                    })}
                   </p>
                 </>
               ) : (
                 <>
                   <p className="font-medium text-ink">{title}</p>
-                  <p className="text-sm text-muted">No network exists yet for this combination.</p>
+                  <p className="text-sm text-muted">{t("noNetworkYet")}</p>
                   <form action={launchNetwork} className="mt-1">
                     <input type="hidden" name="originKind" value={originKind} />
                     <input type="hidden" name="originId" value={origin.id} />
                     <input type="hidden" name="locationId" value={location.id} />
                     <input type="hidden" name="title" value={title} />
-                    <Button type="submit">Launch this network</Button>
+                    <Button type="submit">{t("launchNetwork")}</Button>
                   </form>
                 </>
               )}

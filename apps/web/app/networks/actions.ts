@@ -2,12 +2,15 @@
 
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
+import { getTranslations } from "next-intl/server";
 import { createClient } from "@/lib/supabase/server";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { sendEmail, sendBulkEmails } from "@/lib/email";
 import { getOptedInRecipients } from "@/lib/notifications";
 import { getSiteUrl } from "@/lib/site-url";
 import { getDisplayName } from "@/lib/profiles";
+import { translateText } from "@/lib/azure-translator";
+import { toAzureCode, type Locale } from "@/lib/locale";
 
 const MAX_INVITES = 20;
 const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -312,4 +315,59 @@ export async function sendNetworkInvites(formData: FormData) {
   }
 
   redirect(`/networks/${networkId}?invited=1`);
+}
+
+// Cached in post_translations so a given post/reply is only ever sent to
+// Azure once per target locale, regardless of how many viewers click
+// Translate - mirrors toggleLike's kind discriminator (one function for
+// both posts and replies via which column is set) rather than duplicating
+// this per kind.
+export async function translateEntry(
+  kind: "post" | "reply",
+  itemId: number,
+  targetLocale: Locale,
+): Promise<{ ok: true; text: string } | { error: string }> {
+  const supabase = await createClient();
+  const t = await getTranslations("editableEntry");
+  const column = kind === "post" ? "post_id" : "reply_id";
+
+  const { data: cached } = await supabase
+    .from("post_translations")
+    .select("translated_body")
+    .eq(column, itemId)
+    .eq("target_locale", targetLocale)
+    .maybeSingle();
+
+  if (cached) {
+    return { ok: true, text: cached.translated_body };
+  }
+
+  const table = kind === "post" ? "posts" : "post_replies";
+  const { data: entry } = await supabase.from(table).select("body").eq("id", itemId).single();
+
+  if (!entry) {
+    return { error: t("translateNotFound") };
+  }
+
+  let translated: string;
+  try {
+    const result = await translateText(entry.body, toAzureCode(targetLocale));
+    translated = result.text;
+  } catch {
+    return { error: t("translateFailed") };
+  }
+
+  // Best-effort - a failed cache write must never turn a successful
+  // translation into an error for the person who triggered it; the next
+  // viewer to click Translate just triggers another live call instead of
+  // getting a cache hit.
+  try {
+    await supabase
+      .from("post_translations")
+      .insert({ [column]: itemId, target_locale: targetLocale, translated_body: translated });
+  } catch {
+    // cache write failure is non-fatal
+  }
+
+  return { ok: true, text: translated };
 }

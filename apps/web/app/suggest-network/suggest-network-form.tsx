@@ -1,19 +1,17 @@
 "use client";
 
 import { useState } from "react";
+import { useTranslations } from "next-intl";
 import { suggestNetwork } from "@/app/suggest-network/actions";
 import { Button } from "@/components/ui/button";
 import { Field, Input, Label } from "@/components/ui/input";
 
-const PLACE_TYPES = [
-  { value: "city", label: "City" },
-  { value: "region", label: "State/Province" },
-  { value: "country", label: "Country" },
-] as const;
+const PLACE_TYPES = ["city", "region", "country"] as const;
 
 // One submission, not a paired origin+location - a language or a place both
 // pull from the same underlying data, so asking for both was redundant.
 export function SuggestNetworkForm() {
+  const t = useTranslations("suggestNetwork");
   const [kind, setKind] = useState<"language" | "place">("place");
 
   return (
@@ -27,7 +25,7 @@ export function SuggestNetworkForm() {
             kind === "language" ? "bg-primary text-white" : "text-body hover:text-primary"
           }`}
         >
-          Speak
+          {t("speak")}
         </button>
         <button
           type="button"
@@ -36,33 +34,33 @@ export function SuggestNetworkForm() {
             kind === "place" ? "bg-primary text-white" : "text-body hover:text-primary"
           }`}
         >
-          From
+          {t("from")}
         </button>
       </div>
       <Field>
-        <Label htmlFor="suggestionText">{kind === "language" ? "Language" : "Place"}</Label>
+        <Label htmlFor="suggestionText">{kind === "language" ? t("language") : t("place")}</Label>
         <Input
           id="suggestionText"
           name="suggestionText"
-          placeholder={kind === "language" ? "e.g. Tagalog" : "e.g. Austin, Texas"}
+          placeholder={kind === "language" ? t("languagePlaceholder") : t("placePlaceholder")}
           required
         />
       </Field>
       {kind === "place" && (
         <Field>
-          <Label>Type</Label>
+          <Label>{t("type")}</Label>
           <div className="flex gap-4 text-sm text-body">
             {PLACE_TYPES.map((type) => (
-              <label key={type.value} className="flex items-center gap-1.5">
-                <input type="radio" name="placeType" value={type.value} required />
-                {type.label}
+              <label key={type} className="flex items-center gap-1.5">
+                <input type="radio" name="placeType" value={type} required />
+                {t(`placeTypes.${type}`)}
               </label>
             ))}
           </div>
         </Field>
       )}
       <Button type="submit" className="w-full">
-        Submit suggestion
+        {t("submit")}
       </Button>
     </form>
   );

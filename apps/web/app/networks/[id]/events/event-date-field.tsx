@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { useTranslations } from "next-intl";
 import { Field, Input, Label } from "@/components/ui/input";
 
 // datetime-local inputs have no timezone info, so a bare value like
@@ -9,12 +10,13 @@ import { Field, Input, Label } from "@/components/ui/input";
 // timestamp has to happen here, in the browser, which is the only place
 // that actually knows the user's local timezone.
 export function EventDateField() {
+  const t = useTranslations("events");
   const [localValue, setLocalValue] = useState("");
   const iso = localValue ? new Date(localValue).toISOString() : "";
 
   return (
     <Field>
-      <Label htmlFor="event-date">Date and time</Label>
+      <Label htmlFor="event-date">{t("dateTimeLabel")}</Label>
       <Input
         id="event-date"
         type="datetime-local"

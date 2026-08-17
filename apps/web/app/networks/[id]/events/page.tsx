@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { getTranslations } from "next-intl/server";
 import { createClient } from "@/lib/supabase/server";
 import { createEvent } from "@/app/networks/[id]/events/actions";
 import { EventDateField } from "@/app/networks/[id]/events/event-date-field";
@@ -18,6 +19,7 @@ export default async function EventsPage({
   const isEmbedded = embed === "1";
   const embedSuffix = isEmbedded ? "?embed=1" : "";
   const supabase = await createClient();
+  const t = await getTranslations("events");
 
   const { data: network } = await supabase
     .from("networks")
@@ -55,9 +57,9 @@ export default async function EventsPage({
     <div className="mx-auto flex w-full max-w-lg flex-1 flex-col gap-6 px-4 py-12">
       <div>
         <Link href={`/networks/${network.id}${embedSuffix}`} className="text-sm text-muted underline">
-          Back to network
+          {t("backToNetwork")}
         </Link>
-        <h1 className="font-display text-3xl text-ink">{network.title} events</h1>
+        <h1 className="font-display text-3xl text-ink">{t("heading", { title: network.title })}</h1>
       </div>
 
       {isMember && (
@@ -68,20 +70,20 @@ export default async function EventsPage({
             <p className="rounded-md bg-error-bg px-3 py-2 text-sm text-error">{error}</p>
           )}
           <Field>
-            <Label htmlFor="event-title">Event title</Label>
+            <Label htmlFor="event-title">{t("titleLabel")}</Label>
             <Input id="event-title" name="title" required />
           </Field>
           <Field>
-            <Label htmlFor="event-description">Description (optional)</Label>
+            <Label htmlFor="event-description">{t("descriptionLabel")}</Label>
             <Textarea id="event-description" name="description" />
           </Field>
           <EventDateField />
           <Field>
-            <Label htmlFor="event-location">Location (optional)</Label>
+            <Label htmlFor="event-location">{t("locationLabel")}</Label>
             <Input id="event-location" name="location" />
           </Field>
           <Button type="submit" className="self-start">
-            Host event
+            {t("submit")}
           </Button>
         </form>
       )}
@@ -102,7 +104,7 @@ export default async function EventsPage({
             </span>
           </Link>
         ))}
-        {events?.length === 0 && <p className="text-sm text-muted">No events yet.</p>}
+        {events?.length === 0 && <p className="text-sm text-muted">{t("noEventsYet")}</p>}
       </div>
     </div>
   );

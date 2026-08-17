@@ -1,0 +1,380 @@
+{
+  "nav": {
+    "search": "Ricerca",
+    "signIn": "Accedi",
+    "signUp": "Iscriviti",
+    "profile": "Profilo",
+    "messages": "Messaggi",
+    "settings": "Impostazioni",
+    "admin": "Amministrazione",
+    "signOut": "Disconnettiti",
+    "changeLanguage": "Cambia lingua"
+  },
+  "search": {
+    "speak": "Parla",
+    "from": "Da",
+    "language": "Lingua",
+    "originPlace": "Luogo di origine",
+    "originPlacePlaceholder": "ad esempio Tamil Nadu, India",
+    "location": "Posizione",
+    "locationPlaceholder": "ad esempio Detroit, Michigan",
+    "submit": "Ricerca",
+    "pageHeading": "Trova la tua rete",
+    "suggestNetwork": "Non trovi quello che cerchi? Suggerisci una rete."
+  },
+  "auth": {
+    "title": "Accedi o crea un account",
+    "subtitle": "Trova la tua gente, ovunque tu sia.",
+    "bridge": {
+      "explanation": "Sei verificato, ma questo browser blocca l'accesso all'interno di una finestra incorporata.",
+      "continueNewTab": "Continua in una nuova scheda",
+      "checking": "Controlla...",
+      "continueHere": "Ho finito nella nuova scheda — continua qui",
+      "tryAgain": "Riprova",
+      "stillBlocked": "Ancora non riesco a restare connesso entro questa finestra."
+    },
+    "password": {
+      "label": "Password",
+      "signingIn": "Accedendo...",
+      "submit": "Accedi",
+      "emailCode": "Mandami un codice via email invece",
+      "useDifferentEmail": "Usa un'email diversa",
+      "signingInAs": "Accedendo come <b>{email}</b>."
+    },
+    "code": {
+      "label": "Codice",
+      "verifying": "Verifica...",
+      "submit": "Verifica e continua",
+      "useDifferentEmail": "Usa un'email diversa",
+      "weEmailedCode": "Abbiamo inviato un codice via email a <b>{email}</b>."
+    },
+    "email": {
+      "label": "E-mail",
+      "nameLabel": "Nome",
+      "namePlaceholder": "Serve solo se sei nuovo qui",
+      "continuing": "Continuando...",
+      "submit": "Continua"
+    }
+  },
+  "home": {
+    "heading": "Trova la tua rete di diaspora",
+    "subheading": "CultureMesh collega le persone in base al luogo da cui provengono e dove vivono ora — cerca una lingua o un luogo di origine e una posizione per trovare la tua rete, oppure avvia una nuova se non esiste ancora.",
+    "suggestNetwork": "Non trovi quello che cerchi? Suggerisci una rete.",
+    "steps": {
+      "search": {
+        "title": "Ricerca",
+        "body": "Inserisci una lingua o un luogo di origine, e dove vivi ora."
+      },
+      "joinLaunch": {
+        "title": "Iscriviti o lancia",
+        "body": "Unisciti a una rete esistente, oppure sii il primo a lanciarne una per la tua combinazione."
+      },
+      "connect": {
+        "title": "Connettiti",
+        "body": "Conosci persone, condividi post e organizza o partecipa insieme a eventi."
+      }
+    }
+  },
+  "searchResults": {
+    "noNetworkYet": "Non esiste ancora alcuna rete per questa combinazione.",
+    "launchNetwork": "Lancia questa rete",
+    "relatedBroader": "Correlati (più ampi)",
+    "relatedNarrower": "Correlati (più ristretti)",
+    "missingOrigin": "Manca un'origine da cercare.",
+    "missingLocation": "Manca un luogo da cercare.",
+    "tryAgain": "Riprova",
+    "networksToJoin": "Reti a cui unirsi",
+    "notSureWhatYouMeant": "Non eravamo sicuri di cosa intendessi esattamente — ecco le corrispondenze più simili. Scegli quello che cercavi.",
+    "titleLanguage": "{origin} Parlanti in {location}",
+    "titleReligion": "{origin} Comunità in {location}",
+    "titlePlace": "Persone di {origin} dentro {location}",
+    "somethingWentWrong": "Qualcosa è andato storto: {message}",
+    "memberPostCounts": "{members} membri, {posts} incarichi",
+    "noMatchFor": "Non siamo riusciti a trovare una corrispondenza per \"{query}\"."
+  },
+  "settings": {
+    "heading": "Impostazioni delle notifiche",
+    "saved": "Salvato.",
+    "events": "Eventi",
+    "networkActivity": "Attività della rete",
+    "repliesToYourPosts": "Risposte ai tuoi post",
+    "likesOnYourPosts": "Like ai tuoi post",
+    "productUpdates": "Aggiornamenti di prodotto",
+    "save": "Salva"
+  },
+  "eventDetail": {
+    "backToEvents": "Ritorno agli eventi",
+    "statuses": {
+      "going": "Sto andando",
+      "interested": "Interessato",
+      "declined": "Rifiutato"
+    },
+    "removeRsvp": "Rimuovi la mia RSVP",
+    "signInToRsvp": "Accedi per confermare la partecipazione",
+    "hostedBy": "Condotto da <link>{name}</link>",
+    "rsvpCounts": "{going} Sto andando, {interested} interessato, {declined} rifiutato"
+  },
+  "events": {
+    "backToNetwork": "Ritorno alla rete",
+    "titleLabel": "Titolo dell'evento",
+    "dateTimeLabel": "Data e ora",
+    "descriptionLabel": "Descrizione (opzionale)",
+    "locationLabel": "Posizione (opzionale)",
+    "submit": "Evento ospitante",
+    "noEventsYet": "Nessun evento ancora.",
+    "heading": "{title} Eventi"
+  },
+  "inviteFriends": {
+    "heading": "Invita gli amici",
+    "intro": "Conosci qualcuno che vorrebbe unirsi a questa rete? Inserisci le loro email, separate da virgole.",
+    "sent": "Inviti inviati.",
+    "emailsLabel": "Email",
+    "emailsPlaceholder": "friend1@email.com, friend2@email.com",
+    "submit": "Invia inviti"
+  },
+  "postDetail": {
+    "backToNetwork": "Ritorno alla rete",
+    "someone": "Qualcuno",
+    "noRepliesYet": "Nessuna risposta ancora.",
+    "replyLabel": "Risposta",
+    "replyPlaceholder": "Scrivi una risposta...",
+    "replySubmit": "Risposta",
+    "signInToReply": "Accedi per rispondere"
+  },
+  "network": {
+    "events": "Eventi",
+    "leaveNetwork": "Rete di lasciare",
+    "joinNetwork": "Unisciti alla rete",
+    "signInToJoin": "Accedi per unirti",
+    "postLabel": "Post",
+    "postPlaceholder": "Condividi qualcosa con questa rete...",
+    "postSubmit": "Post",
+    "someone": "Qualcuno",
+    "noPostsYet": "Nessun post ancora.",
+    "replyLabel": {
+      "zero": "Risposta",
+      "one": "1 Risposta",
+      "other": "{count} Risposte"
+    },
+    "originIn": "{origin} in {location}",
+    "memberPostCounts": "{members} membri, {posts} incarichi"
+  },
+  "editableEntry": {
+    "save": "Salva",
+    "saving": "Salvando...",
+    "cancel": "Cancella",
+    "deleting": "Cancellazione...",
+    "yes": "Sì",
+    "no": "No",
+    "like": {
+      "post": "Mi piace questo post",
+      "reply": "Mi piace questa risposta"
+    },
+    "unlike": {
+      "post": "A differenza di questo post",
+      "reply": "A differenza di questa risposta"
+    },
+    "edit": {
+      "post": "Modifica il post",
+      "reply": "Modifica risposta"
+    },
+    "delete": {
+      "post": "Elimina il post",
+      "reply": "Elimina risposta"
+    },
+    "deleteConfirm": {
+      "post": "Cancellare questo post?",
+      "reply": "Eliminare questa risposta?"
+    },
+    "translate": "Traduce",
+    "translating": "Traducendo...",
+    "translateNotFound": "Non sono riuscito a trovare quel post da tradurre.",
+    "translateFailed": "La traduzione è fallita. Per favore, riprova.",
+    "showOriginal": "Visualizza testo originale"
+  },
+  "suggestNetwork": {
+    "heading": "Suggerisci una rete",
+    "intro": "Non riesci a trovare la lingua o il luogo che cerchi nella ricerca? Dicci cosa vorresti vedere e daremo un'occhiata.",
+    "sent": "Grazie! Esamineremo il tuo suggerimento.",
+    "speak": "Parla",
+    "from": "Da",
+    "language": "Lingua",
+    "place": "Luogo",
+    "languagePlaceholder": "ad esempio il tagalog",
+    "placePlaceholder": "ad esempio Austin, Texas",
+    "type": "Tipo",
+    "placeTypes": {
+      "city": "Città",
+      "region": "Stato/Provincia",
+      "country": "Paese"
+    },
+    "submit": "Invia suggerimenti"
+  },
+  "redeemed": {
+    "heading": "Trova comunità cristiana ovunque nel mondo",
+    "misconfigured": "Qualcosa è configurato male qui - torna presto a controllare.",
+    "locationLabel": "La tua posizione",
+    "locationPlaceholder": "ad esempio Detroit, Michigan",
+    "submit": "Ricerca"
+  },
+  "faith": {
+    "heading": "Trova la tua comunità di fede",
+    "religionLabel": "Religione",
+    "religionPlaceholder": "ad esempio Christian",
+    "locationLabel": "La tua posizione",
+    "locationPlaceholder": "ad esempio Detroit, Michigan",
+    "submit": "Ricerca"
+  },
+  "contact": {
+    "heading": "Contattaci",
+    "intro": "Hai una domanda, un problema con il tuo account o un'idea per CultureMesh? Mandaci un messaggio e ti richiameremo.",
+    "sent": "Messaggio inviato. Ti faremo sapere presto.",
+    "nameLabel": "Il tuo nome",
+    "emailLabel": "La tua email",
+    "subjectLabel": "Oggetto",
+    "subjectPlaceholder": "Scegli un argomento",
+    "subjects": {
+      "general": "Domanda generale",
+      "problem": "Segnala un problema",
+      "embassy": "Indagine dell'ambasciata o dei partner",
+      "privacy": "Richiesta di privacy o dati",
+      "other": "Altro"
+    },
+    "messageLabel": "Messaggio",
+    "submit": "Invia messaggio"
+  },
+  "footer": {
+    "about": "Chi Siamo",
+    "privacy": "Informativa sulla privacy",
+    "terms": "Termini e Condizioni",
+    "contact": "Contattaci",
+    "copyright": "© {year} CultureMesh LLC. Tutti i diritti riservati."
+  },
+  "common": {
+    "legalDisclaimer": "Questa pagina è stata tradotta automaticamente. La versione inglese è la versione legalmente vincolante."
+  },
+  "terms": {
+    "title": "Termini e Condizioni",
+    "lastUpdated": "Ultimo aggiornamento il 9 agosto 2026.",
+    "intro": "Questi Termini e Condizioni (\"Termini\") regolano il tuo accesso e l'uso di CultureMesh (\"CultureMesh\", \"noi\", \"noi\" o \"nostro\") e del sito e dei servizi che mettiamo a disposizione (insieme, il \"Servizio\"). Creando un account o utilizzando in altro modo il Servizio, accetti di essere vincolato da questi Termini. Se non sei d'accordo, non utilizzare il Servizio. CultureMesh è gestita da CultureMesh LLC, una società a responsabilità limitata del Michigan.",
+    "eligibility": {
+      "heading": "Ammissibilità",
+      "body": "Devi avere almeno 13 anni per creare un account o utilizzare il Servizio. Utilizzando il Servizio, dimostri di soddisfare questo requisito e che tutte le informazioni fornite sono accurate."
+    },
+    "whatCultureMeshIs": {
+      "heading": "Cos'è CultureMesh",
+      "body": "CultureMesh è una piattaforma che collega le persone in base a una lingua o luogo di origine combinato con il luogo in cui vivono attualmente. Puoi cercare una rete esistente per quella combinazione, unirti a essa o avviarne una nuova se non esiste ancora. All'interno di una rete, i membri possono pubblicare, rispondere, scriversi e ospitare o partecipare a eventi."
+    },
+    "accounts": {
+      "heading": "Resoconti",
+      "body": "Sei responsabile del mantenimento della riservatezza delle credenziali del tuo account e di tutte le attività legate al tuo account. Avvisaci immediatamente se sospetti un uso non autorizzato del tuo account contattandoci. Accetti di fornire informazioni accurate quando crei il tuo account e di mantenerlo aggiornato."
+    },
+    "yourContent": {
+      "heading": "Il tuo contenuto",
+      "p1": "Sei l'unico responsabile del contenuto di qualsiasi informazione del profilo, post, risposta, messaggio o elenco di eventi che invii tramite il Servizio. Mantieni la proprietà dei contenuti che invii, ma concedi a CultureMesh una licenza per ospitare, mostrare e distribuire quei contenuti secondo necessità per far funzionare il Servizio.",
+      "p2": "Possiamo rimuovere contenuti che violano questi Termini e sospendere o terminare account che li violano ripetutamente."
+    },
+    "communityConduct": {
+      "heading": "Comportamento comunitario",
+      "body": "Accetti di non utilizzare il Servizio per scopi illeciti; molestare, minacciare o discriminare un altro utente; impersonare una persona o travestire la propria affiliazione con una persona o entità; raschiare, ingegnerizzare al contrario o interferire con il funzionamento del Servizio; oppure usare il Servizio per sfruttare o mettere in pericolo un minore."
+    },
+    "embassyAndPartnerEmbeds": {
+      "heading": "Ambasciate e Partner Embedd",
+      "body": "CultureMesh offre un'opzione di incorporazione white-label che permette a ambasciate e organizzazioni culturali di mostrare una versione a scopo, priva di branding CultureMesh, della ricerca di rete sul proprio sito web. Queste partnership sono configurate direttamente dal personale di CultureMesh. Lanciare o unirsi a una rete tramite una pagina incorporata è comunque soggetto a questi Termini."
+    },
+    "intellectualProperty": {
+      "heading": "Proprietà intellettuale",
+      "body": "Il Servizio, inclusi il suo design, testo, grafica e software sottostante, è di proprietà di CultureMesh LLC o dei nostri licenziatari ed è protetto dalle leggi sulla proprietà intellettuale. Non puoi copiare, modificare o distribuire alcuna parte del Servizio se non quando il Servizio stesso lo consente."
+    },
+    "disclaimers": {
+      "heading": "Disclaimer",
+      "body": "Il servizio viene fornito \"così com'è\" e \"quando disponibile\", senza alcuna garanzia, espressa o implicita, incluse garanzie di commerciabilità, idoneità a uno scopo particolare e non violazione. CultureMesh non controlla e non è responsabile per la condotta di alcun utente, sia dentro che fuori dal Servizio. Sei l'unico responsabile delle tue interazioni con gli altri utenti."
+    },
+    "limitationOfLiability": {
+      "heading": "Limitazione di responsabilità",
+      "body": "Nella massima misura consentita dalla legge, CultureMesh non sarà responsabile per eventuali danni indiretti, incidentali, speciali, conseguenti o punitivi derivanti o correlati al tuo utilizzo del Servizio. Nella massima misura consentita dalla legge, la responsabilità totale di CultureMesh per qualsiasi richiesta derivante o collegata al Servizio non supererà cento dollari statunitensi."
+    },
+    "indemnification": {
+      "heading": "Indennizzo",
+      "body": "Accetti di indennizzare e di tenere CultureMesh indennucato da qualsiasi reclamo, perdita o spesa (inclusi i ragionevoli onorari legali) derivanti dall'uso del Servizio, dalla violazione di questi Termini o dalle tue interazioni con un altro utente."
+    },
+    "governingLaw": {
+      "heading": "Diritto di Governo",
+      "body": "Questi Termini sono regolati dalle leggi dello Stato del Michigan, senza considerare i suoi principi di conflitto di leggi. Qualsiasi controversia derivante da o relativa a questi Termini o al Servizio sarà presentata esclusivamente nei tribunali statali o federali situati in Michigan, e tu acconsenti alla giurisdizione di tali tribunali."
+    },
+    "termination": {
+      "heading": "Terminazione",
+      "body": "Puoi smettere di usare il Servizio ed eliminare il tuo account in qualsiasi momento contattandoci. Possiamo sospendere o terminare il tuo accesso al Servizio se violi questi Termini, o per qualsiasi altro motivo con ragionevole preavviso, salvo quando sia necessario intervenire immediatamente per proteggere il Servizio o i suoi utenti."
+    },
+    "changesToTheseTerms": {
+      "heading": "Modifiche a questi termini",
+      "body": "Possiamo aggiornare questi Termini di tanto in tanto. Se apportiamo modifiche sostanziali, comunicheremo tramite il Servizio prima che le modifiche entrino in vigore. Continuare a utilizzare il Servizio dopo l'entrata in vigore delle modifiche significa accettare i Termini aggiornati."
+    },
+    "miscellaneous": {
+      "heading": "Varie",
+      "body": "Se una qualsiasi disposizione di questi Termini risulta non applicabile, le restanti disposizioni rimarranno pienamente valide. Il nostro mancato rispetto di alcuna disposizione non costituisce una deroga a essa. Questi Termini, insieme alla nostra Informativa sulla Privacy, rappresentano l'intero accordo tra te e CultureMesh riguardo al Servizio."
+    },
+    "contactUs": "Le domande su questi Termini possono essere inviate tramite la nostra pagina <link>Contattaci</link>."
+  },
+  "privacy": {
+    "title": "Informativa sulla privacy",
+    "lastUpdated": "Ultimo aggiornamento il 9 agosto 2026.",
+    "intro": "Questa Informativa sulla Privacy spiega come CultureMesh LLC (\"CultureMesh\", \"noi\", \"noi\" o \"nostro\") raccoglie, utilizza e condivide informazioni quando utilizzi il nostro sito web e i nostri servizi (il \"Servizio\"). Utilizzando il Servizio, accetti la raccolta e l'uso delle informazioni come descritto qui.",
+    "informationWeCollect": {
+      "heading": "Informazioni che raccogliamo",
+      "account": "<b>Informazioni sull'account.</b> Quando crei un account, raccogliamo il tuo indirizzo email e la tua password.",
+      "profile": "<b>Informazioni sul profilo.</b> Puoi aggiungere un nome utente, nome e cognome, una foto profilo e una breve descrizione \"su di me\".",
+      "networkActivity": "<b>Attività di rete.</b> Raccogliamo le reti a cui ti uneixi o lanci, i post e le risposte che scrivi, gli eventi che ospiti o a cui rispondi la tua partecipazione, e le tue preferenze di notifica.",
+      "messages": "<b>Messaggi.</b> Se scrivi a un altro utente tramite il Servizio, memorizziamo il contenuto di quel messaggio.",
+      "suggestedNetwork": "<b>Proposte di reti suggerite.</b> Se suggerisci una rete che non esiste ancora, raccogliamo il testo di origine e posizione che invii.",
+      "contactForm": "<b>Modulo di contatto.</b> Se ci contatti, raccogliamo il tuo nome, indirizzo email e messaggio.",
+      "usage": "<b>Informazioni sull'uso.</b> Raccolgiamo informazioni tecniche standard necessarie per gestire il Servizio, come il tuo indirizzo IP, il tipo di browser e le pagine che visiti, principalmente tramite i log del server."
+    },
+    "howWeUseInformation": {
+      "heading": "Come utilizziamo le informazioni",
+      "body": "Utilizziamo le informazioni che raccogliamo per: gestire e mantenere il Servizio; ti metterti in contatto con reti, eventi e altri membri; invia le notifiche a cui hai aderito; comunicare con te riguardo al tuo account; rilevare e prevenire frodi, abusi e violazioni dei nostri Termini e Condizioni; e rispettare gli obblighi di legge. Non vendiamo le tue informazioni personali e attualmente non utilizziamo servizi pubblicitari o di analisi che ti tracciano su altri siti web."
+    },
+    "howWeShareInformation": {
+      "heading": "Come condividiamo le informazioni",
+      "intro": "Condividiamo le informazioni con i seguenti fornitori di servizi, ciascuno dei quali elabora le informazioni per nostro conto e solo per gli scopi descritti in questa politica:",
+      "supabase": "<b>Supabase, Inc.</b> — ospita il nostro database, l'autenticazione e l'archiviazione dei file, inclusi dati di profilo, post, messaggi e record degli eventi.",
+      "resend": "<b>Resend</b> — consegna email transazionali, come email di conferma dell'account e reset della password, e messaggi inviati tramite il nostro modulo di contatto.",
+      "vercel": "<b>Vercel Inc.</b> — ospita e serve il Servizio.",
+      "legal": "Possiamo anche condividere informazioni, se richiesto dalla legge, per proteggere i diritti, la proprietà o la sicurezza di CultureMesh, dei nostri utenti o del pubblico, oppure in relazione a una fusione, acquisizione o vendita di asset, nel qual caso richiederemo al destinatario di rispettare gli impegni previsti da questa politica.",
+      "members": "Altri membri di una rete vedono le informazioni del profilo, i post e le risposte che scegli di rendere visibili all'interno di quella rete, e il contenuto dei messaggi che scambi direttamente con loro. Se un'ambasciata o un'organizzazione partner gestisce un embedded white-label di CultureMesh, e avvii o ti uneixi a una rete tramite esso, vengono raccolte le stesse informazioni descritte in questa politica — il partner non riceve alcun accesso aggiuntivo al tuo account."
+    },
+    "cookies": {
+      "heading": "Biscotti",
+      "body": "Utilizziamo solo i cookie necessari per mantenerti connesso e per gestire il Servizio in modo sicuro. Attualmente non utilizziamo cookie di pubblicità o di tracciamento di terze parti."
+    },
+    "dataRetention": {
+      "heading": "Conservazione dei dati",
+      "body": "Conserviamo le tue informazioni finché il tuo account è attivo o necessario, per fornire il Servizio, rispettare i nostri obblighi legali, risolvere controversie e far rispettare i nostri accordi."
+    },
+    "yourRightsAndChoices": {
+      "heading": "I tuoi diritti e le tue scelte",
+      "p1": "Puoi accedere e aggiornare la maggior parte delle informazioni del tuo profilo direttamente dalle impostazioni del tuo account. Puoi richiedere l'accesso, la correzione o la cancellazione delle tue informazioni personali in qualsiasi momento contattandoci. Risponderemo alle richieste verificate entro un tempo ragionevole.",
+      "p2": "A seconda di dove vivi, potresti avere diritti aggiuntivi sulle tue informazioni personali secondo la legge applicabile. Puoi esercitare uno qualsiasi di questi diritti contattandoci."
+    },
+    "childrensPrivacy": {
+      "heading": "Privacy dei bambini",
+      "body": "Il Servizio non è rivolto né disponibile a nessuno sotto i 13 anni. Non raccogliamo consapevolmente informazioni da nessuno sotto i 13 anni. Se scopriamo di aver raccolto informazioni da qualcuno sotto i 13 anni, le cancelliamo."
+    },
+    "security": {
+      "heading": "Sicurezza",
+      "body": "Utilizziamo misure tecniche e organizzative ragionevoli per proteggere le informazioni che possiediamo. Nessun metodo di trasmissione o memorizzazione è completamente sicuro e non possiamo garantire una sicurezza assoluta."
+    },
+    "changesToThisPolicy": {
+      "heading": "Modifiche a questa politica",
+      "body": "Potremmo aggiornare questa Informativa sulla Privacy di tanto in tanto. Se apportiamo modifiche sostanziali, forniremo un avviso tramite il Servizio o con altri mezzi ragionevoli prima che i cambiamenti entrino in vigore."
+    },
+    "contactUs": "Se hai domande su questa Informativa sulla Privacy o vuoi esercitare uno qualsiasi dei diritti sopra descritti, contattaci tramite la nostra pagina <link>Contattaci</link>."
+  },
+  "about": {
+    "heading": "Informazioni su CultureMesh",
+    "paragraph1": "CultureMesh collega le persone attraverso due cose contemporaneamente: da dove provengono e dove vivono ora. Cerca una lingua o un luogo di origine accanto alla tua città o stato attuale, e troverai (o potrai iniziare) una rete di persone che condividono la stessa combinazione — una casa per la specifica sovrapposizione di cultura e geografia che è più difficile da trovare altrove.",
+    "paragraph2": "Ogni movimento, sia attraverso un oceano che attraverso un paese, porta con sé la sfida di portarsi a casa con sé. È nei piatti che desideri cucinare, nei colloquialismi che ti mancano di parlare ad alta voce, e nella comprensione silenziosa delle tradizioni condivise. CultureMesh crea spazi in cui queste identità duali possono prosperare insieme. Abbinando il luogo da cui vieni a quello di oggi, trasforma città estese in comunità intime e localizzate dove radici condivise diventano ponti immediati verso l'appartenenza.",
+    "paragraph3": "Attraverso queste reti personalizzate, i vicini diventano amici per tutta la vita, mentori e ancoraggi culturali. Che si tratti di organizzare incontri locali, scambiarsi consigli su come orientarsi in un nuovo ambiente o semplicemente condividere una risata in una lingua madre, CultureMesh trasforma l'isolamento del trasferimento in una celebrazione di un'identità condivisa. Non è solo un indice di luoghi — è una rete globale di appartenenza che assicura que, non importa quanto lontani tu viaggi, non sarai mai davvero lontano da casa.",
+    "paragraph4": "CultureMesh è gestita da CultureMesh LLC, una società a responsabilità limitata del Michigan."
+  }
+}

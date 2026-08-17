@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { useTranslations } from "next-intl";
 import {
   checkEmailStatus,
   sendOtp,
@@ -53,6 +54,7 @@ function stripEmbedParam(path: string): string {
 // critical for embeds, where a real navigation would either break out of
 // the iframe or swap it to a page that doesn't match the embed's look.
 export function OtpForm({ returnTo }: { returnTo?: string }) {
+  const t = useTranslations("auth");
   const router = useRouter();
   const [step, setStep] = useState<"email" | "password" | "code" | "bridge">("email");
   const [email, setEmail] = useState("");
@@ -159,7 +161,7 @@ export function OtpForm({ returnTo }: { returnTo?: string }) {
     const settled = await trySettle(applyPendingName);
     setIsPending(false);
     if (!settled) {
-      setError("Still not able to stay signed in inside this window.");
+      setError(t("bridge.stillBlocked"));
     }
   }
 
@@ -169,9 +171,7 @@ export function OtpForm({ returnTo }: { returnTo?: string }) {
 
     return (
       <div className="flex flex-col gap-4">
-        <p className="text-center text-sm text-body">
-          You&apos;re verified, but this browser is blocking sign-in inside an embedded window.
-        </p>
+        <p className="text-center text-sm text-body">{t("bridge.explanation")}</p>
         {error && (
           <p className="rounded-md bg-error-bg px-3 py-2 text-sm text-error">{error}</p>
         )}
@@ -183,7 +183,7 @@ export function OtpForm({ returnTo }: { returnTo?: string }) {
               rel="noreferrer"
               className="rounded-md bg-primary px-3 py-2 text-center font-medium text-white transition-colors hover:bg-primary-hover"
             >
-              Continue in a new tab
+              {t("bridge.continueNewTab")}
             </a>
             <button
               type="button"
@@ -191,12 +191,12 @@ export function OtpForm({ returnTo }: { returnTo?: string }) {
               disabled={isPending}
               className="text-center text-sm text-muted underline hover:text-primary"
             >
-              {isPending ? "Checking…" : "I finished in the new tab — continue here"}
+              {isPending ? t("bridge.checking") : t("bridge.continueHere")}
             </button>
           </>
         ) : (
           <Button type="button" onClick={handleBridgeRetry} disabled={isPending}>
-            {isPending ? "Checking…" : "Try again"}
+            {isPending ? t("bridge.checking") : t("bridge.tryAgain")}
           </Button>
         )}
       </div>
@@ -208,17 +208,20 @@ export function OtpForm({ returnTo }: { returnTo?: string }) {
       <form action={handlePasswordSignIn} className="flex flex-col gap-4">
         <input type="hidden" name="email" value={email} />
         <p className="text-center text-sm text-body">
-          Signing in as <span className="font-medium text-ink">{email}</span>.
+          {t.rich("password.signingInAs", {
+            email,
+            b: (chunks) => <span className="font-medium text-ink">{chunks}</span>,
+          })}
         </p>
         {error && (
           <p className="rounded-md bg-error-bg px-3 py-2 text-sm text-error">{error}</p>
         )}
         <Field>
-          <Label htmlFor="password">Password</Label>
+          <Label htmlFor="password">{t("password.label")}</Label>
           <Input id="password" name="password" type="password" required autoFocus />
         </Field>
         <Button type="submit" className="w-full" disabled={isPending}>
-          {isPending ? "Signing in…" : "Sign in"}
+          {isPending ? t("password.signingIn") : t("password.submit")}
         </Button>
         <button
           type="button"
@@ -230,7 +233,7 @@ export function OtpForm({ returnTo }: { returnTo?: string }) {
           disabled={isPending}
           className="text-center text-sm text-muted underline hover:text-primary"
         >
-          Email me a code instead
+          {t("password.emailCode")}
         </button>
         <button
           type="button"
@@ -240,7 +243,7 @@ export function OtpForm({ returnTo }: { returnTo?: string }) {
           }}
           className="text-center text-sm text-muted underline hover:text-primary"
         >
-          Use a different email
+          {t("password.useDifferentEmail")}
         </button>
       </form>
     );
@@ -251,13 +254,16 @@ export function OtpForm({ returnTo }: { returnTo?: string }) {
       <form action={handleVerify} className="flex flex-col gap-4">
         <input type="hidden" name="email" value={email} />
         <p className="text-center text-sm text-body">
-          We emailed a code to <span className="font-medium text-ink">{email}</span>.
+          {t.rich("code.weEmailedCode", {
+            email,
+            b: (chunks) => <span className="font-medium text-ink">{chunks}</span>,
+          })}
         </p>
         {error && (
           <p className="rounded-md bg-error-bg px-3 py-2 text-sm text-error">{error}</p>
         )}
         <Field>
-          <Label htmlFor="token">Code</Label>
+          <Label htmlFor="token">{t("code.label")}</Label>
           <Input
             id="token"
             name="token"
@@ -268,7 +274,7 @@ export function OtpForm({ returnTo }: { returnTo?: string }) {
           />
         </Field>
         <Button type="submit" className="w-full" disabled={isPending}>
-          {isPending ? "Verifying…" : "Verify and continue"}
+          {isPending ? t("code.verifying") : t("code.submit")}
         </Button>
         <button
           type="button"
@@ -279,7 +285,7 @@ export function OtpForm({ returnTo }: { returnTo?: string }) {
           }}
           className="text-center text-sm text-muted underline hover:text-primary"
         >
-          Use a different email
+          {t("code.useDifferentEmail")}
         </button>
       </form>
     );
@@ -291,15 +297,15 @@ export function OtpForm({ returnTo }: { returnTo?: string }) {
         <p className="rounded-md bg-error-bg px-3 py-2 text-sm text-error">{error}</p>
       )}
       <Field>
-        <Label htmlFor="email">Email</Label>
+        <Label htmlFor="email">{t("email.label")}</Label>
         <Input id="email" name="email" type="email" required autoFocus />
       </Field>
       <Field>
-        <Label htmlFor="name">Name</Label>
-        <Input id="name" name="name" placeholder="Only needed if you're new here" />
+        <Label htmlFor="name">{t("email.nameLabel")}</Label>
+        <Input id="name" name="name" placeholder={t("email.namePlaceholder")} />
       </Field>
       <Button type="submit" className="w-full" disabled={isPending}>
-        {isPending ? "Continuing…" : "Continue"}
+        {isPending ? t("email.continuing") : t("email.submit")}
       </Button>
     </form>
   );

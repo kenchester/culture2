@@ -2,11 +2,13 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { deletePost, toggleLike, updatePost } from "@/app/networks/actions";
+import { useLocale, useTranslations } from "next-intl";
+import { deletePost, toggleLike, translateEntry, updatePost } from "@/app/networks/actions";
 import { deleteReply, updateReply } from "@/app/networks/[id]/posts/[postId]/actions";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/input";
 import { Linkify } from "@/lib/linkify";
+import type { Locale } from "@/lib/locale";
 
 // A minimal outline icon (fill toggles solid when liked) rather than an
 // emoji - this site is used by embassies and other professional
@@ -51,12 +53,37 @@ export function EditableEntry({
   liked: boolean;
   redirectAfterDelete?: string;
 }) {
+  const t = useTranslations("editableEntry");
+  const locale = useLocale() as Locale;
   const router = useRouter();
   const [mode, setMode] = useState<"view" | "edit" | "confirmDelete">("view");
   const [draft, setDraft] = useState(body);
   const [isPending, setIsPending] = useState(false);
   const [isLiking, setIsLiking] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [translated, setTranslated] = useState<string | null>(null);
+  const [showTranslated, setShowTranslated] = useState(false);
+  const [isTranslating, setIsTranslating] = useState(false);
+
+  async function handleTranslate() {
+    if (showTranslated) {
+      setShowTranslated(false);
+      return;
+    }
+    if (translated) {
+      setShowTranslated(true);
+      return;
+    }
+    setIsTranslating(true);
+    const result = await translateEntry(kind, itemId, locale);
+    setIsTranslating(false);
+    if ("error" in result) {
+      setError(result.error);
+      return;
+    }
+    setTranslated(result.text);
+    setShowTranslated(true);
+  }
 
   async function handleToggleLike() {
     setIsLiking(true);
@@ -114,7 +141,7 @@ export function EditableEntry({
             disabled={isPending || !draft.trim()}
             className="self-start px-3 py-1.5 text-xs"
           >
-            {isPending ? "Saving…" : "Save"}
+            {isPending ? t("saving") : t("save")}
           </Button>
           <Button
             type="button"
@@ -127,7 +154,7 @@ export function EditableEntry({
             disabled={isPending}
             className="self-start px-3 py-1.5 text-xs"
           >
-            Cancel
+            {t("cancel")}
           </Button>
         </div>
       </div>
@@ -138,14 +165,22 @@ export function EditableEntry({
     <div className="flex flex-col gap-1">
       <div className="flex items-start justify-between gap-2">
         <p className="text-body">
-          <Linkify text={body} />
+          <Linkify text={showTranslated && translated ? translated : body} />
         </p>
         <div className="flex shrink-0 items-center gap-3 text-sm text-muted">
           <button
             type="button"
+            onClick={handleTranslate}
+            disabled={isTranslating}
+            className="hover:text-primary disabled:opacity-50"
+          >
+            {isTranslating ? t("translating") : showTranslated ? t("showOriginal") : t("translate")}
+          </button>
+          <button
+            type="button"
             onClick={handleToggleLike}
             disabled={isLiking}
-            aria-label={liked ? `Unlike this ${kind}` : `Like this ${kind}`}
+            aria-label={liked ? t(`unlike.${kind}`) : t(`like.${kind}`)}
             className={`flex items-center gap-1 disabled:opacity-50 ${liked ? "text-primary" : "hover:text-primary"}`}
           >
             <ThumbsUpIcon filled={liked} />
@@ -156,7 +191,7 @@ export function EditableEntry({
               <button
                 type="button"
                 onClick={() => setMode("edit")}
-                aria-label={`Edit ${kind}`}
+                aria-label={t(`edit.${kind}`)}
                 className="hover:text-primary"
               >
                 ✎
@@ -164,7 +199,7 @@ export function EditableEntry({
               <button
                 type="button"
                 onClick={() => setMode("confirmDelete")}
-                aria-label={`Delete ${kind}`}
+                aria-label={t(`delete.${kind}`)}
                 className="hover:text-error"
               >
                 ✕
@@ -175,14 +210,14 @@ export function EditableEntry({
       </div>
       {mode === "confirmDelete" && (
         <div className="flex items-center gap-2 text-sm text-body">
-          <span>Delete this {kind}?</span>
+          <span>{t(`deleteConfirm.${kind}`)}</span>
           <button
             type="button"
             onClick={handleDelete}
             disabled={isPending}
             className="font-medium text-error underline"
           >
-            {isPending ? "Deleting…" : "Yes"}
+            {isPending ? t("deleting") : t("yes")}
           </button>
           <button
             type="button"
@@ -190,7 +225,7 @@ export function EditableEntry({
             disabled={isPending}
             className="text-muted underline"
           >
-            No
+            {t("no")}
           </button>
         </div>
       )}

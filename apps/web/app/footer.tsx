@@ -2,8 +2,10 @@
 
 import Link from "next/link";
 import { usePathname, useSearchParams } from "next/navigation";
+import { useTranslations } from "next-intl";
 
 export function Footer() {
+  const t = useTranslations("footer");
   const pathname = usePathname();
   const searchParams = useSearchParams();
 
@@ -23,19 +25,19 @@ export function Footer() {
   return (
     <footer className="border-t border-border bg-surface px-4 py-6 sm:px-6">
       <div className="mx-auto flex w-full max-w-5xl flex-col items-center justify-between gap-3 text-sm text-muted sm:flex-row">
-        <p>&copy; {new Date().getFullYear()} CultureMesh LLC. All rights reserved.</p>
+        <p>{t("copyright", { year: new Date().getFullYear() })}</p>
         <div className="flex items-center gap-5">
           <Link href="/about" className="hover:text-primary">
-            About Us
+            {t("about")}
           </Link>
           <Link href="/privacy" className="hover:text-primary">
-            Privacy Policy
+            {t("privacy")}
           </Link>
           <Link href="/terms" className="hover:text-primary">
-            Terms and Conditions
+            {t("terms")}
           </Link>
           <Link href="/contact" className="hover:text-primary">
-            Contact Us
+            {t("contact")}
           </Link>
         </div>
       </div>

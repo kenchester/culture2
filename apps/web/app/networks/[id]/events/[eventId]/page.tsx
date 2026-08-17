@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { getTranslations } from "next-intl/server";
 import { createClient } from "@/lib/supabase/server";
 import { getDisplayName } from "@/lib/profiles";
 import { cancelRsvp, rsvp } from "@/app/networks/[id]/events/[eventId]/actions";
@@ -19,6 +20,7 @@ export default async function EventPage({
   const isEmbedded = embed === "1";
   const embedSuffix = isEmbedded ? "?embed=1" : "";
   const supabase = await createClient();
+  const t = await getTranslations("eventDetail");
 
   const { data: event } = await supabase
     .from("events")
@@ -68,7 +70,7 @@ export default async function EventPage({
   return (
     <div className="mx-auto flex w-full max-w-lg flex-1 flex-col gap-6 px-4 py-12">
       <Link href={`/networks/${id}/events${embedSuffix}`} className="text-sm text-muted underline">
-        Back to events
+        {t("backToEvents")}
       </Link>
 
       <div>
@@ -79,10 +81,17 @@ export default async function EventPage({
         </p>
         {host && (
           <p className="text-sm text-muted">
-            Hosted by{" "}
-            <Link href={`/profile/${host.id}`} className="text-ink underline hover:text-primary">
-              {getDisplayName(host)}
-            </Link>
+            {t.rich("hostedBy", {
+              name: getDisplayName(host),
+              link: (chunks) => (
+                <Link
+                  href={`/profile/${host.id}`}
+                  className="text-ink underline hover:text-primary"
+                >
+                  {chunks}
+                </Link>
+              ),
+            })}
           </p>
         )}
       </div>
@@ -90,7 +99,11 @@ export default async function EventPage({
       {event.description && <p className="text-body">{event.description}</p>}
 
       <p className="text-sm text-muted">
-        {counts.going} going, {counts.interested} interested, {counts.declined} declined
+        {t("rsvpCounts", {
+          going: counts.going,
+          interested: counts.interested,
+          declined: counts.declined,
+        })}
       </p>
 
       {error && (
@@ -109,9 +122,8 @@ export default async function EventPage({
                 <Button
                   type="submit"
                   variant={myRsvp?.status === status ? "primary" : "secondary"}
-                  className="capitalize"
                 >
-                  {status}
+                  {t(`statuses.${status}`)}
                 </Button>
               </form>
             ))}
@@ -122,14 +134,14 @@ export default async function EventPage({
               <input type="hidden" name="networkId" value={id} />
               {isEmbedded && <input type="hidden" name="embed" value="1" />}
               <button type="submit" className="text-sm text-muted underline hover:text-primary">
-                Remove my RSVP
+                {t("removeRsvp")}
               </button>
             </form>
           )}
         </div>
       ) : (
         <Link href={signInHref} className="text-sm font-medium text-primary hover:underline">
-          Sign in to RSVP
+          {t("signInToRsvp")}
         </Link>
       )}
     </div>

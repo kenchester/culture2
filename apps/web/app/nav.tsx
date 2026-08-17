@@ -4,11 +4,13 @@ import Image from "next/image";
 import Link from "next/link";
 import { usePathname, useSearchParams } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
+import { useTranslations } from "next-intl";
 import type { User } from "@supabase/supabase-js";
 import { createClient } from "@/lib/supabase/client";
 import { signOut } from "@/app/(auth)/actions";
 import { Logo } from "@/components/logo";
 import { getAvatarUrl, getDisplayName } from "@/lib/profiles";
+import { LanguageSwitcher } from "@/app/language-switcher";
 
 function NavLink({ href, children }: { href: string; children: React.ReactNode }) {
   const pathname = usePathname();
@@ -34,6 +36,7 @@ type Profile = {
 };
 
 function UserMenu({ user, profile }: { user: User; profile: Profile | null }) {
+  const t = useTranslations("nav");
   const [open, setOpen] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
   const supabase = createClient();
@@ -97,21 +100,21 @@ function UserMenu({ user, profile }: { user: User; profile: Profile | null }) {
             onClick={() => setOpen(false)}
             className="block px-3 py-2 text-body hover:bg-primary-light hover:text-primary"
           >
-            Profile
+            {t("profile")}
           </Link>
           <Link
             href="/messages"
             onClick={() => setOpen(false)}
             className="block px-3 py-2 text-body hover:bg-primary-light hover:text-primary"
           >
-            Messages
+            {t("messages")}
           </Link>
           <Link
             href="/settings"
             onClick={() => setOpen(false)}
             className="block px-3 py-2 text-body hover:bg-primary-light hover:text-primary"
           >
-            Settings
+            {t("settings")}
           </Link>
           {profile?.is_admin && (
             <Link
@@ -119,7 +122,7 @@ function UserMenu({ user, profile }: { user: User; profile: Profile | null }) {
               onClick={() => setOpen(false)}
               className="block px-3 py-2 text-body hover:bg-primary-light hover:text-primary"
             >
-              Admin
+              {t("admin")}
             </Link>
           )}
           <form action={signOut}>
@@ -127,7 +130,7 @@ function UserMenu({ user, profile }: { user: User; profile: Profile | null }) {
               type="submit"
               className="block w-full border-t border-border px-3 py-2 text-left text-body hover:bg-primary-light hover:text-primary"
             >
-              Sign out
+              {t("signOut")}
             </button>
           </form>
         </div>
@@ -137,6 +140,7 @@ function UserMenu({ user, profile }: { user: User; profile: Profile | null }) {
 }
 
 export function Nav() {
+  const t = useTranslations("nav");
   const [user, setUser] = useState<User | null>(null);
   const [profile, setProfile] = useState<Profile | null>(null);
   const pathname = usePathname();
@@ -201,17 +205,18 @@ export function Nav() {
         <Logo className="h-8" priority />
       </Link>
       <div className="flex flex-wrap items-center gap-x-5 gap-y-2 text-sm">
-        <NavLink href="/search">Search</NavLink>
+        <NavLink href="/search">{t("search")}</NavLink>
+        <LanguageSwitcher />
         {user ? (
           <UserMenu user={user} profile={profile} />
         ) : (
           <>
-            <NavLink href="/sign-in">Sign in</NavLink>
+            <NavLink href="/sign-in">{t("signIn")}</NavLink>
             <Link
               href="/sign-in"
               className="rounded-md bg-primary px-3 py-1.5 font-medium text-white transition-colors hover:bg-primary-hover"
             >
-              Sign up
+              {t("signUp")}
             </Link>
           </>
         )}

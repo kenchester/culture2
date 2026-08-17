@@ -1,6 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { getTranslations } from "next-intl/server";
 import { createClient } from "@/lib/supabase/server";
 import { type Author, getAvatarUrl, getDisplayName } from "@/lib/profiles";
 import { createReply } from "./actions";
@@ -20,6 +21,7 @@ export default async function PostPage({
   const isEmbedded = embed === "1";
   const embedSuffix = isEmbedded ? "?embed=1" : "";
   const supabase = await createClient();
+  const t = await getTranslations("postDetail");
 
   const { data: post } = await supabase
     .from("posts")
@@ -69,7 +71,7 @@ export default async function PostPage({
   return (
     <div className="mx-auto flex w-full max-w-lg flex-1 flex-col gap-6 px-4 py-12">
       <Link href={`/networks/${id}${embedSuffix}`} className="text-sm text-muted underline">
-        Back to network
+        {t("backToNetwork")}
       </Link>
 
       <div className="flex gap-3 border-b border-border pb-4">
@@ -89,7 +91,7 @@ export default async function PostPage({
             href={author ? `/profile/${author.id}` : "#"}
             className="text-sm font-medium text-ink underline hover:text-primary"
           >
-            {author ? getDisplayName(author) : "Someone"}
+            {author ? getDisplayName(author) : t("someone")}
           </Link>
           <EditableEntry
             kind="post"
@@ -138,7 +140,7 @@ export default async function PostPage({
                   href={replyAuthor ? `/profile/${replyAuthor.id}` : "#"}
                   className="text-sm font-medium text-ink underline hover:text-primary"
                 >
-                  {replyAuthor ? getDisplayName(replyAuthor) : "Someone"}
+                  {replyAuthor ? getDisplayName(replyAuthor) : t("someone")}
                 </Link>
                 <EditableEntry
                   kind="reply"
@@ -152,7 +154,7 @@ export default async function PostPage({
             </div>
           );
         })}
-        {replies?.length === 0 && <p className="text-sm text-muted">No replies yet.</p>}
+        {replies?.length === 0 && <p className="text-sm text-muted">{t("noRepliesYet")}</p>}
       </div>
 
       {user ? (
@@ -164,21 +166,21 @@ export default async function PostPage({
             <p className="rounded-md bg-error-bg px-3 py-2 text-sm text-error">{error}</p>
           )}
           <Field>
-            <Label htmlFor="reply-body">Reply</Label>
+            <Label htmlFor="reply-body">{t("replyLabel")}</Label>
             <Textarea
               id="reply-body"
               name="body"
-              placeholder="Write a reply..."
+              placeholder={t("replyPlaceholder")}
               required
             />
           </Field>
           <Button type="submit" className="self-start">
-            Reply
+            {t("replySubmit")}
           </Button>
         </form>
       ) : (
         <Link href={signInHref} className="text-sm font-medium text-primary hover:underline">
-          Sign in to reply
+          {t("signInToReply")}
         </Link>
       )}
     </div>
