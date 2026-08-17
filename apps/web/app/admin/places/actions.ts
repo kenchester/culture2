@@ -15,6 +15,7 @@ export async function createLanguage(formData: FormData) {
   }
 
   revalidatePath("/admin/places");
+  redirect(`/admin/places?success=${encodeURIComponent(`"${name}" added.`)}`);
 }
 
 export async function updateLanguage(formData: FormData) {
@@ -29,6 +30,7 @@ export async function updateLanguage(formData: FormData) {
   }
 
   revalidatePath("/admin/places");
+  redirect(`/admin/places?success=${encodeURIComponent(`"${name}" updated.`)}`);
 }
 
 // A region always needs a country parent. A city needs a parent too, but
@@ -68,6 +70,7 @@ export async function createPlace(formData: FormData) {
   }
 
   revalidatePath("/admin/places");
+  redirect(`/admin/places?success=${encodeURIComponent(`"${name}" added.`)}`);
 }
 
 export async function updatePlace(formData: FormData) {
@@ -93,4 +96,5 @@ export async function updatePlace(formData: FormData) {
   }
 
   revalidatePath("/admin/places");
+  redirect(`/admin/places?success=${encodeURIComponent(`"${name}" updated.`)}`);
 }

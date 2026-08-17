@@ -5,9 +5,9 @@ import { ReligionManager } from "@/app/admin/religions/religion-manager";
 export default async function AdminReligionsPage({
   searchParams,
 }: {
-  searchParams: Promise<{ error?: string }>;
+  searchParams: Promise<{ error?: string; success?: string }>;
 }) {
-  const { error } = await searchParams;
+  const { error, success } = await searchParams;
   const supabase = await createClient();
 
   const { data: religions } = await supabase
@@ -17,6 +17,9 @@ export default async function AdminReligionsPage({
 
   return (
     <div className="flex w-full flex-col gap-6">
+      {success && (
+        <p className="rounded-md bg-success-bg px-3 py-2 text-sm text-success">{success}</p>
+      )}
       {error && (
         <p className="rounded-md bg-error-bg px-3 py-2 text-sm text-error">{error}</p>
       )}

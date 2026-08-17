@@ -5,12 +5,15 @@ import { PlaceManager } from "./place-manager";
 export default async function AdminPlacesPage({
   searchParams,
 }: {
-  searchParams: Promise<{ error?: string }>;
+  searchParams: Promise<{ error?: string; success?: string }>;
 }) {
-  const { error } = await searchParams;
+  const { error, success } = await searchParams;
 
   return (
     <div className="flex w-full flex-col gap-10">
+      {success && (
+        <p className="rounded-md bg-success-bg px-3 py-2 text-sm text-success">{success}</p>
+      )}
       {error && (
         <p className="rounded-md bg-error-bg px-3 py-2 text-sm text-error">{error}</p>
       )}

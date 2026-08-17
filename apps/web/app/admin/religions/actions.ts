@@ -26,6 +26,7 @@ export async function createReligion(formData: FormData) {
   }
 
   revalidatePath("/admin/religions");
+  redirect(`/admin/religions?success=${encodeURIComponent(`"${name}" added.`)}`);
 }
 
 export async function updateReligion(formData: FormData) {
@@ -44,4 +45,5 @@ export async function updateReligion(formData: FormData) {
   }
 
   revalidatePath("/admin/religions");
+  redirect(`/admin/religions?success=${encodeURIComponent(`"${name}" updated.`)}`);
 }
