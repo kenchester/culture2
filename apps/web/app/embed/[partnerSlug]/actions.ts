@@ -18,6 +18,7 @@ export async function launchNetworkForEmbed(formData: FormData) {
   const { data: networkId, error } = await supabase.rpc("launch_network", {
     p_language_id: isLanguage ? originId : null,
     p_origin_place_id: isLanguage ? null : originId,
+    p_religion_id: null,
     p_location_place_id: locationId,
     p_title: title,
   });

@@ -11,6 +11,7 @@ export async function launchNetwork(formData: FormData) {
   const locationId = Number(formData.get("locationId"));
   const title = formData.get("title") as string;
   const isLanguage = originKind === "language";
+  const isReligion = originKind === "religion";
 
   const resultsUrl = `/search/results?originKind=${originKind}&originId=${originId}&locationId=${locationId}`;
 
@@ -18,7 +19,8 @@ export async function launchNetwork(formData: FormData) {
 
   const { data: networkId, error } = await supabase.rpc("launch_network", {
     p_language_id: isLanguage ? originId : null,
-    p_origin_place_id: isLanguage ? null : originId,
+    p_origin_place_id: !isLanguage && !isReligion ? originId : null,
+    p_religion_id: isReligion ? originId : null,
     p_location_place_id: locationId,
     p_title: title,
   });

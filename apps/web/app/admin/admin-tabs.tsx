@@ -7,6 +7,7 @@ const TABS = [
   { href: "/admin/embed-partners", label: "Embed" },
   { href: "/admin/trending", label: "Trending Networks" },
   { href: "/admin/places", label: "Languages & Geography" },
+  { href: "/admin/religions", label: "Religions" },
   { href: "/admin/product-updates", label: "Product Updates" },
 ];
 

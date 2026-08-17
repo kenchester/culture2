@@ -45,6 +45,7 @@ export async function GET(request: NextRequest) {
   const { data, error } = await supabase.rpc("search_networks", {
     p_language_id: isLanguage ? Number(originId) : null,
     p_origin_place_id: isLanguage ? null : Number(originId),
+    p_religion_id: null,
     p_location_place_id: Number(locationId),
   });
 

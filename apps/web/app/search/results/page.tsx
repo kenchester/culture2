@@ -37,6 +37,39 @@ function MissingParamsMessage({ message }: { message: string }) {
   );
 }
 
+// The origin title/table/RPC choice is now a 3-way switch (language,
+// place, or religion) rather than a boolean - originKind drives which
+// table an id resolves against, which guess_* RPC a typed query falls
+// back to, and which network column an exact match is checked against.
+function originTable(originKind: string | undefined) {
+  if (originKind === "language") return "languages";
+  if (originKind === "religion") return "religions";
+  return "places";
+}
+
+function originNetworkColumn(originKind: string | undefined) {
+  if (originKind === "language") return "language_id";
+  if (originKind === "religion") return "religion_id";
+  return "origin_place_id";
+}
+
+function buildTitle(originKind: string | undefined, originName: string, locationName: string) {
+  if (originKind === "language") return `${originName} speakers in ${locationName}`;
+  if (originKind === "religion") return `${originName} community in ${locationName}`;
+  return `People from ${originName} in ${locationName}`;
+}
+
+async function guessOriginCandidates(
+  supabase: Awaited<ReturnType<typeof createClient>>,
+  originKind: string | undefined,
+  query: string,
+): Promise<Candidate[]> {
+  const rpcName =
+    originKind === "language" ? "guess_languages" : originKind === "religion" ? "guess_religions" : "guess_places";
+  const { data } = await supabase.rpc(rpcName, { p_query: query, p_limit: 3 });
+  return (data ?? []).map((r: { id: number; name: string }) => ({ id: r.id, name: r.name }));
+}
+
 export default async function SearchResultsPage({
   searchParams,
 }: {
@@ -44,6 +77,7 @@ export default async function SearchResultsPage({
 }) {
   const { originKind, originId, originQuery, locationId, locationQuery } = await searchParams;
   const isLanguage = originKind === "language";
+  const isReligion = originKind === "religion";
   const supabase = await createClient();
 
   // Both sides were resolved via an autocomplete selection - the original,
@@ -51,13 +85,12 @@ export default async function SearchResultsPage({
   if (originId && locationId) {
     const [{ data: origin }, { data: location }, { data: matches, error }] =
       await Promise.all([
-        isLanguage
-          ? supabase.from("languages").select("id, name").eq("id", originId).single()
-          : supabase.from("places").select("id, name, type").eq("id", originId).single(),
+        supabase.from(originTable(originKind)).select("id, name").eq("id", originId).single(),
         supabase.from("places").select("id, name, type").eq("id", locationId).single(),
         supabase.rpc("search_networks", {
           p_language_id: isLanguage ? Number(originId) : null,
-          p_origin_place_id: isLanguage ? null : Number(originId),
+          p_origin_place_id: !isLanguage && !isReligion ? Number(originId) : null,
+          p_religion_id: isReligion ? Number(originId) : null,
           p_location_place_id: Number(locationId),
         }),
       ]);
@@ -77,9 +110,7 @@ export default async function SearchResultsPage({
 
     const originName = origin?.name ?? "?";
     const locationName = location?.name ?? "?";
-    const title = isLanguage
-      ? `${originName} speakers in ${locationName}`
-      : `People from ${originName} in ${locationName}`;
+    const title = buildTitle(originKind, originName, locationName);
 
     return (
       <div className="mx-auto flex w-full max-w-lg flex-1 flex-col gap-8 px-4 py-12">
@@ -157,16 +188,14 @@ export default async function SearchResultsPage({
 
   const originCandidates: Candidate[] = originId
     ? await (async () => {
-        const { data } = isLanguage
-          ? await supabase.from("languages").select("id, name").eq("id", originId).single()
-          : await supabase.from("places").select("id, name").eq("id", originId).single();
+        const { data } = await supabase
+          .from(originTable(originKind))
+          .select("id, name")
+          .eq("id", originId)
+          .single();
         return data ? [{ id: data.id, name: data.name }] : [];
       })()
-    : isLanguage
-      ? ((await supabase.rpc("guess_languages", { p_query: trimmedOriginQuery, p_limit: 3 }))
-          .data ?? []).map((r: { id: number; name: string }) => ({ id: r.id, name: r.name }))
-      : ((await supabase.rpc("guess_places", { p_query: trimmedOriginQuery, p_limit: 3 }))
-          .data ?? []).map((r: { id: number; name: string }) => ({ id: r.id, name: r.name }));
+    : await guessOriginCandidates(supabase, originKind, trimmedOriginQuery!);
 
   const locationCandidates: Candidate[] = locationId
     ? await (async () => {
@@ -197,7 +226,7 @@ export default async function SearchResultsPage({
         .from("networks")
         .select("id, title, member_count, post_count")
         .eq("location_place_id", location.id)
-        .eq(isLanguage ? "language_id" : "origin_place_id", origin.id)
+        .eq(originNetworkColumn(originKind), origin.id)
         .maybeSingle(),
     ),
   );
@@ -214,9 +243,7 @@ export default async function SearchResultsPage({
 
       <div className="flex flex-col gap-4">
         {combos.map(({ origin, location }, i) => {
-          const title = isLanguage
-            ? `${origin.name} speakers in ${location.name}`
-            : `People from ${origin.name} in ${location.name}`;
+          const title = buildTitle(originKind, origin.name, location.name);
           const existing = existingNetworks[i].data as ExistingNetwork | null;
 
           return (

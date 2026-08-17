@@ -6,7 +6,8 @@ const PLACE_TYPES = ["country", "region", "city"];
 export async function GET(request: NextRequest) {
   const { searchParams } = new URL(request.url);
   const q = searchParams.get("q")?.trim() ?? "";
-  const kind = searchParams.get("kind") === "language" ? "language" : "place";
+  const kindParam = searchParams.get("kind");
+  const kind = kindParam === "language" || kindParam === "religion" ? kindParam : "place";
   const typeParam = searchParams.get("type");
   const type = typeParam && PLACE_TYPES.includes(typeParam) ? typeParam : null;
 
@@ -23,6 +24,17 @@ export async function GET(request: NextRequest) {
       .ilike("name", `%${q}%`)
       .order("name")
       .limit(10);
+    if (error) {
+      return NextResponse.json({ error: error.message }, { status: 500 });
+    }
+    return NextResponse.json(data);
+  }
+
+  if (kind === "religion") {
+    // Reuses guess_religions rather than a plain ilike here, so live-typing
+    // suggestions are alias-aware too (e.g. typing "Baha" surfaces "Bahá'í"
+    // immediately) instead of only on the post-submit guessing fallback.
+    const { data, error } = await supabase.rpc("guess_religions", { p_query: q, p_limit: 10 });
     if (error) {
       return NextResponse.json({ error: error.message }, { status: 500 });
     }

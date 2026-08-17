@@ -39,7 +39,7 @@ export default async function NetworkPage({
   const { data: network } = await supabase
     .from("networks")
     .select(
-      "id, title, member_count, post_count, language_id, origin_place_id, location_place_id",
+      "id, title, member_count, post_count, language_id, origin_place_id, religion_id, location_place_id",
     )
     .eq("id", id)
     .single();
@@ -51,6 +51,7 @@ export default async function NetworkPage({
   const [
     { data: language },
     { data: originPlace },
+    { data: religion },
     { data: location },
     { data: membership },
     { data: posts },
@@ -61,6 +62,9 @@ export default async function NetworkPage({
       : Promise.resolve({ data: null }),
     network.origin_place_id
       ? supabase.from("places").select("name").eq("id", network.origin_place_id).single()
+      : Promise.resolve({ data: null }),
+    network.religion_id
+      ? supabase.from("religions").select("name").eq("id", network.religion_id).single()
       : Promise.resolve({ data: null }),
     supabase.from("places").select("name, type").eq("id", network.location_place_id).single(),
     user
@@ -83,7 +87,7 @@ export default async function NetworkPage({
       : Promise.resolve({ data: null }),
   ]);
 
-  const originName = language?.name ?? originPlace?.name ?? "?";
+  const originName = language?.name ?? originPlace?.name ?? religion?.name ?? "?";
   const isMember = Boolean(membership);
   const myLikedPostIds = new Set((myLikes ?? []).map((l) => l.post_id as number));
 

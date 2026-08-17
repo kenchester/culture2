@@ -215,6 +215,7 @@ export default async function EmbedPage({
     supabase.rpc("search_networks", {
       p_language_id: isLanguage ? originId : null,
       p_origin_place_id: isLanguage ? null : originId,
+      p_religion_id: null,
       p_location_place_id: Number(locationId),
     }),
   ]);

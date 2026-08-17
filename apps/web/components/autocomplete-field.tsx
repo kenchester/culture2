@@ -12,8 +12,9 @@ export type PlaceOption = {
 };
 
 export type LanguageOption = { id: number; name: string };
+export type ReligionOption = { id: number; name: string };
 
-export type AutocompleteOption = PlaceOption | LanguageOption;
+export type AutocompleteOption = PlaceOption | LanguageOption | ReligionOption;
 
 export function optionLabel(option: AutocompleteOption) {
   if ("type" in option) {
@@ -36,7 +37,7 @@ export function AutocompleteField({
   initialOption = null,
 }: {
   label: string;
-  kind: "place" | "language";
+  kind: "place" | "language" | "religion";
   hiddenName?: string;
   // Submits whatever text is currently shown in the input (typed query, or
   // the selected option's label) under this form field name - lets the
@@ -115,7 +116,10 @@ export function AutocompleteField({
             onSelect?.(null);
             setQuery(e.target.value);
           }}
-          placeholder={placeholder ?? (kind === "language" ? "e.g. Mandarin" : "e.g. Michigan")}
+          placeholder={
+            placeholder ??
+            (kind === "language" ? "e.g. Mandarin" : kind === "religion" ? "e.g. Christian" : "e.g. Michigan")
+          }
           className={disabled ? "cursor-not-allowed bg-background text-muted" : undefined}
         />
         {hiddenName && <input type="hidden" name={hiddenName} value={selected?.id ?? ""} />}
