@@ -3,20 +3,30 @@ import { NextResponse, type NextRequest } from "next/server";
 import { publicEnv } from "@/lib/env.public";
 import { getAuthCookieOptions } from "@/lib/supabase/cookie-options";
 
-// faith.culturemesh.com gets the search/home path rewritten to the
-// faith-specific page (religion-based origin instead of language/place),
-// so it's sequestered from the main site's search without needing its own
-// results page or launch action - both stay host-agnostic, driven purely
-// by originKind.
+// Each sequestered subdomain gets its home/search path rewritten to its
+// own page - faith.culturemesh.com to a full religion picker,
+// redeemed.culturemesh.com to a Christian-only variant with the religion
+// choice hidden. Neither needs its own results page or launch action -
+// both stay host-agnostic, driven purely by originKind - and this table
+// is the only thing a future subdomain needs to add to.
+const SUBDOMAIN_ROUTES: Record<string, string> = {
+  "faith.": "/faith",
+  "redeemed.": "/redeemed",
+};
+
 function rewriteForHost(request: NextRequest): NextRequest["nextUrl"] | null {
   const host = request.headers.get("host") ?? "";
   const { pathname } = request.nextUrl;
-  if (host.startsWith("faith.") && (pathname === "/" || pathname === "/search")) {
-    const url = request.nextUrl.clone();
-    url.pathname = "/faith";
-    return url;
+  if (pathname !== "/" && pathname !== "/search") {
+    return null;
   }
-  return null;
+  const prefix = Object.keys(SUBDOMAIN_ROUTES).find((p) => host.startsWith(p));
+  if (!prefix) {
+    return null;
+  }
+  const url = request.nextUrl.clone();
+  url.pathname = SUBDOMAIN_ROUTES[prefix];
+  return url;
 }
 
 export async function updateSession(request: NextRequest) {
