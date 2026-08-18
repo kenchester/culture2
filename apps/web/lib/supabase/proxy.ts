@@ -15,6 +15,15 @@ const SUBDOMAIN_ROUTES: Record<string, string> = {
   "redeemed.": "/redeemed",
 };
 
+// These subdomains stay out of search results until their markets are
+// properly tested - applied as a response header rather than relying on
+// robots.txt alone, since it covers every route under the host (not just
+// the ones robots.ts enumerates) and is respected by major crawlers just
+// like a meta robots tag.
+function isSequesteredHost(host: string): boolean {
+  return Object.keys(SUBDOMAIN_ROUTES).some((prefix) => host.startsWith(prefix));
+}
+
 function rewriteForHost(request: NextRequest): NextRequest["nextUrl"] | null {
   const host = request.headers.get("host") ?? "";
   const { pathname } = request.nextUrl;
@@ -73,6 +82,10 @@ export async function updateSession(request: NextRequest) {
       path: "/",
       maxAge: 60 * 60 * 24 * 365,
     });
+  }
+
+  if (isSequesteredHost(request.headers.get("host") ?? "")) {
+    response.headers.set("X-Robots-Tag", "noindex, nofollow");
   }
 
   return response;
