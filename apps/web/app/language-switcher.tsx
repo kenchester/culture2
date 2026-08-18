@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useRef, useState, useTransition } from "react";
-import { useRouter } from "next/navigation";
 import { useLocale, useTranslations } from "next-intl";
 import { LOCALE_LABELS, SUPPORTED_LOCALES, type Locale } from "@/lib/locale";
 import { setLocale } from "@/app/actions";
@@ -11,7 +10,6 @@ export function LanguageSwitcher() {
   const [isPending, startTransition] = useTransition();
   const menuRef = useRef<HTMLDivElement>(null);
   const locale = useLocale() as Locale;
-  const router = useRouter();
   const t = useTranslations("nav");
 
   useEffect(() => {
@@ -29,7 +27,15 @@ export function LanguageSwitcher() {
     setOpen(false);
     startTransition(async () => {
       await setLocale(next);
-      router.refresh();
+      // A full reload rather than router.refresh(): client components
+      // elsewhere on the page (e.g. a post's cached Translate result)
+      // hold their own local state that isn't derived from next-intl's
+      // context, so a soft refresh leaves it stale - switching locale
+      // twice in a row without a full reload in between could otherwise
+      // still show content translated into the previous language. A
+      // reload resets everything at once instead of chasing down every
+      // component that holds locale-sensitive local state.
+      window.location.reload();
     });
   }
 
