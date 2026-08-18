@@ -10,6 +10,7 @@ type NetworkRow = {
   post_count: number;
   language: { name: string } | null;
   origin_place: { name: string } | null;
+  religion: { name: string } | null;
   location: { name: string } | null;
 };
 
@@ -27,7 +28,7 @@ export default async function AdminTrendingPage({
   const { data: networks, count } = (await supabase
     .from("networks")
     .select(
-      "id, title, member_count, post_count, language:language_id(name), origin_place:origin_place_id(name), location:location_place_id(name)",
+      "id, title, member_count, post_count, language:language_id(name), origin_place:origin_place_id(name), religion:religion_id(name), location:location_place_id(name)",
       { count: "exact" },
     )
     .order("member_count", { ascending: false })
@@ -53,7 +54,8 @@ export default async function AdminTrendingPage({
       </p>
       <div className="flex flex-col">
         {networks?.map((network, index) => {
-          const origin = network.language?.name ?? network.origin_place?.name ?? "?";
+          const origin =
+            network.language?.name ?? network.origin_place?.name ?? network.religion?.name ?? "?";
           return (
             <Link
               key={network.id}
