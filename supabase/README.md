@@ -32,7 +32,23 @@ depends on to function.
    they're otherwise recorded (password manager, Supabase/Resend/
    Azure dashboards) and be re-added via `vercel env add` for all
    three environments (Development/Preview/Production).
+6. Sign in on the live site once (this creates your `profiles` row via
+   the `on_auth_user_created` trigger), then reclaim admin access with
+   one query, since there's deliberately no self-serve way to do this
+   from the UI:
+   `npx supabase db query --linked "update profiles set is_admin = true where id = (select id from auth.users where email = 'you@example.com');"`
 
 Steps 2–3 are exactly what `npx supabase db push --linked` already does
 for a normal deploy in this project — rebuilding from zero isn't a
 special case, it's the same command against an empty project.
+
+## What doesn't come back
+
+Auth users, profiles, networks, posts, messages, and events are all
+data, not structure, so a rebuild starts with none of them - everyone
+(including you) re-signs-up through the normal sign-in flow. Same for
+anything configured through the admin panel (embed partners, product
+updates). None of that is a concern while this is still test data;
+it would matter once real users are on the platform, at which point
+the fix is avoiding data loss in the first place (e.g. moving off the
+free tier) rather than anything this repo can help rebuild.
