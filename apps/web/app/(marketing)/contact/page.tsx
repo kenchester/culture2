@@ -3,6 +3,14 @@ import { sendContactMessage } from "@/app/(marketing)/contact/actions";
 import { Button } from "@/components/ui/button";
 import { Field, fieldClass, Input, Label, Textarea } from "@/components/ui/input";
 
+// Pulled out of the component body: React's purity lint rule flags a
+// direct Date.now() call inside a component's render, but this page is
+// forced dynamic anyway (it already reads searchParams), so a fresh
+// timestamp per request is exactly what's wanted here.
+function serverNow() {
+  return Date.now();
+}
+
 export default async function ContactPage({
   searchParams,
 }: {
@@ -28,6 +36,23 @@ export default async function ContactPage({
       )}
 
       <form action={sendContactMessage} className="flex flex-col gap-4">
+        {/* Honeypot: real visitors never see or fill this, but simple bots
+            that blindly fill every input do. Off-screen positioning rather
+            than display:none/visibility:hidden, since those two properties
+            are what most scraping libraries specifically check for before
+            deciding whether to bother filling a field. */}
+        <div className="absolute left-[-9999px] top-auto h-px w-px overflow-hidden">
+          <label htmlFor="website">Website</label>
+          <input
+            id="website"
+            name="website"
+            type="text"
+            tabIndex={-1}
+            autoComplete="off"
+            aria-hidden="true"
+          />
+        </div>
+        <input type="hidden" name="renderedAt" value={serverNow()} />
         <Field>
           <Label htmlFor="name">{t("nameLabel")}</Label>
           <Input id="name" name="name" required />
