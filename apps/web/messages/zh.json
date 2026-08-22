@@ -54,7 +54,9 @@
       "namePlaceholder": "只有刚来这里才需要",
       "continuing": "继续......",
       "submit": "继续"
-    }
+    },
+    "rateLimited": "尝试太多了。请稍等再试。",
+    "disposableEmail": "请使用永久邮箱注册。"
   },
   "home": {
     "heading": "寻找你的侨民网络",

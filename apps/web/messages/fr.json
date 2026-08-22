@@ -54,7 +54,9 @@
       "namePlaceholder": "Seulement nécessaire si vous êtes nouveau ici",
       "continuing": "Continuant...",
       "submit": "Continuez"
-    }
+    },
+    "rateLimited": "Trop d’essais. Veuillez patienter un peu et réessayer.",
+    "disposableEmail": "Veuillez utiliser une adresse e-mail permanente pour vous inscrire."
   },
   "home": {
     "heading": "Trouvez votre réseau de diaspora",

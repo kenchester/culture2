@@ -54,7 +54,9 @@
       "namePlaceholder": "Nur nötig, wenn du neu hier bist",
       "continuing": "Geht weiter...",
       "submit": "Weitermachen"
-    }
+    },
+    "rateLimited": "Zu viele Versuche. Bitte warten Sie etwas und versuchen Sie es erneut.",
+    "disposableEmail": "Bitte verwenden Sie eine dauerhafte E-Mail-Adresse zur Anmeldung."
   },
   "home": {
     "heading": "Finde dein Diaspora-Netzwerk",

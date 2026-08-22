@@ -61,6 +61,12 @@ export function OtpForm({ returnTo }: { returnTo?: string }) {
   const [pendingName, setPendingName] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [isPending, setIsPending] = useState(false);
+  // Captured once when the form first mounts, reused for every sendOtp
+  // call in this component's lifetime (not just the first) - a bot
+  // firing actions immediately after load is caught either way, while a
+  // real user who already made it past step one naturally has a large
+  // elapsed time for any later "resend code" click too.
+  const [renderedAt] = useState(() => Date.now());
 
   // A successful verify/sign-in only means the server accepted the
   // credentials and tried to set a session cookie - inside a third-party
@@ -87,9 +93,11 @@ export function OtpForm({ returnTo }: { returnTo?: string }) {
     await setDisplayName(formData);
   }
 
-  async function sendCode(targetEmail: string) {
+  async function sendCode(targetEmail: string, honeypot: string) {
     const formData = new FormData();
     formData.set("email", targetEmail);
+    formData.set("website", honeypot);
+    formData.set("renderedAt", String(renderedAt));
     const result = await sendOtp(formData);
     if ("error" in result) {
       setError(result.error);
@@ -101,6 +109,7 @@ export function OtpForm({ returnTo }: { returnTo?: string }) {
   async function handleContinue(formData: FormData) {
     const submittedEmail = formData.get("email") as string;
     const submittedName = ((formData.get("name") as string) || "").trim();
+    const honeypot = (formData.get("website") as string) || "";
     setError(null);
     setIsPending(true);
     void tryRequestStorageAccess();
@@ -112,7 +121,7 @@ export function OtpForm({ returnTo }: { returnTo?: string }) {
         return;
       }
       setPendingName(!exists && submittedName ? submittedName : null);
-      await sendCode(submittedEmail);
+      await sendCode(submittedEmail, honeypot);
     } finally {
       setIsPending(false);
     }
@@ -228,7 +237,7 @@ export function OtpForm({ returnTo }: { returnTo?: string }) {
           onClick={() => {
             setError(null);
             setIsPending(true);
-            sendCode(email).finally(() => setIsPending(false));
+            sendCode(email, "").finally(() => setIsPending(false));
           }}
           disabled={isPending}
           className="text-center text-sm text-muted underline hover:text-primary"
@@ -293,6 +302,23 @@ export function OtpForm({ returnTo }: { returnTo?: string }) {
 
   return (
     <form action={handleContinue} className="flex flex-col gap-4">
+      {/* Honeypot: real visitors never see or fill this, but simple bots
+          that blindly fill every input do. Off-screen positioning rather
+          than display:none/visibility:hidden, since those two properties
+          are what most scraping libraries specifically check for before
+          deciding whether to bother filling a field. */}
+      <div className="absolute left-[-9999px] top-auto h-px w-px overflow-hidden">
+        <label htmlFor="website">Website</label>
+        <input
+          id="website"
+          name="website"
+          type="text"
+          tabIndex={-1}
+          autoComplete="off"
+          aria-hidden="true"
+        />
+      </div>
+      <input type="hidden" name="renderedAt" value={renderedAt} />
       {error && (
         <p className="rounded-md bg-error-bg px-3 py-2 text-sm text-error">{error}</p>
       )}

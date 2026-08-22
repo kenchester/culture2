@@ -54,7 +54,9 @@
       "namePlaceholder": "여기 처음 오신 분들만 필요합니다",
       "continuing": "계속...",
       "submit": "계속"
-    }
+    },
+    "rateLimited": "너무 많은 시도였다. 잠시 기다렸다가 다시 시도해 주세요.",
+    "disposableEmail": "가입하실 때는 영구 이메일 주소를 사용해 주세요."
   },
   "home": {
     "heading": "디아스포라 네트워크를 찾아보세요",

@@ -341,7 +341,9 @@
       "namePlaceholder": "Only needed if you're new here",
       "continuing": "Continuing…",
       "submit": "Continue"
-    }
+    },
+    "rateLimited": "Too many attempts. Please wait a bit and try again.",
+    "disposableEmail": "Please use a permanent email address to sign up."
   },
   "home": {
     "heading": "Find your diaspora network",

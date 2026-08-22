@@ -54,7 +54,9 @@
       "namePlaceholder": "Solo necesitas si eres nuevo aquí",
       "continuing": "Continúa...",
       "submit": "Continúa"
-    }
+    },
+    "rateLimited": "Demasiados intentos. Por favor, espera un poco y vuelve a intentarlo.",
+    "disposableEmail": "Por favor, utiliza una dirección de correo electrónico permanente para registrarte."
   },
   "home": {
     "heading": "Encuentra tu red de diáspora",
