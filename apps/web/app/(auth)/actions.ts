@@ -49,13 +49,14 @@ export async function sendOtp(formData: FormData): Promise<ActionResult> {
 
   // Only reject disposable/throwaway domains for brand-new accounts - an
   // existing user who signed up years ago with one must keep working
-  // exactly as before. Cheap enough to call the same RPC checkEmailStatus
-  // already uses.
-  const { data: statusData } = await supabase.rpc("email_account_status", {
-    p_email: email,
-  });
-  const status = statusData as { exists?: boolean } | null;
-  if (!status?.exists && !isNotDisposableEmail(email)) {
+  // exactly as before. checkEmailStatus already determined this moments
+  // earlier in the same client-side flow, so it's relayed through
+  // (same mechanism as website/renderedAt) rather than re-querying the
+  // same RPC a second time - trusting it only affects whether this one
+  // content-quality gate applies, not the honeypot/timing/rate-limit
+  // checks above, which stay fully server-verified regardless.
+  const exists = formData.get("exists") === "true";
+  if (!exists && !isNotDisposableEmail(email)) {
     return { error: t("disposableEmail") };
   }
 
@@ -90,25 +91,21 @@ export async function verifyOtp(formData: FormData): Promise<ActionResult> {
 // Lets the sign-in form choose between the password field, the name step
 // (brand-new registrations only), and the code flow for a given email -
 // without ever exposing anything about the account beyond these two
-// booleans. Also the first stop for every bot targeting this flow (it's
-// unauthenticated and would otherwise make a decent email-enumeration
-// oracle), so it gets the same bot-signal check as sendOtp - on a hit it
-// returns the same generic response a real never-registered email would
-// get, and the flow continues on to sendCode/sendOtp, which independently
-// re-checks and is where the actual silent no-op/rate-limit happens (this
-// function doesn't create anything or send anything itself, so there's
-// nothing here for a bot signal to actually block yet).
+// booleans. Also the first stop for every bot targeting this flow, so it
+// gets the same honeypot/timing check as sendOtp (on a hit it returns the
+// same generic response a real never-registered email would get). No
+// rate-limit check here, deliberately - this function doesn't create
+// rows or send anything, so it doesn't need the full machinery; sendOtp
+// (the actually costly action, called moments after this in the same
+// flow) still fully rate-limits. Skipping it here trades a small,
+// bounded increase in email-enumeration risk for cutting a full
+// round-trip off of every submission.
 export async function checkEmailStatus(
   formData: FormData,
 ): Promise<{ exists: boolean; hasPassword: boolean }> {
   const email = formData.get("email") as string;
 
   if (isBotSubmission(formData)) {
-    return { exists: false, hasPassword: false };
-  }
-
-  const ip = await getClientIp();
-  if (await isRateLimited({ email, ip })) {
     return { exists: false, hasPassword: false };
   }
 
@@ -147,6 +144,46 @@ export async function setDisplayName(formData: FormData): Promise<ActionResult> 
 
   if (error) {
     return { error: error.message };
+  }
+
+  return { ok: true };
+}
+
+// Optional: called right after a successful verifyOtp, same timing as
+// setDisplayName, so that a brand-new (or previously passwordless)
+// account can pick up a real password at the same moment they enter
+// their code - no separate step, no extra friction for anyone who
+// doesn't fill it in. has_password is the only trustworthy signal for
+// "does this account have a real password" (see 00000000000038) - it's
+// flipped here and nowhere else, right after Supabase actually accepts
+// the new password.
+export async function setPassword(formData: FormData): Promise<ActionResult> {
+  const password = formData.get("password") as string;
+  if (!password) {
+    return { ok: true };
+  }
+
+  const supabase = await createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
+  if (!user) {
+    return { error: "Not signed in." };
+  }
+
+  const { error } = await supabase.auth.updateUser({ password });
+  if (error) {
+    return { error: error.message };
+  }
+
+  const { error: profileError } = await supabase
+    .from("profiles")
+    .update({ has_password: true })
+    .eq("id", user.id);
+
+  if (profileError) {
+    return { error: profileError.message };
   }
 
   return { ok: true };

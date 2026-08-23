@@ -46,7 +46,8 @@
       "verifying": "验证中......",
       "submit": "验证后继续",
       "useDifferentEmail": "用另一个邮箱",
-      "weEmailedCode": "我们通过电子邮件发送了一个代码。<b>{email}</b>"
+      "weEmailedCode": "我们通过电子邮件发送了一个代码。<b>{email}</b>",
+      "passwordLabel": "创建密码（可选）——或者继续使用电子邮件代码"
     },
     "email": {
       "label": "电子邮件",

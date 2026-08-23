@@ -331,6 +331,7 @@
     "code": {
       "weEmailedCode": "We emailed a code to <b>{email}</b>.",
       "label": "Code",
+      "passwordLabel": "Create a password (optional) — or keep using email codes",
       "verifying": "Verifying…",
       "submit": "Verify and continue",
       "useDifferentEmail": "Use a different email"

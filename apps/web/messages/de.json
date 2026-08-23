@@ -46,7 +46,8 @@
       "verifying": "Verifizieren...",
       "submit": "Verifizieren und fortfahren",
       "useDifferentEmail": "Verwenden Sie eine andere E-Mail-Adresse",
-      "weEmailedCode": "Wir haben einen Code per E-Mail an <b>{email}</b>geschickt."
+      "weEmailedCode": "Wir haben einen Code per E-Mail an <b>{email}</b>geschickt.",
+      "passwordLabel": "Erstelle ein Passwort (optional) – oder benutze weiterhin E-Mail-Codes"
     },
     "email": {
       "label": "E-Mail",

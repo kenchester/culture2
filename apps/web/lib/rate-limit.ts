@@ -25,23 +25,24 @@ export async function isRateLimited({
   const admin = createAdminClient();
   const since = new Date(Date.now() - WINDOW_MS).toISOString();
 
-  const [{ count: emailCount }, { count: ipCount }] = await Promise.all([
-    admin
-      .from("otp_attempts")
-      .select("id", { count: "exact", head: true })
-      .eq("email", email)
-      .gte("created_at", since),
-    admin
-      .from("otp_attempts")
-      .select("id", { count: "exact", head: true })
-      .eq("ip", ip)
-      .gte("created_at", since),
-  ]);
+  // One round-trip via a combined RPC rather than two separate count
+  // queries - this sits on the critical path of every sendOtp call, so
+  // the extra request used to add real, noticeable latency.
+  const { data, error } = await admin.rpc("otp_rate_limit_exceeded", {
+    p_email: email,
+    p_ip: ip,
+    p_email_limit: MAX_ATTEMPTS_PER_EMAIL_PER_HOUR,
+    p_ip_limit: MAX_ATTEMPTS_PER_IP_PER_HOUR,
+    p_since: since,
+  });
 
-  return (
-    (emailCount ?? 0) >= MAX_ATTEMPTS_PER_EMAIL_PER_HOUR ||
-    (ipCount ?? 0) >= MAX_ATTEMPTS_PER_IP_PER_HOUR
-  );
+  if (error) {
+    // Fail open - a rate-limit-check hiccup must not block a real user
+    // from signing in.
+    return false;
+  }
+
+  return Boolean(data);
 }
 
 export async function recordAttempt({ email, ip }: { email: string; ip: string }) {

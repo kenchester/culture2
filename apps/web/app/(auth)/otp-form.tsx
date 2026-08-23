@@ -7,6 +7,7 @@ import {
   checkEmailStatus,
   sendOtp,
   setDisplayName,
+  setPassword,
   signInWithPassword,
   verifyOtp,
 } from "@/app/(auth)/actions";
@@ -61,6 +62,10 @@ export function OtpForm({ returnTo }: { returnTo?: string }) {
   const [pendingName, setPendingName] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [isPending, setIsPending] = useState(false);
+  // True for a brand-new signup or an existing account that's never set a
+  // real password - offers one on the code step so nobody who already
+  // has one gets a redundant/confusing prompt on top of it.
+  const [offerPasswordSetup, setOfferPasswordSetup] = useState(false);
   // Captured once when the form first mounts, reused for every sendOtp
   // call in this component's lifetime (not just the first) - a bot
   // firing actions immediately after load is caught either way, while a
@@ -93,11 +98,12 @@ export function OtpForm({ returnTo }: { returnTo?: string }) {
     await setDisplayName(formData);
   }
 
-  async function sendCode(targetEmail: string, honeypot: string) {
+  async function sendCode(targetEmail: string, honeypot: string, exists: boolean) {
     const formData = new FormData();
     formData.set("email", targetEmail);
     formData.set("website", honeypot);
     formData.set("renderedAt", String(renderedAt));
+    formData.set("exists", String(exists));
     const result = await sendOtp(formData);
     if ("error" in result) {
       setError(result.error);
@@ -116,12 +122,13 @@ export function OtpForm({ returnTo }: { returnTo?: string }) {
     try {
       const { exists, hasPassword } = await checkEmailStatus(formData);
       setEmail(submittedEmail);
+      setOfferPasswordSetup(!hasPassword);
       if (hasPassword) {
         setStep("password");
         return;
       }
       setPendingName(!exists && submittedName ? submittedName : null);
-      await sendCode(submittedEmail, honeypot);
+      await sendCode(submittedEmail, honeypot, exists);
     } finally {
       setIsPending(false);
     }
@@ -155,7 +162,14 @@ export function OtpForm({ returnTo }: { returnTo?: string }) {
         setError(result.error);
         return;
       }
-      if (!(await trySettle(applyPendingName))) {
+      async function finishSetup() {
+        await applyPendingName();
+        // formData already carries "password" (same form, optional field)
+        // - setPassword itself no-ops if it's blank, so this is safe to
+        // call unconditionally.
+        await setPassword(formData);
+      }
+      if (!(await trySettle(finishSetup))) {
         setStep("bridge");
       }
     } finally {
@@ -237,7 +251,11 @@ export function OtpForm({ returnTo }: { returnTo?: string }) {
           onClick={() => {
             setError(null);
             setIsPending(true);
-            sendCode(email, "").finally(() => setIsPending(false));
+            // Reaching this button at all means the account exists (it
+            // has a password) - offerPasswordSetup stays false from the
+            // earlier checkEmailStatus result, so the code step won't
+            // re-offer a password they already have.
+            sendCode(email, "", true).finally(() => setIsPending(false));
           }}
           disabled={isPending}
           className="text-center text-sm text-muted underline hover:text-primary"
@@ -282,6 +300,17 @@ export function OtpForm({ returnTo }: { returnTo?: string }) {
             autoFocus
           />
         </Field>
+        {offerPasswordSetup && (
+          <Field>
+            <Label htmlFor="password">{t("code.passwordLabel")}</Label>
+            <Input
+              id="password"
+              name="password"
+              type="password"
+              autoComplete="new-password"
+            />
+          </Field>
+        )}
         <Button type="submit" className="w-full" disabled={isPending}>
           {isPending ? t("code.verifying") : t("code.submit")}
         </Button>

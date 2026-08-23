@@ -46,7 +46,8 @@
       "verifying": "確認中...",
       "submit": "確認して続けてください",
       "useDifferentEmail": "別のメールアドレスを使ってください",
-      "weEmailedCode": "私たちはコードをメールで送りました<b>{email}</b>。"
+      "weEmailedCode": "私たちはコードをメールで送りました<b>{email}</b>。",
+      "passwordLabel": "パスワード作成(任意)か、メールコードを使い続けるか"
     },
     "email": {
       "label": "メール",

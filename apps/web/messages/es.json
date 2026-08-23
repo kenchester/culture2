@@ -46,7 +46,8 @@
       "verifying": "Verificando...",
       "submit": "Verifica y continúa",
       "useDifferentEmail": "Usa un correo electrónico diferente",
-      "weEmailedCode": "Enviamos un código por correo electrónico a <b>{email}</b>."
+      "weEmailedCode": "Enviamos un código por correo electrónico a <b>{email}</b>.",
+      "passwordLabel": "Crea una contraseña (opcional) — o sigue usando códigos de correo electrónico"
     },
     "email": {
       "label": "Correo electrónico",
