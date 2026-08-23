@@ -39,7 +39,9 @@
       "submit": "로그인",
       "emailCode": "대신 코드를 이메일로 보내주세요",
       "useDifferentEmail": "다른 이메일 사용하세요",
-      "signingInAs": ".로 <b>{email}</b>로그인 중입니다."
+      "signingInAs": ".로 <b>{email}</b>로그인 중입니다.",
+      "show": "비밀번호 표시",
+      "hide": "비밀번호 숨기기"
     },
     "code": {
       "label": "코드",

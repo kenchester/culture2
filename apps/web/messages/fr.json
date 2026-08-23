@@ -39,7 +39,9 @@
       "submit": "Connexion",
       "emailCode": "Envoyez-moi un code par email à la place",
       "useDifferentEmail": "Utilisez une autre adresse e-mail",
-      "signingInAs": "Se connecter en tant que <b>{email}</b>."
+      "signingInAs": "Se connecter en tant que <b>{email}</b>.",
+      "show": "Afficher le mot de passe",
+      "hide": "Masquer le mot de passe"
     },
     "code": {
       "label": "Code",

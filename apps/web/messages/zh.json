@@ -39,7 +39,9 @@
       "submit": "登录",
       "emailCode": "给我发个验证码吧",
       "useDifferentEmail": "用另一个邮箱",
-      "signingInAs": "登录为 <b>{email}</b>。"
+      "signingInAs": "登录为 <b>{email}</b>。",
+      "show": "显示密码",
+      "hide": "隐藏密码"
     },
     "code": {
       "label": "代码",

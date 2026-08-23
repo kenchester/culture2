@@ -331,7 +331,9 @@
       "signingIn": "Signing in…",
       "submit": "Sign in",
       "emailCode": "Email me a code instead",
-      "useDifferentEmail": "Use a different email"
+      "useDifferentEmail": "Use a different email",
+      "show": "Show password",
+      "hide": "Hide password"
     },
     "code": {
       "weEmailedCode": "We emailed a code to <b>{email}</b>.",

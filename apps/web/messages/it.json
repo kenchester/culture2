@@ -39,7 +39,9 @@
       "submit": "Accedi",
       "emailCode": "Mandami un codice via email invece",
       "useDifferentEmail": "Usa un'email diversa",
-      "signingInAs": "Accedendo come <b>{email}</b>."
+      "signingInAs": "Accedendo come <b>{email}</b>.",
+      "show": "Mostra password",
+      "hide": "Nascondi la password"
     },
     "code": {
       "label": "Codice",

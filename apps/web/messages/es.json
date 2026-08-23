@@ -39,7 +39,9 @@
       "submit": "Iniciar sesión",
       "emailCode": "Mejor mándame un código por correo electrónico",
       "useDifferentEmail": "Usa un correo electrónico diferente",
-      "signingInAs": "Iniciar sesión como <b>{email}</b>."
+      "signingInAs": "Iniciar sesión como <b>{email}</b>.",
+      "show": "Mostrar contraseña",
+      "hide": "Ocultar contraseña"
     },
     "code": {
       "label": "Código",

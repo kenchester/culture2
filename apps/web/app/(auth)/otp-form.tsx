@@ -14,6 +14,31 @@ import {
 import { createClient } from "@/lib/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Field, Input, Label } from "@/components/ui/input";
+import { PasswordInput } from "@/components/ui/password-input";
+
+// A form that only has a password field and no visible username field
+// (email is already known and shown as plain text, not as an editable
+// input) leaves browsers guessing at what the "username" is when they
+// offer to save the credential - and they tend to guess wrong, grabbing
+// whatever text input sits nearest the password field. A hidden username
+// field with autocomplete="username" is the standard fix (see
+// web.dev/sign-in-form-best-practices): type="hidden" is invisible to
+// this heuristic entirely, so this uses a type="text" field that's
+// visually hidden instead (same off-screen technique as the honeypot
+// below, minus aria-hidden/tabIndex so it stays legitimate to password
+// managers) - readOnly since the user never edits it directly.
+function HiddenUsernameField({ email }: { email: string }) {
+  return (
+    <input
+      type="text"
+      name="email"
+      autoComplete="username"
+      value={email}
+      readOnly
+      className="absolute left-[-9999px] top-auto h-px w-px overflow-hidden"
+    />
+  );
+}
 
 // The sanctioned way to ask Safari (and any other browser with strict
 // third-party cookie blocking) for an exception, before a session cookie
@@ -294,7 +319,7 @@ export function OtpForm({ returnTo }: { returnTo?: string }) {
   if (step === "password") {
     return (
       <form action={handlePasswordSignIn} className="flex flex-col gap-4">
-        <input type="hidden" name="email" value={email} />
+        <HiddenUsernameField email={email} />
         <p className="text-center text-sm text-body">
           {t.rich("password.signingInAs", {
             email,
@@ -306,7 +331,15 @@ export function OtpForm({ returnTo }: { returnTo?: string }) {
         )}
         <Field>
           <Label htmlFor="password">{t("password.label")}</Label>
-          <Input id="password" name="password" type="password" required autoFocus />
+          <PasswordInput
+            id="password"
+            name="password"
+            autoComplete="current-password"
+            required
+            autoFocus
+            showLabel={t("password.show")}
+            hideLabel={t("password.hide")}
+          />
         </Field>
         <Button type="submit" className="w-full" disabled={isPending}>
           {isPending ? t("password.signingIn") : t("password.submit")}
@@ -344,7 +377,7 @@ export function OtpForm({ returnTo }: { returnTo?: string }) {
   if (step === "code") {
     return (
       <form action={handleVerify} className="flex flex-col gap-4">
-        <input type="hidden" name="email" value={email} />
+        <HiddenUsernameField email={email} />
         <p className="text-center text-sm text-body">
           {t.rich("code.weEmailedCode", {
             email,
@@ -368,11 +401,12 @@ export function OtpForm({ returnTo }: { returnTo?: string }) {
         {offerPasswordSetup && (
           <Field>
             <Label htmlFor="password">{t("code.passwordLabel")}</Label>
-            <Input
+            <PasswordInput
               id="password"
               name="password"
-              type="password"
               autoComplete="new-password"
+              showLabel={t("password.show")}
+              hideLabel={t("password.hide")}
             />
           </Field>
         )}

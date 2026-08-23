@@ -39,7 +39,9 @@
       "submit": "Faça login",
       "emailCode": "Me envie um código por e-mail",
       "useDifferentEmail": "Use um e-mail diferente",
-      "signingInAs": "Fazendo login como <b>{email}</b>."
+      "signingInAs": "Fazendo login como <b>{email}</b>.",
+      "show": "Mostrar senha",
+      "hide": "Ocultar senha"
     },
     "code": {
       "label": "Código",

@@ -39,7 +39,9 @@
       "submit": "サインイン",
       "emailCode": "代わりにコードをメールで送ってください",
       "useDifferentEmail": "別のメールアドレスを使ってください",
-      "signingInAs": "サインイン中<b>{email}</b>。"
+      "signingInAs": "サインイン中<b>{email}</b>。",
+      "show": "パスワードを表示",
+      "hide": "パスワードを隠す"
     },
     "code": {
       "label": "コード",

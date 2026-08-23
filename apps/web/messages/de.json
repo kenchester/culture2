@@ -39,7 +39,9 @@
       "submit": "Anmelden",
       "emailCode": "Schreib mir stattdessen einen Code per E-Mail",
       "useDifferentEmail": "Verwenden Sie eine andere E-Mail-Adresse",
-      "signingInAs": "Anmeldung als <b>{email}</b>."
+      "signingInAs": "Anmeldung als <b>{email}</b>.",
+      "show": "Passwort anzeigen",
+      "hide": "Passwort ausblenden"
     },
     "code": {
       "label": "Code",
