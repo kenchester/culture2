@@ -57,7 +57,12 @@
       "submit": "Continue"
     },
     "rateLimited": "Tentativas demais. Por favor, espere um pouco e tente novamente.",
-    "disposableEmail": "Por favor, use um endereço de e-mail permanente para se inscrever."
+    "disposableEmail": "Por favor, use um endereço de e-mail permanente para se inscrever.",
+    "choose": {
+      "noPasswordOnFile": "Ainda não temos uma senha registrada para <b>{email}</b>.",
+      "usePassword": "Eu tenho uma senha",
+      "useCode": "Me envie um código por e-mail"
+    }
   },
   "home": {
     "heading": "Encontre sua rede da diáspora",

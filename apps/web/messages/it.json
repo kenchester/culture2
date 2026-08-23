@@ -57,7 +57,12 @@
       "submit": "Continua"
     },
     "rateLimited": "Troppi tentativi. Per favore, aspetta un po' e riprova.",
-    "disposableEmail": "Si prega di utilizzare un indirizzo email permanente per iscriversi."
+    "disposableEmail": "Si prega di utilizzare un indirizzo email permanente per iscriversi.",
+    "choose": {
+      "noPasswordOnFile": "Non abbiamo ancora una password registrata per <b>{email}</b>.",
+      "usePassword": "Ho una password",
+      "useCode": "Mandami un codice via email invece"
+    }
   },
   "home": {
     "heading": "Trova la tua rete di diaspora",

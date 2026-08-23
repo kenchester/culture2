@@ -43,8 +43,11 @@ function stripEmbedParam(path: string): string {
 }
 
 // Returning users who already set a password get offered the faster
-// password path; everyone else goes straight to a code. The name field on
-// the first screen only ever applies to a brand-new account - typing
+// password path; a returning email we don't have a confirmed password for
+// gets a choice (password or code) rather than an OTP blasted at them
+// unasked; brand-new emails go straight to a code, since there's no
+// password to choose between yet. The name field on the first screen only
+// ever applies to a brand-new account - typing
 // something there for an email that turns out to already exist is silently
 // ignored, so an existing user's real name can never get clobbered by a
 // stray autofill or habit of always filling it in. A single "Name" field
@@ -57,9 +60,12 @@ function stripEmbedParam(path: string): string {
 export function OtpForm({ returnTo }: { returnTo?: string }) {
   const t = useTranslations("auth");
   const router = useRouter();
-  const [step, setStep] = useState<"email" | "password" | "code" | "bridge">("email");
+  const [step, setStep] = useState<"email" | "choose" | "password" | "code" | "bridge">(
+    "email",
+  );
   const [email, setEmail] = useState("");
   const [pendingName, setPendingName] = useState<string | null>(null);
+  const [pendingHoneypot, setPendingHoneypot] = useState("");
   const [error, setError] = useState<string | null>(null);
   const [isPending, setIsPending] = useState(false);
   // True for a brand-new signup or an existing account that's never set a
@@ -127,7 +133,19 @@ export function OtpForm({ returnTo }: { returnTo?: string }) {
         setStep("password");
         return;
       }
-      setPendingName(!exists && submittedName ? submittedName : null);
+      if (exists) {
+        // has_password can be a false negative for an account that set a
+        // real password before this tracking existed (or through some
+        // other path we can't see) - rather than silently emailing a code
+        // they never asked for, let a returning email choose. "I have a
+        // password" just tries the password step directly; a genuine
+        // success there self-heals has_password (see signInWithPassword)
+        // so this only ever needs to happen once per account.
+        setPendingHoneypot(honeypot);
+        setStep("choose");
+        return;
+      }
+      setPendingName(submittedName || null);
       await sendCode(submittedEmail, honeypot, exists);
     } finally {
       setIsPending(false);
@@ -222,6 +240,53 @@ export function OtpForm({ returnTo }: { returnTo?: string }) {
             {isPending ? t("bridge.checking") : t("bridge.tryAgain")}
           </Button>
         )}
+      </div>
+    );
+  }
+
+  if (step === "choose") {
+    return (
+      <div className="flex flex-col gap-4">
+        <p className="text-center text-sm text-body">
+          {t.rich("choose.noPasswordOnFile", {
+            email,
+            b: (chunks) => <span className="font-medium text-ink">{chunks}</span>,
+          })}
+        </p>
+        {error && (
+          <p className="rounded-md bg-error-bg px-3 py-2 text-sm text-error">{error}</p>
+        )}
+        <Button
+          type="button"
+          onClick={() => {
+            setError(null);
+            setStep("password");
+          }}
+        >
+          {t("choose.usePassword")}
+        </Button>
+        <button
+          type="button"
+          onClick={() => {
+            setError(null);
+            setIsPending(true);
+            sendCode(email, pendingHoneypot, true).finally(() => setIsPending(false));
+          }}
+          disabled={isPending}
+          className="text-center text-sm text-muted underline hover:text-primary"
+        >
+          {isPending ? t("email.continuing") : t("choose.useCode")}
+        </button>
+        <button
+          type="button"
+          onClick={() => {
+            setError(null);
+            setStep("email");
+          }}
+          className="text-center text-sm text-muted underline hover:text-primary"
+        >
+          {t("password.useDifferentEmail")}
+        </button>
       </div>
     );
   }

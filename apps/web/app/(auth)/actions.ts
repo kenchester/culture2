@@ -194,10 +194,21 @@ export async function signInWithPassword(formData: FormData): Promise<ActionResu
   const password = formData.get("password") as string;
 
   const supabase = await createClient();
-  const { error } = await supabase.auth.signInWithPassword({ email, password });
+  const { data, error } = await supabase.auth.signInWithPassword({ email, password });
 
   if (error) {
     return { error: error.message };
+  }
+
+  // A successful sign-in is itself proof this account has a real, working
+  // password - flip has_password even if it was never set through our own
+  // setPassword flow (e.g. an account that set one before this tracking
+  // existed). Self-heals any such account the first time it signs in this
+  // way, instead of needing every legacy row audited by hand. Best-effort:
+  // the sign-in already succeeded, so a hiccup here shouldn't surface as a
+  // login failure.
+  if (data.user) {
+    await supabase.from("profiles").update({ has_password: true }).eq("id", data.user.id);
   }
 
   return { ok: true };

@@ -57,7 +57,12 @@
       "submit": "Weitermachen"
     },
     "rateLimited": "Zu viele Versuche. Bitte warten Sie etwas und versuchen Sie es erneut.",
-    "disposableEmail": "Bitte verwenden Sie eine dauerhafte E-Mail-Adresse zur Anmeldung."
+    "disposableEmail": "Bitte verwenden Sie eine dauerhafte E-Mail-Adresse zur Anmeldung.",
+    "choose": {
+      "noPasswordOnFile": "Wir haben noch kein Passwort für <b>{email}</b>.",
+      "usePassword": "Ich habe ein Passwort",
+      "useCode": "Schreib mir stattdessen einen Code per E-Mail"
+    }
   },
   "home": {
     "heading": "Finde dein Diaspora-Netzwerk",

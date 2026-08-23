@@ -57,7 +57,12 @@
       "submit": "继续"
     },
     "rateLimited": "尝试太多了。请稍等再试。",
-    "disposableEmail": "请使用永久邮箱注册。"
+    "disposableEmail": "请使用永久邮箱注册。",
+    "choose": {
+      "noPasswordOnFile": "我们还没有存档密码。<b>{email}</b>",
+      "usePassword": "我有密码",
+      "useCode": "给我发个验证码吧"
+    }
   },
   "home": {
     "heading": "寻找你的侨民网络",

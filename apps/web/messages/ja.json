@@ -57,7 +57,12 @@
       "submit": "続けてください"
     },
     "rateLimited": "試みが多すぎた。少しお待ちいただき、再度お試しください。",
-    "disposableEmail": "登録は恒久的なメールアドレスをご利用ください。"
+    "disposableEmail": "登録は恒久的なメールアドレスをご利用ください。",
+    "choose": {
+      "noPasswordOnFile": "まだパスワードは登録されていません<b>。{email}</b>",
+      "usePassword": "パスワードはある",
+      "useCode": "代わりにコードをメールで送ってください"
+    }
   },
   "home": {
     "heading": "ディアスポラのネットワークを見つけましょう",
