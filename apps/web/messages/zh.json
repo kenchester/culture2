@@ -59,9 +59,9 @@
     "rateLimited": "尝试太多了。请稍等再试。",
     "disposableEmail": "请使用永久邮箱注册。",
     "choose": {
-      "noPasswordOnFile": "我们还没有存档密码。<b>{email}</b>",
       "usePassword": "我有密码",
-      "useCode": "给我发个验证码吧"
+      "useCode": "给我发个验证码吧",
+      "prompt": "您想如何登录？<b>{email}</b>"
     }
   },
   "home": {

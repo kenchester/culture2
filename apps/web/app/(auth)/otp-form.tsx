@@ -248,7 +248,7 @@ export function OtpForm({ returnTo }: { returnTo?: string }) {
     return (
       <div className="flex flex-col gap-4">
         <p className="text-center text-sm text-body">
-          {t.rich("choose.noPasswordOnFile", {
+          {t.rich("choose.prompt", {
             email,
             b: (chunks) => <span className="font-medium text-ink">{chunks}</span>,
           })}

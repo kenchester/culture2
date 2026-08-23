@@ -59,9 +59,9 @@
     "rateLimited": "Trop d’essais. Veuillez patienter un peu et réessayer.",
     "disposableEmail": "Veuillez utiliser une adresse e-mail permanente pour vous inscrire.",
     "choose": {
-      "noPasswordOnFile": "Nous n’avons pas encore de mot de passe enregistré pour <b>{email}</b>.",
       "usePassword": "J’ai un mot de passe",
-      "useCode": "Envoyez-moi un code par email à la place"
+      "useCode": "Envoyez-moi un code par email à la place",
+      "prompt": "Comment aimeriez-vous vous connecter en tant <b>{email}</b>que ?"
     }
   },
   "home": {

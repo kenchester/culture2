@@ -59,9 +59,9 @@
     "rateLimited": "Tentativas demais. Por favor, espere um pouco e tente novamente.",
     "disposableEmail": "Por favor, use um endereço de e-mail permanente para se inscrever.",
     "choose": {
-      "noPasswordOnFile": "Ainda não temos uma senha registrada para <b>{email}</b>.",
       "usePassword": "Eu tenho uma senha",
-      "useCode": "Me envie um código por e-mail"
+      "useCode": "Me envie um código por e-mail",
+      "prompt": "Como você gostaria de entrar como <b>{email}</b>?"
     }
   },
   "home": {

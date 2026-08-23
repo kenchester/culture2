@@ -59,9 +59,9 @@
     "rateLimited": "試みが多すぎた。少しお待ちいただき、再度お試しください。",
     "disposableEmail": "登録は恒久的なメールアドレスをご利用ください。",
     "choose": {
-      "noPasswordOnFile": "まだパスワードは登録されていません<b>。{email}</b>",
       "usePassword": "パスワードはある",
-      "useCode": "代わりにコードをメールで送ってください"
+      "useCode": "代わりにコードをメールで送ってください",
+      "prompt": "どのようにサインインします<b>{email}</b>か?"
     }
   },
   "home": {

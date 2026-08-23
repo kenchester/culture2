@@ -321,7 +321,7 @@
       "stillBlocked": "Still not able to stay signed in inside this window."
     },
     "choose": {
-      "noPasswordOnFile": "We don't have a password on file yet for <b>{email}</b>.",
+      "prompt": "How would you like to sign in as <b>{email}</b>?",
       "usePassword": "I have a password",
       "useCode": "Email me a code instead"
     },
