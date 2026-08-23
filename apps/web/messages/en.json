@@ -183,7 +183,8 @@
       "help": "Set a password to skip the email code next time, or enter a new one here to reset it if you've forgotten it.",
       "label": "New password",
       "setSubmit": "Set password",
-      "updateSubmit": "Update password"
+      "updateSubmit": "Update password",
+      "saved": "Password saved. Use it next time you sign in."
     }
   },
   "eventDetail": {

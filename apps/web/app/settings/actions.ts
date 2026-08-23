@@ -52,9 +52,14 @@ export async function updatePassword(formData: FormData) {
 
   const result = await setPassword(formData);
   if ("error" in result) {
-    redirect(`/settings?error=${encodeURIComponent(result.error)}`);
+    redirect(`/settings?passwordError=${encodeURIComponent(result.error)}`);
   }
 
   revalidatePath("/settings");
-  redirect("/settings?saved=1");
+  // Its own query param (not the notification form's ?saved=1) so the
+  // confirmation can be scoped to the Password card specifically - a
+  // generic "Saved." at the top of the page doesn't reassure anyone
+  // that the password itself actually changed, which matters more here
+  // than for a notification checkbox.
+  redirect("/settings?passwordSaved=1");
 }

@@ -125,7 +125,8 @@
       "label": "Nova senha",
       "setSubmit": "Definir senha",
       "updateSubmit": "Atualizar senha",
-      "help": "Defina uma senha para pular o código do e-mail da próxima vez, ou insira uma nova aqui para resetá-la se você esqueceu."
+      "help": "Defina uma senha para pular o código do e-mail da próxima vez, ou insira uma nova aqui para resetá-la se você esqueceu.",
+      "saved": "Senha salva. Use na próxima vez que fizer login."
     }
   },
   "eventDetail": {

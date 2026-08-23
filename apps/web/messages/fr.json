@@ -125,7 +125,8 @@
       "label": "Nouveau mot de passe",
       "setSubmit": "Définir mot de passe",
       "updateSubmit": "Mettre à jour le mot de passe",
-      "help": "Définissez un mot de passe pour éviter le code email la prochaine fois, ou saisissez un nouveau mot de passe ici pour le réinitialiser si vous l’avez oublié."
+      "help": "Définissez un mot de passe pour éviter le code email la prochaine fois, ou saisissez un nouveau mot de passe ici pour le réinitialiser si vous l’avez oublié.",
+      "saved": "Mot de passe enregistré. Utilisez-le la prochaine fois que vous vous connectez."
     }
   },
   "eventDetail": {

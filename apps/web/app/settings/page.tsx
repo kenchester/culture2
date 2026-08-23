@@ -10,9 +10,14 @@ import { HiddenUsernameField } from "@/components/ui/hidden-username-field";
 export default async function SettingsPage({
   searchParams,
 }: {
-  searchParams: Promise<{ error?: string; saved?: string }>;
+  searchParams: Promise<{
+    error?: string;
+    saved?: string;
+    passwordError?: string;
+    passwordSaved?: string;
+  }>;
 }) {
-  const { error, saved } = await searchParams;
+  const { error, saved, passwordError, passwordSaved } = await searchParams;
   const supabase = await createClient();
   const t = await getTranslations("settings");
   const tAuth = await getTranslations("auth");
@@ -98,6 +103,14 @@ export default async function SettingsPage({
       <div className="flex flex-col gap-4 rounded-lg border border-border bg-surface p-6 shadow-sm sm:p-8">
         <h2 className="font-medium text-ink">{t("password.heading")}</h2>
         <p className="text-sm text-body">{t("password.help")}</p>
+        {passwordSaved && (
+          <p className="rounded-md bg-success-bg px-3 py-2 text-sm text-success">
+            {t("password.saved")}
+          </p>
+        )}
+        {passwordError && (
+          <p className="rounded-md bg-error-bg px-3 py-2 text-sm text-error">{passwordError}</p>
+        )}
         <form action={updatePassword} className="flex flex-col gap-4">
           <HiddenUsernameField email={user.email ?? ""} />
           <Field>

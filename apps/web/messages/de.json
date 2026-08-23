@@ -125,7 +125,8 @@
       "label": "Neues Passwort",
       "setSubmit": "Passwort festlegen",
       "updateSubmit": "Passwort aktualisieren",
-      "help": "Setze ein Passwort, um den E-Mail-Code beim nächsten Mal zu überspringen, oder gib hier ein neues ein, um ihn zurückzusetzen, falls du ihn vergessen hast."
+      "help": "Setze ein Passwort, um den E-Mail-Code beim nächsten Mal zu überspringen, oder gib hier ein neues ein, um ihn zurückzusetzen, falls du ihn vergessen hast.",
+      "saved": "Passwort gespeichert. Benutze es beim nächsten Mal, wenn du dich anmeldest."
     }
   },
   "eventDetail": {

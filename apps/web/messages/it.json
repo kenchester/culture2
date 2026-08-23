@@ -125,7 +125,8 @@
       "label": "Nuova password",
       "setSubmit": "Imposta password",
       "updateSubmit": "Aggiorna la password",
-      "help": "Imposta una password per saltare il codice email la prossima volta, oppure inseriscine una nuova qui per resettarla se l'hai dimenticata."
+      "help": "Imposta una password per saltare il codice email la prossima volta, oppure inseriscine una nuova qui per resettarla se l'hai dimenticata.",
+      "saved": "Password salvata. Usalo la prossima volta che accedi."
     }
   },
   "eventDetail": {
