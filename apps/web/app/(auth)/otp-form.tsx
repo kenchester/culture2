@@ -75,8 +75,13 @@ function stripEmbedParam(path: string): string {
 // ever applies to a brand-new account - typing
 // something there for an email that turns out to already exist is silently
 // ignored, so an existing user's real name can never get clobbered by a
-// stray autofill or habit of always filling it in. A single "Name" field
-// rather than split first/last, since a first/last split assumes a naming
+// stray autofill or habit of always filling it in. Whether an email is
+// brand-new isn't known until after that first screen is submitted, so the
+// name field there can't be marked required - a signup that left it blank
+// instead gets a required Name field on the code step (needsName), the
+// first point a name is known to be genuinely needed, so no account can
+// end up stuck with none. A single "Name" field rather than split
+// first/last, since a first/last split assumes a naming
 // order that doesn't hold for everyone (e.g. East Asian family-name-first
 // conventions). Runs entirely through direct server-action calls (no <form
 // action> redirects) so it never leaves the page it's rendered on -
@@ -90,6 +95,12 @@ export function OtpForm({ returnTo }: { returnTo?: string }) {
   );
   const [email, setEmail] = useState("");
   const [pendingName, setPendingName] = useState<string | null>(null);
+  // True for a brand-new signup that left the name field blank on the
+  // first screen - we can't require it there (whether this is a signup
+  // at all depends on checkEmailStatus, which only resolves after that
+  // screen is submitted), so instead it becomes a required field on the
+  // code step, the first point we actually know a name is needed.
+  const [needsName, setNeedsName] = useState(false);
   const [pendingHoneypot, setPendingHoneypot] = useState("");
   const [error, setError] = useState<string | null>(null);
   const [isPending, setIsPending] = useState(false);
@@ -122,10 +133,16 @@ export function OtpForm({ returnTo }: { returnTo?: string }) {
     return true;
   }
 
-  async function applyPendingName() {
-    if (!pendingName) return;
+  async function applyPendingName(codeStepFormData?: FormData) {
+    // A name typed on the code step (only shown when needsName is true)
+    // takes priority over whatever was captured on the first screen,
+    // since that's the freshest - and for needsName to be true, the
+    // first screen's name would have been blank anyway.
+    const typedOnCodeStep = ((codeStepFormData?.get("name") as string) || "").trim();
+    const name = typedOnCodeStep || pendingName;
+    if (!name) return;
     const formData = new FormData();
-    formData.set("name", pendingName);
+    formData.set("name", name);
     await setDisplayName(formData);
   }
 
@@ -171,6 +188,7 @@ export function OtpForm({ returnTo }: { returnTo?: string }) {
         return;
       }
       setPendingName(submittedName || null);
+      setNeedsName(!submittedName);
       await sendCode(submittedEmail, honeypot, exists);
     } finally {
       setIsPending(false);
@@ -200,13 +218,19 @@ export function OtpForm({ returnTo }: { returnTo?: string }) {
     setIsPending(true);
     try {
       await tryRequestStorageAccess();
+      // Also persisted to state (not just used via formData below) so
+      // that if the Safari cookie fallback kicks in, a later bridge
+      // retry - a separate call, with no access to this submit's
+      // FormData - can still pick it up via pendingName.
+      const typedOnCodeStep = ((formData.get("name") as string) || "").trim();
+      if (typedOnCodeStep) setPendingName(typedOnCodeStep);
       const result = await verifyOtp(formData);
       if ("error" in result) {
         setError(result.error);
         return;
       }
       async function finishSetup() {
-        await applyPendingName();
+        await applyPendingName(formData);
         // formData already carries "password" (same form, optional field)
         // - setPassword itself no-ops if it's blank, so this is safe to
         // call unconditionally.
@@ -398,6 +422,12 @@ export function OtpForm({ returnTo }: { returnTo?: string }) {
             autoFocus
           />
         </Field>
+        {needsName && (
+          <Field>
+            <Label htmlFor="name">{t("email.nameLabel")}</Label>
+            <Input id="name" name="name" required />
+          </Field>
+        )}
         {offerPasswordSetup && (
           <Field>
             <Label htmlFor="password">{t("code.passwordLabel")}</Label>
@@ -418,6 +448,7 @@ export function OtpForm({ returnTo }: { returnTo?: string }) {
           onClick={() => {
             setError(null);
             setPendingName(null);
+            setNeedsName(false);
             setStep("email");
           }}
           className="text-center text-sm text-muted underline hover:text-primary"
