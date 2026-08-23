@@ -110,7 +110,23 @@
     "repliesToYourPosts": "게시물에 대한 답변",
     "likesOnYourPosts": "게시물에 좋아요",
     "productUpdates": "제품 업데이트",
-    "save": "저장"
+    "save": "저장",
+    "notifications": {
+      "heading": "알림 설정",
+      "events": "행사",
+      "networkActivity": "네트워크 활동",
+      "repliesToYourPosts": "게시물에 대한 답변",
+      "likesOnYourPosts": "게시물에 좋아요",
+      "productUpdates": "제품 업데이트",
+      "save": "저장"
+    },
+    "password": {
+      "heading": "비밀번호",
+      "label": "새 비밀번호",
+      "setSubmit": "비밀번호 설정",
+      "updateSubmit": "비밀번호 변경",
+      "help": "다음에는 비밀번호를 설정해 이메일 코드를 건너뛰거나, 비밀번호를 잊었다면 여기에 새 비밀번호를 입력해 재설정하세요."
+    }
   },
   "eventDetail": {
     "backToEvents": "사건으로 돌아가기",

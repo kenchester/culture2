@@ -110,7 +110,23 @@
     "repliesToYourPosts": "回复你的帖子",
     "likesOnYourPosts": "你帖子上的点赞",
     "productUpdates": "产品更新",
-    "save": "保存"
+    "save": "保存",
+    "notifications": {
+      "heading": "通知设置",
+      "events": "活动",
+      "networkActivity": "网络活动",
+      "repliesToYourPosts": "回复你的帖子",
+      "likesOnYourPosts": "你帖子上的点赞",
+      "productUpdates": "产品更新",
+      "save": "保存"
+    },
+    "password": {
+      "heading": "密码",
+      "label": "新密码",
+      "setSubmit": "设置密码",
+      "updateSubmit": "更新密码",
+      "help": "设置密码以便下次跳过邮箱代码，或者如果忘记了，可以在这里输入新的密码重置。"
+    }
   },
   "eventDetail": {
     "backToEvents": "回到事件",

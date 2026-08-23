@@ -110,7 +110,23 @@
     "repliesToYourPosts": "あなたの投稿への返信",
     "likesOnYourPosts": "投稿への「いいね!」",
     "productUpdates": "製品アップデート",
-    "save": "セーブ"
+    "save": "セーブ",
+    "notifications": {
+      "heading": "通知設定",
+      "events": "イベント",
+      "networkActivity": "ネットワーク活動",
+      "repliesToYourPosts": "あなたの投稿への返信",
+      "likesOnYourPosts": "投稿への「いいね!」",
+      "productUpdates": "製品アップデート",
+      "save": "セーブ"
+    },
+    "password": {
+      "heading": "パスワード",
+      "label": "新しいパスワード",
+      "setSubmit": "パスワードを設定してください",
+      "updateSubmit": "パスワードを更新",
+      "help": "次回はメールコードをスキップするためにパスワードを設定し、忘れてしまった場合はここで新しいパスワードを入力してリセットしてください。"
+    }
   },
   "eventDetail": {
     "backToEvents": "出来事に戻る",

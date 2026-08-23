@@ -110,7 +110,23 @@
     "repliesToYourPosts": "الردود على منشوراتك",
     "likesOnYourPosts": "الإعجابات على منشوراتك",
     "productUpdates": "تحديثات المنتجات",
-    "save": "حفظ"
+    "save": "حفظ",
+    "notifications": {
+      "heading": "إعدادات الإشعارات",
+      "events": "الفعاليات",
+      "networkActivity": "نشاط الشبكة",
+      "repliesToYourPosts": "الردود على منشوراتك",
+      "likesOnYourPosts": "الإعجابات على منشوراتك",
+      "productUpdates": "تحديثات المنتجات",
+      "save": "حفظ"
+    },
+    "password": {
+      "heading": "كلمة المرور",
+      "label": "كلمة مرور جديدة",
+      "setSubmit": "تعيين كلمة المرور",
+      "updateSubmit": "تحديث كلمة المرور",
+      "help": "حدد كلمة مرور لتخطي رمز البريد الإلكتروني في المرة القادمة، أو أدخل كلمة مرور جديدة هنا لإعادة ضبطها إذا كنت قد نسيتها."
+    }
   },
   "eventDetail": {
     "backToEvents": "نعود إلى الأحداث",

@@ -110,7 +110,23 @@
     "repliesToYourPosts": "Réponses à vos publications",
     "likesOnYourPosts": "J’aime sur vos posts",
     "productUpdates": "Mises à jour produit",
-    "save": "Sauvegarder"
+    "save": "Sauvegarder",
+    "notifications": {
+      "heading": "Paramètres de notification",
+      "events": "Événements",
+      "networkActivity": "Activité réseau",
+      "repliesToYourPosts": "Réponses à vos publications",
+      "likesOnYourPosts": "J’aime sur vos posts",
+      "productUpdates": "Mises à jour produit",
+      "save": "Sauvegarder"
+    },
+    "password": {
+      "heading": "Mot de passe",
+      "label": "Nouveau mot de passe",
+      "setSubmit": "Définir mot de passe",
+      "updateSubmit": "Mettre à jour le mot de passe",
+      "help": "Définissez un mot de passe pour éviter le code email la prochaine fois, ou saisissez un nouveau mot de passe ici pour le réinitialiser si vous l’avez oublié."
+    }
   },
   "eventDetail": {
     "backToEvents": "Retour aux événements",

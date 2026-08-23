@@ -110,7 +110,23 @@
     "repliesToYourPosts": "Risposte ai tuoi post",
     "likesOnYourPosts": "Like ai tuoi post",
     "productUpdates": "Aggiornamenti di prodotto",
-    "save": "Salva"
+    "save": "Salva",
+    "notifications": {
+      "heading": "Impostazioni delle notifiche",
+      "events": "Eventi",
+      "networkActivity": "Attività della rete",
+      "repliesToYourPosts": "Risposte ai tuoi post",
+      "likesOnYourPosts": "Like ai tuoi post",
+      "productUpdates": "Aggiornamenti di prodotto",
+      "save": "Salva"
+    },
+    "password": {
+      "heading": "Password",
+      "label": "Nuova password",
+      "setSubmit": "Imposta password",
+      "updateSubmit": "Aggiorna la password",
+      "help": "Imposta una password per saltare il codice email la prossima volta, oppure inseriscine una nuova qui per resettarla se l'hai dimenticata."
+    }
   },
   "eventDetail": {
     "backToEvents": "Ritorno agli eventi",

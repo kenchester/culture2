@@ -167,14 +167,24 @@
     "notSureWhatYouMeant": "We weren't sure exactly what you meant — here are the closest matches. Pick the one you were looking for."
   },
   "settings": {
-    "heading": "Notification settings",
+    "heading": "Settings",
     "saved": "Saved.",
-    "events": "Events",
-    "networkActivity": "Network activity",
-    "repliesToYourPosts": "Replies to your posts",
-    "likesOnYourPosts": "Likes on your posts",
-    "productUpdates": "Product updates",
-    "save": "Save"
+    "notifications": {
+      "heading": "Notification settings",
+      "events": "Events",
+      "networkActivity": "Network activity",
+      "repliesToYourPosts": "Replies to your posts",
+      "likesOnYourPosts": "Likes on your posts",
+      "productUpdates": "Product updates",
+      "save": "Save"
+    },
+    "password": {
+      "heading": "Password",
+      "help": "Set a password to skip the email code next time, or enter a new one here to reset it if you've forgotten it.",
+      "label": "New password",
+      "setSubmit": "Set password",
+      "updateSubmit": "Update password"
+    }
   },
   "eventDetail": {
     "backToEvents": "Back to events",
