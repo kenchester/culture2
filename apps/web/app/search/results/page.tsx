@@ -1,7 +1,9 @@
 import Link from "next/link";
-import { getTranslations } from "next-intl/server";
+import { getLocale, getTranslations } from "next-intl/server";
 import { createClient } from "@/lib/supabase/server";
 import { launchNetwork } from "@/app/search/actions";
+import { getGeoName } from "@/lib/geo-translation";
+import type { Locale } from "@/lib/locale";
 import { Button } from "@/components/ui/button";
 
 type ResultsT = Awaited<ReturnType<typeof getTranslations>>;
@@ -26,6 +28,7 @@ type NetworkMatch = {
 };
 
 type Candidate = { id: number; name: string };
+type TranslatedCandidate = Candidate & { translatedName: string };
 type ExistingNetwork = { id: number; title: string; member_count: number; post_count: number };
 
 function MissingParamsMessage({ message, tryAgain }: { message: string; tryAgain: string }) {
@@ -48,6 +51,71 @@ function originTable(originKind: string | undefined) {
   if (originKind === "language") return "languages";
   if (originKind === "religion") return "religions";
   return "places";
+}
+
+async function translateOriginName(
+  originKind: string | undefined,
+  entity:
+    | { id: number; name: string; type?: "country" | "region" | "city"; iso_code?: string | null }
+    | null
+    | undefined,
+  locale: Locale,
+): Promise<string> {
+  if (!entity) return "?";
+  if (originKind === "religion") return entity.name;
+  if (originKind === "language") {
+    return getGeoName("language", entity.id, entity.name, locale, { isoCode: entity.iso_code });
+  }
+  return getGeoName("place", entity.id, entity.name, locale, {
+    isoCode: entity.iso_code,
+    placeType: entity.type,
+  });
+}
+
+async function translateLocationName(
+  entity:
+    | { id: number; name: string; type?: "country" | "region" | "city"; iso_code?: string | null }
+    | null
+    | undefined,
+  locale: Locale,
+): Promise<string> {
+  if (!entity) return "?";
+  return getGeoName("place", entity.id, entity.name, locale, {
+    isoCode: entity.iso_code,
+    placeType: entity.type,
+  });
+}
+
+// The multi-candidate ambiguous path (guessOriginCandidates/guess_places)
+// only returns {id, name} - a follow-up bulk fetch pulls the
+// type/iso_code metadata for however many candidates came back (at most
+// 3) in one query, then resolves+attaches a translated name to each.
+async function withTranslatedNames(
+  supabase: Awaited<ReturnType<typeof createClient>>,
+  kind: "place" | "language" | "religion",
+  candidates: Candidate[],
+  locale: Locale,
+): Promise<TranslatedCandidate[]> {
+  if (candidates.length === 0 || kind === "religion") {
+    return candidates.map((c) => ({ ...c, translatedName: c.name }));
+  }
+  const ids = candidates.map((c) => c.id);
+  const { data: meta } =
+    kind === "language"
+      ? await supabase.from("languages").select("id, iso_code").in("id", ids)
+      : await supabase.from("places").select("id, type, iso_code").in("id", ids);
+  const metaById = new Map((meta ?? []).map((m) => [(m as { id: number }).id, m]));
+
+  return Promise.all(
+    candidates.map(async (c) => {
+      const m = metaById.get(c.id) as { iso_code?: string | null; type?: "country" | "region" | "city" } | undefined;
+      const translatedName = await getGeoName(kind === "language" ? "language" : "place", c.id, c.name, locale, {
+        isoCode: m?.iso_code,
+        placeType: m?.type,
+      });
+      return { ...c, translatedName };
+    }),
+  );
 }
 
 function originNetworkColumn(originKind: string | undefined) {
@@ -92,14 +160,19 @@ export default async function SearchResultsPage({
   const isReligion = originKind === "religion";
   const supabase = await createClient();
   const t = await getTranslations("searchResults");
+  const locale = (await getLocale()) as Locale;
 
   // Both sides were resolved via an autocomplete selection - the original,
   // unambiguous single-result flow, unchanged.
   if (originId && locationId) {
     const [{ data: origin }, { data: location }, { data: matches, error }] =
       await Promise.all([
-        supabase.from(originTable(originKind)).select("id, name").eq("id", originId).single(),
-        supabase.from("places").select("id, name, type").eq("id", locationId).single(),
+        isLanguage
+          ? supabase.from("languages").select("id, name, iso_code").eq("id", originId).single()
+          : isReligion
+            ? supabase.from("religions").select("id, name").eq("id", originId).single()
+            : supabase.from("places").select("id, name, type, iso_code").eq("id", originId).single(),
+        supabase.from("places").select("id, name, type, iso_code").eq("id", locationId).single(),
         supabase.rpc("search_networks", {
           p_language_id: isLanguage ? Number(originId) : null,
           p_origin_place_id: !isLanguage && !isReligion ? Number(originId) : null,
@@ -121,8 +194,10 @@ export default async function SearchResultsPage({
     const broader = results.filter((m) => m.match_kind === "related_broader");
     const narrower = results.filter((m) => m.match_kind === "related_narrower");
 
-    const originName = origin?.name ?? "?";
-    const locationName = location?.name ?? "?";
+    const [originName, locationName] = await Promise.all([
+      translateOriginName(originKind, origin, locale),
+      translateLocationName(location, locale),
+    ]);
     const title = buildTitle(t, originKind, originName, locationName);
 
     return (
@@ -199,7 +274,7 @@ export default async function SearchResultsPage({
     return <MissingParamsMessage message={t("missingLocation")} tryAgain={t("tryAgain")} />;
   }
 
-  const originCandidates: Candidate[] = originId
+  const rawOriginCandidates: Candidate[] = originId
     ? await (async () => {
         const { data } = await supabase
           .from(originTable(originKind))
@@ -210,7 +285,7 @@ export default async function SearchResultsPage({
       })()
     : await guessOriginCandidates(supabase, originKind, trimmedOriginQuery!);
 
-  const locationCandidates: Candidate[] = locationId
+  const rawLocationCandidates: Candidate[] = locationId
     ? await (async () => {
         const { data } = await supabase
           .from("places")
@@ -221,6 +296,12 @@ export default async function SearchResultsPage({
       })()
     : ((await supabase.rpc("guess_places", { p_query: trimmedLocationQuery, p_limit: 3 })).data ??
         []).map((r: { id: number; name: string }) => ({ id: r.id, name: r.name }));
+
+  const originTranslationKind = originKind === "language" ? "language" : originKind === "religion" ? "religion" : "place";
+  const [originCandidates, locationCandidates] = await Promise.all([
+    withTranslatedNames(supabase, originTranslationKind, rawOriginCandidates, locale),
+    withTranslatedNames(supabase, "place", rawLocationCandidates, locale),
+  ]);
 
   if (originCandidates.length === 0) {
     return (
@@ -263,7 +344,7 @@ export default async function SearchResultsPage({
 
       <div className="flex flex-col gap-4">
         {combos.map(({ origin, location }, i) => {
-          const title = buildTitle(t, originKind, origin.name, location.name);
+          const title = buildTitle(t, originKind, origin.translatedName, location.translatedName);
           const existing = existingNetworks[i].data as ExistingNetwork | null;
 
           return (

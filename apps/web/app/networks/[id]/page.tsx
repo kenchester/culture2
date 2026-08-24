@@ -1,9 +1,11 @@
 import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { getTranslations } from "next-intl/server";
+import { getLocale, getTranslations } from "next-intl/server";
 import { createClient } from "@/lib/supabase/server";
 import { type Author, getAvatarUrl, getDisplayName } from "@/lib/profiles";
+import { getGeoName } from "@/lib/geo-translation";
+import type { Locale } from "@/lib/locale";
 import { createPost, joinNetwork, leaveNetwork } from "@/app/networks/actions";
 import { EditableEntry } from "@/app/networks/editable-entry";
 import { InviteFriendsBox } from "@/app/networks/[id]/invite-friends-box";
@@ -27,6 +29,7 @@ export default async function NetworkPage({
   const isEmbedded = embed === "1";
   const supabase = await createClient();
   const t = await getTranslations("network");
+  const locale = (await getLocale()) as Locale;
 
   const {
     data: { user },
@@ -54,15 +57,23 @@ export default async function NetworkPage({
     { data: myLikes },
   ] = await Promise.all([
     network.language_id
-      ? supabase.from("languages").select("name").eq("id", network.language_id).single()
+      ? supabase.from("languages").select("id, name, iso_code").eq("id", network.language_id).single()
       : Promise.resolve({ data: null }),
     network.origin_place_id
-      ? supabase.from("places").select("name").eq("id", network.origin_place_id).single()
+      ? supabase
+          .from("places")
+          .select("id, name, type, iso_code")
+          .eq("id", network.origin_place_id)
+          .single()
       : Promise.resolve({ data: null }),
     network.religion_id
       ? supabase.from("religions").select("name").eq("id", network.religion_id).single()
       : Promise.resolve({ data: null }),
-    supabase.from("places").select("name, type").eq("id", network.location_place_id).single(),
+    supabase
+      .from("places")
+      .select("id, name, type, iso_code")
+      .eq("id", network.location_place_id)
+      .single(),
     user
       ? supabase
           .from("network_members")
@@ -83,7 +94,25 @@ export default async function NetworkPage({
       : Promise.resolve({ data: null }),
   ]);
 
-  const originName = language?.name ?? originPlace?.name ?? religion?.name ?? "?";
+  const [translatedLanguageName, translatedOriginName, translatedLocationName] = await Promise.all([
+    language
+      ? getGeoName("language", language.id, language.name, locale, { isoCode: language.iso_code })
+      : Promise.resolve(null),
+    originPlace
+      ? getGeoName("place", originPlace.id, originPlace.name, locale, {
+          isoCode: originPlace.iso_code,
+          placeType: originPlace.type,
+        })
+      : Promise.resolve(null),
+    location
+      ? getGeoName("place", location.id, location.name, locale, {
+          isoCode: location.iso_code,
+          placeType: location.type,
+        })
+      : Promise.resolve(null),
+  ]);
+
+  const originName = translatedLanguageName ?? translatedOriginName ?? religion?.name ?? "?";
   const isMember = Boolean(membership);
   const myLikedPostIds = new Set((myLikes ?? []).map((l) => l.post_id as number));
 
@@ -98,7 +127,7 @@ export default async function NetworkPage({
         <div>
           <h1 className="font-display text-3xl text-ink">{network.title}</h1>
           <p className="text-sm text-muted">
-            {t("originIn", { origin: originName, location: location?.name ?? "?" })}
+            {t("originIn", { origin: originName, location: translatedLocationName ?? "?" })}
           </p>
         </div>
 
