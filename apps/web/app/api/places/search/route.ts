@@ -1,5 +1,6 @@
 import { NextResponse, type NextRequest } from "next/server";
 import { createClient } from "@/lib/supabase/server";
+import { isLocale } from "@/lib/locale";
 
 const PLACE_TYPES = ["country", "region", "city"];
 
@@ -10,6 +11,8 @@ export async function GET(request: NextRequest) {
   const kind = kindParam === "language" || kindParam === "religion" ? kindParam : "place";
   const typeParam = searchParams.get("type");
   const type = typeParam && PLACE_TYPES.includes(typeParam) ? typeParam : null;
+  const localeParam = searchParams.get("locale");
+  const locale = isLocale(localeParam) ? localeParam : "en";
 
   if (q.length < 2) {
     return NextResponse.json([]);
@@ -20,8 +23,15 @@ export async function GET(request: NextRequest) {
   if (kind === "language") {
     // search_languages matches diacritic-insensitively (e.g. typing
     // "Aland" still needs to work for places, and this keeps languages
-    // consistent) - see 00000000000041_unaccent_search.sql.
-    const { data, error } = await supabase.rpc("search_languages", { p_query: q, p_limit: 10 });
+    // consistent) - see 00000000000041_unaccent_search.sql - and now
+    // also matches/returns the current locale's cached translated name
+    // (e.g. "Mandarin" while browsing in Spanish still needs to find
+    // "chino mandarín") - see 00000000000042_locale_aware_search.sql.
+    const { data, error } = await supabase.rpc("search_languages", {
+      p_query: q,
+      p_limit: 10,
+      p_locale: locale,
+    });
     if (error) {
       return NextResponse.json({ error: error.message }, { status: 500 });
     }
@@ -40,14 +50,18 @@ export async function GET(request: NextRequest) {
   }
 
   // search_places matches diacritic-insensitively (e.g. "Sao Tome" finds
-  // "São Tomé and Príncipe") - see 00000000000041_unaccent_search.sql.
-  // Reshapes its flat parent_name/parent_type columns into the nested
+  // "São Tomé and Príncipe") - see 00000000000041_unaccent_search.sql -
+  // and also matches/returns the current locale's cached translated name
+  // (e.g. "Estados Unidos" finds "United States" while browsing in
+  // Spanish) - see 00000000000042_locale_aware_search.sql. Reshapes its
+  // flat parent_name/parent_type columns into the nested
   // `parent: {name, type}` shape PlaceOption (components/autocomplete-
-  // field.tsx) already expects, so the frontend needs no changes.
+  // field.tsx) already expects, so the frontend needs no changes there.
   const { data, error } = await supabase.rpc("search_places", {
     p_query: q,
     p_type: type,
     p_limit: 10,
+    p_locale: locale,
   });
   if (error) {
     return NextResponse.json({ error: error.message }, { status: 500 });

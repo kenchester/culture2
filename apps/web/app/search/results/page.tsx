@@ -143,10 +143,20 @@ async function guessOriginCandidates(
   supabase: Awaited<ReturnType<typeof createClient>>,
   originKind: string | undefined,
   query: string,
+  locale: Locale,
 ): Promise<Candidate[]> {
-  const rpcName =
-    originKind === "language" ? "guess_languages" : originKind === "religion" ? "guess_religions" : "guess_places";
-  const { data } = await supabase.rpc(rpcName, { p_query: query, p_limit: 3 });
+  // guess_religions has no locale param - religions were never in scope
+  // for translation (only languages/geography), so it's called
+  // unchanged. guess_languages/guess_places match and return whatever's
+  // already cached for this locale (e.g. "Estados Unidos" finds "United
+  // States" while browsing in Spanish) - see
+  // 00000000000042_locale_aware_search.sql.
+  const { data } =
+    originKind === "language"
+      ? await supabase.rpc("guess_languages", { p_query: query, p_limit: 3, p_locale: locale })
+      : originKind === "religion"
+        ? await supabase.rpc("guess_religions", { p_query: query, p_limit: 3 })
+        : await supabase.rpc("guess_places", { p_query: query, p_limit: 3, p_locale: locale });
   return (data ?? []).map((r: { id: number; name: string }) => ({ id: r.id, name: r.name }));
 }
 
@@ -283,7 +293,7 @@ export default async function SearchResultsPage({
           .single();
         return data ? [{ id: data.id, name: data.name }] : [];
       })()
-    : await guessOriginCandidates(supabase, originKind, trimmedOriginQuery!);
+    : await guessOriginCandidates(supabase, originKind, trimmedOriginQuery!, locale);
 
   const rawLocationCandidates: Candidate[] = locationId
     ? await (async () => {
@@ -294,8 +304,13 @@ export default async function SearchResultsPage({
           .single();
         return data ? [{ id: data.id, name: data.name }] : [];
       })()
-    : ((await supabase.rpc("guess_places", { p_query: trimmedLocationQuery, p_limit: 3 })).data ??
-        []).map((r: { id: number; name: string }) => ({ id: r.id, name: r.name }));
+    : ((
+        await supabase.rpc("guess_places", {
+          p_query: trimmedLocationQuery,
+          p_limit: 3,
+          p_locale: locale,
+        })
+      ).data ?? []).map((r: { id: number; name: string }) => ({ id: r.id, name: r.name }));
 
   const originTranslationKind = originKind === "language" ? "language" : originKind === "religion" ? "religion" : "place";
   const [originCandidates, locationCandidates] = await Promise.all([

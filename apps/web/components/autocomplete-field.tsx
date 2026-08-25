@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useId, useRef, useState } from "react";
+import { useLocale } from "next-intl";
 import { Field, Input, Label } from "@/components/ui/input";
 
 export type PlaceOption = {
@@ -57,6 +58,7 @@ export function AutocompleteField({
   const [selected, setSelected] = useState<AutocompleteOption | null>(initialOption);
   const inputId = useId();
   const containerRef = useRef<HTMLDivElement>(null);
+  const locale = useLocale();
 
   // Otherwise the suggestion list stays open until the user picks an option
   // or types something else - clicking anywhere else on the page should
@@ -86,9 +88,15 @@ export function AutocompleteField({
     const controller = new AbortController();
     const timeout = setTimeout(() => {
       const typeParam = kind === "place" && placeType ? `&type=${placeType}` : "";
-      fetch(`${searchUrl}?q=${encodeURIComponent(query)}&kind=${kind}${typeParam}`, {
-        signal: controller.signal,
-      })
+      // Lets a search for e.g. "Estados Unidos" find "United States" -
+      // the API resolves this against whatever's already cached for this
+      // locale (see 00000000000042_locale_aware_search.sql) and returns
+      // the translated name in place of the English one, so results
+      // already render localized with no further change needed here.
+      fetch(
+        `${searchUrl}?q=${encodeURIComponent(query)}&kind=${kind}${typeParam}&locale=${locale}`,
+        { signal: controller.signal },
+      )
         .then((r) => r.json())
         .then(setOptions)
         .catch(() => {});
@@ -97,7 +105,7 @@ export function AutocompleteField({
       clearTimeout(timeout);
       controller.abort();
     };
-  }, [query, kind, selected, searchUrl, disabled, placeType]);
+  }, [query, kind, selected, searchUrl, disabled, placeType, locale]);
 
   const visibleOptions = disabled || selected ? [] : options;
 
