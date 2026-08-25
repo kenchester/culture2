@@ -9,7 +9,8 @@
     "lint": "eslint",
     "translate-messages": "tsx scripts/translate-messages.ts",
     "backfill-iso-codes": "tsx scripts/backfill-iso-codes.ts",
-    "backfill-geo-cldr": "tsx scripts/backfill-geo-cldr.ts"
+    "backfill-geo-cldr": "tsx scripts/backfill-geo-cldr.ts",
+    "fix-mojibake-names": "tsx scripts/fix-mojibake-names.ts"
   },
   "dependencies": {
     "@supabase/ssr": "^0.12.4",

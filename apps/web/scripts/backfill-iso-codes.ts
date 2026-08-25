@@ -65,6 +65,7 @@ const COUNTRY_ALIASES: Record<string, string> = {
   macao: "MO",
   palestine: "PS",
   bonaire: "BQ",
+  aland: "AX",
 };
 
 async function main() {
