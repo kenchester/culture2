@@ -59,7 +59,12 @@ export function LanguageSwitcher() {
       </button>
 
       {open && (
-        <div className="absolute right-0 top-full mt-2 max-h-80 w-44 overflow-y-auto rounded-md border border-border bg-surface py-1 text-sm shadow-md">
+        // left-0, not right-0: this button sits mid-nav (Search, language,
+        // then sign-in/sign-up or the user menu), nowhere near the right
+        // edge of the viewport - anchoring the dropdown's right edge to a
+        // button positioned that far left pushed its left edge past the
+        // screen's left edge entirely on narrow/mobile widths.
+        <div className="absolute left-0 top-full mt-2 max-h-80 w-44 overflow-y-auto rounded-md border border-border bg-surface py-1 text-sm shadow-md">
           {SUPPORTED_LOCALES.map((code) => (
             <button
               key={code}

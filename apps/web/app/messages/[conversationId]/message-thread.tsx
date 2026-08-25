@@ -78,7 +78,7 @@ export function MessageThread({
         {messages.map((m) => (
           <div
             key={m.id}
-            className={`max-w-[80%] rounded-md px-3 py-2 ${
+            className={`max-w-[80%] break-words rounded-md px-3 py-2 ${
               m.sender_id === currentUserId
                 ? "self-end bg-primary text-white"
                 : "self-start border border-border bg-surface text-ink"

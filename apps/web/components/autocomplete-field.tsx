@@ -3,6 +3,7 @@
 import { useEffect, useId, useRef, useState } from "react";
 import { useLocale } from "next-intl";
 import { Field, Input, Label } from "@/components/ui/input";
+import { isSearchableQuery } from "@/lib/search-query";
 
 export type PlaceOption = {
   id: number;
@@ -82,7 +83,7 @@ export function AutocompleteField({
   }, []);
 
   useEffect(() => {
-    if (disabled || selected || query.trim().length < 2) {
+    if (disabled || selected || !isSearchableQuery(query.trim())) {
       return;
     }
     const controller = new AbortController();

@@ -1,6 +1,7 @@
 import { NextResponse, type NextRequest } from "next/server";
 import { createClient } from "@/lib/supabase/server";
 import { isLocale } from "@/lib/locale";
+import { isSearchableQuery } from "@/lib/search-query";
 
 const PLACE_TYPES = ["country", "region", "city"];
 
@@ -14,7 +15,7 @@ export async function GET(request: NextRequest) {
   const localeParam = searchParams.get("locale");
   const locale = isLocale(localeParam) ? localeParam : "en";
 
-  if (q.length < 2) {
+  if (!isSearchableQuery(q)) {
     return NextResponse.json([]);
   }
 

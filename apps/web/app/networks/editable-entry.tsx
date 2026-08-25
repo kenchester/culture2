@@ -164,7 +164,11 @@ export function EditableEntry({
   return (
     <div className="flex flex-col gap-1">
       <div className="flex items-start justify-between gap-2">
-        <p className="text-body">
+        {/* break-words: post content is free-typed and Linkify can turn a
+            long pasted URL into an anchor - neither wraps at whitespace
+            on its own, so an unbroken run of characters would otherwise
+            push this narrower than the viewport on mobile. */}
+        <p className="min-w-0 break-words text-body">
           <Linkify text={showTranslated && translated ? translated : body} />
         </p>
         <div className="flex shrink-0 items-center gap-3 text-sm text-muted">

@@ -96,7 +96,7 @@ export default async function EventPage({
         )}
       </div>
 
-      {event.description && <p className="text-body">{event.description}</p>}
+      {event.description && <p className="break-words text-body">{event.description}</p>}
 
       <p className="text-sm text-muted">
         {t("rsvpCounts", {
