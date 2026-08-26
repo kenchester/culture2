@@ -403,5 +403,22 @@
     "paragraph2": "无论是跨越海洋还是跨越国家，每一个动作都带来了带回家的挑战。它存在于你渴望烹饪的菜肴中，存在于你怀念的口语表达中，也体现在对共同传统的默契理解中。CultureMesh创造了这些双重身份能够共同发展的空间。通过将你的出身与现今结合，它将庞大的城市转变为亲密、本地化的社区，共同的根源成为通往归属的直接桥梁。",
     "paragraph3": "通过这些量身定制的网络，邻居们成为终生的朋友、导师和文化的支柱。无论是组织本地聚会、交流适应新环境的建议，还是用母语分享笑声，CultureMesh 都能将搬迁的孤独转化为共同身份的庆典。它不仅仅是地点索引——它是一个全球性的归属网络，确保无论你走多远，都永远不会真正远离家乡。",
     "paragraph4": "CultureMesh由密歇根州有限责任公司CultureMesh LLC运营。"
+  },
+  "learn": {
+    "heading": "阿克米大学",
+    "intro": "在学校与其他学生、教师和工作人员一起练习你的目标语言。",
+    "misconfigured": "这个页面还没有正确设置。",
+    "bannerHeading": "你的学校用的是CultureMesh吗？",
+    "bannerSubheading": "输入你学校的邮箱域名进行查询。",
+    "bannerPlaceholder": "例如：nyu.edu",
+    "bannerSubmit": "检查",
+    "bannerMatch": "好消息——{domain}在CultureMesh上。见下文。",
+    "bannerNoMatch": "{domain}还没设置好，但我们已经注意到你的兴趣。下面看看它是如何运作的。",
+    "bannerSeeExamples": "无论哪种方式，你都可以在下面看到示例网络。",
+    "findYourLanguageHeading": "找到你的语言",
+    "languageLabel": "语言",
+    "submit": "搜索",
+    "exampleNetworksHeading": "网络示例",
+    "memberPostCounts": "{members}成员、{posts}职位"
   }
 }

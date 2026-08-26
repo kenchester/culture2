@@ -10,16 +10,21 @@
     "translate-messages": "tsx scripts/translate-messages.ts",
     "backfill-iso-codes": "tsx scripts/backfill-iso-codes.ts",
     "backfill-geo-cldr": "tsx scripts/backfill-geo-cldr.ts",
-    "fix-mojibake-names": "tsx scripts/fix-mojibake-names.ts"
+    "fix-mojibake-names": "tsx scripts/fix-mojibake-names.ts",
+    "seed-acme-university": "tsx scripts/seed-acme-university.ts"
   },
   "dependencies": {
     "@supabase/ssr": "^0.12.4",
     "@supabase/supabase-js": "^2.112.1",
+    "dictionary-en": "^4.0.0",
+    "dictionary-es": "^4.0.0",
+    "dictionary-fr": "^3.0.0",
     "i18n-iso-countries": "^7.14.0",
     "iso-639-1": "^3.1.6",
     "mailchecker": "^6.0.21",
     "next": "16.3.0",
     "next-intl": "^4.13.7",
+    "nspell": "^2.1.5",
     "react": "19.2.8",
     "react-dom": "19.2.8",
     "resend": "^6.18.1",

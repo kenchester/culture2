@@ -8,12 +8,21 @@ import { detectLocaleFromCountry } from "@/lib/locale";
 // own page - faith.culturemesh.com to a full religion picker,
 // redeemed.culturemesh.com to a Christian-only variant with the religion
 // choice hidden. Neither needs its own results page or launch action -
-// both stay host-agnostic, driven purely by originKind - and this table
-// is the only thing a future subdomain needs to add to.
+// both stay host-agnostic, driven purely by originKind.
 const SUBDOMAIN_ROUTES: Record<string, string> = {
   "faith.": "/faith",
   "redeemed.": "/redeemed",
 };
+
+// learn.culturemesh.com (Acme University) is different from the two
+// above: it's a small page tree of its own (landing page, program-admin
+// panel, invite acceptance) layered on the same host-agnostic app
+// everything else uses, not a single fixed page. Only these specific
+// paths get rewritten under /learn - a learn. page linking to
+// /networks/123 or /sign-in must keep resolving to the normal shared
+// pages, not get swept into the /learn prefix too.
+const LEARN_HOST_PREFIX = "learn.";
+const LEARN_SUBDOMAIN_PATHS = ["/", "/admin", "/invite"];
 
 // These subdomains stay out of search results until their markets are
 // properly tested - applied as a response header rather than relying on
@@ -21,12 +30,28 @@ const SUBDOMAIN_ROUTES: Record<string, string> = {
 // the ones robots.ts enumerates) and is respected by major crawlers just
 // like a meta robots tag.
 function isSequesteredHost(host: string): boolean {
-  return Object.keys(SUBDOMAIN_ROUTES).some((prefix) => host.startsWith(prefix));
+  return (
+    Object.keys(SUBDOMAIN_ROUTES).some((prefix) => host.startsWith(prefix)) ||
+    host.startsWith(LEARN_HOST_PREFIX)
+  );
 }
 
 function rewriteForHost(request: NextRequest): NextRequest["nextUrl"] | null {
   const host = request.headers.get("host") ?? "";
   const { pathname } = request.nextUrl;
+
+  if (host.startsWith(LEARN_HOST_PREFIX)) {
+    const matches = LEARN_SUBDOMAIN_PATHS.some(
+      (p) => pathname === p || (p !== "/" && pathname.startsWith(`${p}/`)),
+    );
+    if (!matches) {
+      return null;
+    }
+    const url = request.nextUrl.clone();
+    url.pathname = pathname === "/" ? "/learn" : `/learn${pathname}`;
+    return url;
+  }
+
   if (pathname !== "/" && pathname !== "/search") {
     return null;
   }

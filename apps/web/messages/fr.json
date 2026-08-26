@@ -403,5 +403,22 @@
     "paragraph2": "Chaque déménagement, que ce soit à travers un océan ou un pays, apporte le défi de le ramener chez soi. C’est dans les plats que vous désirez cuisiner, les expressions familières qui vous manquent de parler à voix haute, et la compréhension silencieuse des traditions partagées. CultureMesh crée des espaces où ces deux identités peuvent s’épanouir ensemble. En associant vos origines à votre lieu d’aujourd’hui, cela transforme les grandes villes en communautés intimes et localisées où les racines communes deviennent des ponts immédiats vers l’appartenance.",
     "paragraph3": "Grâce à ces réseaux personnalisés, les voisins deviennent des amis pour la vie, des mentors et des ancres culturels. Qu’il s’agisse d’organiser des rassemblements locaux, d’échanger des conseils pour naviguer dans un nouvel environnement, ou simplement de partager un rire dans une langue maternelle, CultureMesh transforme l’isolement du déménagement en une célébration de l’identité partagée. Ce n’est pas seulement un index de lieux — c’est un réseau mondial d’appartenance qui, peu importe la distance que vous parcourez, vous n’êtes jamais vraiment loin de chez vous.",
     "paragraph4": "CultureMesh est exploitée par CultureMesh LLC, une société à responsabilité limitée du Michigan."
+  },
+  "learn": {
+    "heading": "Université Acme",
+    "intro": "Pratiquez votre langue cible avec d’autres élèves, enseignants et membres du personnel de votre établissement.",
+    "misconfigured": "Cette page n’est pas encore configurée correctement.",
+    "bannerHeading": "Votre école est-elle sur CultureMesh ?",
+    "bannerSubheading": "Saisissez le domaine email de votre école pour vérifier.",
+    "bannerPlaceholder": "par exemple nyu.edu",
+    "bannerSubmit": "Vérifié",
+    "bannerMatch": "Bonne nouvelle - {domain} elle est sur CultureMesh. Voir ci-dessous.",
+    "bannerNoMatch": "{domain} Ce n’est pas encore prêt, mais nous avons noté votre intérêt. Découvrez ci-dessous comment cela fonctionne.",
+    "bannerSeeExamples": "Vous pouvez voir des réseaux exemples ci-dessous dans tous les cas.",
+    "findYourLanguageHeading": "Trouve ta langue",
+    "languageLabel": "Langue",
+    "submit": "Recherche",
+    "exampleNetworksHeading": "Réseaux exemples",
+    "memberPostCounts": "{members} membres, {posts} postes"
   }
 }

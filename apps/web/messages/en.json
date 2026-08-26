@@ -251,11 +251,26 @@
     "deleting": "Deleting…",
     "yes": "Yes",
     "no": "No",
-    "like": { "post": "Like this post", "reply": "Like this reply" },
-    "unlike": { "post": "Unlike this post", "reply": "Unlike this reply" },
-    "edit": { "post": "Edit post", "reply": "Edit reply" },
-    "delete": { "post": "Delete post", "reply": "Delete reply" },
-    "deleteConfirm": { "post": "Delete this post?", "reply": "Delete this reply?" },
+    "like": {
+      "post": "Like this post",
+      "reply": "Like this reply"
+    },
+    "unlike": {
+      "post": "Unlike this post",
+      "reply": "Unlike this reply"
+    },
+    "edit": {
+      "post": "Edit post",
+      "reply": "Edit reply"
+    },
+    "delete": {
+      "post": "Delete post",
+      "reply": "Delete reply"
+    },
+    "deleteConfirm": {
+      "post": "Delete this post?",
+      "reply": "Delete this reply?"
+    },
     "translate": "Translate",
     "showOriginal": "View original text",
     "translating": "Translating…",
@@ -382,5 +397,22 @@
         "body": "Meet people, share posts, and host or attend events together."
       }
     }
+  },
+  "learn": {
+    "heading": "Acme University",
+    "intro": "Practice your target language with other students, instructors, and staff at your school.",
+    "misconfigured": "This page isn't set up correctly yet.",
+    "bannerHeading": "Is your school on CultureMesh?",
+    "bannerSubheading": "Enter your school's email domain to check.",
+    "bannerPlaceholder": "e.g. nyu.edu",
+    "bannerSubmit": "Check",
+    "bannerMatch": "Good news - {domain} is on CultureMesh. See below.",
+    "bannerNoMatch": "{domain} isn't set up yet, but we've noted your interest. Take a look at how it works below.",
+    "bannerSeeExamples": "You can see example networks below either way.",
+    "findYourLanguageHeading": "Find your language",
+    "languageLabel": "Language",
+    "submit": "Search",
+    "exampleNetworksHeading": "Example networks",
+    "memberPostCounts": "{members} members, {posts} posts"
   }
 }

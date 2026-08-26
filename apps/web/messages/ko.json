@@ -403,5 +403,22 @@
     "paragraph2": "바다를 건너든 나라를 가로질러든 모든 움직임은 집으로 가져가는 도전을 안겨줍니다. 요리하고 싶어 하는 요리, 소리 내어 말할 수 없던 속어체, 그리고 공유된 전통에 대한 조용한 이해 속에 있다. CultureMesh는 이러한 이중 정체성이 함께 번성할 수 있는 공간을 만듭니다. 당신이 어디서 왔는지와 현재 있는 곳을 결합함으로써, 광활한 도시를 친밀하고 지역화된 공동체로 변화시키고, 공유된 뿌리가 즉각적인 소속감의 다리가 됩니다.",
     "paragraph3": "이러한 맞춤형 네트워크를 통해 이웃들은 평생 친구이자 멘토, 그리고 문화적 중심이 됩니다. 지역 모임을 조직하거나, 새로운 환경을 탐색하는 조언을 교환하거나, 단순히 모국어로 웃음을 나누는 등 CultureMesh는 이사의 고립을 공유된 정체성의 축제로 바꿉니다. 이것은 단순한 위치 지수 그 이상이며, 아무리 멀리 여행해도 결코 집에서 멀지 않다는 것을 보장하는 전 세계적인 소속감의 그물망입니다.",
     "paragraph4": "컬처메쉬는 미시간의 유한책임회사인 컬처메시 LLC가 운영합니다."
+  },
+  "learn": {
+    "heading": "애크메 대학교",
+    "intro": "학교의 다른 학생, 강사, 직원들과 함께 목표 언어를 연습하세요.",
+    "misconfigured": "이 페이지는 아직 제대로 설정되어 있지 않습니다.",
+    "bannerHeading": "학교가 CultureMesh를 사용하고 있나요?",
+    "bannerSubheading": "학교 이메일 도메인을 입력해 확인하세요.",
+    "bannerPlaceholder": "예를 들어, nyu.edu",
+    "bannerSubmit": "체크",
+    "bannerMatch": "좋은 소식은 CultureMesh {domain} 에 올라와 있다는 것입니다. 아래를 참고하세요.",
+    "bannerNoMatch": "{domain} 아직 준비된 건 아니지만, 네가 관심을 보이는 건 알았어. 아래에서 작동 방식을 살펴보세요.",
+    "bannerSeeExamples": "아래에서 네트워크 예시를 보실 수 있습니다.",
+    "findYourLanguageHeading": "당신의 언어를 찾아보세요",
+    "languageLabel": "언어",
+    "submit": "검색",
+    "exampleNetworksHeading": "예시 네트워크",
+    "memberPostCounts": "{members} 회원, {posts} 직책"
   }
 }

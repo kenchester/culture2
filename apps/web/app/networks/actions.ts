@@ -11,6 +11,7 @@ import { getSiteUrl } from "@/lib/site-url";
 import { getDisplayName } from "@/lib/profiles";
 import { translateText } from "@/lib/azure-translator";
 import { toAzureCode, type Locale } from "@/lib/locale";
+import { checkLanguagePurity } from "@/lib/language-purity-check";
 
 const MAX_INVITES = 20;
 const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -69,6 +70,27 @@ export async function createPost(formData: FormData) {
 
   if (!user) {
     redirect(`/sign-in?error=${encodeURIComponent("Sign in to post.")}${embedSuffix}`);
+  }
+
+  // Only organization-gated networks (Acme University's language networks)
+  // enforce this - a cheap lookup that's a miss for every other post on
+  // the site, which pays zero cost for the dictionary-backed check below.
+  const { data: orgNetwork } = await supabase
+    .from("organization_languages")
+    .select("language:languages(name, iso_code)")
+    .eq("network_id", Number(networkId))
+    .maybeSingle();
+  const orgLanguage = orgNetwork?.language as unknown as { name: string; iso_code: string | null } | null;
+
+  if (orgLanguage?.iso_code) {
+    const { blocked } = checkLanguagePurity(body, orgLanguage.iso_code);
+    if (blocked) {
+      redirect(
+        `/networks/${networkId}?error=${encodeURIComponent(
+          `Please keep your post mostly in ${orgLanguage.name} for this network - proper nouns and building names are fine.`,
+        )}${embedSuffix}`,
+      );
+    }
   }
 
   const { error } = await supabase.from("posts").insert({
