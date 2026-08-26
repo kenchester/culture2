@@ -405,7 +405,6 @@
     "paragraph4": "CultureMesh由密歇根州有限责任公司CultureMesh LLC运营。"
   },
   "learn": {
-    "heading": "阿克米大学",
     "intro": "在学校与其他学生、教师和工作人员一起练习你的目标语言。",
     "misconfigured": "这个页面还没有正确设置。",
     "bannerHeading": "你的学校用的是CultureMesh吗？",
@@ -419,6 +418,8 @@
     "languageLabel": "语言",
     "submit": "搜索",
     "exampleNetworksHeading": "网络示例",
-    "memberPostCounts": "{members}成员、{posts}职位"
+    "memberPostCounts": "{members}成员、{posts}职位",
+    "heading": "语言沉浸式项目{name}",
+    "exampleNetworkBadge": "示例网络"
   }
 }

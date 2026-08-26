@@ -399,7 +399,7 @@
     }
   },
   "learn": {
-    "heading": "Acme University",
+    "heading": "Language Immersion Programs of {name}",
     "intro": "Practice your target language with other students, instructors, and staff at your school.",
     "misconfigured": "This page isn't set up correctly yet.",
     "bannerHeading": "Is your school on CultureMesh?",
@@ -413,6 +413,7 @@
     "languageLabel": "Language",
     "submit": "Search",
     "exampleNetworksHeading": "Example networks",
-    "memberPostCounts": "{members} members, {posts} posts"
+    "memberPostCounts": "{members} members, {posts} posts",
+    "exampleNetworkBadge": "Example Network"
   }
 }

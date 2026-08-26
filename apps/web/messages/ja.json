@@ -405,7 +405,6 @@
     "paragraph4": "CultureMeshはミシガン州の有限責任会社であるCultureMesh LLCによって運営されています。"
   },
   "learn": {
-    "heading": "アクメ大学",
     "intro": "学校の他の生徒や講師、スタッフと一緒に目標言語を練習しましょう。",
     "misconfigured": "このページはまだ正しく設定されていません。",
     "bannerHeading": "あなたの学校はCultureMeshを使っていますか?",
@@ -419,6 +418,8 @@
     "languageLabel": "言語",
     "submit": "検索",
     "exampleNetworksHeading": "ネットワークの例",
-    "memberPostCounts": "{members}メンバー、{posts}ポスト"
+    "memberPostCounts": "{members}メンバー、{posts}ポスト",
+    "heading": "言語イマージョンプログラム{name}",
+    "exampleNetworkBadge": "ネットワークの例"
   }
 }

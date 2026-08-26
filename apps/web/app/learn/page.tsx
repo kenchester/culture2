@@ -41,7 +41,14 @@ export default async function LearnPage({
   return (
     <div className="mx-auto flex w-full max-w-2xl flex-1 flex-col gap-8 px-4 py-12">
       <div>
-        <h1 className="font-display text-3xl text-ink">{org?.name ?? t("heading")}</h1>
+        <div className="flex flex-wrap items-center gap-3">
+          <h1 className="font-display text-3xl text-ink">
+            {org ? t("heading", { name: org.name }) : t("misconfigured")}
+          </h1>
+          <span className="rounded-full bg-primary-light px-2.5 py-0.5 text-xs font-medium text-primary">
+            {t("exampleNetworkBadge")}
+          </span>
+        </div>
         <p className="mt-2 text-body">{t("intro")}</p>
       </div>
 

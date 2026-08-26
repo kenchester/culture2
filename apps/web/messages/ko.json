@@ -405,7 +405,6 @@
     "paragraph4": "컬처메쉬는 미시간의 유한책임회사인 컬처메시 LLC가 운영합니다."
   },
   "learn": {
-    "heading": "애크메 대학교",
     "intro": "학교의 다른 학생, 강사, 직원들과 함께 목표 언어를 연습하세요.",
     "misconfigured": "이 페이지는 아직 제대로 설정되어 있지 않습니다.",
     "bannerHeading": "학교가 CultureMesh를 사용하고 있나요?",
@@ -419,6 +418,8 @@
     "languageLabel": "언어",
     "submit": "검색",
     "exampleNetworksHeading": "예시 네트워크",
-    "memberPostCounts": "{members} 회원, {posts} 직책"
+    "memberPostCounts": "{members} 회원, {posts} 직책",
+    "heading": "언어 몰입 프로그램 {name}",
+    "exampleNetworkBadge": "예시 네트워크"
   }
 }

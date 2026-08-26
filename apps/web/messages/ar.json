@@ -405,7 +405,6 @@
     "paragraph4": "تدار CultureMesh من قبل شركة CultureMesh LLC، وهي شركة ذات مسؤولية محدودة في ميشيغان."
   },
   "learn": {
-    "heading": "جامعة أكمي",
     "intro": "تدرب على اللغة المستهدفة مع طلاب آخرين ومدرسين وموظفين في مدرستك.",
     "misconfigured": "هذه الصفحة لم يتم إعدادها بشكل صحيح بعد.",
     "bannerHeading": "هل مدرستك تستخدم CultureMesh؟",
@@ -419,6 +418,8 @@
     "languageLabel": "اللغة",
     "submit": "البحث",
     "exampleNetworksHeading": "أمثلة على الشبكات",
-    "memberPostCounts": "{members} الأعضاء، {posts} المشاركات"
+    "memberPostCounts": "{members} الأعضاء، {posts} المشاركات",
+    "heading": "برامج الغمر اللغوي ل {name}",
+    "exampleNetworkBadge": "مثال على شبكة"
   }
 }

@@ -405,7 +405,6 @@
     "paragraph4": "CultureMesh est exploitée par CultureMesh LLC, une société à responsabilité limitée du Michigan."
   },
   "learn": {
-    "heading": "Université Acme",
     "intro": "Pratiquez votre langue cible avec d’autres élèves, enseignants et membres du personnel de votre établissement.",
     "misconfigured": "Cette page n’est pas encore configurée correctement.",
     "bannerHeading": "Votre école est-elle sur CultureMesh ?",
@@ -419,6 +418,8 @@
     "languageLabel": "Langue",
     "submit": "Recherche",
     "exampleNetworksHeading": "Réseaux exemples",
-    "memberPostCounts": "{members} membres, {posts} postes"
+    "memberPostCounts": "{members} membres, {posts} postes",
+    "heading": "Programmes d’immersion linguistique de {name}",
+    "exampleNetworkBadge": "Réseau exemple"
   }
 }

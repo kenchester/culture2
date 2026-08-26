@@ -405,7 +405,6 @@
     "paragraph4": "CultureMesh управляется компанией CultureMesh LLC, обществом с ограниченной ответственностью штата Мичиган."
   },
   "learn": {
-    "heading": "Университет Акме",
     "intro": "Практикуйте свой целевой язык вместе с другими учениками, преподавателями и сотрудниками вашей школы.",
     "misconfigured": "Эта страница ещё не настроена корректно.",
     "bannerHeading": "Ваша школа работает на CultureMesh?",
@@ -419,6 +418,8 @@
     "languageLabel": "Язык",
     "submit": "Поиск",
     "exampleNetworksHeading": "Примеры сетей",
-    "memberPostCounts": "{members} Члены, {posts} должности"
+    "memberPostCounts": "{members} Члены, {posts} должности",
+    "heading": "Программы языкового погружения {name}",
+    "exampleNetworkBadge": "Пример сети"
   }
 }
