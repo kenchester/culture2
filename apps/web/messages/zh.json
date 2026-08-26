@@ -419,7 +419,8 @@
     "submit": "搜索",
     "exampleNetworksHeading": "网络示例",
     "memberPostCounts": "{members}成员、{posts}职位",
-    "heading": "语言沉浸式项目{name}",
-    "exampleNetworkBadge": "示例网络"
+    "exampleNetworkBadge": "示例网络",
+    "heading": "语言沉浸{name}",
+    "exampleNetworksIntro": "每个语言网络对你所在大学都有特定要求，任何非目标语言的帖子或回复都会被过滤和屏蔽，以促进语言流利度。"
   }
 }

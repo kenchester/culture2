@@ -419,7 +419,8 @@
     "submit": "Busca",
     "exampleNetworksHeading": "Redes de exemplo",
     "memberPostCounts": "{members} membros, {posts} cargos",
-    "heading": "Programas de Imersão Linguística de {name}",
-    "exampleNetworkBadge": "Rede de Exemplo"
+    "exampleNetworkBadge": "Rede de Exemplo",
+    "heading": "Imersão linguística em {name}",
+    "exampleNetworksIntro": "Cada rede de idiomas é específica para sua universidade, e quaisquer postagens ou respostas não feitas no idioma alvo serão filtradas e bloqueadas para promover a fluência linguística."
   }
 }

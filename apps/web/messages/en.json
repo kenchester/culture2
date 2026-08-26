@@ -399,7 +399,7 @@
     }
   },
   "learn": {
-    "heading": "Language Immersion Programs of {name}",
+    "heading": "Language Immersion at {name}",
     "intro": "Practice your target language with other students, instructors, and staff at your school.",
     "misconfigured": "This page isn't set up correctly yet.",
     "bannerHeading": "Is your school on CultureMesh?",
@@ -414,6 +414,7 @@
     "submit": "Search",
     "exampleNetworksHeading": "Example networks",
     "memberPostCounts": "{members} members, {posts} posts",
-    "exampleNetworkBadge": "Example Network"
+    "exampleNetworkBadge": "Example Network",
+    "exampleNetworksIntro": "Each language network is specific to your university, and any posts or replies not made in the target language will be filtered and blocked to promote language fluency."
   }
 }

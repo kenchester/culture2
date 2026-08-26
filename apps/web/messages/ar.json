@@ -419,7 +419,8 @@
     "submit": "البحث",
     "exampleNetworksHeading": "أمثلة على الشبكات",
     "memberPostCounts": "{members} الأعضاء، {posts} المشاركات",
-    "heading": "برامج الغمر اللغوي ل {name}",
-    "exampleNetworkBadge": "مثال على شبكة"
+    "exampleNetworkBadge": "مثال على شبكة",
+    "heading": "الانغماس اللغوي في {name}",
+    "exampleNetworksIntro": "كل شبكة لغوية خاصة بجامعتك، وأي منشورات أو ردود لم تكتب باللغة المستهدفة سيتم تصفيتها وحجبها لتعزيز الطلاقة في اللغة."
   }
 }

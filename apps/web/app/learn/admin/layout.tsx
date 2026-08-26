@@ -1,4 +1,5 @@
 import type { ReactNode } from "react";
+import Link from "next/link";
 import { createClient } from "@/lib/supabase/server";
 
 // Mirrors app/admin/layout.tsx's is_admin-gate pattern exactly, just
@@ -14,7 +15,14 @@ export default async function LearnAdminLayout({ children }: { children: ReactNo
   } = await supabase.auth.getUser();
 
   if (!user) {
-    return <div className="mx-auto max-w-lg px-4 py-12 text-body">Sign in as a program admin to continue.</div>;
+    return (
+      <div className="mx-auto max-w-lg px-4 py-12 text-body">
+        <Link href="/sign-in?returnTo=%2Fadmin" className="font-medium text-primary hover:underline">
+          Sign in
+        </Link>{" "}
+        as a program admin to continue.
+      </div>
+    );
   }
 
   const { data: org } = await supabase

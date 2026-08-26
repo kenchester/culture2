@@ -419,7 +419,8 @@
     "submit": "검색",
     "exampleNetworksHeading": "예시 네트워크",
     "memberPostCounts": "{members} 회원, {posts} 직책",
-    "heading": "언어 몰입 프로그램 {name}",
-    "exampleNetworkBadge": "예시 네트워크"
+    "exampleNetworkBadge": "예시 네트워크",
+    "heading": "언어 이머전 {name}",
+    "exampleNetworksIntro": "각 언어 네트워크는 대학별로 다르며, 대상 언어로 되지 않은 게시물이나 답변은 필터링 및 차단되어 언어 유창성을 증진합니다."
   }
 }

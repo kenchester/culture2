@@ -419,7 +419,8 @@
     "submit": "Suche",
     "exampleNetworksHeading": "Beispielnetzwerke",
     "memberPostCounts": "{members} Mitglieder, {posts} Beiträge",
-    "heading": "Sprachimmersionsprogramme von {name}",
-    "exampleNetworkBadge": "Beispielnetzwerk"
+    "exampleNetworkBadge": "Beispielnetzwerk",
+    "heading": "Sprachimmersion bei {name}",
+    "exampleNetworksIntro": "Jedes Sprachnetzwerk ist spezifisch für Ihre Universität, und Beiträge oder Antworten, die nicht in der Zielsprache verfasst sind, werden gefiltert und gesperrt, um die Sprachflüssigkeit zu fördern."
   }
 }

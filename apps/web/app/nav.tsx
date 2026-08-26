@@ -199,6 +199,16 @@ export function Nav() {
     return null;
   }
 
+  // So clicking "Sign in"/"Sign up" from anywhere (a specific network page,
+  // the learn. landing page, ...) brings the visitor back to exactly where
+  // they were, not always to "/" - the nav's own sign-in link previously
+  // had no returnTo at all, unlike the page-level ones (e.g.
+  // app/networks/[id]/page.tsx's own signInHref) that already did this.
+  const currentPath = pathname && pathname !== "/sign-in" ? pathname : "/";
+  const query = searchParams.toString();
+  const returnTo = query ? `${currentPath}?${query}` : currentPath;
+  const signInHref = `/sign-in?returnTo=${encodeURIComponent(returnTo)}`;
+
   return (
     <nav className="sticky top-0 z-10 flex flex-wrap items-center justify-between gap-y-3 border-b border-border bg-surface/90 px-4 py-3 backdrop-blur-sm sm:px-6">
       <Link href="/" className="flex items-center">
@@ -211,9 +221,9 @@ export function Nav() {
           <UserMenu user={user} profile={profile} />
         ) : (
           <>
-            <NavLink href="/sign-in">{t("signIn")}</NavLink>
+            <NavLink href={signInHref}>{t("signIn")}</NavLink>
             <Link
-              href="/sign-in"
+              href={signInHref}
               className="rounded-md bg-primary px-3 py-1.5 font-medium text-white transition-colors hover:bg-primary-hover"
             >
               {t("signUp")}

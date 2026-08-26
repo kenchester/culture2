@@ -25,7 +25,9 @@ export async function joinNetwork(formData: FormData) {
   } = await supabase.auth.getUser();
 
   if (!user) {
-    redirect(`/sign-in?error=${encodeURIComponent("Sign in to join a network.")}${embedSuffix}`);
+    redirect(
+      `/sign-in?error=${encodeURIComponent("Sign in to join a network.")}&returnTo=${encodeURIComponent(`/networks/${networkId}`)}${embedSuffix}`,
+    );
   }
 
   await supabase
@@ -45,7 +47,7 @@ export async function leaveNetwork(formData: FormData) {
 
   if (!user) {
     redirect(
-      `/sign-in?error=${encodeURIComponent("Sign in to manage your networks.")}${embedSuffix}`,
+      `/sign-in?error=${encodeURIComponent("Sign in to manage your networks.")}&returnTo=${encodeURIComponent(`/networks/${networkId}`)}${embedSuffix}`,
     );
   }
 
@@ -69,7 +71,9 @@ export async function createPost(formData: FormData) {
   } = await supabase.auth.getUser();
 
   if (!user) {
-    redirect(`/sign-in?error=${encodeURIComponent("Sign in to post.")}${embedSuffix}`);
+    redirect(
+      `/sign-in?error=${encodeURIComponent("Sign in to post.")}&returnTo=${encodeURIComponent(`/networks/${networkId}`)}${embedSuffix}`,
+    );
   }
 
   // Only organization-gated networks (Acme University's language networks)

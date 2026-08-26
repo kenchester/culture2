@@ -39,13 +39,13 @@ export default async function LearnPage({
     : { data: null };
 
   return (
-    <div className="mx-auto flex w-full max-w-2xl flex-1 flex-col gap-8 px-4 py-12">
+    <div className="mx-auto flex w-full max-w-3xl flex-1 flex-col gap-8 px-4 py-12">
       <div>
         <div className="flex flex-wrap items-center gap-3">
-          <h1 className="font-display text-3xl text-ink">
+          <h1 className="font-display text-2xl text-ink sm:whitespace-nowrap">
             {org ? t("heading", { name: org.name }) : t("misconfigured")}
           </h1>
-          <span className="rounded-full bg-primary-light px-2.5 py-0.5 text-xs font-medium text-primary">
+          <span className="shrink-0 rounded-full bg-primary-light px-2.5 py-0.5 text-xs font-medium text-primary">
             {t("exampleNetworkBadge")}
           </span>
         </div>
@@ -63,6 +63,7 @@ export default async function LearnPage({
             <LearnSearchForm organizationId={org.id} />
           </div>
           <h2 className="font-display text-xl text-ink">{t("exampleNetworksHeading")}</h2>
+          <p className="text-sm text-muted">{t("exampleNetworksIntro")}</p>
           <div className="grid gap-3 sm:grid-cols-2">
             {((orgLanguages ?? []) as unknown as OrgLanguageRow[]).map((row) =>
               row.network && row.language ? (

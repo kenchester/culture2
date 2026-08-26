@@ -419,7 +419,8 @@
     "submit": "検索",
     "exampleNetworksHeading": "ネットワークの例",
     "memberPostCounts": "{members}メンバー、{posts}ポスト",
-    "heading": "言語イマージョンプログラム{name}",
-    "exampleNetworkBadge": "ネットワークの例"
+    "exampleNetworkBadge": "ネットワークの例",
+    "heading": "言語イマージョン{name}",
+    "exampleNetworksIntro": "各言語ネットワークは大学ごとに特有であり、対象言語でない投稿や返信は言語流暢さを促進するためにフィルタリング・ブロックされます。"
   }
 }
