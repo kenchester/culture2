@@ -1,5 +1,10 @@
 import { createClient } from "@/lib/supabase/server";
-import { whitelistMember, removeWhitelistedMember, assignWhitelistLanguages } from "@/app/learn/admin/actions";
+import {
+  whitelistMember,
+  removeWhitelistedMember,
+  assignWhitelistLanguages,
+  bulkWhitelistRoster,
+} from "@/app/learn/admin/actions";
 import { setNetworkPrompt } from "@/app/networks/actions";
 import { getLearnAccess } from "@/lib/organization-whitelist";
 import { getDisplayName } from "@/lib/profiles";
@@ -193,6 +198,50 @@ export default async function LearnAdminPage({
               </fieldset>
               <Button type="submit" className="self-start">
                 Whitelist
+              </Button>
+            </form>
+          </div>
+
+          <div>
+            <h2 className="mb-2 text-sm font-semibold text-ink">Bulk whitelist a roster</h2>
+            <form action={bulkWhitelistRoster} className="flex flex-col gap-3 rounded-lg border border-border p-4">
+              <input type="hidden" name="organizationId" value={org!.id} />
+              <Field>
+                <Label htmlFor="roster-file">Roster file (CSV or text)</Label>
+                <input id="roster-file" name="roster" type="file" accept=".csv,.txt" />
+              </Field>
+              <Field>
+                <Label htmlFor="roster-emails">Or paste emails</Label>
+                <Textarea
+                  id="roster-emails"
+                  name="emailsText"
+                  placeholder="One email per line, or pasted straight from a spreadsheet"
+                  rows={3}
+                />
+              </Field>
+              <div className="grid gap-3 sm:grid-cols-2">
+                <Field>
+                  <Label htmlFor="roster-role">Role</Label>
+                  <select id="roster-role" name="role" defaultValue="student" className="rounded-md border border-border bg-surface px-3 py-2 text-ink">
+                    <option value="student">Student</option>
+                    <option value="instructor">Instructor</option>
+                    <option value="admin">Admin</option>
+                  </select>
+                </Field>
+              </div>
+              <fieldset className="flex flex-col gap-2">
+                <legend className="text-sm font-medium text-ink">Enrolled languages</legend>
+                <div className="flex flex-wrap gap-4">
+                  {languages.map((language) => (
+                    <label key={language.id} className="flex items-center gap-2 text-sm text-body">
+                      <input type="checkbox" name="languageIds" value={language.id} />
+                      {language.name}
+                    </label>
+                  ))}
+                </div>
+              </fieldset>
+              <Button type="submit" className="self-start">
+                Upload roster
               </Button>
             </form>
           </div>

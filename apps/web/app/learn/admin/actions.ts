@@ -4,10 +4,18 @@ import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import { createAdminClient } from "@/lib/supabase/admin";
-import { sendEmail } from "@/lib/email";
+import { sendEmail, sendBulkEmails } from "@/lib/email";
 import { enrollInLanguages } from "@/lib/organization-whitelist";
 
 const ROLES = ["student", "instructor", "admin"];
+const MAX_ROSTER_SIZE = 500;
+// Unanchored, unlike app/networks/actions.ts's EMAIL_PATTERN (which
+// validates a whole string) - this pulls email-shaped tokens out of
+// messier free text (a pasted roster or an uploaded CSV/TXT file, extra
+// columns, quoted names, commas and all), since there's no CSV-parsing
+// library in this repo and school roster exports are too inconsistent to
+// rely on delimiter position.
+const EMAIL_EXTRACT_PATTERN = /[\w.+-]+@[\w-]+\.[\w.-]+/g;
 
 // Whitelisting is the DB write that actually matters - it's what
 // app/learn/whitelist.ts's claim flow looks for the moment this person
@@ -140,4 +148,94 @@ export async function assignWhitelistLanguages(formData: FormData) {
 
   revalidatePath("/learn/admin");
   redirect(`/learn/admin?success=${encodeURIComponent("Languages assigned.")}`);
+}
+
+// Bulk version of whitelistMember for a whole class roster at once. Role
+// and languages are picked once for the whole batch (not per-row from the
+// file) - a roster upload is naturally scoped to one class/language, and
+// there's no reliable way to resolve a free-text language column to an id
+// (languages.name is the only non-null unique column; iso_code is only
+// partially backfilled).
+export async function bulkWhitelistRoster(formData: FormData) {
+  const organizationId = Number(formData.get("organizationId"));
+  const role = formData.get("role") as string;
+  const languageIds = formData.getAll("languageIds").map(Number).filter((id) => !Number.isNaN(id));
+  const rosterFile = formData.get("roster") as File | null;
+  const emailsText = (formData.get("emailsText") as string) ?? "";
+
+  if (!ROLES.includes(role)) {
+    redirect(`/learn/admin?error=${encodeURIComponent("A valid role is required.")}`);
+  }
+
+  const fileText = rosterFile && rosterFile.size > 0 ? await rosterFile.text() : "";
+  const combinedText = `${fileText}\n${emailsText}`;
+  const matches = combinedText.match(EMAIL_EXTRACT_PATTERN) ?? [];
+  const emails = Array.from(new Set(matches.map((e) => e.toLowerCase())));
+
+  if (emails.length === 0) {
+    redirect(`/learn/admin?error=${encodeURIComponent("No email addresses found in the uploaded roster.")}`);
+  }
+
+  if (emails.length > MAX_ROSTER_SIZE) {
+    redirect(
+      `/learn/admin?error=${encodeURIComponent(`A roster can have up to ${MAX_ROSTER_SIZE} people at a time.`)}`,
+    );
+  }
+
+  const supabase = await createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
+  const [{ data: org }, { data: existing }] = await Promise.all([
+    supabase.from("organizations").select("name").eq("id", organizationId).single(),
+    supabase.from("organization_whitelist").select("email").eq("organization_id", organizationId),
+  ]);
+
+  const existingEmails = new Set((existing ?? []).map((e) => e.email.toLowerCase()));
+  const newEmails = emails.filter((e) => !existingEmails.has(e));
+  const skippedCount = emails.length - newEmails.length;
+
+  if (newEmails.length === 0) {
+    redirect(
+      `/learn/admin?success=${encodeURIComponent(`No new members added - all ${skippedCount} were already whitelisted.`)}`,
+    );
+  }
+
+  const { error } = await supabase.from("organization_whitelist").insert(
+    newEmails.map((email) => ({
+      organization_id: organizationId,
+      email,
+      role,
+      language_ids: languageIds,
+      invited_by: user?.id,
+    })),
+  );
+
+  if (error) {
+    redirect(`/learn/admin?error=${encodeURIComponent(error.message)}`);
+  }
+
+  try {
+    const { data: languages } = await supabase.from("languages").select("name").in("id", languageIds);
+    const languageNames = (languages ?? []).map((l) => l.name).join(", ");
+    await sendBulkEmails(
+      newEmails.map((email) => ({
+        to: email,
+        subject: `You're in - ${org?.name ?? "your program"} on CultureMesh`,
+        text: `You've been added to ${org?.name ?? "your program"} on CultureMesh${
+          languageNames ? ` and enrolled in: ${languageNames}` : ""
+        }. Sign in with this email to get started.`,
+      })),
+    );
+  } catch {
+    // Best-effort, same as whitelistMember - the rows above already grant access.
+  }
+
+  revalidatePath("/learn/admin");
+  const summary =
+    skippedCount > 0
+      ? `Added ${newEmails.length}, skipped ${skippedCount} already whitelisted.`
+      : `Added ${newEmails.length}.`;
+  redirect(`/learn/admin?success=${encodeURIComponent(summary)}`);
 }
