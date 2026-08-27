@@ -1,5 +1,11 @@
 import { createClient } from "@/lib/supabase/server";
-import { createOrganization, addOrganizationLanguage, inviteFirstAdmin } from "@/app/admin/organizations/actions";
+import {
+  createOrganization,
+  addOrganizationLanguage,
+  inviteFirstAdmin,
+  updateOrganizationDomainSettings,
+  deleteOrganization,
+} from "@/app/admin/organizations/actions";
 import { OrganizationManager } from "@/app/admin/organizations/organization-manager";
 
 type OrgRow = {
@@ -8,6 +14,7 @@ type OrgRow = {
   slug: string;
   subdomain: string;
   domain: string | null;
+  domain_signin_enabled: boolean;
   organization_languages: { language: { name: string } | null }[];
   organization_admins: { user_id: string }[];
 };
@@ -23,7 +30,7 @@ export default async function AdminOrganizationsPage({
   const { data: organizations } = await supabase
     .from("organizations")
     .select(
-      "id, name, slug, subdomain, domain, organization_languages(language:languages(name)), organization_admins(user_id)",
+      "id, name, slug, subdomain, domain, domain_signin_enabled, organization_languages(language:languages(name)), organization_admins(user_id)",
     )
     .order("name");
 
@@ -36,6 +43,8 @@ export default async function AdminOrganizationsPage({
         createOrganization={createOrganization}
         addOrganizationLanguage={addOrganizationLanguage}
         inviteFirstAdmin={inviteFirstAdmin}
+        updateOrganizationDomainSettings={updateOrganizationDomainSettings}
+        deleteOrganization={deleteOrganization}
       />
     </div>
   );

@@ -1,5 +1,5 @@
 import { createClient } from "@/lib/supabase/server";
-import { whitelistMember, removeWhitelistedMember } from "@/app/learn/admin/actions";
+import { whitelistMember, removeWhitelistedMember, assignWhitelistLanguages } from "@/app/learn/admin/actions";
 import { Button } from "@/components/ui/button";
 import { Field, Input, Label } from "@/components/ui/input";
 
@@ -80,26 +80,52 @@ export default async function LearnAdminPage({
       <div className="flex flex-col gap-2">
         <h2 className="text-sm font-semibold text-ink">Members</h2>
         {(!whitelist || whitelist.length === 0) && <p className="text-sm text-muted">No one whitelisted yet.</p>}
-        {((whitelist ?? []) as WhitelistRow[]).map((entry) => (
-          <div key={entry.id} className="flex items-center justify-between gap-2 rounded-lg border border-border p-3">
-            <div>
-              <p className="text-body">
-                {entry.email} <span className="text-sm text-muted">· {entry.role}</span>
-              </p>
-              <p className="text-sm text-muted">
-                {entry.language_ids.map((id) => languageNameById.get(id)).filter(Boolean).join(", ") || "no languages"}
-                {" · "}
-                {entry.claimed_at ? "active" : "invited, not yet signed in"}
-              </p>
+        {((whitelist ?? []) as WhitelistRow[]).map((entry) => {
+          const isPending = Boolean(entry.claimed_at) && entry.language_ids.length === 0;
+          return (
+            <div key={entry.id} className="flex flex-col gap-3 rounded-lg border border-border p-3">
+              <div className="flex items-center justify-between gap-2">
+                <div>
+                  <p className="text-body">
+                    {entry.email} <span className="text-sm text-muted">· {entry.role}</span>
+                    {isPending && (
+                      <span className="ml-2 rounded-full bg-primary-light px-2 py-0.5 text-xs font-medium text-primary">
+                        Pending - recognized via school email
+                      </span>
+                    )}
+                  </p>
+                  {!isPending && (
+                    <p className="text-sm text-muted">
+                      {entry.language_ids.map((id) => languageNameById.get(id)).filter(Boolean).join(", ") || "no languages"}
+                      {" · "}
+                      {entry.claimed_at ? "active" : "invited, not yet signed in"}
+                    </p>
+                  )}
+                </div>
+                <form action={removeWhitelistedMember}>
+                  <input type="hidden" name="whitelistId" value={entry.id} />
+                  <Button type="submit" variant="ghost">
+                    Remove
+                  </Button>
+                </form>
+              </div>
+              {isPending && (
+                <form action={assignWhitelistLanguages} className="flex flex-wrap items-center gap-3 border-t border-border pt-3">
+                  <input type="hidden" name="whitelistId" value={entry.id} />
+                  {languages.map((language) => (
+                    <label key={language.id} className="flex items-center gap-2 text-sm text-body">
+                      <input type="checkbox" name="languageIds" value={language.id} />
+                      {language.name}
+                    </label>
+                  ))}
+                  <Button type="submit" variant="secondary">
+                    Assign
+                  </Button>
+                </form>
+              )}
             </div>
-            <form action={removeWhitelistedMember}>
-              <input type="hidden" name="whitelistId" value={entry.id} />
-              <Button type="submit" variant="ghost">
-                Remove
-              </Button>
-            </form>
-          </div>
-        ))}
+          );
+        })}
       </div>
     </div>
   );

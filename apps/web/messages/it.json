@@ -421,6 +421,7 @@
     "memberPostCounts": "{members} membri, {posts} incarichi",
     "exampleNetworkBadge": "Rete di esempio",
     "heading": "Immersione linguistica presso {name}",
-    "exampleNetworksIntro": "Ogni rete linguistica è specifica per la tua università, e qualsiasi post o risposta non pubblicata nella lingua di destinazione sarà filtrata e bloccata per promuovere la fluidità linguistica."
+    "exampleNetworksIntro": "Ogni rete linguistica è specifica per la tua università, e qualsiasi post o risposta non pubblicata nella lingua di destinazione sarà filtrata e bloccata per promuovere la fluidità linguistica.",
+    "pendingNotice": "Sei riconosciuto come studente{name}. Il tuo amministratore del programma ti assegnerà presto la lingua."
   }
 }

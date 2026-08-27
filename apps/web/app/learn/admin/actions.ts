@@ -5,6 +5,7 @@ import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { sendEmail } from "@/lib/email";
+import { enrollInLanguages } from "@/lib/organization-whitelist";
 
 const ROLES = ["student", "instructor", "admin"];
 
@@ -99,4 +100,44 @@ export async function removeWhitelistedMember(formData: FormData) {
 
   revalidatePath("/admin");
   redirect(`/admin?success=${encodeURIComponent("Member removed.")}`);
+}
+
+// Covers two cases with the same action: assigning a language for the
+// first time to someone recognized via domain-match (claimed, but
+// language_ids was empty - lib/organization-whitelist.ts), and an admin
+// changing an as-yet-unclaimed invite's languages before that person ever
+// signs in. Only the first case needs an immediate enrollInLanguages call -
+// for the second, claimWhitelistSeat will enroll them based on the updated
+// language_ids the next time they actually sign in.
+export async function assignWhitelistLanguages(formData: FormData) {
+  const whitelistId = Number(formData.get("whitelistId"));
+  const languageIds = formData.getAll("languageIds").map(Number).filter((id) => !Number.isNaN(id));
+
+  const supabase = await createClient();
+  const { data: entry } = await supabase
+    .from("organization_whitelist")
+    .select("organization_id, claimed_by")
+    .eq("id", whitelistId)
+    .single();
+
+  if (!entry) {
+    redirect(`/admin?error=${encodeURIComponent("Whitelist entry not found.")}`);
+  }
+
+  const { error } = await supabase
+    .from("organization_whitelist")
+    .update({ language_ids: languageIds })
+    .eq("id", whitelistId);
+
+  if (error) {
+    redirect(`/admin?error=${encodeURIComponent(error.message)}`);
+  }
+
+  if (entry.claimed_by) {
+    const admin = createAdminClient();
+    await enrollInLanguages(admin, entry.organization_id, entry.claimed_by, languageIds);
+  }
+
+  revalidatePath("/admin");
+  redirect(`/admin?success=${encodeURIComponent("Languages assigned.")}`);
 }

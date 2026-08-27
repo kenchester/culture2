@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import { AutocompleteField } from "@/components/autocomplete-field";
 import { Button } from "@/components/ui/button";
 import { Field, Input, Label } from "@/components/ui/input";
@@ -10,20 +11,65 @@ type OrgRow = {
   slug: string;
   subdomain: string;
   domain: string | null;
+  domain_signin_enabled: boolean;
   organization_languages: { language: { name: string } | null }[];
   organization_admins: { user_id: string }[];
 };
+
+// A two-step reveal (click "Delete" once to show a slug-confirmation
+// input, click again to actually submit) - this is the first genuinely
+// destructive admin action in the app, so it gets its own guard rail
+// rather than a single-click button like everything else here.
+function DeleteOrgForm({
+  org,
+  deleteOrganization,
+}: {
+  org: OrgRow;
+  deleteOrganization: (formData: FormData) => void;
+}) {
+  const [confirming, setConfirming] = useState(false);
+
+  if (!confirming) {
+    return (
+      <Button type="button" variant="ghost" onClick={() => setConfirming(true)}>
+        Delete organization
+      </Button>
+    );
+  }
+
+  return (
+    <form action={deleteOrganization} className="flex flex-wrap items-end gap-2">
+      <input type="hidden" name="organizationId" value={org.id} />
+      <Field>
+        <Label htmlFor={`confirm-slug-${org.id}`}>
+          Type &quot;{org.slug}&quot; to permanently delete this organization and all its networks/posts
+        </Label>
+        <Input id={`confirm-slug-${org.id}`} name="confirmSlug" placeholder={org.slug} required />
+      </Field>
+      <Button type="submit" variant="ghost">
+        Confirm delete
+      </Button>
+      <Button type="button" variant="ghost" onClick={() => setConfirming(false)}>
+        Cancel
+      </Button>
+    </form>
+  );
+}
 
 export function OrganizationManager({
   organizations,
   createOrganization,
   addOrganizationLanguage,
   inviteFirstAdmin,
+  updateOrganizationDomainSettings,
+  deleteOrganization,
 }: {
   organizations: OrgRow[];
   createOrganization: (formData: FormData) => void;
   addOrganizationLanguage: (formData: FormData) => void;
   inviteFirstAdmin: (formData: FormData) => void;
+  updateOrganizationDomainSettings: (formData: FormData) => void;
+  deleteOrganization: (formData: FormData) => void;
 }) {
   return (
     <div className="flex flex-col gap-8">
@@ -52,6 +98,10 @@ export function OrganizationManager({
               <Input id="org-location" name="locationName" placeholder="e.g. Acme University" required />
             </Field>
           </div>
+          <label className="flex items-center gap-2 text-sm text-body">
+            <input type="checkbox" name="domainSigninEnabled" defaultChecked />
+            Recognize students who sign in with a matching school email
+          </label>
           <AutocompleteField
             label="Parent country"
             kind="place"
@@ -105,6 +155,25 @@ export function OrganizationManager({
                   </Button>
                 </form>
               )}
+            </div>
+
+            <form action={updateOrganizationDomainSettings} className="flex flex-wrap items-end gap-3 border-t border-border pt-3">
+              <input type="hidden" name="organizationId" value={org.id} />
+              <Field>
+                <Label htmlFor={`domain-${org.id}`}>School email domain</Label>
+                <Input id={`domain-${org.id}`} name="domain" defaultValue={org.domain ?? ""} placeholder="e.g. acme.edu" />
+              </Field>
+              <label className="flex items-center gap-2 pb-2 text-sm text-body">
+                <input type="checkbox" name="domainSigninEnabled" defaultChecked={org.domain_signin_enabled} />
+                Recognize matching-domain sign-ins
+              </label>
+              <Button type="submit" variant="secondary">
+                Save
+              </Button>
+            </form>
+
+            <div className="border-t border-border pt-3">
+              <DeleteOrgForm org={org} deleteOrganization={deleteOrganization} />
             </div>
           </div>
         ))}

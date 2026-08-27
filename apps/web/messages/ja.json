@@ -421,6 +421,7 @@
     "memberPostCounts": "{members}メンバー、{posts}ポスト",
     "exampleNetworkBadge": "ネットワークの例",
     "heading": "言語イマージョン{name}",
-    "exampleNetworksIntro": "各言語ネットワークは大学ごとに特有であり、対象言語でない投稿や返信は言語流暢さを促進するためにフィルタリング・ブロックされます。"
+    "exampleNetworksIntro": "各言語ネットワークは大学ごとに特有であり、対象言語でない投稿や返信は言語流暢さを促進するためにフィルタリング・ブロックされます。",
+    "pendingNotice": "あなたは学生として{name}認められています。プログラム管理者がまもなく言語を割り当てます。"
   }
 }

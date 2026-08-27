@@ -38,6 +38,24 @@ export default async function LearnPage({
         .eq("organization_id", org.id)
     : { data: null };
 
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
+  // Recognized via matching email domain (lib/organization-whitelist.ts)
+  // but not yet assigned a language by the org admin - language_ids is an
+  // empty array, not a missing row.
+  const { data: pendingEntry } =
+    org && user
+      ? await supabase
+          .from("organization_whitelist")
+          .select("language_ids")
+          .eq("organization_id", org.id)
+          .eq("claimed_by", user.id)
+          .maybeSingle()
+      : { data: null };
+  const isPending = Boolean(pendingEntry && pendingEntry.language_ids.length === 0);
+
   return (
     <div className="mx-auto flex w-full max-w-3xl flex-1 flex-col gap-8 px-4 py-12">
       <div>
@@ -53,6 +71,12 @@ export default async function LearnPage({
       </div>
 
       <DomainCheckBanner domainMatch={domainMatch} domainNoMatch={domainNoMatch} domainError={domainError} />
+
+      {isPending && org && (
+        <p className="rounded-md bg-primary-light px-3 py-2 text-sm text-body">
+          {t("pendingNotice", { name: org.name })}
+        </p>
+      )}
 
       {!org ? (
         <p className="text-sm text-error">{t("misconfigured")}</p>

@@ -415,6 +415,7 @@
     "exampleNetworksHeading": "Example networks",
     "memberPostCounts": "{members} members, {posts} posts",
     "exampleNetworkBadge": "Example Network",
-    "exampleNetworksIntro": "Each language network is specific to your university, and any posts or replies not made in the target language will be filtered and blocked to promote language fluency."
+    "exampleNetworksIntro": "Each language network is specific to your university, and any posts or replies not made in the target language will be filtered and blocked to promote language fluency.",
+    "pendingNotice": "You're recognized as a {name} student. Your program admin will assign your language soon."
   }
 }

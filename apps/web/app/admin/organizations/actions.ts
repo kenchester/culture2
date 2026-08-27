@@ -3,6 +3,7 @@
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
+import { createAdminClient } from "@/lib/supabase/admin";
 import { sendEmail } from "@/lib/email";
 import { getSiteUrl } from "@/lib/site-url";
 
@@ -56,11 +57,14 @@ export async function createOrganization(formData: FormData) {
     redirect(`/admin/organizations?error=${encodeURIComponent(placeError?.message ?? "Could not create location.")}`);
   }
 
+  const domainSigninEnabled = formData.get("domainSigninEnabled") === "on";
+
   const { error: orgError } = await supabase.from("organizations").insert({
     name,
     slug,
     subdomain,
     domain,
+    domain_signin_enabled: domainSigninEnabled,
     location_place_id: place.id,
   });
 
@@ -196,4 +200,97 @@ export async function inviteFirstAdmin(formData: FormData) {
 
   revalidatePath("/admin/organizations");
   redirect(`/admin/organizations?success=${encodeURIComponent(`Invite sent to ${email}.`)}`);
+}
+
+// Lets a global admin update a school's domain after creation, and
+// separately turn off domain-based auto-recognition (lib/organization-
+// whitelist.ts) - some small language schools don't issue students an
+// institutional email at all, but might still want a domain on file for
+// the marketing banner's domain-check.
+export async function updateOrganizationDomainSettings(formData: FormData) {
+  const organizationId = Number(formData.get("organizationId"));
+  const domain = (formData.get("domain") as string)?.trim().toLowerCase() || null;
+  const domainSigninEnabled = formData.get("domainSigninEnabled") === "on";
+
+  const supabase = await createClient();
+  const { error } = await supabase
+    .from("organizations")
+    .update({ domain, domain_signin_enabled: domainSigninEnabled })
+    .eq("id", organizationId);
+
+  if (error) {
+    redirect(`/admin/organizations?error=${encodeURIComponent(error.message)}`);
+  }
+
+  revalidatePath("/admin/organizations");
+  redirect(`/admin/organizations?success=${encodeURIComponent("Domain settings updated.")}`);
+}
+
+// The first genuinely destructive admin action in the app - the form
+// requires the org's slug to be typed to confirm, checked here too (not
+// just client-side), since a mistyped confirmation should never delete
+// anything by accident.
+//
+// Deliberately does NOT delete profiles/auth.users for former members - a
+// student's CultureMesh account may have activity unrelated to this
+// school, and full account deletion should stay a separate, explicit,
+// user-initiated action rather than a side effect of a contract ending.
+export async function deleteOrganization(formData: FormData) {
+  const organizationId = Number(formData.get("organizationId"));
+  const confirmSlug = (formData.get("confirmSlug") as string)?.trim();
+
+  const supabase = await createClient();
+  const { data: org } = await supabase
+    .from("organizations")
+    .select("slug, name, location_place_id")
+    .eq("id", organizationId)
+    .single();
+
+  if (!org) {
+    redirect(`/admin/organizations?error=${encodeURIComponent("Organization not found.")}`);
+  }
+
+  if (confirmSlug !== org.slug) {
+    redirect(
+      `/admin/organizations?error=${encodeURIComponent(`Type "${org.slug}" exactly to confirm deletion.`)}`,
+    );
+  }
+
+  const admin = createAdminClient();
+
+  // Read the network ids before anything is deleted - organization_languages
+  // (which links an org to its networks) is about to disappear.
+  const { data: orgLanguages } = await admin
+    .from("organization_languages")
+    .select("network_id")
+    .eq("organization_id", organizationId);
+  const networkIds = (orgLanguages ?? []).map((l) => l.network_id);
+
+  // Delete the org FIRST - organization_languages.network_id has no ON
+  // DELETE CASCADE (it's a plain FK to networks, not the other direction),
+  // so deleting a network while organization_languages still references it
+  // fails with a foreign key violation. Deleting organizations cascades
+  // away organization_languages/organization_admins/
+  // organization_admin_invites/organization_whitelist (existing FKs) and
+  // clears that reference, so the networks below are safe to delete next.
+  const { error: orgError } = await admin.from("organizations").delete().eq("id", organizationId);
+  if (orgError) {
+    redirect(`/admin/organizations?error=${encodeURIComponent(orgError.message)}`);
+  }
+
+  // Cascades to posts, post_replies, and network_members (existing FKs).
+  if (networkIds.length > 0) {
+    const { error: networksError } = await admin.from("networks").delete().in("id", networkIds);
+    if (networksError) {
+      redirect(`/admin/organizations?error=${encodeURIComponent(networksError.message)}`);
+    }
+  }
+
+  const { error: placeError } = await admin.from("places").delete().eq("id", org.location_place_id);
+  if (placeError) {
+    redirect(`/admin/organizations?error=${encodeURIComponent(placeError.message)}`);
+  }
+
+  revalidatePath("/admin/organizations");
+  redirect(`/admin/organizations?success=${encodeURIComponent(`"${org.name}" deleted.`)}`);
 }
