@@ -14,9 +14,9 @@ function serverNow() {
 export default async function ContactPage({
   searchParams,
 }: {
-  searchParams: Promise<{ error?: string; sent?: string }>;
+  searchParams: Promise<{ error?: string; sent?: string; subject?: string; message?: string }>;
 }) {
-  const { error, sent } = await searchParams;
+  const { error, sent, subject, message } = await searchParams;
   const t = await getTranslations("contact");
 
   return (
@@ -63,20 +63,21 @@ export default async function ContactPage({
         </Field>
         <Field>
           <Label htmlFor="subject">{t("subjectLabel")}</Label>
-          <select id="subject" name="subject" required defaultValue="" className={fieldClass}>
+          <select id="subject" name="subject" required defaultValue={subject ?? ""} className={fieldClass}>
             <option value="" disabled>
               {t("subjectPlaceholder")}
             </option>
             <option value="General question">{t("subjects.general")}</option>
             <option value="Report a problem">{t("subjects.problem")}</option>
             <option value="Embassy or partner inquiry">{t("subjects.embassy")}</option>
+            <option value="CultureMesh Learn Interest">{t("subjects.learn")}</option>
             <option value="Privacy or data request">{t("subjects.privacy")}</option>
             <option value="Other">{t("subjects.other")}</option>
           </select>
         </Field>
         <Field>
           <Label htmlFor="message">{t("messageLabel")}</Label>
-          <Textarea id="message" name="message" required rows={6} />
+          <Textarea id="message" name="message" required rows={6} defaultValue={message ?? ""} />
         </Field>
         <Button type="submit" className="self-start">
           {t("submit")}

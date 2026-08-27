@@ -265,7 +265,8 @@
       "problem": "Signaler un problème",
       "embassy": "Enquête sur l’ambassade ou le partenaire",
       "privacy": "Confidentialité ou demande de données",
-      "other": "Autres"
+      "other": "Autres",
+      "learn": "CultureMesh Apprendre l’intérêt"
     },
     "messageLabel": "Message",
     "submit": "Envoyer le message"
@@ -422,6 +423,7 @@
     "exampleNetworkBadge": "Réseau exemple",
     "heading": "Immersion linguistique à {name}",
     "exampleNetworksIntro": "Chaque réseau linguistique est spécifique à votre université, et toute publication ou réponse non faite dans la langue cible sera filtrée et bloquée pour favoriser la maîtrise de la langue.",
-    "pendingNotice": "Tu es reconnu comme un {name} étudiant. Votre administrateur de programme vous assignera bientôt votre langue."
+    "pendingNotice": "Tu es reconnu comme un {name} étudiant. Votre administrateur de programme vous assignera bientôt votre langue.",
+    "bannerRequestButton": "Demandez CultureMesh Learn dans votre établissement"
   }
 }

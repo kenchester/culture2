@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { getTranslations } from "next-intl/server";
 import { checkSchoolDomain } from "@/app/learn/actions";
 import { Input } from "@/components/ui/input";
@@ -40,9 +41,15 @@ export async function DomainCheckBanner({
         </p>
       )}
       {domainNoMatch && (
-        <p className="rounded-md bg-primary-light px-3 py-2 text-sm text-body">
-          {t("bannerNoMatch", { domain: domainNoMatch })}
-        </p>
+        <div className="flex flex-col gap-2 rounded-md bg-primary-light px-3 py-2 text-sm text-body">
+          <p>{t("bannerNoMatch", { domain: domainNoMatch })}</p>
+          <Link
+            href={`/contact?subject=${encodeURIComponent("CultureMesh Learn Interest")}&message=${encodeURIComponent(`School: ${domainNoMatch}`)}`}
+            className="self-start font-medium text-primary hover:underline"
+          >
+            {t("bannerRequestButton")}
+          </Link>
+        </div>
       )}
       {domainError && (
         <p className="rounded-md bg-error-bg px-3 py-2 text-sm text-error">{domainError}</p>

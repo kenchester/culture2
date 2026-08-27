@@ -265,7 +265,8 @@
       "problem": "举报问题",
       "embassy": "大使馆或合作伙伴调查",
       "privacy": "隐私或数据请求",
-      "other": "其他"
+      "other": "其他",
+      "learn": "CultureMesh 学习兴趣"
     },
     "messageLabel": "信息",
     "submit": "发送消息"
@@ -422,6 +423,7 @@
     "exampleNetworkBadge": "示例网络",
     "heading": "语言沉浸{name}",
     "exampleNetworksIntro": "每个语言网络对你所在大学都有特定要求，任何非目标语言的帖子或回复都会被过滤和屏蔽，以促进语言流利度。",
-    "pendingNotice": "你被认定为{name}学生。你的项目管理员很快会分配你的语言。"
+    "pendingNotice": "你被认定为{name}学生。你的项目管理员很快会分配你的语言。",
+    "bannerRequestButton": "在你的学校申请CultureMesh Learn"
   }
 }
