@@ -86,7 +86,7 @@ export default async function LearnPage({
           <div className="rounded-lg border border-border bg-surface p-4 sm:p-6">
             <LearnSearchForm organizationId={org.id} />
           </div>
-          <h2 className="font-display text-xl text-ink">{t("exampleNetworksHeading")}</h2>
+          <h2 className="font-display text-xl text-ink">{t("exampleNetworksHeading", { name: org.name })}</h2>
           <p className="text-sm text-muted">{t("exampleNetworksIntro")}</p>
           <div className="grid gap-3 sm:grid-cols-2">
             {((orgLanguages ?? []) as unknown as OrgLanguageRow[]).map((row) =>

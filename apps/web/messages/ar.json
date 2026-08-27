@@ -422,12 +422,12 @@
     "findYourLanguageHeading": "ابحث عن لغتك",
     "languageLabel": "اللغة",
     "submit": "البحث",
-    "exampleNetworksHeading": "أمثلة على الشبكات",
     "memberPostCounts": "{members} الأعضاء، {posts} المشاركات",
     "exampleNetworkBadge": "مثال على شبكة",
     "heading": "الانغماس اللغوي في {name}",
     "exampleNetworksIntro": "كل شبكة لغوية خاصة بجامعتك، وأي منشورات أو ردود لم تكتب باللغة المستهدفة سيتم تصفيتها وحجبها لتعزيز الطلاقة في اللغة.",
     "pendingNotice": "أنت معترف بك كطالب.{name} مدير البرنامج سيكلفك لغتك قريبا.",
-    "bannerRequestButton": "اطلب CultureMesh Learn في مدرستك"
+    "bannerRequestButton": "اطلب CultureMesh Learn في مدرستك",
+    "exampleNetworksHeading": "أمثلة على الشبكات في {name}"
   }
 }

@@ -422,12 +422,12 @@
     "findYourLanguageHeading": "Найди свой язык",
     "languageLabel": "Язык",
     "submit": "Поиск",
-    "exampleNetworksHeading": "Примеры сетей",
     "memberPostCounts": "{members} Члены, {posts} должности",
     "exampleNetworkBadge": "Пример сети",
     "heading": "Языковое погружение в {name}",
     "exampleNetworksIntro": "Каждая языковая сеть специфична для вашего университета, и любые посты или ответы, не опубликованные на целевом языке, будут фильтрованы и блокированы для повышения беглости языка.",
     "pendingNotice": "Тебя признают {name} студентом. Администратор вашей программы скоро назначит вам язык.",
-    "bannerRequestButton": "Запросите CultureMesh Учитесь в своей школе"
+    "bannerRequestButton": "Запросите CultureMesh Учитесь в своей школе",
+    "exampleNetworksHeading": "Примеры сетей в {name}"
   }
 }

@@ -422,12 +422,12 @@
     "findYourLanguageHeading": "Encuentra tu idioma",
     "languageLabel": "Idioma",
     "submit": "Búsqueda",
-    "exampleNetworksHeading": "Redes de ejemplo",
     "memberPostCounts": "{members} miembros, {posts} cargos",
     "exampleNetworkBadge": "Red de ejemplo",
     "heading": "Inmersión lingüística en {name}",
     "exampleNetworksIntro": "Cada red lingüística es específica de tu universidad, y cualquier publicación o respuesta que no se haga en el idioma objetivo será filtrada y bloqueada para promover la fluidez del idioma.",
     "pendingNotice": "Te reconocen como {name} estudiante. Tu administrador de programa te asignará el idioma pronto.",
-    "bannerRequestButton": "Solicita CultureMesh Learn en tu colegio"
+    "bannerRequestButton": "Solicita CultureMesh Learn en tu colegio",
+    "exampleNetworksHeading": "Redes de ejemplo en {name}"
   }
 }

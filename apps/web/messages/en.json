@@ -417,7 +417,7 @@
     "findYourLanguageHeading": "Find your language",
     "languageLabel": "Language",
     "submit": "Search",
-    "exampleNetworksHeading": "Example networks",
+    "exampleNetworksHeading": "Example networks at {name}",
     "memberPostCounts": "{members} members, {posts} posts",
     "exampleNetworkBadge": "Example Network",
     "exampleNetworksIntro": "Each language network is specific to your university, and any posts or replies not made in the target language will be filtered and blocked to promote language fluency.",
