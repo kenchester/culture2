@@ -184,7 +184,11 @@
       "other": "{count} Ответы"
     },
     "originIn": "{origin} в {location}",
-    "memberPostCounts": "{members} Члены, {posts} должности"
+    "memberPostCounts": "{members} Члены, {posts} должности",
+    "weeklyPrompt": "Задание на эту неделю",
+    "weeklyPromptEditLabel": "Задайте задание на эту неделю",
+    "weeklyPromptPlaceholder": "Например, опишите ваше любимое блюдо из дома.",
+    "weeklyPromptSave": "Запрос сохранить"
   },
   "editableEntry": {
     "save": "Сохранить",

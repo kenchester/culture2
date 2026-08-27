@@ -121,3 +121,57 @@ export async function claimWhitelistSeat() {
     }
   }
 }
+
+export type LearnAccess = {
+  org: { id: number; name: string } | null;
+  role: "admin" | "instructor" | null;
+  languageIds: number[];
+};
+
+// Shared by app/learn/admin/layout.tsx (the access gate) and page.tsx
+// (content branching - org admins see everything, instructors see only
+// their own language_ids). Two cheap, indexed lookups; re-run per request
+// rather than threaded through as a prop, since Next.js doesn't share
+// computed data between a layout and its page without a client-side
+// context provider, which isn't worth the complexity here.
+export async function getLearnAccess(): Promise<LearnAccess> {
+  const supabase = await createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
+  const { data: org } = await supabase
+    .from("organizations")
+    .select("id, name")
+    .eq("subdomain", "learn")
+    .maybeSingle();
+
+  if (!user || !org) {
+    return { org: org ?? null, role: null, languageIds: [] };
+  }
+
+  const { data: adminMembership } = await supabase
+    .from("organization_admins")
+    .select("user_id")
+    .eq("organization_id", org.id)
+    .eq("user_id", user.id)
+    .maybeSingle();
+
+  if (adminMembership) {
+    return { org, role: "admin", languageIds: [] };
+  }
+
+  const { data: whitelistEntry } = await supabase
+    .from("organization_whitelist")
+    .select("language_ids")
+    .eq("organization_id", org.id)
+    .eq("claimed_by", user.id)
+    .eq("role", "instructor")
+    .maybeSingle();
+
+  if (whitelistEntry) {
+    return { org, role: "instructor", languageIds: whitelistEntry.language_ids };
+  }
+
+  return { org, role: null, languageIds: [] };
+}

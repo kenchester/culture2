@@ -184,7 +184,11 @@
       "other": "{count}回复"
     },
     "originIn": "{origin}在{location}",
-    "memberPostCounts": "{members}成员、{posts}职位"
+    "memberPostCounts": "{members}成员、{posts}职位",
+    "weeklyPrompt": "本周主题",
+    "weeklyPromptEditLabel": "设定本周的提示",
+    "weeklyPromptPlaceholder": "例如：描述你最喜欢的家乡菜肴。",
+    "weeklyPromptSave": "保存提示"
   },
   "editableEntry": {
     "save": "保存",

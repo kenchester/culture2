@@ -1,12 +1,15 @@
 import type { ReactNode } from "react";
 import Link from "next/link";
 import { createClient } from "@/lib/supabase/server";
+import { getLearnAccess } from "@/lib/organization-whitelist";
 
-// Mirrors app/admin/layout.tsx's is_admin-gate pattern exactly, just
-// checking organization_admins (tenant-scoped) instead of the global
-// profiles.is_admin flag. Scoped to the "learn" org specifically, same as
-// the landing page - this whole subtree only exists for Acme University
-// today.
+// Mirrors app/admin/layout.tsx's is_admin-gate pattern, extended beyond
+// org admins: an instructor (a claimed organization_whitelist role, see
+// getLearnAccess) can also reach this panel now, to set their network's
+// weekly prompt and see who's participating - just not the
+// whitelist-management section, which page.tsx keeps admin-only. Scoped
+// to the "learn" org specifically, same as the landing page - this whole
+// subtree only exists for Acme University today.
 export default async function LearnAdminLayout({ children }: { children: ReactNode }) {
   const supabase = await createClient();
 
@@ -20,35 +23,26 @@ export default async function LearnAdminLayout({ children }: { children: ReactNo
         <Link href="/sign-in?returnTo=%2Fadmin" className="font-medium text-primary hover:underline">
           Sign in
         </Link>{" "}
-        as a program admin to continue.
+        as a program admin or instructor to continue.
       </div>
     );
   }
 
-  const { data: org } = await supabase
-    .from("organizations")
-    .select("id, name")
-    .eq("subdomain", "learn")
-    .single();
+  const { org, role } = await getLearnAccess();
 
   if (!org) {
     return <div className="mx-auto max-w-lg px-4 py-12 text-body">Not configured.</div>;
   }
 
-  const { data: membership } = await supabase
-    .from("organization_admins")
-    .select("user_id")
-    .eq("organization_id", org.id)
-    .eq("user_id", user.id)
-    .maybeSingle();
-
-  if (!membership) {
+  if (!role) {
     return <div className="mx-auto max-w-lg px-4 py-12 text-body">Not authorized.</div>;
   }
 
   return (
     <div className="mx-auto flex w-full max-w-2xl flex-1 flex-col gap-6 px-4 py-12">
-      <h1 className="font-display text-3xl text-ink">{org.name} admin</h1>
+      <h1 className="font-display text-3xl text-ink">
+        {org.name} {role === "admin" ? "admin" : "instructor"}
+      </h1>
       {children}
     </div>
   );

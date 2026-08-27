@@ -6,7 +6,7 @@ import { createClient } from "@/lib/supabase/server";
 import { type Author, getAvatarUrl, getDisplayName } from "@/lib/profiles";
 import { getGeoName } from "@/lib/geo-translation";
 import type { Locale } from "@/lib/locale";
-import { createPost, joinNetwork, leaveNetwork } from "@/app/networks/actions";
+import { createPost, joinNetwork, leaveNetwork, setNetworkPrompt } from "@/app/networks/actions";
 import { EditableEntry } from "@/app/networks/editable-entry";
 import { InviteFriendsBox } from "@/app/networks/[id]/invite-friends-box";
 import { Button } from "@/components/ui/button";
@@ -38,7 +38,7 @@ export default async function NetworkPage({
   const { data: network } = await supabase
     .from("networks")
     .select(
-      "id, title, member_count, post_count, language_id, origin_place_id, religion_id, location_place_id",
+      "id, title, member_count, post_count, language_id, origin_place_id, religion_id, location_place_id, instructor_prompt",
     )
     .eq("id", id)
     .single();
@@ -55,6 +55,7 @@ export default async function NetworkPage({
     { data: membership },
     { data: posts },
     { data: myLikes },
+    { data: canManagePrompt },
   ] = await Promise.all([
     network.language_id
       ? supabase.from("languages").select("id, name, iso_code").eq("id", network.language_id).single()
@@ -92,6 +93,9 @@ export default async function NetworkPage({
     user
       ? supabase.from("likes").select("post_id").eq("user_id", user.id).not("post_id", "is", null)
       : Promise.resolve({ data: null }),
+    user
+      ? supabase.rpc("can_manage_network_prompt", { p_network_id: network.id })
+      : Promise.resolve({ data: false }),
   ]);
 
   const [translatedLanguageName, translatedOriginName, translatedLocationName] = await Promise.all([
@@ -134,6 +138,38 @@ export default async function NetworkPage({
         <p className="text-sm text-muted">
           {t("memberPostCounts", { members: network.member_count, posts: network.post_count })}
         </p>
+
+        {(network.instructor_prompt || canManagePrompt) && (
+          <div className="flex flex-col gap-2 rounded-md border border-primary bg-primary-light p-3">
+            {network.instructor_prompt && (
+              <div>
+                <p className="text-xs font-semibold uppercase tracking-wide text-primary">
+                  {t("weeklyPrompt")}
+                </p>
+                <p className="text-sm text-body">{network.instructor_prompt}</p>
+              </div>
+            )}
+            {canManagePrompt && (
+              <form action={setNetworkPrompt} className="flex flex-col gap-2">
+                <input type="hidden" name="networkId" value={network.id} />
+                {isEmbedded && <input type="hidden" name="embed" value="1" />}
+                <Field>
+                  <Label htmlFor="prompt">{t("weeklyPromptEditLabel")}</Label>
+                  <Textarea
+                    id="prompt"
+                    name="prompt"
+                    defaultValue={network.instructor_prompt ?? ""}
+                    placeholder={t("weeklyPromptPlaceholder")}
+                    rows={2}
+                  />
+                </Field>
+                <Button type="submit" variant="secondary" className="self-start">
+                  {t("weeklyPromptSave")}
+                </Button>
+              </form>
+            )}
+          </div>
+        )}
 
         <Link
           href={`/networks/${network.id}/events${isEmbedded ? "?embed=1" : ""}`}

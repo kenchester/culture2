@@ -21,7 +21,7 @@ export async function whitelistMember(formData: FormData) {
   const languageIds = formData.getAll("languageIds").map(Number).filter((id) => !Number.isNaN(id));
 
   if (!email || !ROLES.includes(role)) {
-    redirect(`/admin?error=${encodeURIComponent("A valid email and role are required.")}`);
+    redirect(`/learn/admin?error=${encodeURIComponent("A valid email and role are required.")}`);
   }
 
   const supabase = await createClient();
@@ -40,7 +40,7 @@ export async function whitelistMember(formData: FormData) {
   });
 
   if (error) {
-    redirect(`/admin?error=${encodeURIComponent(error.message)}`);
+    redirect(`/learn/admin?error=${encodeURIComponent(error.message)}`);
   }
 
   try {
@@ -58,8 +58,8 @@ export async function whitelistMember(formData: FormData) {
     // access, so a failed notification shouldn't look like a failed action.
   }
 
-  revalidatePath("/admin");
-  redirect(`/admin?success=${encodeURIComponent(`${email} whitelisted.`)}`);
+  revalidatePath("/learn/admin");
+  redirect(`/learn/admin?success=${encodeURIComponent(`${email} whitelisted.`)}`);
 }
 
 // A per-person, explicit action - there's no automatic end-of-semester
@@ -78,7 +78,7 @@ export async function removeWhitelistedMember(formData: FormData) {
     .single();
 
   if (!entry) {
-    redirect(`/admin?error=${encodeURIComponent("Whitelist entry not found.")}`);
+    redirect(`/learn/admin?error=${encodeURIComponent("Whitelist entry not found.")}`);
   }
 
   if (entry.claimed_by) {
@@ -95,11 +95,11 @@ export async function removeWhitelistedMember(formData: FormData) {
 
   const { error } = await supabase.from("organization_whitelist").delete().eq("id", whitelistId);
   if (error) {
-    redirect(`/admin?error=${encodeURIComponent(error.message)}`);
+    redirect(`/learn/admin?error=${encodeURIComponent(error.message)}`);
   }
 
-  revalidatePath("/admin");
-  redirect(`/admin?success=${encodeURIComponent("Member removed.")}`);
+  revalidatePath("/learn/admin");
+  redirect(`/learn/admin?success=${encodeURIComponent("Member removed.")}`);
 }
 
 // Covers two cases with the same action: assigning a language for the
@@ -121,7 +121,7 @@ export async function assignWhitelistLanguages(formData: FormData) {
     .single();
 
   if (!entry) {
-    redirect(`/admin?error=${encodeURIComponent("Whitelist entry not found.")}`);
+    redirect(`/learn/admin?error=${encodeURIComponent("Whitelist entry not found.")}`);
   }
 
   const { error } = await supabase
@@ -130,7 +130,7 @@ export async function assignWhitelistLanguages(formData: FormData) {
     .eq("id", whitelistId);
 
   if (error) {
-    redirect(`/admin?error=${encodeURIComponent(error.message)}`);
+    redirect(`/learn/admin?error=${encodeURIComponent(error.message)}`);
   }
 
   if (entry.claimed_by) {
@@ -138,6 +138,6 @@ export async function assignWhitelistLanguages(formData: FormData) {
     await enrollInLanguages(admin, entry.organization_id, entry.claimed_by, languageIds);
   }
 
-  revalidatePath("/admin");
-  redirect(`/admin?success=${encodeURIComponent("Languages assigned.")}`);
+  revalidatePath("/learn/admin");
+  redirect(`/learn/admin?success=${encodeURIComponent("Languages assigned.")}`);
 }

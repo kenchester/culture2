@@ -397,3 +397,41 @@ export async function translateEntry(
 
   return { ok: true, text: translated };
 }
+
+// No permission check needed here beyond what the database already does -
+// the RLS policy + column-scoped grant on networks (00000000000055) are
+// the actual authorization boundary: an update to instructor_prompt just
+// silently affects 0 rows if the signed-in user isn't an instructor/admin
+// for this network's organization, which surfaces as the generic error
+// below rather than needing a separate check duplicated here.
+export async function setNetworkPrompt(formData: FormData) {
+  const networkId = formData.get("networkId") as string;
+  const prompt = ((formData.get("prompt") as string) ?? "").trim();
+  const embedSuffix = formData.get("embed") === "1" ? "&embed=1" : "";
+
+  const supabase = await createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
+  if (!user) {
+    redirect(
+      `/sign-in?error=${encodeURIComponent("Sign in to set the network prompt.")}&returnTo=${encodeURIComponent(`/networks/${networkId}`)}${embedSuffix}`,
+    );
+  }
+
+  const { error } = await supabase
+    .from("networks")
+    .update({
+      instructor_prompt: prompt || null,
+      instructor_prompt_set_by: user.id,
+      instructor_prompt_set_at: new Date().toISOString(),
+    })
+    .eq("id", Number(networkId));
+
+  if (error) {
+    redirect(`/networks/${networkId}?error=${encodeURIComponent(error.message)}${embedSuffix}`);
+  }
+
+  revalidatePath(`/networks/${networkId}`);
+}

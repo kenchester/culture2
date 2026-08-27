@@ -242,7 +242,11 @@
       "zero": "Reply",
       "one": "1 Reply",
       "other": "{count} Replies"
-    }
+    },
+    "weeklyPrompt": "This week's prompt",
+    "weeklyPromptEditLabel": "Set this week's prompt",
+    "weeklyPromptPlaceholder": "e.g. Describe your favorite meal from home.",
+    "weeklyPromptSave": "Save prompt"
   },
   "editableEntry": {
     "save": "Save",

@@ -184,7 +184,11 @@
       "other": "{count} Risposte"
     },
     "originIn": "{origin} in {location}",
-    "memberPostCounts": "{members} membri, {posts} incarichi"
+    "memberPostCounts": "{members} membri, {posts} incarichi",
+    "weeklyPrompt": "Il prompt di questa settimana",
+    "weeklyPromptEditLabel": "Imposta il prompt di questa settimana",
+    "weeklyPromptPlaceholder": "Ad esempio, descrivi il tuo pasto preferito da casa.",
+    "weeklyPromptSave": "Prompt di salvataggio"
   },
   "editableEntry": {
     "save": "Salva",

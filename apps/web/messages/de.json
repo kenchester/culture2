@@ -184,7 +184,11 @@
       "other": "{count} Antworten"
     },
     "originIn": "{origin} in {location}",
-    "memberPostCounts": "{members} Mitglieder, {posts} Beiträge"
+    "memberPostCounts": "{members} Mitglieder, {posts} Beiträge",
+    "weeklyPrompt": "Das Prompt dieser Woche",
+    "weeklyPromptEditLabel": "Setze das Prompt dieser Woche",
+    "weeklyPromptPlaceholder": "Zum Beispiel: Beschreiben Sie Ihr Lieblingsessen von zu Hause.",
+    "weeklyPromptSave": "Speicher-Eingabeaufforderung"
   },
   "editableEntry": {
     "save": "Speichern",

@@ -184,7 +184,11 @@
       "other": "{count} الردود"
     },
     "originIn": "{origin} في {location}",
-    "memberPostCounts": "{members} الأعضاء، {posts} المشاركات"
+    "memberPostCounts": "{members} الأعضاء، {posts} المشاركات",
+    "weeklyPrompt": "موضوع هذا الأسبوع",
+    "weeklyPromptEditLabel": "حدد موضوع هذا الأسبوع",
+    "weeklyPromptPlaceholder": "مثلا: صف لك وجبتك المفضلة من المنزل.",
+    "weeklyPromptSave": "طلب الحفظ"
   },
   "editableEntry": {
     "save": "حفظ",
