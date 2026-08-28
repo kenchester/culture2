@@ -4,7 +4,7 @@ import {
   removeWhitelistedMember,
   assignWhitelistLanguages,
   bulkWhitelistRoster,
-} from "@/app/learn/admin/actions";
+} from "@/app/learn/[slug]/admin/actions";
 import { setNetworkPrompt } from "@/app/networks/actions";
 import { getLearnAccess } from "@/lib/organization-whitelist";
 import { getDisplayName } from "@/lib/profiles";
@@ -77,13 +77,16 @@ async function getParticipation(
 }
 
 export default async function LearnAdminPage({
+  params,
   searchParams,
 }: {
+  params: Promise<{ slug: string }>;
   searchParams: Promise<{ error?: string; success?: string }>;
 }) {
+  const { slug } = await params;
   const { error, success } = await searchParams;
   const supabase = await createClient();
-  const { org, role, languageIds } = await getLearnAccess();
+  const { org, role, languageIds } = await getLearnAccess(slug);
 
   const [{ data: whitelist }, { data: orgLanguages }] = await Promise.all([
     role === "admin"

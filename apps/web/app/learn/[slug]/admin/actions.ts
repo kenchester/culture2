@@ -18,8 +18,8 @@ const MAX_ROSTER_SIZE = 500;
 const EMAIL_EXTRACT_PATTERN = /[\w.+-]+@[\w-]+\.[\w.-]+/g;
 
 // Whitelisting is the DB write that actually matters - it's what
-// app/learn/whitelist.ts's claim flow looks for the moment this person
-// next signs in. The notification email is a courtesy on top, so a
+// lib/organization-whitelist.ts's claim flow looks for the moment this
+// person next signs in. The notification email is a courtesy on top, so a
 // delivery failure (bad address, Resend hiccup) doesn't undo the
 // whitelisting itself.
 export async function whitelistMember(formData: FormData) {
@@ -28,16 +28,17 @@ export async function whitelistMember(formData: FormData) {
   const role = formData.get("role") as string;
   const languageIds = formData.getAll("languageIds").map(Number).filter((id) => !Number.isNaN(id));
 
+  const supabase = await createClient();
+  const { data: org } = await supabase.from("organizations").select("name, slug").eq("id", organizationId).single();
+  const adminPath = org ? `/learn/${org.slug}/admin` : "/learn";
+
   if (!email || !ROLES.includes(role)) {
-    redirect(`/learn/admin?error=${encodeURIComponent("A valid email and role are required.")}`);
+    redirect(`${adminPath}?error=${encodeURIComponent("A valid email and role are required.")}`);
   }
 
-  const supabase = await createClient();
   const {
     data: { user },
   } = await supabase.auth.getUser();
-
-  const { data: org } = await supabase.from("organizations").select("name").eq("id", organizationId).single();
 
   const { error } = await supabase.from("organization_whitelist").insert({
     organization_id: organizationId,
@@ -48,7 +49,7 @@ export async function whitelistMember(formData: FormData) {
   });
 
   if (error) {
-    redirect(`/learn/admin?error=${encodeURIComponent(error.message)}`);
+    redirect(`${adminPath}?error=${encodeURIComponent(error.message)}`);
   }
 
   try {
@@ -66,8 +67,8 @@ export async function whitelistMember(formData: FormData) {
     // access, so a failed notification shouldn't look like a failed action.
   }
 
-  revalidatePath("/learn/admin");
-  redirect(`/learn/admin?success=${encodeURIComponent(`${email} whitelisted.`)}`);
+  revalidatePath(adminPath);
+  redirect(`${adminPath}?success=${encodeURIComponent(`${email} whitelisted.`)}`);
 }
 
 // A per-person, explicit action - there's no automatic end-of-semester
@@ -81,12 +82,15 @@ export async function removeWhitelistedMember(formData: FormData) {
   const supabase = await createClient();
   const { data: entry } = await supabase
     .from("organization_whitelist")
-    .select("organization_id, claimed_by")
+    .select("organization_id, claimed_by, organization:organizations(slug)")
     .eq("id", whitelistId)
     .single();
 
+  const orgSlug = (entry?.organization as unknown as { slug: string } | null)?.slug;
+  const adminPath = orgSlug ? `/learn/${orgSlug}/admin` : "/learn";
+
   if (!entry) {
-    redirect(`/learn/admin?error=${encodeURIComponent("Whitelist entry not found.")}`);
+    redirect(`${adminPath}?error=${encodeURIComponent("Whitelist entry not found.")}`);
   }
 
   if (entry.claimed_by) {
@@ -103,11 +107,11 @@ export async function removeWhitelistedMember(formData: FormData) {
 
   const { error } = await supabase.from("organization_whitelist").delete().eq("id", whitelistId);
   if (error) {
-    redirect(`/learn/admin?error=${encodeURIComponent(error.message)}`);
+    redirect(`${adminPath}?error=${encodeURIComponent(error.message)}`);
   }
 
-  revalidatePath("/learn/admin");
-  redirect(`/learn/admin?success=${encodeURIComponent("Member removed.")}`);
+  revalidatePath(adminPath);
+  redirect(`${adminPath}?success=${encodeURIComponent("Member removed.")}`);
 }
 
 // Covers two cases with the same action: assigning a language for the
@@ -124,12 +128,15 @@ export async function assignWhitelistLanguages(formData: FormData) {
   const supabase = await createClient();
   const { data: entry } = await supabase
     .from("organization_whitelist")
-    .select("organization_id, claimed_by")
+    .select("organization_id, claimed_by, organization:organizations(slug)")
     .eq("id", whitelistId)
     .single();
 
+  const orgSlug = (entry?.organization as unknown as { slug: string } | null)?.slug;
+  const adminPath = orgSlug ? `/learn/${orgSlug}/admin` : "/learn";
+
   if (!entry) {
-    redirect(`/learn/admin?error=${encodeURIComponent("Whitelist entry not found.")}`);
+    redirect(`${adminPath}?error=${encodeURIComponent("Whitelist entry not found.")}`);
   }
 
   const { error } = await supabase
@@ -138,7 +145,7 @@ export async function assignWhitelistLanguages(formData: FormData) {
     .eq("id", whitelistId);
 
   if (error) {
-    redirect(`/learn/admin?error=${encodeURIComponent(error.message)}`);
+    redirect(`${adminPath}?error=${encodeURIComponent(error.message)}`);
   }
 
   if (entry.claimed_by) {
@@ -146,8 +153,8 @@ export async function assignWhitelistLanguages(formData: FormData) {
     await enrollInLanguages(admin, entry.organization_id, entry.claimed_by, languageIds);
   }
 
-  revalidatePath("/learn/admin");
-  redirect(`/learn/admin?success=${encodeURIComponent("Languages assigned.")}`);
+  revalidatePath(adminPath);
+  redirect(`${adminPath}?success=${encodeURIComponent("Languages assigned.")}`);
 }
 
 // Bulk version of whitelistMember for a whole class roster at once. Role
@@ -163,8 +170,12 @@ export async function bulkWhitelistRoster(formData: FormData) {
   const rosterFile = formData.get("roster") as File | null;
   const emailsText = (formData.get("emailsText") as string) ?? "";
 
+  const supabase = await createClient();
+  const { data: org } = await supabase.from("organizations").select("name, slug").eq("id", organizationId).single();
+  const adminPath = org ? `/learn/${org.slug}/admin` : "/learn";
+
   if (!ROLES.includes(role)) {
-    redirect(`/learn/admin?error=${encodeURIComponent("A valid role is required.")}`);
+    redirect(`${adminPath}?error=${encodeURIComponent("A valid role is required.")}`);
   }
 
   const fileText = rosterFile && rosterFile.size > 0 ? await rosterFile.text() : "";
@@ -173,24 +184,23 @@ export async function bulkWhitelistRoster(formData: FormData) {
   const emails = Array.from(new Set(matches.map((e) => e.toLowerCase())));
 
   if (emails.length === 0) {
-    redirect(`/learn/admin?error=${encodeURIComponent("No email addresses found in the uploaded roster.")}`);
+    redirect(`${adminPath}?error=${encodeURIComponent("No email addresses found in the uploaded roster.")}`);
   }
 
   if (emails.length > MAX_ROSTER_SIZE) {
     redirect(
-      `/learn/admin?error=${encodeURIComponent(`A roster can have up to ${MAX_ROSTER_SIZE} people at a time.`)}`,
+      `${adminPath}?error=${encodeURIComponent(`A roster can have up to ${MAX_ROSTER_SIZE} people at a time.`)}`,
     );
   }
 
-  const supabase = await createClient();
   const {
     data: { user },
   } = await supabase.auth.getUser();
 
-  const [{ data: org }, { data: existing }] = await Promise.all([
-    supabase.from("organizations").select("name").eq("id", organizationId).single(),
-    supabase.from("organization_whitelist").select("email").eq("organization_id", organizationId),
-  ]);
+  const { data: existing } = await supabase
+    .from("organization_whitelist")
+    .select("email")
+    .eq("organization_id", organizationId);
 
   const existingEmails = new Set((existing ?? []).map((e) => e.email.toLowerCase()));
   const newEmails = emails.filter((e) => !existingEmails.has(e));
@@ -198,7 +208,7 @@ export async function bulkWhitelistRoster(formData: FormData) {
 
   if (newEmails.length === 0) {
     redirect(
-      `/learn/admin?success=${encodeURIComponent(`No new members added - all ${skippedCount} were already whitelisted.`)}`,
+      `${adminPath}?success=${encodeURIComponent(`No new members added - all ${skippedCount} were already whitelisted.`)}`,
     );
   }
 
@@ -213,7 +223,7 @@ export async function bulkWhitelistRoster(formData: FormData) {
   );
 
   if (error) {
-    redirect(`/learn/admin?error=${encodeURIComponent(error.message)}`);
+    redirect(`${adminPath}?error=${encodeURIComponent(error.message)}`);
   }
 
   try {
@@ -232,10 +242,10 @@ export async function bulkWhitelistRoster(formData: FormData) {
     // Best-effort, same as whitelistMember - the rows above already grant access.
   }
 
-  revalidatePath("/learn/admin");
+  revalidatePath(adminPath);
   const summary =
     skippedCount > 0
       ? `Added ${newEmails.length}, skipped ${skippedCount} already whitelisted.`
       : `Added ${newEmails.length}.`;
-  redirect(`/learn/admin?success=${encodeURIComponent(summary)}`);
+  redirect(`${adminPath}?success=${encodeURIComponent(summary)}`);
 }

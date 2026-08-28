@@ -9,10 +9,12 @@ import { Button } from "@/components/ui/button";
 // near the top of the landing page regardless of auth state; the domain
 // check itself works anonymously.
 export async function DomainCheckBanner({
+  slug,
   domainMatch,
   domainNoMatch,
   domainError,
 }: {
+  slug: string;
   domainMatch?: string;
   domainNoMatch?: string;
   domainError?: string;
@@ -26,6 +28,7 @@ export async function DomainCheckBanner({
         <p className="text-sm text-muted">{t("bannerSubheading")}</p>
       </div>
       <form action={checkSchoolDomain} className="flex flex-col gap-2 sm:flex-row">
+        <input type="hidden" name="slug" value={slug} />
         <Input
           type="text"
           name="domain"

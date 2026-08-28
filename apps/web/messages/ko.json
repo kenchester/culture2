@@ -64,7 +64,9 @@
       "usePassword": "비밀번호가 있어요",
       "useCode": "대신 코드를 이메일로 보내주세요",
       "prompt": "어떻게 로그인하시겠<b>{email}</b>습니까?"
-    }
+    },
+    "learnEmailHint": "학교 이메일(예: .edu 주소)로 로그인해 주시면 학교를 인식할 수 있습니다.",
+    "learnFallbackNotice": "학교가 아직 CultureMesh Learn에 가입하지 않았다면 예제 페이지의 콘텐츠를 참여시킬 수 없지만, 그동안 메인 <a>CultureMesh 네트워크</a>와 상호작용할 수 있습니다."
   },
   "home": {
     "heading": "디아스포라 네트워크를 찾아보세요",

@@ -14,15 +14,38 @@ const SUBDOMAIN_ROUTES: Record<string, string> = {
   "redeemed.": "/redeemed",
 };
 
-// learn.culturemesh.com (Acme University) is different from the two
-// above: it's a small page tree of its own (landing page, program-admin
-// panel, invite acceptance) layered on the same host-agnostic app
-// everything else uses, not a single fixed page. Only these specific
-// paths get rewritten under /learn - a learn. page linking to
-// /networks/123 or /sign-in must keep resolving to the normal shared
-// pages, not get swept into the /learn prefix too.
-const LEARN_HOST_PREFIX = "learn.";
-const LEARN_SUBDOMAIN_PATHS = ["/", "/admin", "/invite"];
+// learn.culturemesh.com is different from the two subdomains above: it's a
+// small multi-tenant page tree (each school lives at /learn/{slug} - see
+// app/learn/[slug]/) layered on the same host-agnostic app everything else
+// uses, not a single fixed page. Bare "/" and "/invite*" (token-scoped, not
+// tied to any one school) are special-cased; every other first path segment
+// is treated as a school's slug and rewritten under /learn, UNLESS it's one
+// of this app's real top-level routes - a learn. page linking to
+// /networks/123 or /sign-in must keep resolving to the normal shared pages,
+// not get swept into a school's slug rewrite. Also enforced at org-creation
+// time (app/admin/organizations/actions.ts) so a new school's slug can't
+// collide with one of these and end up unreachable.
+export const LEARN_HOST_PREFIX = "learn.";
+export const RESERVED_LEARN_SLUGS = [
+  "sign-in",
+  "about",
+  "contact",
+  "privacy",
+  "terms",
+  "admin",
+  "api",
+  "embed",
+  "embed-partners",
+  "faith",
+  "messages",
+  "networks",
+  "profile",
+  "redeemed",
+  "search",
+  "settings",
+  "suggest-network",
+  "learn",
+];
 
 // These subdomains stay out of search results until their markets are
 // properly tested - applied as a response header rather than relying on
@@ -41,14 +64,22 @@ function rewriteForHost(request: NextRequest): NextRequest["nextUrl"] | null {
   const { pathname } = request.nextUrl;
 
   if (host.startsWith(LEARN_HOST_PREFIX)) {
-    const matches = LEARN_SUBDOMAIN_PATHS.some(
-      (p) => pathname === p || (p !== "/" && pathname.startsWith(`${p}/`)),
-    );
-    if (!matches) {
+    if (pathname === "/") {
+      const url = request.nextUrl.clone();
+      url.pathname = "/learn";
+      return url;
+    }
+    if (pathname === "/invite" || pathname.startsWith("/invite/")) {
+      const url = request.nextUrl.clone();
+      url.pathname = `/learn${pathname}`;
+      return url;
+    }
+    const firstSegment = pathname.split("/")[1];
+    if (!firstSegment || RESERVED_LEARN_SLUGS.includes(firstSegment)) {
       return null;
     }
     const url = request.nextUrl.clone();
-    url.pathname = pathname === "/" ? "/learn" : `/learn${pathname}`;
+    url.pathname = `/learn${pathname}`;
     return url;
   }
 

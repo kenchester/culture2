@@ -7,10 +7,15 @@ import { getLearnAccess } from "@/lib/organization-whitelist";
 // org admins: an instructor (a claimed organization_whitelist role, see
 // getLearnAccess) can also reach this panel now, to set their network's
 // weekly prompt and see who's participating - just not the
-// whitelist-management section, which page.tsx keeps admin-only. Scoped
-// to the "learn" org specifically, same as the landing page - this whole
-// subtree only exists for Acme University today.
-export default async function LearnAdminLayout({ children }: { children: ReactNode }) {
+// whitelist-management section, which page.tsx keeps admin-only.
+export default async function LearnAdminLayout({
+  children,
+  params,
+}: {
+  children: ReactNode;
+  params: Promise<{ slug: string }>;
+}) {
+  const { slug } = await params;
   const supabase = await createClient();
 
   const {
@@ -20,7 +25,10 @@ export default async function LearnAdminLayout({ children }: { children: ReactNo
   if (!user) {
     return (
       <div className="mx-auto max-w-lg px-4 py-12 text-body">
-        <Link href="/sign-in?returnTo=%2Fadmin" className="font-medium text-primary hover:underline">
+        <Link
+          href={`/sign-in?returnTo=${encodeURIComponent(`/learn/${slug}/admin`)}`}
+          className="font-medium text-primary hover:underline"
+        >
           Sign in
         </Link>{" "}
         as a program admin or instructor to continue.
@@ -28,7 +36,7 @@ export default async function LearnAdminLayout({ children }: { children: ReactNo
     );
   }
 
-  const { org, role } = await getLearnAccess();
+  const { org, role } = await getLearnAccess(slug);
 
   if (!org) {
     return <div className="mx-auto max-w-lg px-4 py-12 text-body">Not configured.</div>;

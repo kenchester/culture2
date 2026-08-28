@@ -64,7 +64,9 @@
       "usePassword": "我有密码",
       "useCode": "给我发个验证码吧",
       "prompt": "您想如何登录？<b>{email}</b>"
-    }
+    },
+    "learnEmailHint": "请使用您的学校邮箱（例如.edu地址）登录，以便我们识别您的学校。",
+    "learnFallbackNotice": "如果你的学校还没有加入CultureMesh Learn，你将无法参与示例页面上的任何内容，但在此期间你仍然可以直接与主<a>CultureMesh网络</a>互动。"
   },
   "home": {
     "heading": "寻找你的侨民网络",

@@ -11,6 +11,7 @@ import {
   signInWithPassword,
   verifyOtp,
 } from "@/app/(auth)/actions";
+import { resolveLearnSlugForEmail } from "@/app/learn/actions";
 import { createClient } from "@/lib/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Field, Input, Label } from "@/components/ui/input";
@@ -64,7 +65,15 @@ function stripEmbedParam(path: string): string {
 // action> redirects) so it never leaves the page it's rendered on -
 // critical for embeds, where a real navigation would either break out of
 // the iframe or swap it to a page that doesn't match the embed's look.
-export function OtpForm({ returnTo }: { returnTo?: string }) {
+export function OtpForm({
+  returnTo,
+  isLearnHost,
+  mainSiteUrl,
+}: {
+  returnTo?: string;
+  isLearnHost?: boolean;
+  mainSiteUrl?: string;
+}) {
   const t = useTranslations("auth");
   const router = useRouter();
   const [step, setStep] = useState<"email" | "choose" | "password" | "code" | "bridge">(
@@ -105,7 +114,22 @@ export function OtpForm({ returnTo }: { returnTo?: string }) {
     const { data } = await supabase.auth.getSession();
     if (!data.session) return false;
     if (beforeNavigate) await beforeNavigate();
-    router.push(returnTo ?? "/");
+
+    // Someone signing in from the bare /learn entry point doesn't know yet
+    // which school they belong to - if their verified email's domain
+    // matches one, send them straight there instead of the generic
+    // returnTo. A sign-in reached from within a specific school's own pages
+    // already carries the right returnTo (e.g. /learn/acme-university), so
+    // this only ever fires for the truly unscoped case.
+    let destination = returnTo ?? "/";
+    if (isLearnHost && (!returnTo || returnTo === "/learn")) {
+      const slug = await resolveLearnSlugForEmail(email);
+      if (slug) {
+        destination = `/learn/${slug}`;
+      }
+    }
+
+    router.push(destination);
     router.refresh();
     return true;
   }
@@ -455,6 +479,20 @@ export function OtpForm({ returnTo }: { returnTo?: string }) {
         />
       </div>
       <input type="hidden" name="renderedAt" value={renderedAt} />
+      {isLearnHost && (
+        <div className="flex flex-col gap-1 rounded-md bg-primary-light px-3 py-2 text-sm text-body">
+          <p>{t("learnEmailHint")}</p>
+          <p>
+            {t.rich("learnFallbackNotice", {
+              a: (chunks) => (
+                <a href={mainSiteUrl} className="font-medium text-primary hover:underline">
+                  {chunks}
+                </a>
+              ),
+            })}
+          </p>
+        </div>
+      )}
       {error && (
         <p className="rounded-md bg-error-bg px-3 py-2 text-sm text-error">{error}</p>
       )}

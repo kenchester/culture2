@@ -6,6 +6,7 @@ import { createClient } from "@/lib/supabase/server";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { sendEmail } from "@/lib/email";
 import { getSiteUrl } from "@/lib/site-url";
+import { RESERVED_LEARN_SLUGS } from "@/lib/supabase/proxy";
 
 // Subdomain links (the invite acceptance page) can't be expressed from
 // localhost without a hosts-file/wildcard-DNS trick, so locally this falls
@@ -31,6 +32,17 @@ export async function createOrganization(formData: FormData) {
     redirect(
       `/admin/organizations?error=${encodeURIComponent(
         "Name, slug, subdomain, location name, and parent country are all required.",
+      )}`,
+    );
+  }
+
+  // The subdomain's routing (lib/supabase/proxy.ts) treats a school's first
+  // path segment as its slug, except for this app's real top-level routes -
+  // a slug matching one of those would silently never be reachable.
+  if (RESERVED_LEARN_SLUGS.includes(slug)) {
+    redirect(
+      `/admin/organizations?error=${encodeURIComponent(
+        `"${slug}" is a reserved path and can't be used as a slug.`,
       )}`,
     );
   }

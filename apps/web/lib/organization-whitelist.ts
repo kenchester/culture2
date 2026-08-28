@@ -39,15 +39,15 @@ export async function enrollInLanguages(
     );
 }
 
-// Runs on every authenticated request under /learn - the whole point is
-// that whitelisting can happen before OR after someone has an account, so
+// Runs on every authenticated request under /learn/[slug] - the whole point
+// is that whitelisting can happen before OR after someone has an account, so
 // this has to check on every visit rather than only at sign-up. Cheap when
 // there's nothing to claim: a single indexed lookup that comes back empty.
 // Goes through the admin client throughout, same as the invite-accept
 // flow - this is the one path allowed to insert into an org-gated
 // network's network_members (see the restrictive policy in
 // 00000000000043_organizations.sql) and into organization_admins.
-export async function claimWhitelistSeat() {
+export async function claimWhitelistSeat(slug: string) {
   const supabase = await createClient();
   const {
     data: { user },
@@ -63,7 +63,7 @@ export async function claimWhitelistSeat() {
   const { data: org } = await admin
     .from("organizations")
     .select("id, domain, domain_signin_enabled")
-    .eq("subdomain", "learn")
+    .eq("slug", slug)
     .maybeSingle();
   if (!org) {
     return;
@@ -128,13 +128,13 @@ export type LearnAccess = {
   languageIds: number[];
 };
 
-// Shared by app/learn/admin/layout.tsx (the access gate) and page.tsx
+// Shared by app/learn/[slug]/admin/layout.tsx (the access gate) and page.tsx
 // (content branching - org admins see everything, instructors see only
 // their own language_ids). Two cheap, indexed lookups; re-run per request
 // rather than threaded through as a prop, since Next.js doesn't share
 // computed data between a layout and its page without a client-side
 // context provider, which isn't worth the complexity here.
-export async function getLearnAccess(): Promise<LearnAccess> {
+export async function getLearnAccess(slug: string): Promise<LearnAccess> {
   const supabase = await createClient();
   const {
     data: { user },
@@ -143,7 +143,7 @@ export async function getLearnAccess(): Promise<LearnAccess> {
   const { data: org } = await supabase
     .from("organizations")
     .select("id, name")
-    .eq("subdomain", "learn")
+    .eq("slug", slug)
     .maybeSingle();
 
   if (!user || !org) {

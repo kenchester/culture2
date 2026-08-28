@@ -64,7 +64,9 @@
       "usePassword": "Ich habe ein Passwort",
       "useCode": "Schreib mir stattdessen einen Code per E-Mail",
       "prompt": "Wie möchtest du dich als <b>{email}</b>anmelden?"
-    }
+    },
+    "learnEmailHint": "Bitte melden Sie sich mit Ihrer Schul-E-Mail-Adresse an (z. B. einer .edu-Adresse), damit wir Ihre Schule erkennen können.",
+    "learnFallbackNotice": "Wenn deine Schule CultureMesh Learn noch nicht beigetreten ist, wirst du keine Möglichkeit haben, Inhalte auf den Beispielseiten zu nutzen, aber du kannst in der Zwischenzeit immer mit dem <a>Hauptnetzwerk von CultureMesh</a> zusammenarbeiten."
   },
   "home": {
     "heading": "Finde dein Diaspora-Netzwerk",

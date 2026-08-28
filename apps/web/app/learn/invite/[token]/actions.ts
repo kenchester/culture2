@@ -57,5 +57,11 @@ export async function acceptOrganizationInvite(formData: FormData) {
     .update({ accepted_by: user.id, accepted_at: new Date().toISOString() })
     .eq("id", invite.id);
 
-  redirect("/admin");
+  const { data: org } = await admin
+    .from("organizations")
+    .select("slug")
+    .eq("id", invite.organization_id)
+    .single();
+
+  redirect(org ? `/learn/${org.slug}/admin` : "/learn");
 }

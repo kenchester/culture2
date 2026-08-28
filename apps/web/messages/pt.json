@@ -64,7 +64,9 @@
       "usePassword": "Eu tenho uma senha",
       "useCode": "Me envie um código por e-mail",
       "prompt": "Como você gostaria de entrar como <b>{email}</b>?"
-    }
+    },
+    "learnEmailHint": "Por favor, faça login com o e-mail da sua escola (por exemplo, um endereço .edu) para que possamos reconhecer sua escola.",
+    "learnFallbackNotice": "Se sua escola ainda não aderiu ao CultureMesh Learn, você não terá a possibilidade de interagir com nenhum conteúdo nas páginas de exemplo, porém pode sempre se conectar com a <a>rede principal do CultureMesh</a> enquanto isso."
   },
   "home": {
     "heading": "Encontre sua rede da diáspora",

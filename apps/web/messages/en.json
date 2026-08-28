@@ -343,6 +343,8 @@
   "auth": {
     "title": "Sign in or create an account",
     "subtitle": "Find your people, wherever you are.",
+    "learnEmailHint": "Please sign in with your school email (e.g. a .edu address) so we can recognize your school.",
+    "learnFallbackNotice": "If your school hasn't yet joined CultureMesh Learn, you won't have the ability to engage any content on the example pages, however you can always engage with the main <a>CultureMesh network</a> in the meantime.",
     "bridge": {
       "explanation": "You're verified, but this browser is blocking sign-in inside an embedded window.",
       "continueNewTab": "Continue in a new tab",
