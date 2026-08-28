@@ -190,7 +190,9 @@
     "weeklyPrompt": "El tema de esta semana",
     "weeklyPromptEditLabel": "Establece el prompt de esta semana",
     "weeklyPromptPlaceholder": "Por ejemplo, describe tu comida favorita de casa.",
-    "weeklyPromptSave": "Prompt de guardado"
+    "weeklyPromptSave": "Prompt de guardado",
+    "connectWithSpeakersHeading": "Conéctate con más {language} altavoces",
+    "connectWithSpeakersIntro": "Hay una red activa cerca {location} del sitio principal de CultureMesh."
   },
   "editableEntry": {
     "save": "Salvar",

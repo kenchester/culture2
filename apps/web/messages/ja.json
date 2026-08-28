@@ -190,7 +190,9 @@
     "weeklyPrompt": "今週のプロンプト",
     "weeklyPromptEditLabel": "今週のプロンプトを設定しましょう",
     "weeklyPromptPlaceholder": "例えば、自宅で一番好きな食事を説明してください。",
-    "weeklyPromptSave": "セーブプロンプト"
+    "weeklyPromptSave": "セーブプロンプト",
+    "connectWithSpeakersHeading": "より多くの{language}スピーカーとつながる",
+    "connectWithSpeakersIntro": "メインのCultureMeshサイトの近く{location}にはアクティブなネットワークがあります。"
   },
   "editableEntry": {
     "save": "セーブ",

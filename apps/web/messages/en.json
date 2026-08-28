@@ -246,7 +246,9 @@
     "weeklyPrompt": "This week's prompt",
     "weeklyPromptEditLabel": "Set this week's prompt",
     "weeklyPromptPlaceholder": "e.g. Describe your favorite meal from home.",
-    "weeklyPromptSave": "Save prompt"
+    "weeklyPromptSave": "Save prompt",
+    "connectWithSpeakersHeading": "Connect with more {language} speakers",
+    "connectWithSpeakersIntro": "There's an active network near {location} on the main CultureMesh site."
   },
   "editableEntry": {
     "save": "Save",

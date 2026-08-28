@@ -190,7 +190,9 @@
     "weeklyPrompt": "Das Prompt dieser Woche",
     "weeklyPromptEditLabel": "Setze das Prompt dieser Woche",
     "weeklyPromptPlaceholder": "Zum Beispiel: Beschreiben Sie Ihr Lieblingsessen von zu Hause.",
-    "weeklyPromptSave": "Speicher-Eingabeaufforderung"
+    "weeklyPromptSave": "Speicher-Eingabeaufforderung",
+    "connectWithSpeakersHeading": "Verbinden Sie sich mit mehr Sprechern {language}",
+    "connectWithSpeakersIntro": "In der Nähe {location} der Hauptseite von CultureMesh gibt es ein aktives Netzwerk."
   },
   "editableEntry": {
     "save": "Speichern",

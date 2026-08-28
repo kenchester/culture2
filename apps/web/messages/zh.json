@@ -190,7 +190,9 @@
     "weeklyPrompt": "本周主题",
     "weeklyPromptEditLabel": "设定本周的提示",
     "weeklyPromptPlaceholder": "例如：描述你最喜欢的家乡菜肴。",
-    "weeklyPromptSave": "保存提示"
+    "weeklyPromptSave": "保存提示",
+    "connectWithSpeakersHeading": "与更多{language}演讲者联系",
+    "connectWithSpeakersIntro": "主CultureMesh站点附近{location}有一个活跃的网络。"
   },
   "editableEntry": {
     "save": "保存",

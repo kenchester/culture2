@@ -190,7 +190,9 @@
     "weeklyPrompt": "Задание на эту неделю",
     "weeklyPromptEditLabel": "Задайте задание на эту неделю",
     "weeklyPromptPlaceholder": "Например, опишите ваше любимое блюдо из дома.",
-    "weeklyPromptSave": "Запрос сохранить"
+    "weeklyPromptSave": "Запрос сохранить",
+    "connectWithSpeakersHeading": "Свяжитесь с большим количеством {language} колонок",
+    "connectWithSpeakersIntro": "Рядом {location} с основным сайтом CultureMesh есть активная сеть."
   },
   "editableEntry": {
     "save": "Сохранить",

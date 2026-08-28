@@ -12,6 +12,72 @@ import { InviteFriendsBox } from "@/app/networks/[id]/invite-friends-box";
 import { Button } from "@/components/ui/button";
 import { Field, Label, Textarea } from "@/components/ui/input";
 
+// Below this, a network's activity is too thin to be worth suggesting -
+// checked live against real data (32 networks total, median member count 1)
+// before picking these, so today nothing on the main site clears the bar
+// and the widget simply renders nothing rather than linking to a ghost town.
+const MIN_SUGGESTED_MEMBERS = 10;
+const MIN_SUGGESTED_POSTS = 5;
+
+type SuggestedNetworkRow = {
+  network_id: number;
+  network_title: string;
+  location_place_id: number;
+  location_name: string;
+  location_type: "country" | "region" | "city";
+  member_count: number;
+  post_count: number;
+};
+
+// Only for org-gated networks (Acme's and any future school's) - a learner
+// stuck in a small, closed community might want real native/heritage
+// speakers too, and the main site already has public networks organized by
+// language + location for exactly that. Reuses search_networks (the same
+// RPC the main site's own search results page calls) rather than
+// reimplementing the places-hierarchy "nearby" matching it already does.
+async function getSuggestedSpeakerNetwork(
+  supabase: Awaited<ReturnType<typeof createClient>>,
+  network: { id: number; language_id: number | null },
+) {
+  if (!network.language_id) {
+    return null;
+  }
+
+  const { data: gatedEntry } = await supabase
+    .from("organization_languages")
+    .select("organization:organizations(location_place_id)")
+    .eq("network_id", network.id)
+    .maybeSingle();
+  const orgLocationId = (gatedEntry?.organization as unknown as { location_place_id: number } | null)
+    ?.location_place_id;
+
+  if (!orgLocationId) {
+    return null;
+  }
+
+  const [{ data: gatedNetworkIds }, { data: candidates }] = await Promise.all([
+    supabase.from("organization_languages").select("network_id"),
+    supabase.rpc("search_networks", {
+      p_language_id: network.language_id,
+      p_origin_place_id: null,
+      p_religion_id: null,
+      p_location_place_id: orgLocationId,
+    }),
+  ]);
+
+  const excludedIds = new Set((gatedNetworkIds ?? []).map((row) => row.network_id));
+  excludedIds.add(network.id);
+
+  const best = ((candidates ?? []) as SuggestedNetworkRow[]).find(
+    (row) =>
+      !excludedIds.has(row.network_id) &&
+      row.member_count >= MIN_SUGGESTED_MEMBERS &&
+      row.post_count >= MIN_SUGGESTED_POSTS,
+  );
+
+  return best ?? null;
+}
+
 export default async function NetworkPage({
   params,
   searchParams,
@@ -56,6 +122,7 @@ export default async function NetworkPage({
     { data: posts },
     { data: myLikes },
     { data: canManagePrompt },
+    suggestedNetwork,
   ] = await Promise.all([
     network.language_id
       ? supabase.from("languages").select("id, name, iso_code").eq("id", network.language_id).single()
@@ -96,25 +163,32 @@ export default async function NetworkPage({
     user
       ? supabase.rpc("can_manage_network_prompt", { p_network_id: network.id })
       : Promise.resolve({ data: false }),
+    getSuggestedSpeakerNetwork(supabase, network),
   ]);
 
-  const [translatedLanguageName, translatedOriginName, translatedLocationName] = await Promise.all([
-    language
-      ? getGeoName("language", language.id, language.name, locale, { isoCode: language.iso_code })
-      : Promise.resolve(null),
-    originPlace
-      ? getGeoName("place", originPlace.id, originPlace.name, locale, {
-          isoCode: originPlace.iso_code,
-          placeType: originPlace.type,
-        })
-      : Promise.resolve(null),
-    location
-      ? getGeoName("place", location.id, location.name, locale, {
-          isoCode: location.iso_code,
-          placeType: location.type,
-        })
-      : Promise.resolve(null),
-  ]);
+  const [translatedLanguageName, translatedOriginName, translatedLocationName, translatedSuggestedLocationName] =
+    await Promise.all([
+      language
+        ? getGeoName("language", language.id, language.name, locale, { isoCode: language.iso_code })
+        : Promise.resolve(null),
+      originPlace
+        ? getGeoName("place", originPlace.id, originPlace.name, locale, {
+            isoCode: originPlace.iso_code,
+            placeType: originPlace.type,
+          })
+        : Promise.resolve(null),
+      location
+        ? getGeoName("place", location.id, location.name, locale, {
+            isoCode: location.iso_code,
+            placeType: location.type,
+          })
+        : Promise.resolve(null),
+      suggestedNetwork
+        ? getGeoName("place", suggestedNetwork.location_place_id, suggestedNetwork.location_name, locale, {
+            placeType: suggestedNetwork.location_type,
+          })
+        : Promise.resolve(null),
+    ]);
 
   const originName = translatedLanguageName ?? translatedOriginName ?? religion?.name ?? "?";
   const isMember = Boolean(membership);
@@ -290,13 +364,31 @@ export default async function NetworkPage({
         </div>
       </div>
 
-      {user && !isEmbedded && (
-        <aside>
-          <InviteFriendsBox
-            networkId={network.id}
-            invited={invited === "1"}
-            inviteError={inviteError}
-          />
+      {!isEmbedded && (user || suggestedNetwork) && (
+        <aside className="flex flex-col gap-4">
+          {user && (
+            <InviteFriendsBox
+              networkId={network.id}
+              invited={invited === "1"}
+              inviteError={inviteError}
+            />
+          )}
+          {suggestedNetwork && (
+            <div className="flex flex-col gap-2 rounded-lg border border-border bg-surface p-4">
+              <h2 className="font-medium text-ink">
+                {t("connectWithSpeakersHeading", { language: translatedLanguageName ?? "?" })}
+              </h2>
+              <p className="text-sm text-muted">
+                {t("connectWithSpeakersIntro", { location: translatedSuggestedLocationName ?? "?" })}
+              </p>
+              <Link
+                href={`/networks/${suggestedNetwork.network_id}`}
+                className="text-sm font-medium text-primary hover:underline"
+              >
+                {suggestedNetwork.network_title}
+              </Link>
+            </div>
+          )}
         </aside>
       )}
     </div>

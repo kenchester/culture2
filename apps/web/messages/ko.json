@@ -190,7 +190,9 @@
     "weeklyPrompt": "이번 주 주제",
     "weeklyPromptEditLabel": "이번 주 프롬프트를 설정하세요",
     "weeklyPromptPlaceholder": "예를 들어, 집에서 가장 좋아하는 식사를 설명해 주세요.",
-    "weeklyPromptSave": "저장 프롬프트"
+    "weeklyPromptSave": "저장 프롬프트",
+    "connectWithSpeakersHeading": "더 많은 {language} 연사와 연결하세요",
+    "connectWithSpeakersIntro": "메인 CultureMesh 사이트 근처에 {location} 활발한 네트워크가 있습니다."
   },
   "editableEntry": {
     "save": "저장",
