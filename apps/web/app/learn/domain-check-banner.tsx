@@ -46,10 +46,7 @@ export async function DomainCheckBanner({
       {domainNoMatch && (
         <div className="flex flex-col gap-2 rounded-md bg-success-bg px-3 py-2 text-sm text-body">
           <p>{t("bannerNoMatch", { domain: domainNoMatch })}</p>
-          <Link
-            href={`/contact?subject=${encodeURIComponent("CultureMesh Learn Interest")}&message=${encodeURIComponent(`School: ${domainNoMatch}`)}`}
-            className="self-start font-medium text-primary hover:underline"
-          >
+          <Link href="/learn/start" className="self-start font-medium text-primary hover:underline">
             {t("bannerRequestButton")}
           </Link>
         </div>

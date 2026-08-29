@@ -43,6 +43,7 @@ export const RESERVED_LEARN_SLUGS = [
   "redeemed",
   "search",
   "settings",
+  "start",
   "suggest-network",
   "learn",
 ];

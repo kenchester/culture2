@@ -109,15 +109,29 @@ export async function claimWhitelistSeat(slug: string) {
   if (org.domain_signin_enabled && org.domain) {
     const emailDomain = email.split("@")[1];
     if (emailDomain === org.domain) {
+      // A self-serve org (app/learn/start) only ever has the one language
+      // it was approved for - nothing for an admin to pick, so skip the
+      // pending state and enroll immediately. A multi-language school
+      // (Acme) still needs an admin to choose, since there's real ambiguity.
+      const { data: orgLanguages } = await admin
+        .from("organization_languages")
+        .select("language_id")
+        .eq("organization_id", org.id);
+      const languageIds = orgLanguages?.length === 1 ? [orgLanguages[0].language_id] : [];
+
       await admin.from("organization_whitelist").insert({
         organization_id: org.id,
         email,
         role: "student",
-        language_ids: [],
+        language_ids: languageIds,
         claimed_by: user.id,
         claimed_at: new Date().toISOString(),
         invited_by: null,
       });
+
+      if (languageIds.length > 0) {
+        await enrollInLanguages(admin, org.id, user.id, languageIds);
+      }
     }
   }
 }

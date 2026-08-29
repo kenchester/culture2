@@ -20,6 +20,34 @@ function buildSubdomainUrl(siteUrl: string, subdomain: string, path: string): st
   return `https://${subdomain}.culturemesh.com${path}`;
 }
 
+function slugify(text: string): string {
+  return text
+    .toLowerCase()
+    .trim()
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-+|-+$/g, "");
+}
+
+// Self-serve requests (approveOrganizationRequest below) generate their own
+// slug from the school name rather than having someone type one - has to
+// dodge both the reserved-path list and any slug already in use.
+async function generateUniqueSlug(
+  supabase: Awaited<ReturnType<typeof createClient>>,
+  base: string,
+): Promise<string> {
+  const { data: existing } = await supabase.from("organizations").select("slug").ilike("slug", `${base}%`);
+  const taken = new Set((existing ?? []).map((o) => o.slug));
+
+  if (!taken.has(base) && !RESERVED_LEARN_SLUGS.includes(base)) {
+    return base;
+  }
+  let suffix = 2;
+  while (taken.has(`${base}-${suffix}`) || RESERVED_LEARN_SLUGS.includes(`${base}-${suffix}`)) {
+    suffix += 1;
+  }
+  return `${base}-${suffix}`;
+}
+
 export async function createOrganization(formData: FormData) {
   const name = (formData.get("name") as string)?.trim();
   const slug = (formData.get("slug") as string)?.trim();
@@ -305,4 +333,158 @@ export async function deleteOrganization(formData: FormData) {
 
   revalidatePath("/admin/organizations");
   redirect(`/admin/organizations?success=${encodeURIComponent(`"${org.name}" deleted.`)}`);
+}
+
+// Approving a self-serve request (app/learn/start) provisions a real org in
+// one step - mirrors createOrganization + addOrganizationLanguage's exact
+// logic rather than calling those (both are form-bound with their own
+// redirect(), not suited to being invoked internally). The requester
+// already proved they control institutional_email by being signed in when
+// they submitted, so admin access is granted directly here - no separate
+// invite-token email round trip like inviteFirstAdmin needs.
+export async function approveOrganizationRequest(formData: FormData) {
+  const requestId = Number(formData.get("requestId"));
+  const supabase = await createClient();
+
+  const { data: request } = await supabase
+    .from("organization_requests")
+    .select(
+      "id, requested_by, institutional_email, school_name, language_id, location_name, parent_country_id, status",
+    )
+    .eq("id", requestId)
+    .single();
+
+  if (!request || request.status !== "pending") {
+    redirect(`/admin/organizations?error=${encodeURIComponent("Request not found or already reviewed.")}`);
+  }
+
+  const { data: place, error: placeError } = await supabase
+    .from("places")
+    .insert({
+      type: "city",
+      name: request.location_name,
+      parent_id: request.parent_country_id,
+      hidden_from_search: true,
+    })
+    .select("id")
+    .single();
+
+  if (placeError || !place) {
+    redirect(`/admin/organizations?error=${encodeURIComponent(placeError?.message ?? "Could not create location.")}`);
+  }
+
+  const domain = request.institutional_email.split("@")[1];
+  const slug = await generateUniqueSlug(supabase, slugify(request.school_name));
+
+  const { data: org, error: orgError } = await supabase
+    .from("organizations")
+    .insert({
+      name: request.school_name,
+      slug,
+      subdomain: "learn",
+      domain,
+      domain_signin_enabled: true,
+      location_place_id: place.id,
+    })
+    .select("id, name, slug")
+    .single();
+
+  if (orgError || !org) {
+    redirect(`/admin/organizations?error=${encodeURIComponent(orgError?.message ?? "Could not create organization.")}`);
+  }
+
+  const { data: language } = await supabase.from("languages").select("name").eq("id", request.language_id).single();
+  // launched_by can't be the requester here - networks' RLS insert check is
+  // (auth.uid() = launched_by) or null, and the actual authenticated actor
+  // performing this insert is the reviewing admin, not the requester. null
+  // fits the "auto-provisioned by an approval, not directly launched by a
+  // signed-in actor" case correctly.
+  const { data: newNetwork, error: networkError } = await supabase
+    .from("networks")
+    .insert({
+      language_id: request.language_id,
+      location_place_id: place.id,
+      title: `${language?.name ?? "Language"} speakers at ${org.name}`,
+      launched_by: null,
+    })
+    .select("id")
+    .single();
+
+  if (networkError || !newNetwork) {
+    redirect(`/admin/organizations?error=${encodeURIComponent(networkError?.message ?? "Could not create network.")}`);
+  }
+
+  const { error: orgLanguageError } = await supabase
+    .from("organization_languages")
+    .insert({ organization_id: org.id, language_id: request.language_id, network_id: newNetwork.id });
+
+  if (orgLanguageError) {
+    redirect(`/admin/organizations?error=${encodeURIComponent(orgLanguageError.message)}`);
+  }
+
+  // organization_admins can't be inserted by a regular authenticated user
+  // (see acceptOrganizationInvite) - only the service-role client can grant
+  // it directly.
+  const admin = createAdminClient();
+  await admin
+    .from("organization_admins")
+    .insert({ organization_id: org.id, user_id: request.requested_by, granted_by: null });
+
+  await supabase
+    .from("organization_requests")
+    .update({ status: "approved", reviewed_at: new Date().toISOString(), resulting_organization_id: org.id })
+    .eq("id", requestId);
+
+  try {
+    const siteUrl = await getSiteUrl();
+    const adminUrl = buildSubdomainUrl(siteUrl, "learn", `/learn/${org.slug}/admin`);
+    await sendEmail({
+      to: request.institutional_email,
+      subject: `Your class on CultureMesh Learn is live`,
+      text: `${org.name} is live on CultureMesh Learn. Manage it here:\n${adminUrl}`,
+    });
+  } catch {
+    // Best-effort - the org already exists and the requester already has
+    // admin access, so a failed notification shouldn't look like a failure.
+  }
+
+  revalidatePath("/admin/organizations");
+  redirect(`/admin/organizations?success=${encodeURIComponent(`"${org.name}" approved and live.`)}`);
+}
+
+export async function rejectOrganizationRequest(formData: FormData) {
+  const requestId = Number(formData.get("requestId"));
+  const supabase = await createClient();
+
+  const { data: request } = await supabase
+    .from("organization_requests")
+    .select("institutional_email, school_name, status")
+    .eq("id", requestId)
+    .single();
+
+  if (!request || request.status !== "pending") {
+    redirect(`/admin/organizations?error=${encodeURIComponent("Request not found or already reviewed.")}`);
+  }
+
+  const { error } = await supabase
+    .from("organization_requests")
+    .update({ status: "rejected", reviewed_at: new Date().toISOString() })
+    .eq("id", requestId);
+
+  if (error) {
+    redirect(`/admin/organizations?error=${encodeURIComponent(error.message)}`);
+  }
+
+  try {
+    await sendEmail({
+      to: request.institutional_email,
+      subject: `Your CultureMesh Learn request`,
+      text: `Thanks for your interest in CultureMesh Learn for ${request.school_name}. We're not able to approve this request right now.`,
+    });
+  } catch {
+    // Best-effort, same as above.
+  }
+
+  revalidatePath("/admin/organizations");
+  redirect(`/admin/organizations?success=${encodeURIComponent("Request rejected.")}`);
 }

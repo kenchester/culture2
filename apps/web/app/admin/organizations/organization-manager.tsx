@@ -16,6 +16,16 @@ type OrgRow = {
   organization_admins: { user_id: string }[];
 };
 
+type RequestRow = {
+  id: number;
+  institutional_email: string;
+  profile_url: string;
+  school_name: string;
+  location_name: string;
+  created_at: string;
+  language: { name: string } | null;
+};
+
 // A two-step reveal (click "Delete" once to show a slug-confirmation
 // input, click again to actually submit) - this is the first genuinely
 // destructive admin action in the app, so it gets its own guard rail
@@ -58,21 +68,63 @@ function DeleteOrgForm({
 
 export function OrganizationManager({
   organizations,
+  pendingRequests,
   createOrganization,
   addOrganizationLanguage,
   inviteFirstAdmin,
   updateOrganizationDomainSettings,
   deleteOrganization,
+  approveOrganizationRequest,
+  rejectOrganizationRequest,
 }: {
   organizations: OrgRow[];
+  pendingRequests: RequestRow[];
   createOrganization: (formData: FormData) => void;
   addOrganizationLanguage: (formData: FormData) => void;
   inviteFirstAdmin: (formData: FormData) => void;
   updateOrganizationDomainSettings: (formData: FormData) => void;
   deleteOrganization: (formData: FormData) => void;
+  approveOrganizationRequest: (formData: FormData) => void;
+  rejectOrganizationRequest: (formData: FormData) => void;
 }) {
   return (
     <div className="flex flex-col gap-8">
+      {pendingRequests.length > 0 && (
+        <div className="flex flex-col gap-4">
+          <h3 className="text-sm font-semibold text-ink">Pending requests</h3>
+          {pendingRequests.map((request) => (
+            <div key={request.id} className="flex flex-col gap-2 rounded-lg border border-border p-4">
+              <p className="font-medium text-ink">
+                {request.school_name} <span className="text-sm text-muted">· {request.language?.name ?? "?"}</span>
+              </p>
+              <p className="text-sm text-muted">
+                {request.institutional_email} · {request.location_name}
+              </p>
+              <a
+                href={request.profile_url}
+                target="_blank"
+                rel="noreferrer"
+                className="text-sm font-medium text-primary hover:underline"
+              >
+                View profile
+              </a>
+              <div className="flex gap-2 pt-2">
+                <form action={approveOrganizationRequest}>
+                  <input type="hidden" name="requestId" value={request.id} />
+                  <Button type="submit">Approve</Button>
+                </form>
+                <form action={rejectOrganizationRequest}>
+                  <input type="hidden" name="requestId" value={request.id} />
+                  <Button type="submit" variant="ghost">
+                    Reject
+                  </Button>
+                </form>
+              </div>
+            </div>
+          ))}
+        </div>
+      )}
+
       <div>
         <h3 className="mb-2 text-sm font-semibold text-ink">Create an organization</h3>
         <form action={createOrganization} className="flex flex-col gap-3 rounded-lg border border-border p-4">
