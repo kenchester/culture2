@@ -457,6 +457,8 @@
   "myNetworks": {
     "heading": "我的网络",
     "empty": "你还没加入任何网络。",
-    "findNetworks": "找一个网络加入"
+    "findNetworks": "找一个网络加入",
+    "previousPage": "← 之前的10个网络",
+    "nextPage": "接下来的10个网络 →"
   }
 }

@@ -457,6 +457,8 @@
   "myNetworks": {
     "heading": "Mes réseaux",
     "empty": "Tu n’as pas encore rejoint de réseaux.",
-    "findNetworks": "Trouvez un réseau auquel rejoindre"
+    "findNetworks": "Trouvez un réseau auquel rejoindre",
+    "previousPage": "← Réseaux des 10 précédents",
+    "nextPage": "Les 10 prochains réseaux →"
   }
 }

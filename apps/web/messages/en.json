@@ -255,7 +255,9 @@
   "myNetworks": {
     "heading": "My networks",
     "empty": "You haven't joined any networks yet.",
-    "findNetworks": "Find a network to join"
+    "findNetworks": "Find a network to join",
+    "previousPage": "← Previous 10 networks",
+    "nextPage": "Next 10 networks →"
   },
   "editableEntry": {
     "save": "Save",

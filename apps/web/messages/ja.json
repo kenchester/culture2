@@ -457,6 +457,8 @@
   "myNetworks": {
     "heading": "私のネットワーク",
     "empty": "まだネットワークに参加していない。",
-    "findNetworks": "参加するネットワークを見つけましょう"
+    "findNetworks": "参加するネットワークを見つけましょう",
+    "previousPage": "← 過去10のネットワーク",
+    "nextPage": "次の10ネットワーク→"
   }
 }

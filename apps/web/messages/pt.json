@@ -457,6 +457,8 @@
   "myNetworks": {
     "heading": "Minhas redes",
     "empty": "Você ainda não entrou em nenhuma rede.",
-    "findNetworks": "Encontre uma rede para entrar"
+    "findNetworks": "Encontre uma rede para entrar",
+    "previousPage": "← 10 redes anteriores",
+    "nextPage": "Próximas 10 redes →"
   }
 }

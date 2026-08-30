@@ -457,6 +457,8 @@
   "myNetworks": {
     "heading": "Mis redes",
     "empty": "Aún no te has unido a ninguna cadena.",
-    "findNetworks": "Busca una red a la que unirte"
+    "findNetworks": "Busca una red a la que unirte",
+    "previousPage": "← Cadenas anteriores de 10",
+    "nextPage": "Las próximas 10 cadenas →"
   }
 }

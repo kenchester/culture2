@@ -457,6 +457,8 @@
   "myNetworks": {
     "heading": "내 네트워크",
     "empty": "아직 어떤 네트워크에도 가입하지 않았잖아요.",
-    "findNetworks": "네트워크에 가입할 수 있는 곳을 찾아보세요"
+    "findNetworks": "네트워크에 가입할 수 있는 곳을 찾아보세요",
+    "previousPage": "← 이전 10개 네트워크",
+    "nextPage": "다음 10개 네트워크 →"
   }
 }

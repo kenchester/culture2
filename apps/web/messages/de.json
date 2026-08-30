@@ -457,6 +457,8 @@
   "myNetworks": {
     "heading": "Meine Netzwerke",
     "empty": "Du bist noch keinem Netzwerk beigetreten.",
-    "findNetworks": "Finden Sie ein Netzwerk, dem Sie beitreten können"
+    "findNetworks": "Finden Sie ein Netzwerk, dem Sie beitreten können",
+    "previousPage": "← Frühere 10 Netzwerke",
+    "nextPage": "Die nächsten 10 Netzwerke →"
   }
 }

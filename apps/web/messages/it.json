@@ -457,6 +457,8 @@
   "myNetworks": {
     "heading": "Le mie reti",
     "empty": "Non ti sei ancora iscritto a nessuna rete.",
-    "findNetworks": "Trova una rete a cui unirti"
+    "findNetworks": "Trova una rete a cui unirti",
+    "previousPage": "← Precedenti 10 reti",
+    "nextPage": "Le prossime 10 reti →"
   }
 }
