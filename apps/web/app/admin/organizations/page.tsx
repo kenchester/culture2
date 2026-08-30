@@ -1,4 +1,5 @@
 import { createClient } from "@/lib/supabase/server";
+import { getSiteUrl, buildSubdomainUrl } from "@/lib/site-url";
 import {
   createOrganization,
   addOrganizationLanguage,
@@ -64,6 +65,14 @@ export default async function AdminOrganizationsPage({
   const hasNextPage = (organizationsRaw?.length ?? 0) > ORGS_PER_PAGE;
   const organizations = (organizationsRaw ?? []).slice(0, ORGS_PER_PAGE);
 
+  // Admin lives on the bare culturemesh.com host - a plain relative
+  // /networks/{id} link here would resolve against that host, not
+  // learn.culturemesh.com, silently leaking an org-gated network out of its
+  // subdomain. Built explicitly so every org/network link below points at
+  // the right host regardless of which host admin itself is served from.
+  const siteUrl = await getSiteUrl();
+  const learnBaseUrl = buildSubdomainUrl(siteUrl, "learn", "");
+
   return (
     <div className="flex w-full flex-col gap-6">
       {success && <p className="rounded-md bg-success-bg px-3 py-2 text-sm text-success">{success}</p>}
@@ -73,6 +82,7 @@ export default async function AdminOrganizationsPage({
         pendingRequests={(pendingRequests ?? []) as unknown as RequestRow[]}
         currentPage={currentPage}
         hasNextPage={hasNextPage}
+        learnBaseUrl={learnBaseUrl}
         createOrganization={createOrganization}
         addOrganizationLanguage={addOrganizationLanguage}
         inviteFirstAdmin={inviteFirstAdmin}

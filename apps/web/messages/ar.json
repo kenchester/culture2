@@ -432,6 +432,14 @@
     "exampleNetworksIntro": "كل شبكة لغوية خاصة بجامعتك، وأي منشورات أو ردود لم تكتب باللغة المستهدفة سيتم تصفيتها وحجبها لتعزيز الطلاقة في اللغة.",
     "pendingNotice": "أنت معترف بك كطالب.{name} مدير البرنامج سيكلفك لغتك قريبا.",
     "bannerRequestButton": "اطلب CultureMesh Learn في مدرستك",
-    "exampleNetworksHeading": "أمثلة على الشبكات في {name}"
+    "exampleNetworksHeading": "أمثلة على الشبكات في {name}",
+    "getStartedHeadingWithDomain": "سجل الدخول عبر بريدك {domain} الإلكتروني المدرسي",
+    "getStartedHeadingGeneric": "سجل الدخول عبر بريدك الإلكتروني المدرسي",
+    "getStartedSubheading": "سنتعرف عليك {name} كعضو وندخلك إلى الشبكات المناسبة.",
+    "getStartedButton": "ابدأ",
+    "currentNetworksHeading": "شبكات اللغة الحالية على {name}",
+    "launchNetworkHeading": "أطلق شبكة للغتك المستهدفة",
+    "launchNetworkSubmit": "شبكة الإطلاق",
+    "currentNetworksEmpty": "لا توجد شبكات حتى الآن - أطلق الأولى أعلاه."
   }
 }

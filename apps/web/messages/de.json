@@ -432,6 +432,14 @@
     "exampleNetworksIntro": "Jedes Sprachnetzwerk ist spezifisch für Ihre Universität, und Beiträge oder Antworten, die nicht in der Zielsprache verfasst sind, werden gefiltert und gesperrt, um die Sprachflüssigkeit zu fördern.",
     "pendingNotice": "Du wirst als {name} Student anerkannt. Dein Programmadministrator wird dir bald deine Sprache zuweisen.",
     "bannerRequestButton": "Fordern Sie CultureMesh Learn an Ihrer Schule an",
-    "exampleNetworksHeading": "Beispielnetzwerke bei {name}"
+    "exampleNetworksHeading": "Beispielnetzwerke bei {name}",
+    "getStartedHeadingWithDomain": "Melden Sie sich mit Ihrer {domain} Schul-E-Mail an",
+    "getStartedHeadingGeneric": "Melden Sie sich mit Ihrer Schul-E-Mail an",
+    "getStartedSubheading": "Wir erkennen Sie als {name} Mitglied an und bringen Sie in die richtigen Netzwerke.",
+    "getStartedButton": "Leg los",
+    "currentNetworksHeading": "Aktuelle Sprachnetzwerke bei {name}",
+    "launchNetworkHeading": "Starten Sie ein Netzwerk für Ihre Zielsprache",
+    "launchNetworkSubmit": "Startnetzwerk",
+    "currentNetworksEmpty": "Noch keine Netzwerke – starte das erste oben genannte."
   }
 }

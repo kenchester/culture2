@@ -71,6 +71,7 @@ export function OrganizationManager({
   pendingRequests,
   currentPage,
   hasNextPage,
+  learnBaseUrl,
   createOrganization,
   addOrganizationLanguage,
   inviteFirstAdmin,
@@ -83,6 +84,7 @@ export function OrganizationManager({
   pendingRequests: RequestRow[];
   currentPage: number;
   hasNextPage: boolean;
+  learnBaseUrl: string;
   createOrganization: (formData: FormData) => void;
   addOrganizationLanguage: (formData: FormData) => void;
   inviteFirstAdmin: (formData: FormData) => void;
@@ -153,6 +155,7 @@ export function OrganizationManager({
             kind="place"
             placeType={["country", "region", "city"]}
             hiddenName="parentPlaceId"
+            placeholder="e.g. Chicago"
           />
           <Button type="submit" className="self-start">
             Create organization
@@ -167,18 +170,14 @@ export function OrganizationManager({
           <div key={org.id} className="flex flex-col gap-4 rounded-lg border border-border p-4">
             <div>
               <p className="font-medium text-ink">
-                {org.organization_languages.length === 1 && org.organization_languages[0].network_id ? (
-                  <a
-                    href={`/networks/${org.organization_languages[0].network_id}`}
-                    target="_blank"
-                    rel="noreferrer"
-                    className="text-primary hover:underline"
-                  >
-                    {org.name}
-                  </a>
-                ) : (
-                  org.name
-                )}
+                <a
+                  href={`${learnBaseUrl}/${org.slug}`}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="text-primary hover:underline"
+                >
+                  {org.name}
+                </a>
               </p>
               <p className="text-sm text-muted">
                 {org.subdomain}.culturemesh.com{org.domain ? ` · ${org.domain}` : ""}
@@ -191,7 +190,7 @@ export function OrganizationManager({
                         {i > 0 && ", "}
                         {l.network_id ? (
                           <a
-                            href={`/networks/${l.network_id}`}
+                            href={`${learnBaseUrl}/networks/${l.network_id}`}
                             target="_blank"
                             rel="noreferrer"
                             className="text-primary hover:underline"

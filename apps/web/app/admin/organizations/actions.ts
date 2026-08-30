@@ -5,20 +5,8 @@ import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { sendEmail } from "@/lib/email";
-import { getSiteUrl } from "@/lib/site-url";
+import { getSiteUrl, buildSubdomainUrl } from "@/lib/site-url";
 import { RESERVED_LEARN_SLUGS } from "@/lib/supabase/proxy";
-
-// Subdomain links (the invite acceptance page) can't be expressed from
-// localhost without a hosts-file/wildcard-DNS trick, so locally this falls
-// back to the plain siteUrl path instead - matches the same hardcoded
-// production-root-domain precedent already used in
-// lib/supabase/cookie-options.ts.
-function buildSubdomainUrl(siteUrl: string, subdomain: string, path: string): string {
-  if (siteUrl.includes("localhost") || siteUrl.includes("127.0.0.1")) {
-    return `${siteUrl}${path}`;
-  }
-  return `https://${subdomain}.culturemesh.com${path}`;
-}
 
 function slugify(text: string): string {
   return text

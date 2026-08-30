@@ -30,3 +30,15 @@ export async function getMainSiteUrl() {
   const protocol = bareHost.startsWith("localhost") || bareHost.startsWith("127.0.0.1") ? "http" : "https";
   return `${protocol}://${bareHost}`;
 }
+
+// Swaps in a different subdomain than whatever host the current request
+// came in on (e.g. building a learn.culturemesh.com link from a server
+// action running on the bare culturemesh.com admin pages) - subdomain
+// links can't be expressed from localhost without a hosts-file/wildcard-DNS
+// trick, so locally this falls back to the plain siteUrl path instead.
+export function buildSubdomainUrl(siteUrl: string, subdomain: string, path: string): string {
+  if (siteUrl.includes("localhost") || siteUrl.includes("127.0.0.1")) {
+    return `${siteUrl}${path}`;
+  }
+  return `https://${subdomain}.culturemesh.com${path}`;
+}

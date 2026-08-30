@@ -432,6 +432,14 @@
     "exampleNetworksIntro": "每个语言网络对你所在大学都有特定要求，任何非目标语言的帖子或回复都会被过滤和屏蔽，以促进语言流利度。",
     "pendingNotice": "你被认定为{name}学生。你的项目管理员很快会分配你的语言。",
     "bannerRequestButton": "在你的学校申请CultureMesh Learn",
-    "exampleNetworksHeading": "示例网络{name}"
+    "exampleNetworksHeading": "示例网络{name}",
+    "getStartedHeadingWithDomain": "用你的{domain}学校邮箱登录",
+    "getStartedHeadingGeneric": "用你的学校邮箱登录",
+    "getStartedSubheading": "我们会认可你为{name}会员，并帮你进入合适的网络。",
+    "getStartedButton": "开始",
+    "currentNetworksHeading": "当前语言网络{name}",
+    "launchNetworkHeading": "为你的目标语言建立一个网络",
+    "launchNetworkSubmit": "发射网络",
+    "currentNetworksEmpty": "目前还没有网络——先启动上面第一个网络。"
   }
 }

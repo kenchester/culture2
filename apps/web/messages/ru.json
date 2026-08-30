@@ -432,6 +432,14 @@
     "exampleNetworksIntro": "Каждая языковая сеть специфична для вашего университета, и любые посты или ответы, не опубликованные на целевом языке, будут фильтрованы и блокированы для повышения беглости языка.",
     "pendingNotice": "Тебя признают {name} студентом. Администратор вашей программы скоро назначит вам язык.",
     "bannerRequestButton": "Запросите CultureMesh Учитесь в своей школе",
-    "exampleNetworksHeading": "Примеры сетей в {name}"
+    "exampleNetworksHeading": "Примеры сетей в {name}",
+    "getStartedHeadingWithDomain": "Войдите с помощью {domain} школьной электронной почты",
+    "getStartedHeadingGeneric": "Войдите с помощью школьной электронной почты",
+    "getStartedSubheading": "Мы признаем вас {name} членом и поможем вам попасть в нужные сети.",
+    "getStartedButton": "Начните",
+    "currentNetworksHeading": "Современные языковые сети на {name}",
+    "launchNetworkHeading": "Запустите сеть для вашего целевого языка",
+    "launchNetworkSubmit": "Сеть запуска",
+    "currentNetworksEmpty": "Пока нет сетей — запустите первую выше."
   }
 }

@@ -432,6 +432,14 @@
     "exampleNetworksIntro": "各言語ネットワークは大学ごとに特有であり、対象言語でない投稿や返信は言語流暢さを促進するためにフィルタリング・ブロックされます。",
     "pendingNotice": "あなたは学生として{name}認められています。プログラム管理者がまもなく言語を割り当てます。",
     "bannerRequestButton": "学校でCultureMesh Learnをリクエストする",
-    "exampleNetworksHeading": "ネットワークの例{name}"
+    "exampleNetworksHeading": "ネットワークの例{name}",
+    "getStartedHeadingWithDomain": "学校の{domain}メールアドレスでログインしてください",
+    "getStartedHeadingGeneric": "学校のメールアドレスでログインしてください",
+    "getStartedSubheading": "メンバーとして{name}認め、適切なネットワークに紹介します。",
+    "getStartedButton": "始めよう",
+    "currentNetworksHeading": "現在の言語ネットワーク{name}",
+    "launchNetworkHeading": "目標言語のネットワークを立ち上げましょう",
+    "launchNetworkSubmit": "打ち上げネットワーク",
+    "currentNetworksEmpty": "まだネットワークはありません。上記の最初のネットワークを立ち上げてください。"
   }
 }

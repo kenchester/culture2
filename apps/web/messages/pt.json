@@ -432,6 +432,14 @@
     "exampleNetworksIntro": "Cada rede de idiomas é específica para sua universidade, e quaisquer postagens ou respostas não feitas no idioma alvo serão filtradas e bloqueadas para promover a fluência linguística.",
     "pendingNotice": "Você é reconhecido como estudante{name}. O administrador do seu programa vai designar sua língua em breve.",
     "bannerRequestButton": "Solicite o CultureMesh Learn na sua escola",
-    "exampleNetworksHeading": "Redes de exemplo em {name}"
+    "exampleNetworksHeading": "Redes de exemplo em {name}",
+    "getStartedHeadingWithDomain": "Faça login com o e-mail da sua {domain} escola",
+    "getStartedHeadingGeneric": "Faça login com o e-mail da sua escola",
+    "getStartedSubheading": "Vamos reconhecê-lo como {name} membro e colocá-lo nas redes certas.",
+    "getStartedButton": "Comece",
+    "currentNetworksHeading": "Redes de Idiomas Atuais em {name}",
+    "launchNetworkHeading": "Crie uma rede para o idioma alvo",
+    "launchNetworkSubmit": "Rede de lançamento",
+    "currentNetworksEmpty": "Ainda não há redes - lance a primeira acima."
   }
 }

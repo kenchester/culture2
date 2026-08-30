@@ -99,6 +99,7 @@ export default async function StartClassPage({
           kind="place"
           placeType={["country", "region", "city"]}
           hiddenName="parentPlaceId"
+          placeholder="e.g. Chicago"
         />
         <Button type="submit" className="self-start">
           Submit for approval

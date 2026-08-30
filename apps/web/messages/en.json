@@ -426,6 +426,14 @@
     "exampleNetworkBadge": "Example Network",
     "exampleNetworksIntro": "Each language network is specific to your university, and any posts or replies not made in the target language will be filtered and blocked to promote language fluency.",
     "pendingNotice": "You're recognized as a {name} student. Your program admin will assign your language soon.",
-    "bannerRequestButton": "Request CultureMesh Learn at your school"
+    "bannerRequestButton": "Request CultureMesh Learn at your school",
+    "getStartedHeadingWithDomain": "Log in with your {domain} school email",
+    "getStartedHeadingGeneric": "Log in with your school email",
+    "getStartedSubheading": "We'll recognize you as a {name} member and get you into the right networks.",
+    "getStartedButton": "Get Started",
+    "currentNetworksHeading": "Current Language Networks at {name}",
+    "currentNetworksEmpty": "No networks yet - launch the first one above.",
+    "launchNetworkHeading": "Launch a network for your target language",
+    "launchNetworkSubmit": "Launch network"
   }
 }
