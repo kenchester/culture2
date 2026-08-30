@@ -226,7 +226,10 @@
     "translating": "翻訳中...",
     "translateNotFound": "翻訳できる投稿が見つかりませんでした。",
     "translateFailed": "翻訳は失敗しました。もう一度お試しください。",
-    "showOriginal": "原文を見る"
+    "showOriginal": "原文を見る",
+    "report": "レポート",
+    "reporting": "報告します...",
+    "reported": "報告"
   },
   "suggestNetwork": {
     "heading": "ネットワークを提案してください",

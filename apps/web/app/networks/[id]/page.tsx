@@ -5,10 +5,12 @@ import { getLocale, getTranslations } from "next-intl/server";
 import { createClient } from "@/lib/supabase/server";
 import { type Author, getAvatarUrl, getDisplayName } from "@/lib/profiles";
 import { getGeoName } from "@/lib/geo-translation";
+import { getPostMediaUrl } from "@/lib/post-media";
 import type { Locale } from "@/lib/locale";
 import { createPost, joinNetwork, leaveNetwork, setNetworkPrompt } from "@/app/networks/actions";
 import { EditableEntry } from "@/app/networks/editable-entry";
 import { InviteFriendsBox } from "@/app/networks/[id]/invite-friends-box";
+import { PostComposer } from "@/app/networks/[id]/post-composer";
 import { Button } from "@/components/ui/button";
 import { Field, Label, Textarea } from "@/components/ui/input";
 
@@ -153,7 +155,7 @@ export default async function NetworkPage({
     supabase
       .from("posts")
       .select(
-        "id, body, video_url, created_at, author:user_id(id, username, first_name, last_name, img_path), post_replies(count), likes(count)",
+        "id, body, video_url, media_type, media_path, created_at, author:user_id(id, username, first_name, last_name, img_path), post_replies(count), likes(count)",
       )
       .eq("network_id", network.id)
       .order("created_at", { ascending: false }),
@@ -204,6 +206,16 @@ export default async function NetworkPage({
   const originName = translatedLanguageName ?? translatedOriginName ?? religion?.name ?? "?";
   const isMember = Boolean(membership);
   const myLikedPostIds = new Set((myLikes ?? []).map((l) => l.post_id as number));
+
+  // Signed URLs (post-media is a private bucket, 00000000000065) are
+  // resolved for every post up front, in parallel, rather than per-row
+  // during render - matches how avatarUrl is already computed once per
+  // post below, just now async.
+  const postMediaUrls = new Map(
+    await Promise.all(
+      (posts ?? []).map(async (post) => [post.id, await getPostMediaUrl(post.media_path)] as const),
+    ),
+  );
 
   const returnTo = `/networks/${network.id}${isEmbedded ? "?embed=1" : ""}`;
   const signInParams = new URLSearchParams({ returnTo });
@@ -295,18 +307,12 @@ export default async function NetworkPage({
               {error && (
                 <p className="rounded-md bg-error-bg px-3 py-2 text-sm text-error">{error}</p>
               )}
-              <Field>
-                <Label htmlFor="post-body">{t("postLabel")}</Label>
-                <Textarea
-                  id="post-body"
-                  name="body"
-                  placeholder={t("postPlaceholder")}
-                  required
-                />
-              </Field>
-              <Button type="submit" className="self-start">
-                {t("postSubmit")}
-              </Button>
+              <PostComposer
+                idPrefix="post"
+                bodyLabel={t("postLabel")}
+                bodyPlaceholder={t("postPlaceholder")}
+                submitLabel={t("postSubmit")}
+              />
             </form>
           )}
 
@@ -354,6 +360,11 @@ export default async function NetworkPage({
                       kind="post"
                       itemId={post.id}
                       body={post.body}
+                      media={
+                        post.media_type && postMediaUrls.get(post.id)
+                          ? { type: post.media_type as "audio" | "video", url: postMediaUrls.get(post.id)! }
+                          : null
+                      }
                       canModify={user?.id === author?.id}
                       likeCount={likeCountValue}
                       liked={myLikedPostIds.has(post.id)}

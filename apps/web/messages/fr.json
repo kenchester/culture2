@@ -226,7 +226,10 @@
     "translating": "Traduction...",
     "translateNotFound": "Je n’ai pas trouvé ce post à traduire.",
     "translateFailed": "La traduction a échoué. Veuillez réessayer.",
-    "showOriginal": "Voir le texte original"
+    "showOriginal": "Voir le texte original",
+    "report": "Rapport",
+    "reporting": "Rapport...",
+    "reported": "Rapporté"
   },
   "suggestNetwork": {
     "heading": "Suggérez un réseau",

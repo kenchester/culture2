@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { useLocale, useTranslations } from "next-intl";
-import { deletePost, toggleLike, translateEntry, updatePost } from "@/app/networks/actions";
+import { deletePost, reportContent, toggleLike, translateEntry, updatePost } from "@/app/networks/actions";
 import { deleteReply, updateReply } from "@/app/networks/[id]/posts/[postId]/actions";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/input";
@@ -40,6 +40,7 @@ export function EditableEntry({
   kind,
   itemId,
   body,
+  media,
   canModify,
   likeCount,
   liked,
@@ -48,6 +49,7 @@ export function EditableEntry({
   kind: "post" | "reply";
   itemId: number;
   body: string;
+  media?: { type: "audio" | "video"; url: string } | null;
   canModify: boolean;
   likeCount: number;
   liked: boolean;
@@ -64,6 +66,19 @@ export function EditableEntry({
   const [translated, setTranslated] = useState<string | null>(null);
   const [showTranslated, setShowTranslated] = useState(false);
   const [isTranslating, setIsTranslating] = useState(false);
+  const [reported, setReported] = useState(false);
+  const [isReporting, setIsReporting] = useState(false);
+
+  async function handleReport() {
+    setIsReporting(true);
+    const result = await reportContent(kind, itemId);
+    setIsReporting(false);
+    if ("error" in result) {
+      setError(result.error);
+      return;
+    }
+    setReported(true);
+  }
 
   async function handleTranslate() {
     if (showTranslated) {
@@ -164,22 +179,32 @@ export function EditableEntry({
   return (
     <div className="flex flex-col gap-1">
       <div className="flex items-start justify-between gap-2">
-        {/* break-words: post content is free-typed and Linkify can turn a
-            long pasted URL into an anchor - neither wraps at whitespace
-            on its own, so an unbroken run of characters would otherwise
-            push this narrower than the viewport on mobile. */}
-        <p className="min-w-0 break-words text-body">
-          <Linkify text={showTranslated && translated ? translated : body} />
-        </p>
+        {media ? (
+          media.type === "video" ? (
+            <video src={media.url} controls playsInline className="max-h-64 w-full min-w-0 rounded-md" />
+          ) : (
+            <audio src={media.url} controls className="w-full min-w-0" />
+          )
+        ) : (
+          // break-words: post content is free-typed and Linkify can turn a
+          // long pasted URL into an anchor - neither wraps at whitespace
+          // on its own, so an unbroken run of characters would otherwise
+          // push this narrower than the viewport on mobile.
+          <p className="min-w-0 break-words text-body">
+            <Linkify text={showTranslated && translated ? translated : body} />
+          </p>
+        )}
         <div className="flex shrink-0 items-center gap-3 text-sm text-muted">
-          <button
-            type="button"
-            onClick={handleTranslate}
-            disabled={isTranslating}
-            className="hover:text-primary disabled:opacity-50"
-          >
-            {isTranslating ? t("translating") : showTranslated ? t("showOriginal") : t("translate")}
-          </button>
+          {!media && (
+            <button
+              type="button"
+              onClick={handleTranslate}
+              disabled={isTranslating}
+              className="hover:text-primary disabled:opacity-50"
+            >
+              {isTranslating ? t("translating") : showTranslated ? t("showOriginal") : t("translate")}
+            </button>
+          )}
           <button
             type="button"
             onClick={handleToggleLike}
@@ -190,16 +215,30 @@ export function EditableEntry({
             <ThumbsUpIcon filled={liked} />
             {likeCount > 0 && <span>{likeCount}</span>}
           </button>
+          {!reported ? (
+            <button
+              type="button"
+              onClick={handleReport}
+              disabled={isReporting}
+              className="hover:text-error disabled:opacity-50"
+            >
+              {isReporting ? t("reporting") : t("report")}
+            </button>
+          ) : (
+            <span>{t("reported")}</span>
+          )}
           {canModify && mode === "view" && (
             <div className="flex gap-2">
-              <button
-                type="button"
-                onClick={() => setMode("edit")}
-                aria-label={t(`edit.${kind}`)}
-                className="hover:text-primary"
-              >
-                ✎
-              </button>
+              {!media && (
+                <button
+                  type="button"
+                  onClick={() => setMode("edit")}
+                  aria-label={t(`edit.${kind}`)}
+                  className="hover:text-primary"
+                >
+                  ✎
+                </button>
+              )}
               <button
                 type="button"
                 onClick={() => setMode("confirmDelete")}

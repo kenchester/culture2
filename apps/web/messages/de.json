@@ -226,7 +226,10 @@
     "translating": "Übersetzen...",
     "translateNotFound": "Konnte diesen Beitrag nicht finden, um ihn zu übersetzen.",
     "translateFailed": "Die Übersetzung scheiterte. Bitte versuchen Sie es erneut.",
-    "showOriginal": "Originaltext ansehen"
+    "showOriginal": "Originaltext ansehen",
+    "report": "Bericht",
+    "reporting": "Meldung...",
+    "reported": "Berichtet"
   },
   "suggestNetwork": {
     "heading": "Schlage ein Netzwerk vor.",

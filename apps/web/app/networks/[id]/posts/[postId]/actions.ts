@@ -10,8 +10,17 @@ import { getSiteUrl } from "@/lib/site-url";
 export async function createReply(formData: FormData) {
   const postId = formData.get("postId") as string;
   const networkId = formData.get("networkId") as string;
-  const body = formData.get("body") as string;
+  const body = (formData.get("body") as string) ?? "";
   const embedSuffix = formData.get("embed") === "1" ? "&embed=1" : "";
+
+  // Same media fields as createPost (app/networks/actions.ts) - either a
+  // text body OR these three, set by RecordMedia after it uploads directly
+  // to the post-media bucket.
+  const mediaTypeRaw = (formData.get("mediaType") as string) || null;
+  const mediaPath = (formData.get("mediaPath") as string) || null;
+  const mediaType = mediaTypeRaw === "audio" || mediaTypeRaw === "video" ? mediaTypeRaw : null;
+  const mediaDurationRaw = formData.get("mediaDurationSeconds") as string;
+  const mediaDurationSeconds = mediaDurationRaw ? Number(mediaDurationRaw) : null;
 
   const supabase = await createClient();
   const {
@@ -26,6 +35,9 @@ export async function createReply(formData: FormData) {
     post_id: Number(postId),
     user_id: user.id,
     body,
+    media_type: mediaType,
+    media_path: mediaPath,
+    media_duration_seconds: mediaDurationSeconds,
   });
 
   if (error) {
@@ -96,6 +108,12 @@ export async function deleteReply(replyId: number): Promise<ActionResult> {
     return { error: "Not signed in." };
   }
 
+  const { data: existing } = await supabase
+    .from("post_replies")
+    .select("media_path")
+    .eq("id", replyId)
+    .single();
+
   const { error } = await supabase
     .from("post_replies")
     .delete()
@@ -104,6 +122,15 @@ export async function deleteReply(replyId: number): Promise<ActionResult> {
 
   if (error) {
     return { error: error.message };
+  }
+
+  // Best-effort, same as deletePost (app/networks/actions.ts).
+  if (existing?.media_path) {
+    try {
+      await supabase.storage.from("post-media").remove([existing.media_path]);
+    } catch {
+      // ignore
+    }
   }
 
   return { ok: true };

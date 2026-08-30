@@ -282,7 +282,10 @@
     "showOriginal": "View original text",
     "translating": "Translating…",
     "translateNotFound": "Couldn't find that post to translate.",
-    "translateFailed": "Translation failed. Please try again."
+    "translateFailed": "Translation failed. Please try again.",
+    "report": "Report",
+    "reporting": "Reporting…",
+    "reported": "Reported"
   },
   "suggestNetwork": {
     "heading": "Suggest a network",

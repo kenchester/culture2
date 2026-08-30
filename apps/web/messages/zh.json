@@ -226,7 +226,10 @@
     "translating": "翻译......",
     "translateNotFound": "找不到那篇帖子来翻译。",
     "translateFailed": "翻译失败了。请再试一次。",
-    "showOriginal": "查看原文"
+    "showOriginal": "查看原文",
+    "report": "报道",
+    "reporting": "报告......",
+    "reported": "报道"
   },
   "suggestNetwork": {
     "heading": "建议一个网络",

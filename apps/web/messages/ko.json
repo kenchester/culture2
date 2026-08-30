@@ -226,7 +226,10 @@
     "translating": "번역 중...",
     "translateNotFound": "번역할 글을 찾지 못했어요.",
     "translateFailed": "번역에 실패했다. 다시 시도해 주세요.",
-    "showOriginal": "원본 텍스트 보기"
+    "showOriginal": "원본 텍스트 보기",
+    "report": "리포트",
+    "reporting": "보고합니다...",
+    "reported": "보도"
   },
   "suggestNetwork": {
     "heading": "네트워크 제안",

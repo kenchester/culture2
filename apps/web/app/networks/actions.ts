@@ -62,8 +62,19 @@ export async function leaveNetwork(formData: FormData) {
 
 export async function createPost(formData: FormData) {
   const networkId = formData.get("networkId") as string;
-  const body = formData.get("body") as string;
+  const body = (formData.get("body") as string) ?? "";
   const embedSuffix = formData.get("embed") === "1" ? "&embed=1" : "";
+
+  // PostComposer (app/networks/[id]/post-composer.tsx) submits either a
+  // text body OR these three media fields (set by RecordMedia after it
+  // uploads directly to the post-media bucket) - never both, matching the
+  // posts_media_fields_consistent / posts_body_or_media check constraints
+  // (00000000000063_post_media.sql).
+  const mediaTypeRaw = (formData.get("mediaType") as string) || null;
+  const mediaPath = (formData.get("mediaPath") as string) || null;
+  const mediaType = mediaTypeRaw === "audio" || mediaTypeRaw === "video" ? mediaTypeRaw : null;
+  const mediaDurationRaw = formData.get("mediaDurationSeconds") as string;
+  const mediaDurationSeconds = mediaDurationRaw ? Number(mediaDurationRaw) : null;
 
   const supabase = await createClient();
   const {
@@ -86,7 +97,11 @@ export async function createPost(formData: FormData) {
     .maybeSingle();
   const orgLanguage = orgNetwork?.language as unknown as { name: string; iso_code: string | null } | null;
 
-  if (orgLanguage?.iso_code) {
+  // Text-purity checking is unchanged. A media post skips it here - video
+  // can never be transcribed (there's no text stream, e.g. ASL) and audio
+  // transcription-based purity checking is a separate step, not this one
+  // (see the audio branch below).
+  if (!mediaPath && orgLanguage?.iso_code) {
     const { blocked } = checkLanguagePurity(body, orgLanguage.iso_code);
     if (blocked) {
       redirect(
@@ -101,6 +116,9 @@ export async function createPost(formData: FormData) {
     network_id: Number(networkId),
     user_id: user.id,
     body,
+    media_type: mediaType,
+    media_path: mediaPath,
+    media_duration_seconds: mediaDurationSeconds,
   });
 
   if (error) {
@@ -175,6 +193,8 @@ export async function deletePost(postId: number): Promise<ActionResult> {
     return { error: "Not signed in." };
   }
 
+  const { data: existing } = await supabase.from("posts").select("media_path").eq("id", postId).single();
+
   const { error } = await supabase
     .from("posts")
     .delete()
@@ -183,6 +203,16 @@ export async function deletePost(postId: number): Promise<ActionResult> {
 
   if (error) {
     return { error: error.message };
+  }
+
+  // Best-effort - the row is already gone either way, and a stranded
+  // storage object is a cheaper failure mode than blocking a delete on it.
+  if (existing?.media_path) {
+    try {
+      await supabase.storage.from("post-media").remove([existing.media_path]);
+    } catch {
+      // ignore
+    }
   }
 
   return { ok: true };
@@ -274,6 +304,30 @@ async function notifyLike(authorId: string, path: string) {
     subject: "Someone liked your CultureMesh post",
     text: `Someone liked your post on CultureMesh.\n\n${siteUrl}${path}`,
   });
+}
+
+// Capture-only, same "post"/"reply" XOR-column shape as toggleLike above.
+// No admin review queue exists yet (content_reports, 00000000000064) - this
+// is the minimal safety net for audio/video shipping with no moderation
+// system, not a moderation feature in itself.
+export async function reportContent(kind: "post" | "reply", itemId: number): Promise<ActionResult> {
+  const supabase = await createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
+  if (!user) {
+    return { error: "Not signed in." };
+  }
+
+  const column = kind === "post" ? "post_id" : "reply_id";
+  const { error } = await supabase.from("content_reports").insert({ [column]: itemId, reporter_id: user.id });
+
+  if (error) {
+    return { error: error.message };
+  }
+
+  return { ok: true };
 }
 
 export async function sendNetworkInvites(formData: FormData) {

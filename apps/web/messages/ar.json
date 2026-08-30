@@ -226,7 +226,10 @@
     "translating": "ترجمة...",
     "translateNotFound": "لم أجد ذلك المنشور لأترجمه.",
     "translateFailed": "فشلت الترجمة. يرجى المحاولة مرة أخرى.",
-    "showOriginal": "عرض النص الأصلي"
+    "showOriginal": "عرض النص الأصلي",
+    "report": "التقرير",
+    "reporting": "تقرير...",
+    "reported": "تم الإبلاغ عنه"
   },
   "suggestNetwork": {
     "heading": "اقترح شبكة",

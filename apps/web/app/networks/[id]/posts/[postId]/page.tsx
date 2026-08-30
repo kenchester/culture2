@@ -4,10 +4,10 @@ import { notFound } from "next/navigation";
 import { getTranslations } from "next-intl/server";
 import { createClient } from "@/lib/supabase/server";
 import { type Author, getAvatarUrl, getDisplayName } from "@/lib/profiles";
+import { getPostMediaUrl } from "@/lib/post-media";
 import { createReply } from "./actions";
 import { EditableEntry } from "@/app/networks/editable-entry";
-import { Button } from "@/components/ui/button";
-import { Field, Label, Textarea } from "@/components/ui/input";
+import { PostComposer } from "@/app/networks/[id]/post-composer";
 
 export default async function PostPage({
   params,
@@ -26,7 +26,7 @@ export default async function PostPage({
   const { data: post } = await supabase
     .from("posts")
     .select(
-      "id, body, video_url, created_at, network_id, author:user_id(id, username, first_name, last_name, img_path), likes(count)",
+      "id, body, video_url, media_type, media_path, created_at, network_id, author:user_id(id, username, first_name, last_name, img_path), likes(count)",
     )
     .eq("id", postId)
     .single();
@@ -43,7 +43,7 @@ export default async function PostPage({
     supabase
       .from("post_replies")
       .select(
-        "id, body, created_at, author:user_id(id, username, first_name, last_name, img_path), likes(count)",
+        "id, body, media_type, media_path, created_at, author:user_id(id, username, first_name, last_name, img_path), likes(count)",
       )
       .eq("post_id", postId)
       .order("created_at", { ascending: true }),
@@ -62,6 +62,16 @@ export default async function PostPage({
 
   const author = post.author as unknown as Author | null;
   const avatarUrl = author ? getAvatarUrl(supabase, author.img_path) : null;
+
+  // Signed URLs (post-media is private, 00000000000065) resolved once up
+  // front for the post itself and every reply, same reasoning as
+  // app/networks/[id]/page.tsx's postMediaUrls.
+  const [postMediaUrl, replyMediaUrls] = await Promise.all([
+    getPostMediaUrl(post.media_path),
+    Promise.all(
+      (replies ?? []).map(async (reply) => [reply.id, await getPostMediaUrl(reply.media_path)] as const),
+    ).then((entries) => new Map(entries)),
+  ]);
 
   const returnTo = `/networks/${id}/posts/${postId}${embedSuffix}`;
   const signInParams = new URLSearchParams({ returnTo });
@@ -97,6 +107,7 @@ export default async function PostPage({
             kind="post"
             itemId={post.id}
             body={post.body}
+            media={post.media_type && postMediaUrl ? { type: post.media_type as "audio" | "video", url: postMediaUrl } : null}
             canModify={user?.id === author?.id}
             likeCount={extractCount(post.likes)}
             liked={myLikedPostIds.has(post.id)}
@@ -146,6 +157,11 @@ export default async function PostPage({
                   kind="reply"
                   itemId={reply.id}
                   body={reply.body}
+                  media={
+                    reply.media_type && replyMediaUrls.get(reply.id)
+                      ? { type: reply.media_type as "audio" | "video", url: replyMediaUrls.get(reply.id)! }
+                      : null
+                  }
                   canModify={user?.id === replyAuthor?.id}
                   likeCount={extractCount(reply.likes)}
                   liked={myLikedReplyIds.has(reply.id)}
@@ -165,18 +181,12 @@ export default async function PostPage({
           {error && (
             <p className="rounded-md bg-error-bg px-3 py-2 text-sm text-error">{error}</p>
           )}
-          <Field>
-            <Label htmlFor="reply-body">{t("replyLabel")}</Label>
-            <Textarea
-              id="reply-body"
-              name="body"
-              placeholder={t("replyPlaceholder")}
-              required
-            />
-          </Field>
-          <Button type="submit" className="self-start">
-            {t("replySubmit")}
-          </Button>
+          <PostComposer
+            idPrefix="reply"
+            bodyLabel={t("replyLabel")}
+            bodyPlaceholder={t("replyPlaceholder")}
+            submitLabel={t("replySubmit")}
+          />
         </form>
       ) : (
         <Link href={signInHref} className="text-sm font-medium text-primary hover:underline">
