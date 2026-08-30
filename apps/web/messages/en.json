@@ -4,6 +4,7 @@
     "signIn": "Sign in",
     "signUp": "Sign up",
     "profile": "Profile",
+    "myNetworks": "My networks",
     "messages": "Messages",
     "settings": "Settings",
     "admin": "Admin",
@@ -250,6 +251,11 @@
     "weeklyPromptSave": "Save prompt",
     "connectWithSpeakersHeading": "Connect with more {language} speakers",
     "connectWithSpeakersIntro": "There's an active network near {location} on the main CultureMesh site."
+  },
+  "myNetworks": {
+    "heading": "My networks",
+    "empty": "You haven't joined any networks yet.",
+    "findNetworks": "Find a network to join"
   },
   "editableEntry": {
     "save": "Save",

@@ -8,7 +8,8 @@
     "settings": "Einstellungen",
     "admin": "Verwaltung",
     "signOut": "Abmelden",
-    "changeLanguage": "Sprache ändern"
+    "changeLanguage": "Sprache ändern",
+    "myNetworks": "Meine Netzwerke"
   },
   "search": {
     "speak": "Sprich",
@@ -452,5 +453,10 @@
     "verifyCodeLabel": "Gib den Code ein, an den wir gesendet haben {email}",
     "verifyCodeSubmit": "Verifizieren",
     "pendingNotice": "Du wirst als {name} Student anerkannt. Dein Programmadministrator wird dir bald dein Sprachnetzwerk zuweisen, oder du kannst es unten starten."
+  },
+  "myNetworks": {
+    "heading": "Meine Netzwerke",
+    "empty": "Du bist noch keinem Netzwerk beigetreten.",
+    "findNetworks": "Finden Sie ein Netzwerk, dem Sie beitreten können"
   }
 }

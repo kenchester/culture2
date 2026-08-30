@@ -8,7 +8,8 @@
     "settings": "Escenarios",
     "admin": "Administración",
     "signOut": "Desconectarse",
-    "changeLanguage": "Cambiar el idioma"
+    "changeLanguage": "Cambiar el idioma",
+    "myNetworks": "Mis redes"
   },
   "search": {
     "speak": "Habla",
@@ -452,5 +453,10 @@
     "verifyCodeLabel": "Introduce el código que enviamos a {email}",
     "verifyCodeSubmit": "Verificar",
     "pendingNotice": "Estás reconocido como estudiante{name}. Tu administrador del programa asignará pronto tu red de idiomas, o puedes empezar a empezar abajo."
+  },
+  "myNetworks": {
+    "heading": "Mis redes",
+    "empty": "Aún no te has unido a ninguna cadena.",
+    "findNetworks": "Busca una red a la que unirte"
   }
 }

@@ -8,7 +8,8 @@
     "settings": "Configurações",
     "admin": "Administração",
     "signOut": "Sair",
-    "changeLanguage": "Mude a linguagem"
+    "changeLanguage": "Mude a linguagem",
+    "myNetworks": "Minhas redes"
   },
   "search": {
     "speak": "Fale",
@@ -452,5 +453,10 @@
     "verifyCodeLabel": "Insira o código que enviamos para {email}",
     "verifyCodeSubmit": "Verificar",
     "pendingNotice": "Você é reconhecido como estudante{name}. O administrador do seu programa vai designar sua rede de idiomas em breve, ou você pode começar logo abaixo."
+  },
+  "myNetworks": {
+    "heading": "Minhas redes",
+    "empty": "Você ainda não entrou em nenhuma rede.",
+    "findNetworks": "Encontre uma rede para entrar"
   }
 }

@@ -8,7 +8,8 @@
     "settings": "Impostazioni",
     "admin": "Amministrazione",
     "signOut": "Disconnettiti",
-    "changeLanguage": "Cambia lingua"
+    "changeLanguage": "Cambia lingua",
+    "myNetworks": "Le mie reti"
   },
   "search": {
     "speak": "Parla",
@@ -452,5 +453,10 @@
     "verifyCodeLabel": "Inserisci il codice che abbiamo inviato a {email}",
     "verifyCodeSubmit": "Verifica",
     "pendingNotice": "Sei riconosciuto come studente{name}. L'amministratore del tuo programma assegnerà presto la tua rete linguistica, oppure puoi iniziare qui sotto."
+  },
+  "myNetworks": {
+    "heading": "Le mie reti",
+    "empty": "Non ti sei ancora iscritto a nessuna rete.",
+    "findNetworks": "Trova una rete a cui unirti"
   }
 }

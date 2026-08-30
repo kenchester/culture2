@@ -103,6 +103,13 @@ function UserMenu({ user, profile }: { user: User; profile: Profile | null }) {
             {t("profile")}
           </Link>
           <Link
+            href="/my-networks"
+            onClick={() => setOpen(false)}
+            className="block px-3 py-2 text-body hover:bg-primary-light hover:text-primary"
+          >
+            {t("myNetworks")}
+          </Link>
+          <Link
             href="/messages"
             onClick={() => setOpen(false)}
             className="block px-3 py-2 text-body hover:bg-primary-light hover:text-primary"

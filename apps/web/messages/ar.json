@@ -8,7 +8,8 @@
     "settings": "الإعدادات",
     "admin": "المسؤول",
     "signOut": "تسجيل الخروج",
-    "changeLanguage": "تغيير اللغة"
+    "changeLanguage": "تغيير اللغة",
+    "myNetworks": "شبكاتي"
   },
   "search": {
     "speak": "تحدث",
@@ -452,5 +453,10 @@
     "verifyCodeLabel": "أدخل الرمز الذي أرسلناه إلى {email}",
     "verifyCodeSubmit": "تحقق",
     "pendingNotice": "أنت معترف بك {name} كطالب. سيكلفك مدير البرنامج شبكة لغاتك قريبا، أو يمكنك البدء بها أدناه."
+  },
+  "myNetworks": {
+    "heading": "شبكاتي",
+    "empty": "لم تنضم إلى أي شبكات بعد.",
+    "findNetworks": "ابحث عن شبكة للانضمام إليها"
   }
 }

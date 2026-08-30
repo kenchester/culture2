@@ -8,7 +8,8 @@
     "settings": "Décors",
     "admin": "Administration",
     "signOut": "Déconnectez-vous",
-    "changeLanguage": "Changer de langue"
+    "changeLanguage": "Changer de langue",
+    "myNetworks": "Mes réseaux"
   },
   "search": {
     "speak": "Parle",
@@ -452,5 +453,10 @@
     "verifyCodeLabel": "Entrez le code que nous avons envoyé à {email}",
     "verifyCodeSubmit": "Vérifier",
     "pendingNotice": "Vous êtes reconnu comme étudiant{name}. Votre administrateur de programme vous attribuera bientôt votre réseau linguistique, ou vous pouvez commencer ci-dessous."
+  },
+  "myNetworks": {
+    "heading": "Mes réseaux",
+    "empty": "Tu n’as pas encore rejoint de réseaux.",
+    "findNetworks": "Trouvez un réseau auquel rejoindre"
   }
 }

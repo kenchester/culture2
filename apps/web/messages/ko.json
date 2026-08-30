@@ -8,7 +8,8 @@
     "settings": "설정",
     "admin": "행정",
     "signOut": "로그아웃",
-    "changeLanguage": "언어 변경"
+    "changeLanguage": "언어 변경",
+    "myNetworks": "내 네트워크"
   },
   "search": {
     "speak": "말해봐",
@@ -452,5 +453,10 @@
     "verifyCodeLabel": "우리가 보낸 {email} 코드를 입력해",
     "verifyCodeSubmit": "검증",
     "pendingNotice": "학생으로 {name} 인정받고 있습니다. 프로그램 관리자가 곧 언어 네트워크를 배정해 줄 것이고, 아래에서 바로 시작해도 됩니다."
+  },
+  "myNetworks": {
+    "heading": "내 네트워크",
+    "empty": "아직 어떤 네트워크에도 가입하지 않았잖아요.",
+    "findNetworks": "네트워크에 가입할 수 있는 곳을 찾아보세요"
   }
 }

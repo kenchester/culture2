@@ -8,7 +8,8 @@
     "settings": "背景设定",
     "admin": "行政",
     "signOut": "签出",
-    "changeLanguage": "更改语言"
+    "changeLanguage": "更改语言",
+    "myNetworks": "我的网络"
   },
   "search": {
     "speak": "说话",
@@ -452,5 +453,10 @@
     "verifyCodeLabel": "输入我们发给的{email}代码",
     "verifyCodeSubmit": "验证",
     "pendingNotice": "你被认可为{name}学生。你的项目管理员很快会分配你的语言网络，或者你可以在下面开始。"
+  },
+  "myNetworks": {
+    "heading": "我的网络",
+    "empty": "你还没加入任何网络。",
+    "findNetworks": "找一个网络加入"
   }
 }
