@@ -440,6 +440,13 @@
     "currentNetworksHeading": "Aktuelle Sprachnetzwerke bei {name}",
     "launchNetworkHeading": "Starten Sie ein Netzwerk für Ihre Zielsprache",
     "launchNetworkSubmit": "Startnetzwerk",
-    "currentNetworksEmpty": "Noch keine Netzwerke – starte das erste oben genannte."
+    "currentNetworksEmpty": "Noch keine Netzwerke – starte das erste oben genannte.",
+    "verifyHeadingWithDomain": "Überprüfen Sie Ihre {domain} E-Mail",
+    "verifyHeadingGeneric": "Überprüfe deine Schul-E-Mail",
+    "verifySubheading": "Sie sind unter einer anderen E-Mail-Adresse angemeldet – bestätigen Sie, dass Sie auch eine haben{name}, und wir fügen sie Ihrem Konto hinzu, keine neue Anmeldung erforderlich.",
+    "verifyEmailLabel": "Schul-E-Mail",
+    "verifyEmailSubmit": "Code senden",
+    "verifyCodeLabel": "Gib den Code ein, an den wir gesendet haben {email}",
+    "verifyCodeSubmit": "Verifizieren"
   }
 }

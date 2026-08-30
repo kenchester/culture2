@@ -440,6 +440,13 @@
     "currentNetworksHeading": "Современные языковые сети на {name}",
     "launchNetworkHeading": "Запустите сеть для вашего целевого языка",
     "launchNetworkSubmit": "Сеть запуска",
-    "currentNetworksEmpty": "Пока нет сетей — запустите первую выше."
+    "currentNetworksEmpty": "Пока нет сетей — запустите первую выше.",
+    "verifyHeadingWithDomain": "Проверьте свою {domain} электронную почту",
+    "verifyHeadingGeneric": "Проверьте почту школы",
+    "verifySubheading": "Вы вошли под другой электронной почтой — подтвердите, что у вас тоже есть такой адрес, {name} и мы добавим его в ваш аккаунт, новая регистрация не требуется.",
+    "verifyEmailLabel": "Школьная электронная почта",
+    "verifyEmailSubmit": "Отправить код",
+    "verifyCodeLabel": "Введите код, который {email} мы отправили",
+    "verifyCodeSubmit": "Проверьте"
   }
 }

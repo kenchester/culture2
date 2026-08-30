@@ -3,6 +3,7 @@ import { getTranslations } from "next-intl/server";
 import { createClient } from "@/lib/supabase/server";
 import { DomainCheckBanner } from "@/app/learn/domain-check-banner";
 import { GetStartedBanner } from "@/app/learn/get-started-banner";
+import { VerifySchoolEmailForm } from "@/app/learn/verify-school-email-form";
 import { LearnSearchForm } from "@/app/learn/learn-search-form";
 import { LaunchNetworkForm } from "@/app/learn/[slug]/launch-network-form";
 
@@ -23,10 +24,17 @@ export default async function LearnPage({
   searchParams,
 }: {
   params: Promise<{ slug: string }>;
-  searchParams: Promise<{ domainMatch?: string; domainNoMatch?: string; domainError?: string; error?: string }>;
+  searchParams: Promise<{
+    domainMatch?: string;
+    domainNoMatch?: string;
+    domainError?: string;
+    error?: string;
+    verifyEmail?: string;
+    verifyError?: string;
+  }>;
 }) {
   const { slug } = await params;
-  const { domainMatch, domainNoMatch, domainError, error } = await searchParams;
+  const { domainMatch, domainNoMatch, domainError, error, verifyEmail, verifyError } = await searchParams;
   const t = await getTranslations("learn");
   const supabase = await createClient();
 
@@ -97,8 +105,26 @@ export default async function LearnPage({
           domainNoMatch={domainNoMatch}
           domainError={domainError}
         />
-      ) : org ? (
-        <GetStartedBanner slug={slug} orgName={org.name} domain={org.domain} />
+      ) : org && !isRecognizedMember ? (
+        !user ? (
+          <GetStartedBanner slug={slug} orgName={org.name} domain={org.domain} />
+        ) : (
+          // Signed in, but under an identity this org doesn't recognize -
+          // their main CultureMesh account, or one tied to a different
+          // school. Routing them through sign-in/register again would be
+          // confusing since they can see they're already logged in; this
+          // proves they also control a school email and adds it to their
+          // current profile instead (verifyEmailCode in
+          // app/learn/[slug]/actions.ts), no new account involved.
+          <VerifySchoolEmailForm
+            organizationId={org.id}
+            slug={slug}
+            orgName={org.name}
+            domain={org.domain}
+            pendingEmail={verifyEmail}
+            error={verifyError}
+          />
+        )
       ) : null}
 
       {isPending && org && (

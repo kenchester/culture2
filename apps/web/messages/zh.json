@@ -440,6 +440,13 @@
     "currentNetworksHeading": "当前语言网络{name}",
     "launchNetworkHeading": "为你的目标语言建立一个网络",
     "launchNetworkSubmit": "发射网络",
-    "currentNetworksEmpty": "目前还没有网络——先启动上面第一个网络。"
+    "currentNetworksEmpty": "目前还没有网络——先启动上面第一个网络。",
+    "verifyHeadingWithDomain": "验证你的{domain}邮箱",
+    "verifyHeadingGeneric": "核实你的学校邮箱",
+    "verifySubheading": "你用的是不同的邮箱登录——确认你也有邮箱{name}，我们会把邮箱添加到你的账户，不需要重新注册。",
+    "verifyEmailLabel": "学校邮箱",
+    "verifyEmailSubmit": "发送代码",
+    "verifyCodeLabel": "输入我们发给的{email}代码",
+    "verifyCodeSubmit": "验证"
   }
 }

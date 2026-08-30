@@ -440,6 +440,13 @@
     "currentNetworksHeading": "Réseaux linguistiques actuels à {name}",
     "launchNetworkHeading": "Lancer un réseau pour votre langue cible",
     "launchNetworkSubmit": "Réseau de lancement",
-    "currentNetworksEmpty": "Pas encore de réseau – lancez le premier ci-dessus."
+    "currentNetworksEmpty": "Pas encore de réseau – lancez le premier ci-dessus.",
+    "verifyHeadingWithDomain": "Vérifiez votre {domain} e-mail",
+    "verifyHeadingGeneric": "Vérifiez l’adresse e-mail de votre école",
+    "verifySubheading": "Vous êtes connecté sous un autre email – confirmez que vous en avez aussi un et {name} nous l’ajouterons à votre compte, pas besoin de nouvelle inscription.",
+    "verifyEmailLabel": "Email scolaire",
+    "verifyEmailSubmit": "Code d’envoi",
+    "verifyCodeLabel": "Entrez le code que nous avons envoyé à {email}",
+    "verifyCodeSubmit": "Vérifier"
   }
 }

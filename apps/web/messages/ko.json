@@ -440,6 +440,13 @@
     "currentNetworksHeading": "현재 언어 네트워크 {name}",
     "launchNetworkHeading": "목표 언어 네트워크를 시작하세요",
     "launchNetworkSubmit": "발사 네트워크",
-    "currentNetworksEmpty": "아직 네트워크는 없으니, 위에 있는 첫 번째 네트워크를 시작하세요."
+    "currentNetworksEmpty": "아직 네트워크는 없으니, 위에 있는 첫 번째 네트워크를 시작하세요.",
+    "verifyHeadingWithDomain": "{domain} 이메일 확인",
+    "verifyHeadingGeneric": "학교 이메일을 확인하세요",
+    "verifySubheading": "다른 이메일로 로그인하셨으니, 이메일도 확인하시 {name} 면 계정에 추가해 드리겠습니다. 새 가입은 필요 없습니다.",
+    "verifyEmailLabel": "학교 이메일",
+    "verifyEmailSubmit": "코드 전송",
+    "verifyCodeLabel": "우리가 보낸 {email} 코드를 입력해",
+    "verifyCodeSubmit": "검증"
   }
 }

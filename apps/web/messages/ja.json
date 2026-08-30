@@ -440,6 +440,13 @@
     "currentNetworksHeading": "現在の言語ネットワーク{name}",
     "launchNetworkHeading": "目標言語のネットワークを立ち上げましょう",
     "launchNetworkSubmit": "打ち上げネットワーク",
-    "currentNetworksEmpty": "まだネットワークはありません。上記の最初のネットワークを立ち上げてください。"
+    "currentNetworksEmpty": "まだネットワークはありません。上記の最初のネットワークを立ち上げてください。",
+    "verifyHeadingWithDomain": "{domain}メールアドレスを確認してください",
+    "verifyHeadingGeneric": "学校のメールアドレスを確認してください",
+    "verifySubheading": "別のメールアドレスでサインインしていますが、こちらにもメールアドレス{name}があるか確認すれば、アカウントに追加します。新規登録は不要です。",
+    "verifyEmailLabel": "学校のメール",
+    "verifyEmailSubmit": "コードを送れ",
+    "verifyCodeLabel": "送った{email}コードを入力してください",
+    "verifyCodeSubmit": "検証"
   }
 }

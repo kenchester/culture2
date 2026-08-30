@@ -440,6 +440,13 @@
     "currentNetworksHeading": "شبكات اللغة الحالية على {name}",
     "launchNetworkHeading": "أطلق شبكة للغتك المستهدفة",
     "launchNetworkSubmit": "شبكة الإطلاق",
-    "currentNetworksEmpty": "لا توجد شبكات حتى الآن - أطلق الأولى أعلاه."
+    "currentNetworksEmpty": "لا توجد شبكات حتى الآن - أطلق الأولى أعلاه.",
+    "verifyHeadingWithDomain": "تحقق من بريدك {domain} الإلكتروني",
+    "verifyHeadingGeneric": "تحقق من بريدك الإلكتروني المدرسي",
+    "verifySubheading": "أنت مسجلة الدخول عبر بريد إلكتروني مختلف - تأكد من وجود واحدة أيضا وسنضيفها {name} إلى حسابك، لا حاجة لتسجيل جديد.",
+    "verifyEmailLabel": "البريد الإلكتروني للمدرسة",
+    "verifyEmailSubmit": "إرسال الرمز",
+    "verifyCodeLabel": "أدخل الرمز الذي أرسلناه إلى {email}",
+    "verifyCodeSubmit": "تحقق"
   }
 }

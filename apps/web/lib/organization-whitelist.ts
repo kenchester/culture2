@@ -59,7 +59,21 @@ export async function claimWhitelistSeat(slug: string) {
   }
 
   const admin = createAdminClient();
-  const email = user.email.toLowerCase();
+
+  // Someone can be recognized under an email that isn't the one they
+  // signed in with - e.g. their sign-in identity is a personal gmail (or
+  // an account tied to a school they've since left), but they've since
+  // verified a school email onto this same profile
+  // (app/learn/[slug]/actions.ts's verifyEmailCode). Every check below
+  // tries all of them, not just the sign-in email.
+  const { data: secondaryEmailRows } = await admin
+    .from("verified_school_emails")
+    .select("email")
+    .eq("profile_id", user.id);
+  const candidateEmails = [
+    user.email.toLowerCase(),
+    ...(secondaryEmailRows ?? []).map((r) => r.email),
+  ];
 
   const { data: org } = await admin
     .from("organizations")
@@ -70,14 +84,17 @@ export async function claimWhitelistSeat(slug: string) {
     return;
   }
 
-  const { data: entry } = await admin
-    .from("organization_whitelist")
-    .select("id, role, language_ids, claimed_by")
-    .eq("organization_id", org.id)
-    .eq("email", email)
-    .maybeSingle();
+  for (const email of candidateEmails) {
+    const { data: entry } = await admin
+      .from("organization_whitelist")
+      .select("id, role, language_ids, claimed_by")
+      .eq("organization_id", org.id)
+      .eq("email", email)
+      .maybeSingle();
 
-  if (entry) {
+    if (!entry) {
+      continue;
+    }
     if (entry.claimed_by) {
       return;
     }
@@ -107,33 +124,41 @@ export async function claimWhitelistSeat(slug: string) {
   // set without domain_signin_enabled (a school might keep it on file for
   // the marketing banner's domain-check without wanting auto-recognition -
   // e.g. a small school that doesn't issue students institutional email).
-  if (org.domain_signin_enabled && org.domain) {
+  if (!org.domain_signin_enabled || !org.domain) {
+    return;
+  }
+
+  const orgDomain = org.domain;
+  const matchedEmail = candidateEmails.find((email) => {
     const emailDomain = email.split("@")[1];
-    if (domainMatchCandidates(emailDomain).includes(org.domain)) {
-      // A self-serve org (app/learn/start) only ever has the one language
-      // it was approved for - nothing for an admin to pick, so skip the
-      // pending state and enroll immediately. A multi-language school
-      // (Acme) still needs an admin to choose, since there's real ambiguity.
-      const { data: orgLanguages } = await admin
-        .from("organization_languages")
-        .select("language_id")
-        .eq("organization_id", org.id);
-      const languageIds = orgLanguages?.length === 1 ? [orgLanguages[0].language_id] : [];
+    return emailDomain && domainMatchCandidates(emailDomain).includes(orgDomain);
+  });
+  if (!matchedEmail) {
+    return;
+  }
 
-      await admin.from("organization_whitelist").insert({
-        organization_id: org.id,
-        email,
-        role: "student",
-        language_ids: languageIds,
-        claimed_by: user.id,
-        claimed_at: new Date().toISOString(),
-        invited_by: null,
-      });
+  // A self-serve org (app/learn/start) only ever has the one language it
+  // was approved for - nothing for an admin to pick, so skip the pending
+  // state and enroll immediately. A multi-language school (Acme) still
+  // needs an admin to choose, since there's real ambiguity.
+  const { data: orgLanguages } = await admin
+    .from("organization_languages")
+    .select("language_id")
+    .eq("organization_id", org.id);
+  const languageIds = orgLanguages?.length === 1 ? [orgLanguages[0].language_id] : [];
 
-      if (languageIds.length > 0) {
-        await enrollInLanguages(admin, org.id, user.id, languageIds);
-      }
-    }
+  await admin.from("organization_whitelist").insert({
+    organization_id: org.id,
+    email: matchedEmail,
+    role: "student",
+    language_ids: languageIds,
+    claimed_by: user.id,
+    claimed_at: new Date().toISOString(),
+    invited_by: null,
+  });
+
+  if (languageIds.length > 0) {
+    await enrollInLanguages(admin, org.id, user.id, languageIds);
   }
 }
 
