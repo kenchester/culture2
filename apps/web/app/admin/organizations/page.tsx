@@ -31,21 +31,30 @@ type RequestRow = {
   language: { name: string } | null;
 };
 
+const ORGS_PER_PAGE = 5;
+
 export default async function AdminOrganizationsPage({
   searchParams,
 }: {
-  searchParams: Promise<{ error?: string; success?: string }>;
+  searchParams: Promise<{ error?: string; success?: string; page?: string }>;
 }) {
-  const { error, success } = await searchParams;
+  const { error, success, page } = await searchParams;
+  const currentPage = Math.max(1, Number(page) || 1);
+  const from = (currentPage - 1) * ORGS_PER_PAGE;
+  // Fetches one extra row past this page's worth so hasNextPage can be
+  // determined from the result itself, rather than a separate count query.
+  const to = from + ORGS_PER_PAGE;
+
   const supabase = await createClient();
 
-  const [{ data: organizations }, { data: pendingRequests }] = await Promise.all([
+  const [{ data: organizationsRaw }, { data: pendingRequests }] = await Promise.all([
     supabase
       .from("organizations")
       .select(
         "id, name, slug, subdomain, domain, domain_signin_enabled, organization_languages(language:languages(name)), organization_admins(user_id)",
       )
-      .order("name"),
+      .order("created_at", { ascending: false })
+      .range(from, to),
     supabase
       .from("organization_requests")
       .select("id, institutional_email, profile_url, school_name, location_name, created_at, language:languages(name)")
@@ -53,13 +62,18 @@ export default async function AdminOrganizationsPage({
       .order("created_at"),
   ]);
 
+  const hasNextPage = (organizationsRaw?.length ?? 0) > ORGS_PER_PAGE;
+  const organizations = (organizationsRaw ?? []).slice(0, ORGS_PER_PAGE);
+
   return (
     <div className="flex w-full flex-col gap-6">
       {success && <p className="rounded-md bg-success-bg px-3 py-2 text-sm text-success">{success}</p>}
       {error && <p className="rounded-md bg-error-bg px-3 py-2 text-sm text-error">{error}</p>}
       <OrganizationManager
-        organizations={(organizations ?? []) as unknown as OrgRow[]}
+        organizations={organizations as unknown as OrgRow[]}
         pendingRequests={(pendingRequests ?? []) as unknown as RequestRow[]}
+        currentPage={currentPage}
+        hasNextPage={hasNextPage}
         createOrganization={createOrganization}
         addOrganizationLanguage={addOrganizationLanguage}
         inviteFirstAdmin={inviteFirstAdmin}

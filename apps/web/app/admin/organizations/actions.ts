@@ -51,15 +51,14 @@ async function generateUniqueSlug(
 export async function createOrganization(formData: FormData) {
   const name = (formData.get("name") as string)?.trim();
   const slug = (formData.get("slug") as string)?.trim();
-  const subdomain = (formData.get("subdomain") as string)?.trim();
   const domain = (formData.get("domain") as string)?.trim() || null;
   const locationName = (formData.get("locationName") as string)?.trim();
   const parentCountryId = formData.get("parentCountryId") as string;
 
-  if (!name || !slug || !subdomain || !locationName || !parentCountryId) {
+  if (!name || !slug || !locationName || !parentCountryId) {
     redirect(
       `/admin/organizations?error=${encodeURIComponent(
-        "Name, slug, subdomain, location name, and parent country are all required.",
+        "Name, slug, location name, and parent geography are all required.",
       )}`,
     );
   }
@@ -99,10 +98,14 @@ export async function createOrganization(formData: FormData) {
 
   const domainSigninEnabled = formData.get("domainSigninEnabled") === "on";
 
+  // Every school lives under the shared learn.culturemesh.com subdomain,
+  // distinguished by slug (lib/supabase/proxy.ts) - subdomain itself is no
+  // longer something an admin picks per org (see
+  // 00000000000056_org_subdomain_not_unique.sql).
   const { error: orgError } = await supabase.from("organizations").insert({
     name,
     slug,
-    subdomain,
+    subdomain: "learn",
     domain,
     domain_signin_enabled: domainSigninEnabled,
     location_place_id: place.id,

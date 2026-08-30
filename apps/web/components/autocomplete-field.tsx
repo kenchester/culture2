@@ -51,7 +51,7 @@ export function AutocompleteField({
   placeholder?: string;
   disabled?: boolean;
   defaultValue?: string;
-  placeType?: "country" | "region" | "city";
+  placeType?: "country" | "region" | "city" | ("country" | "region" | "city")[];
   initialOption?: AutocompleteOption | null;
 }) {
   const [query, setQuery] = useState("");
@@ -82,13 +82,22 @@ export function AutocompleteField({
     return () => document.removeEventListener("click", handleClickOutside);
   }, []);
 
+  // Derived to a plain string rather than referencing placeType directly in
+  // the effect below - callers commonly pass an inline array literal (e.g.
+  // placeType={["country", "region"]}), which is a new array reference on
+  // every render and would otherwise retrigger the search on every keystroke
+  // regardless of whether the actual allowed types changed.
+  const placeTypeParam = kind === "place" && placeType
+    ? Array.isArray(placeType) ? placeType.join(",") : placeType
+    : "";
+
   useEffect(() => {
     if (disabled || selected || !isSearchableQuery(query.trim())) {
       return;
     }
     const controller = new AbortController();
     const timeout = setTimeout(() => {
-      const typeParam = kind === "place" && placeType ? `&type=${placeType}` : "";
+      const typeParam = placeTypeParam ? `&type=${placeTypeParam}` : "";
       // Lets a search for e.g. "Estados Unidos" find "United States" -
       // the API resolves this against whatever's already cached for this
       // locale (see 00000000000042_locale_aware_search.sql) and returns
@@ -106,7 +115,7 @@ export function AutocompleteField({
       clearTimeout(timeout);
       controller.abort();
     };
-  }, [query, kind, selected, searchUrl, disabled, placeType, locale]);
+  }, [query, kind, selected, searchUrl, disabled, placeTypeParam, locale]);
 
   const visibleOptions = disabled || selected ? [] : options;
 

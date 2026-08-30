@@ -11,7 +11,14 @@ export async function GET(request: NextRequest) {
   const kindParam = searchParams.get("kind");
   const kind = kindParam === "language" || kindParam === "religion" ? kindParam : "place";
   const typeParam = searchParams.get("type");
-  const type = typeParam && PLACE_TYPES.includes(typeParam) ? typeParam : null;
+  // A caller can ask for multiple types at once (e.g. "country,region" - a
+  // school can be a region-level entity within a country, or sit directly
+  // under a country the way Washington D.C. does under the US, so its
+  // parent picker needs to accept either). search_places itself only
+  // filters on a single type, so a multi-type request goes through
+  // unfiltered and gets filtered here instead.
+  const requestedTypes = (typeParam?.split(",") ?? []).map((t) => t.trim()).filter((t) => PLACE_TYPES.includes(t));
+  const type = requestedTypes.length === 1 ? requestedTypes[0] : null;
   const localeParam = searchParams.get("locale");
   const locale = isLocale(localeParam) ? localeParam : "en";
 
@@ -75,12 +82,14 @@ export async function GET(request: NextRequest) {
     parent_name: string | null;
     parent_type: "country" | "region" | "city" | null;
   };
-  const shaped = ((data ?? []) as SearchPlaceRow[]).map((row) => ({
-    id: row.id,
-    name: row.name,
-    type: row.type,
-    parent_id: row.parent_id,
-    parent: row.parent_name ? { name: row.parent_name, type: row.parent_type } : null,
-  }));
+  const shaped = ((data ?? []) as SearchPlaceRow[])
+    .filter((row) => requestedTypes.length <= 1 || requestedTypes.includes(row.type))
+    .map((row) => ({
+      id: row.id,
+      name: row.name,
+      type: row.type,
+      parent_id: row.parent_id,
+      parent: row.parent_name ? { name: row.parent_name, type: row.parent_type } : null,
+    }));
   return NextResponse.json(shaped);
 }

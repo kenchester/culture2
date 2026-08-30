@@ -99,9 +99,9 @@ export default async function StartClassPage({
           <Input id="locationName" name="locationName" placeholder="e.g. Springfield, Illinois" required />
         </Field>
         <AutocompleteField
-          label="Country"
+          label="Parent geography"
           kind="place"
-          placeType="country"
+          placeType={["country", "region"]}
           hiddenName="parentCountryId"
         />
         <Button type="submit" className="self-start">

@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Link from "next/link";
 import { AutocompleteField } from "@/components/autocomplete-field";
 import { Button } from "@/components/ui/button";
 import { Field, Input, Label } from "@/components/ui/input";
@@ -69,6 +70,8 @@ function DeleteOrgForm({
 export function OrganizationManager({
   organizations,
   pendingRequests,
+  currentPage,
+  hasNextPage,
   createOrganization,
   addOrganizationLanguage,
   inviteFirstAdmin,
@@ -79,6 +82,8 @@ export function OrganizationManager({
 }: {
   organizations: OrgRow[];
   pendingRequests: RequestRow[];
+  currentPage: number;
+  hasNextPage: boolean;
   createOrganization: (formData: FormData) => void;
   addOrganizationLanguage: (formData: FormData) => void;
   inviteFirstAdmin: (formData: FormData) => void;
@@ -138,10 +143,6 @@ export function OrganizationManager({
               <Input id="org-slug" name="slug" placeholder="e.g. acme-university" required />
             </Field>
             <Field>
-              <Label htmlFor="org-subdomain">Subdomain</Label>
-              <Input id="org-subdomain" name="subdomain" placeholder="e.g. learn" required />
-            </Field>
-            <Field>
               <Label htmlFor="org-domain">School email domain (optional)</Label>
               <Input id="org-domain" name="domain" placeholder="e.g. acme.edu" />
             </Field>
@@ -155,9 +156,9 @@ export function OrganizationManager({
             Recognize students who sign in with a matching school email
           </label>
           <AutocompleteField
-            label="Parent country"
+            label="Parent geography"
             kind="place"
-            placeType="country"
+            placeType={["country", "region"]}
             hiddenName="parentCountryId"
           />
           <Button type="submit" className="self-start">
@@ -229,6 +230,28 @@ export function OrganizationManager({
             </div>
           </div>
         ))}
+        {(currentPage > 1 || hasNextPage) && (
+          <div className="flex items-center justify-between pt-2">
+            {currentPage > 1 ? (
+              <Link
+                href={`/admin/organizations?page=${currentPage - 1}`}
+                className="text-sm font-medium text-primary hover:underline"
+              >
+                ← Previous 5 organizations
+              </Link>
+            ) : (
+              <span />
+            )}
+            {hasNextPage && (
+              <Link
+                href={`/admin/organizations?page=${currentPage + 1}`}
+                className="text-sm font-medium text-primary hover:underline"
+              >
+                Next 5 organizations →
+              </Link>
+            )}
+          </div>
+        )}
       </div>
     </div>
   );
