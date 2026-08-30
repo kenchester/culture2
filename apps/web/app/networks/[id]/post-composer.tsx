@@ -34,9 +34,6 @@ export function PostComposer({
 }) {
   const [mode, setMode] = useState<Mode>("text");
   const [bodyValue, setBodyValue] = useState("");
-  const [mediaReady, setMediaReady] = useState(false);
-
-  const canSubmit = mode === "text" ? bodyValue.trim().length > 0 : mediaReady;
 
   return (
     <div className="flex flex-col gap-2">
@@ -56,23 +53,27 @@ export function PostComposer({
       </div>
 
       {mode === "text" ? (
-        <Field>
-          <Label htmlFor={`${idPrefix}-body`}>{bodyLabel}</Label>
-          <Textarea
-            id={`${idPrefix}-body`}
-            name="body"
-            placeholder={bodyPlaceholder}
-            value={bodyValue}
-            onChange={(e) => setBodyValue(e.target.value)}
-          />
-        </Field>
+        <>
+          <Field>
+            <Label htmlFor={`${idPrefix}-body`}>{bodyLabel}</Label>
+            <Textarea
+              id={`${idPrefix}-body`}
+              name="body"
+              placeholder={bodyPlaceholder}
+              value={bodyValue}
+              onChange={(e) => setBodyValue(e.target.value)}
+            />
+          </Field>
+          <Button type="submit" disabled={bodyValue.trim().length === 0} className="self-start">
+            {submitLabel}
+          </Button>
+        </>
       ) : (
-        <RecordMedia key={mode} kind={mode} onReadyChange={setMediaReady} />
+        // RecordMedia's own "Post this recording" button submits the form
+        // itself once the upload finishes - no separate submit button here,
+        // there'd be two "Post" controls on screen otherwise.
+        <RecordMedia key={mode} kind={mode} />
       )}
-
-      <Button type="submit" disabled={!canSubmit} className="self-start">
-        {submitLabel}
-      </Button>
     </div>
   );
 }

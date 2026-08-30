@@ -181,7 +181,15 @@ export function EditableEntry({
       <div className="flex items-start justify-between gap-2">
         {media ? (
           media.type === "video" ? (
-            <video src={media.url} controls playsInline className="max-h-64 w-full min-w-0 rounded-md" />
+            // #t=1 (Media Fragments URI): shows the frame at 1s as the
+            // poster instead of frame 0 - camera warm-up means the very
+            // first frame is often just black.
+            <video
+              src={`${media.url}#t=1`}
+              controls
+              playsInline
+              className="max-h-64 w-full min-w-0 rounded-md"
+            />
           ) : (
             <audio src={media.url} controls className="w-full min-w-0" />
           )
