@@ -48,6 +48,12 @@ const ORG_SLUG = "acme-university";
 const ORG_SUBDOMAIN = "learn";
 const ORG_DOMAIN = "acme.edu";
 const LOCATION_NAME = "Acme University";
+// Acme is purely an example org, so it's fine to anchor it to any real US
+// city - Springfield, IL is the placeholder city already used elsewhere in
+// the admin/self-serve forms.
+const PARENT_CITY_NAME = "Springfield";
+const PARENT_REGION_NAME = "Illinois";
+const PARENT_COUNTRY_NAME = "United States";
 
 const LANGUAGE_SEEDS: LanguageSeed[] = [
   {
@@ -173,14 +179,34 @@ async function ensurePlace(): Promise<number> {
     .from("places")
     .select("id")
     .eq("name", LOCATION_NAME)
-    .eq("type", "city")
+    .eq("type", "campus")
     .maybeSingle();
   if (existing) return existing.id;
 
-  const { data: usa } = await admin.from("places").select("id").eq("type", "country").eq("name", "United States").single();
+  const { data: country } = await admin
+    .from("places")
+    .select("id")
+    .eq("type", "country")
+    .eq("name", PARENT_COUNTRY_NAME)
+    .single();
+  const { data: region } = await admin
+    .from("places")
+    .select("id")
+    .eq("type", "region")
+    .eq("name", PARENT_REGION_NAME)
+    .eq("parent_id", country!.id)
+    .single();
+  const { data: city } = await admin
+    .from("places")
+    .select("id")
+    .eq("type", "city")
+    .eq("name", PARENT_CITY_NAME)
+    .eq("parent_id", region!.id)
+    .single();
+
   const { data: place, error } = await admin
     .from("places")
-    .insert({ type: "city", name: LOCATION_NAME, parent_id: usa!.id, hidden_from_search: true })
+    .insert({ type: "campus", name: LOCATION_NAME, parent_id: city!.id, hidden_from_search: true })
     .select("id")
     .single();
   if (error || !place) throw error ?? new Error("Could not create Acme University place");

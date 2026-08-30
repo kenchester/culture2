@@ -52,13 +52,12 @@ export async function createOrganization(formData: FormData) {
   const name = (formData.get("name") as string)?.trim();
   const slug = (formData.get("slug") as string)?.trim();
   const domain = (formData.get("domain") as string)?.trim() || null;
-  const locationName = (formData.get("locationName") as string)?.trim();
-  const parentCountryId = formData.get("parentCountryId") as string;
+  const parentPlaceId = formData.get("parentPlaceId") as string;
 
-  if (!name || !slug || !locationName || !parentCountryId) {
+  if (!name || !slug || !parentPlaceId) {
     redirect(
       `/admin/organizations?error=${encodeURIComponent(
-        "Name, slug, location name, and parent geography are all required.",
+        "Name, slug, and parent geography are all required.",
       )}`,
     );
   }
@@ -81,12 +80,16 @@ export async function createOrganization(formData: FormData) {
   // one step so an admin never has to separately visit the
   // Languages & Geography tab first. hidden_from_search keeps it out of
   // the main site's location picker (00000000000043_organizations.sql).
+  // type 'campus' anchors the school as a sub-city point under whatever
+  // real country/region/city was picked as its parent geography, named
+  // after the org itself rather than needing a separate location name
+  // (00000000000058_campus_place_type.sql).
   const { data: place, error: placeError } = await supabase
     .from("places")
     .insert({
-      type: "city",
-      name: locationName,
-      parent_id: Number(parentCountryId),
+      type: "campus",
+      name,
+      parent_id: Number(parentPlaceId),
       hidden_from_search: true,
     })
     .select("id")
@@ -352,7 +355,7 @@ export async function approveOrganizationRequest(formData: FormData) {
   const { data: request } = await supabase
     .from("organization_requests")
     .select(
-      "id, requested_by, institutional_email, school_name, language_id, location_name, parent_country_id, status",
+      "id, requested_by, institutional_email, school_name, language_id, parent_place_id, status",
     )
     .eq("id", requestId)
     .single();
@@ -364,9 +367,9 @@ export async function approveOrganizationRequest(formData: FormData) {
   const { data: place, error: placeError } = await supabase
     .from("places")
     .insert({
-      type: "city",
-      name: request.location_name,
-      parent_id: request.parent_country_id,
+      type: "campus",
+      name: request.school_name,
+      parent_id: request.parent_place_id,
       hidden_from_search: true,
     })
     .select("id")

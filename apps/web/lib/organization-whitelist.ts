@@ -2,6 +2,7 @@ import "server-only";
 import type { SupabaseClient } from "@supabase/supabase-js";
 import { createClient } from "@/lib/supabase/server";
 import { createAdminClient } from "@/lib/supabase/admin";
+import { domainMatchCandidates } from "@/lib/school-domain";
 
 // Inserts network_members rows for each of an org's networks matching the
 // given language_ids - shared between the sign-in-time whitelist claim
@@ -108,7 +109,7 @@ export async function claimWhitelistSeat(slug: string) {
   // e.g. a small school that doesn't issue students institutional email).
   if (org.domain_signin_enabled && org.domain) {
     const emailDomain = email.split("@")[1];
-    if (emailDomain === org.domain) {
+    if (domainMatchCandidates(emailDomain).includes(org.domain)) {
       // A self-serve org (app/learn/start) only ever has the one language
       // it was approved for - nothing for an admin to pick, so skip the
       // pending state and enroll immediately. A multi-language school

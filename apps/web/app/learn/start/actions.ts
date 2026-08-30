@@ -21,8 +21,7 @@ export async function submitOrganizationRequest(formData: FormData) {
   const profileUrl = (formData.get("profileUrl") as string)?.trim();
   const schoolName = (formData.get("schoolName") as string)?.trim();
   const languageId = Number(formData.get("languageId"));
-  const locationName = (formData.get("locationName") as string)?.trim();
-  const parentCountryId = Number(formData.get("parentCountryId"));
+  const parentPlaceId = Number(formData.get("parentPlaceId"));
 
   const supabase = await createClient();
   const {
@@ -33,14 +32,7 @@ export async function submitOrganizationRequest(formData: FormData) {
     redirect(`/sign-in?returnTo=${encodeURIComponent("/learn/start")}`);
   }
 
-  if (
-    !instructorName ||
-    !profileUrl ||
-    !schoolName ||
-    !languageId ||
-    !locationName ||
-    !parentCountryId
-  ) {
+  if (!instructorName || !profileUrl || !schoolName || !languageId || !parentPlaceId) {
     redirect(`/learn/start?error=${encodeURIComponent("All fields are required.")}`);
   }
 
@@ -54,8 +46,7 @@ export async function submitOrganizationRequest(formData: FormData) {
     profile_url: profileUrl,
     school_name: schoolName,
     language_id: languageId,
-    location_name: locationName,
-    parent_country_id: parentCountryId,
+    parent_place_id: parentPlaceId,
   });
 
   if (error) {
@@ -69,7 +60,7 @@ export async function submitOrganizationRequest(formData: FormData) {
     await sendEmail({
       to: "kenchester2@gmail.com",
       subject: `[CultureMesh Learn] New class request: ${schoolName}`,
-      text: `${instructorName} (${user.email}) requested a free class at ${schoolName}.\n\nProfile: ${profileUrl}\nLocation: ${locationName}\n\nReview: https://culturemesh.com/admin/organizations`,
+      text: `${instructorName} (${user.email}) requested a free class at ${schoolName}.\n\nProfile: ${profileUrl}\n\nReview: https://culturemesh.com/admin/organizations`,
     });
   } catch {
     // Ignore - see comment above.

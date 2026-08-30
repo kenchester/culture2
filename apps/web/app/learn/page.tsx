@@ -1,17 +1,31 @@
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
+import { resolveLearnSlugForEmail } from "@/app/learn/actions";
 
 // The bare learn.culturemesh.com root - not any one school's page. Every
 // school lives at /learn/{slug} (see app/learn/[slug]/page.tsx); this is
-// just the entry point that gets a visitor there. Today there's exactly one
-// school, so this always redirects straight through. A real "choose your
-// school" picker is a natural follow-up once a second school actually
-// exists - for now the minimal list below is just enough that the root
-// doesn't silently misroute the moment that happens, not a designed
-// experience.
+// just the entry point that gets a visitor there. A real "choose your
+// school" picker is a natural follow-up once more schools exist - for now
+// the minimal list below is just enough that the root doesn't silently
+// misroute as schools are added, not a designed experience.
 export default async function LearnRootPage() {
   const supabase = await createClient();
+
+  // A signed-in visitor whose verified email matches an approved school
+  // should land straight on their own school's page, even though the
+  // example org (Acme) is what an anonymous visitor sees here - same
+  // domain-match logic the sign-in flow already uses (otp-form.tsx).
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+  if (user?.email) {
+    const ownSlug = await resolveLearnSlugForEmail(user.email);
+    if (ownSlug) {
+      redirect(`/learn/${ownSlug}`);
+    }
+  }
+
   const { data: orgs } = await supabase.from("organizations").select("name, slug").eq("subdomain", "learn");
 
   if (!orgs || orgs.length === 0) {

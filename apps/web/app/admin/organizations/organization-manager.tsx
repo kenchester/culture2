@@ -13,7 +13,7 @@ type OrgRow = {
   subdomain: string;
   domain: string | null;
   domain_signin_enabled: boolean;
-  organization_languages: { language: { name: string } | null }[];
+  organization_languages: { network_id: number; language: { name: string } | null }[];
   organization_admins: { user_id: string }[];
 };
 
@@ -22,7 +22,6 @@ type RequestRow = {
   institutional_email: string;
   profile_url: string;
   school_name: string;
-  location_name: string;
   created_at: string;
   language: { name: string } | null;
 };
@@ -102,9 +101,7 @@ export function OrganizationManager({
               <p className="font-medium text-ink">
                 {request.school_name} <span className="text-sm text-muted">· {request.language?.name ?? "?"}</span>
               </p>
-              <p className="text-sm text-muted">
-                {request.institutional_email} · {request.location_name}
-              </p>
+              <p className="text-sm text-muted">{request.institutional_email}</p>
               <a
                 href={request.profile_url}
                 target="_blank"
@@ -146,10 +143,6 @@ export function OrganizationManager({
               <Label htmlFor="org-domain">School email domain (optional)</Label>
               <Input id="org-domain" name="domain" placeholder="e.g. acme.edu" />
             </Field>
-            <Field>
-              <Label htmlFor="org-location">Location name</Label>
-              <Input id="org-location" name="locationName" placeholder="e.g. Acme University" required />
-            </Field>
           </div>
           <label className="flex items-center gap-2 text-sm text-body">
             <input type="checkbox" name="domainSigninEnabled" defaultChecked />
@@ -158,8 +151,8 @@ export function OrganizationManager({
           <AutocompleteField
             label="Parent geography"
             kind="place"
-            placeType={["country", "region"]}
-            hiddenName="parentCountryId"
+            placeType={["country", "region", "city"]}
+            hiddenName="parentPlaceId"
           />
           <Button type="submit" className="self-start">
             Create organization
@@ -173,12 +166,44 @@ export function OrganizationManager({
         {organizations.map((org) => (
           <div key={org.id} className="flex flex-col gap-4 rounded-lg border border-border p-4">
             <div>
-              <p className="font-medium text-ink">{org.name}</p>
+              <p className="font-medium text-ink">
+                {org.organization_languages.length === 1 && org.organization_languages[0].network_id ? (
+                  <a
+                    href={`/networks/${org.organization_languages[0].network_id}`}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="text-primary hover:underline"
+                  >
+                    {org.name}
+                  </a>
+                ) : (
+                  org.name
+                )}
+              </p>
               <p className="text-sm text-muted">
                 {org.subdomain}.culturemesh.com{org.domain ? ` · ${org.domain}` : ""}
               </p>
               <p className="text-sm text-muted">
-                Languages: {org.organization_languages.map((l) => l.language?.name).filter(Boolean).join(", ") || "none yet"}
+                Languages:{" "}
+                {org.organization_languages.length > 0
+                  ? org.organization_languages.map((l, i) => (
+                      <span key={l.network_id ?? i}>
+                        {i > 0 && ", "}
+                        {l.network_id ? (
+                          <a
+                            href={`/networks/${l.network_id}`}
+                            target="_blank"
+                            rel="noreferrer"
+                            className="text-primary hover:underline"
+                          >
+                            {l.language?.name ?? "?"}
+                          </a>
+                        ) : (
+                          l.language?.name ?? "?"
+                        )}
+                      </span>
+                    ))
+                  : "none yet"}
               </p>
               <p className="text-sm text-muted">Admins: {org.organization_admins.length}</p>
             </div>

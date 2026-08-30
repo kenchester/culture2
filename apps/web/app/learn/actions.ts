@@ -2,6 +2,7 @@
 
 import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
+import { domainMatchCandidates } from "@/lib/school-domain";
 
 function normalizeDomain(raw: string): string {
   return raw
@@ -29,11 +30,14 @@ export async function checkSchoolDomain(formData: FormData) {
   }
 
   const supabase = await createClient();
-  const { data: org } = await supabase
+  // Recognizes a subdomain of an org's registered domain too (e.g. an org
+  // registered as "grcc.edu" also matches "email.grcc.edu") - most specific
+  // match wins if more than one candidate happens to be registered.
+  const { data: orgs } = await supabase
     .from("organizations")
-    .select("slug")
-    .eq("domain", domain)
-    .maybeSingle();
+    .select("slug, domain")
+    .in("domain", domainMatchCandidates(domain));
+  const org = (orgs ?? []).sort((a, b) => b.domain!.length - a.domain!.length)[0];
 
   if (org) {
     redirect(`${backTo}?domainMatch=${encodeURIComponent(domain)}`);
@@ -56,6 +60,13 @@ export async function resolveLearnSlugForEmail(email: string): Promise<string | 
   }
 
   const supabase = await createClient();
-  const { data: org } = await supabase.from("organizations").select("slug").eq("domain", domain).maybeSingle();
+  // Same subdomain-aware match as checkSchoolDomain above - a verified
+  // student@email.grcc.edu should resolve to a school registered as
+  // "grcc.edu", not just an exact domain match.
+  const { data: orgs } = await supabase
+    .from("organizations")
+    .select("slug, domain")
+    .in("domain", domainMatchCandidates(domain));
+  const org = (orgs ?? []).sort((a, b) => b.domain!.length - a.domain!.length)[0];
   return org?.slug ?? null;
 }

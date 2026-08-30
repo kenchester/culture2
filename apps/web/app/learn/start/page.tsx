@@ -94,15 +94,11 @@ export default async function StartClassPage({
           <Input id="schoolName" name="schoolName" placeholder="e.g. Springfield University" required />
         </Field>
         <AutocompleteField label="Language you teach" kind="language" hiddenName="languageId" />
-        <Field>
-          <Label htmlFor="locationName">School location</Label>
-          <Input id="locationName" name="locationName" placeholder="e.g. Springfield, Illinois" required />
-        </Field>
         <AutocompleteField
-          label="Parent geography"
+          label="School location"
           kind="place"
-          placeType={["country", "region"]}
-          hiddenName="parentCountryId"
+          placeType={["country", "region", "city"]}
+          hiddenName="parentPlaceId"
         />
         <Button type="submit" className="self-start">
           Submit for approval

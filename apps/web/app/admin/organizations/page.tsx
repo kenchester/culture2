@@ -17,7 +17,7 @@ type OrgRow = {
   subdomain: string;
   domain: string | null;
   domain_signin_enabled: boolean;
-  organization_languages: { language: { name: string } | null }[];
+  organization_languages: { network_id: number; language: { name: string } | null }[];
   organization_admins: { user_id: string }[];
 };
 
@@ -26,7 +26,6 @@ type RequestRow = {
   institutional_email: string;
   profile_url: string;
   school_name: string;
-  location_name: string;
   created_at: string;
   language: { name: string } | null;
 };
@@ -51,13 +50,13 @@ export default async function AdminOrganizationsPage({
     supabase
       .from("organizations")
       .select(
-        "id, name, slug, subdomain, domain, domain_signin_enabled, organization_languages(language:languages(name)), organization_admins(user_id)",
+        "id, name, slug, subdomain, domain, domain_signin_enabled, organization_languages(network_id, language:languages(name)), organization_admins(user_id)",
       )
       .order("created_at", { ascending: false })
       .range(from, to),
     supabase
       .from("organization_requests")
-      .select("id, institutional_email, profile_url, school_name, location_name, created_at, language:languages(name)")
+      .select("id, institutional_email, profile_url, school_name, created_at, language:languages(name)")
       .eq("status", "pending")
       .order("created_at"),
   ]);
