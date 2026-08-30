@@ -38,6 +38,7 @@ export const RESERVED_LEARN_SLUGS = [
   "embed-partners",
   "faith",
   "messages",
+  "my-networks",
   "networks",
   "profile",
   "redeemed",

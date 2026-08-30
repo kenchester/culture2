@@ -2,12 +2,14 @@ import Link from "next/link";
 import { redirect } from "next/navigation";
 import { getTranslations } from "next-intl/server";
 import { createClient } from "@/lib/supabase/server";
+import { buildSubdomainUrl, getMainSiteUrl } from "@/lib/site-url";
 
 type NetworkRow = {
   network_id: number;
   title: string;
   member_count: number;
   post_count: number;
+  learn_slug: string | null;
 };
 
 const NETWORKS_PER_PAGE = 10;
@@ -46,6 +48,17 @@ export default async function MyNetworksPage({
   const hasNextPage = (networksRaw?.length ?? 0) > NETWORKS_PER_PAGE;
   const networks = (networksRaw ?? []).slice(0, NETWORKS_PER_PAGE);
 
+  // A network launched from learn.culturemesh.com always links back there,
+  // and everything else always links to the plain site - regardless of
+  // which host this page itself is currently being viewed under (the list
+  // is the same site-wide, whether you got here from culturemesh.com or a
+  // school's learn.culturemesh.com/{slug} page).
+  const mainSiteUrl = await getMainSiteUrl();
+  function networkHref(network: NetworkRow) {
+    const path = `/networks/${network.network_id}`;
+    return network.learn_slug ? buildSubdomainUrl(mainSiteUrl, "learn", path) : `${mainSiteUrl}${path}`;
+  }
+
   const t = await getTranslations("myNetworks");
   const tNetwork = await getTranslations("network");
 
@@ -56,7 +69,7 @@ export default async function MyNetworksPage({
         {networks.map((network) => (
           <Link
             key={network.network_id}
-            href={`/networks/${network.network_id}`}
+            href={networkHref(network)}
             target="_blank"
             rel="noreferrer"
             className="flex flex-col gap-1 rounded-lg border border-border bg-surface p-4 transition-colors hover:border-primary"

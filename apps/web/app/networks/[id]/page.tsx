@@ -1,11 +1,12 @@
 import Image from "next/image";
 import Link from "next/link";
-import { notFound } from "next/navigation";
+import { notFound, redirect } from "next/navigation";
 import { getLocale, getTranslations } from "next-intl/server";
 import { createClient } from "@/lib/supabase/server";
 import { type Author, getAvatarUrl, getDisplayName } from "@/lib/profiles";
 import { getGeoName } from "@/lib/geo-translation";
 import { getPostMediaUrl } from "@/lib/post-media";
+import { buildSubdomainUrl, getMainSiteUrl, isLearnHost } from "@/lib/site-url";
 import type { Locale } from "@/lib/locale";
 import { createPost, joinNetwork, leaveNetwork, setNetworkPrompt } from "@/app/networks/actions";
 import { EditableEntry } from "@/app/networks/editable-entry";
@@ -115,11 +116,42 @@ export default async function NetworkPage({
     notFound();
   }
 
+  const { data: location } = await supabase
+    .from("places")
+    .select("id, name, type, iso_code")
+    .eq("id", network.location_place_id)
+    .single();
+
+  // A campus-anchored network only ever exists because it was launched
+  // from within learn.culturemesh.com (see 00000000000058_campus_place_
+  // type.sql) - however someone actually got to this URL (an old bookmark,
+  // a search result, My Networks, a shared link), it should always resolve
+  // under that host, never the plain site, so the surrounding chrome (the
+  // logo, sign-in, etc.) doesn't disagree with the page it's framing.
+  // Skipped for embeds (an iframe shouldn't be redirected out from under
+  // its parent page) and locally (no real subdomain to redirect to -
+  // buildSubdomainUrl's own localhost fallback would otherwise send this
+  // right back to the same URL and loop).
+  const mainSiteUrl = await getMainSiteUrl();
+  if (
+    location?.type === "campus" &&
+    !isEmbedded &&
+    !mainSiteUrl.includes("localhost") &&
+    !mainSiteUrl.includes("127.0.0.1") &&
+    !(await isLearnHost())
+  ) {
+    const params = new URLSearchParams();
+    if (error) params.set("error", error);
+    if (invited) params.set("invited", invited);
+    if (inviteError) params.set("inviteError", inviteError);
+    const query = params.size > 0 ? `?${params.toString()}` : "";
+    redirect(buildSubdomainUrl(mainSiteUrl, "learn", `/networks/${network.id}${query}`));
+  }
+
   const [
     { data: language },
     { data: originPlace },
     { data: religion },
-    { data: location },
     { data: membership },
     { data: posts },
     { data: myLikes },
@@ -139,11 +171,6 @@ export default async function NetworkPage({
     network.religion_id
       ? supabase.from("religions").select("name").eq("id", network.religion_id).single()
       : Promise.resolve({ data: null }),
-    supabase
-      .from("places")
-      .select("id, name, type, iso_code")
-      .eq("id", network.location_place_id)
-      .single(),
     user
       ? supabase
           .from("network_members")
