@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { createClient } from "@/lib/supabase/client";
+import { createBlurredVideoStream } from "@/lib/video-background-blur";
 import { Button } from "@/components/ui/button";
 
 const MAX_DURATION_SECONDS = 60;
@@ -51,6 +52,8 @@ export function RecordMedia({ kind }: { kind: "audio" | "video" }) {
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
   const [elapsedSeconds, setElapsedSeconds] = useState(0);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const [blurEnabled, setBlurEnabled] = useState(false);
+  const [blurLoading, setBlurLoading] = useState(false);
 
   const mediaRecorderRef = useRef<MediaRecorder | null>(null);
   const chunksRef = useRef<Blob[]>([]);
@@ -62,6 +65,7 @@ export function RecordMedia({ kind }: { kind: "audio" | "video" }) {
   const mediaTypeInputRef = useRef<HTMLInputElement>(null);
   const mediaPathInputRef = useRef<HTMLInputElement>(null);
   const mediaDurationInputRef = useRef<HTMLInputElement>(null);
+  const stopBlurRef = useRef<(() => void) | null>(null);
 
   useEffect(() => {
     return () => {
@@ -93,17 +97,39 @@ export function RecordMedia({ kind }: { kind: "audio" | "video" }) {
       return;
     }
 
-    if (kind === "video" && liveVideoRef.current) {
-      liveVideoRef.current.srcObject = stream;
+    // Background blur replaces the raw camera stream with a processed one
+    // (a canvas re-drawing each frame with the background blurred) - both
+    // the live preview and MediaRecorder read from whichever stream ends
+    // up in `recordingStream`, so the person recording sees exactly what
+    // gets posted. Best-effort: if the model fails to load (e.g. no GPU
+    // delegate support), fall back to the raw stream rather than blocking
+    // recording entirely.
+    let recordingStream = stream;
+    if (kind === "video" && blurEnabled) {
+      setBlurLoading(true);
+      try {
+        const blurred = await createBlurredVideoStream(stream);
+        recordingStream = blurred.stream;
+        stopBlurRef.current = blurred.stop;
+      } catch {
+        setErrorMessage("Couldn't enable background blur - recording without it.");
+      }
+      setBlurLoading(false);
     }
 
-    const recorder = new MediaRecorder(stream, { mimeType });
+    if (kind === "video" && liveVideoRef.current) {
+      liveVideoRef.current.srcObject = recordingStream;
+    }
+
+    const recorder = new MediaRecorder(recordingStream, { mimeType });
     chunksRef.current = [];
     recorder.ondataavailable = (e) => {
       if (e.data.size > 0) chunksRef.current.push(e.data);
     };
     recorder.onstop = () => {
       stream.getTracks().forEach((track) => track.stop());
+      stopBlurRef.current?.();
+      stopBlurRef.current = null;
       if (tickRef.current) clearInterval(tickRef.current);
       const blob = new Blob(chunksRef.current, { type: mimeType });
       setElapsedSeconds(Math.min(MAX_DURATION_SECONDS, Math.round((Date.now() - startTimeRef.current) / 1000)));
@@ -212,9 +238,26 @@ export function RecordMedia({ kind }: { kind: "audio" | "video" }) {
       )}
 
       {status === "idle" && (
-        <Button type="button" variant="secondary" onClick={startRecording} className="self-start">
-          {kind === "video" ? "Record video (up to 60s)" : "Record audio (up to 60s)"}
-        </Button>
+        <div className="flex flex-col items-start gap-2">
+          {kind === "video" && (
+            <label className="flex items-center gap-2 text-sm text-body">
+              <input
+                type="checkbox"
+                checked={blurEnabled}
+                onChange={(e) => setBlurEnabled(e.target.checked)}
+                disabled={blurLoading}
+              />
+              Blur my background
+            </label>
+          )}
+          <Button type="button" variant="secondary" onClick={startRecording} disabled={blurLoading}>
+            {blurLoading
+              ? "Loading background blur..."
+              : kind === "video"
+                ? "Record video (up to 60s)"
+                : "Record audio (up to 60s)"}
+          </Button>
+        </div>
       )}
 
       {status === "recording" && (

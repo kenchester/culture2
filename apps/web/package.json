@@ -14,8 +14,10 @@
     "seed-acme-university": "tsx scripts/seed-acme-university.ts"
   },
   "dependencies": {
+    "@mediapipe/tasks-vision": "^1.0.1",
     "@supabase/ssr": "^0.12.4",
     "@supabase/supabase-js": "^2.112.1",
+    "client-only": "^0.0.1",
     "dictionary-en": "^4.0.0",
     "dictionary-es": "^4.0.0",
     "dictionary-fr": "^3.0.0",
