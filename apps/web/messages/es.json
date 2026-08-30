@@ -1,6 +1,7 @@
 {
   "nav": {
     "search": "Búsqueda",
+    "searchPublicNetworks": "Buscar redes públicas",
     "signIn": "Iniciar sesión",
     "signUp": "Regístrate",
     "profile": "Perfil",

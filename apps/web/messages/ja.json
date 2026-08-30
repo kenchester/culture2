@@ -1,6 +1,7 @@
 {
   "nav": {
     "search": "検索",
+    "searchPublicNetworks": "公開ネットワークを検索",
     "signIn": "サインイン",
     "signUp": "サインアップ",
     "profile": "プロフィール",

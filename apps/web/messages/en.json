@@ -1,6 +1,7 @@
 {
   "nav": {
     "search": "Search",
+    "searchPublicNetworks": "Search public networks",
     "signIn": "Sign in",
     "signUp": "Sign up",
     "profile": "Profile",

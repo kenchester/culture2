@@ -146,7 +146,7 @@ function UserMenu({ user, profile }: { user: User; profile: Profile | null }) {
   );
 }
 
-export function Nav() {
+export function Nav({ isLearnHost = false }: { isLearnHost?: boolean }) {
   const t = useTranslations("nav");
   const [user, setUser] = useState<User | null>(null);
   const [profile, setProfile] = useState<Profile | null>(null);
@@ -222,7 +222,14 @@ export function Nav() {
         <Logo className="h-8" priority />
       </Link>
       <div className="flex flex-wrap items-center gap-x-5 gap-y-2 text-sm">
-        <NavLink href="/search">{t("search")}</NavLink>
+        {/* "Search" also finds real native/heritage speakers outside a
+            school's closed network (see getSuggestedSpeakerNetwork, app/
+            networks/[id]/page.tsx) - worth keeping on learn-hosted pages
+            too, but relabeled so it reads as "the wider site", not part
+            of the school's own gated network, given the redirect above
+            (app/networks/[id]/page.tsx) already sends whatever you find
+            here back to the plain host anyway. */}
+        <NavLink href="/search">{isLearnHost ? t("searchPublicNetworks") : t("search")}</NavLink>
         <LanguageSwitcher />
         {user ? (
           <UserMenu user={user} profile={profile} />

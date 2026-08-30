@@ -1,6 +1,7 @@
 {
   "nav": {
     "search": "Поиск",
+    "searchPublicNetworks": "Поиск публичных сетей",
     "signIn": "Войти",
     "signUp": "Зарегистрируйтесь",
     "profile": "Профиль",

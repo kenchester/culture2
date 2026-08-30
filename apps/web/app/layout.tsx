@@ -6,6 +6,7 @@ import { getLocale, getMessages } from "next-intl/server";
 import { Nav } from "@/app/nav";
 import { Footer } from "@/app/footer";
 import { RTL_LOCALES, type Locale } from "@/lib/locale";
+import { isLearnHost } from "@/lib/site-url";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -32,6 +33,7 @@ export const metadata: Metadata = {
 export default async function RootLayout({ children }: LayoutProps<"/">) {
   const locale = await getLocale();
   const messages = await getMessages();
+  const onLearnHost = await isLearnHost();
 
   return (
     <html
@@ -42,7 +44,7 @@ export default async function RootLayout({ children }: LayoutProps<"/">) {
       <body className="flex min-h-full flex-col font-sans">
         <NextIntlClientProvider locale={locale} messages={messages}>
           <Suspense fallback={null}>
-            <Nav />
+            <Nav isLearnHost={onLearnHost} />
           </Suspense>
           {children}
           <Suspense fallback={null}>

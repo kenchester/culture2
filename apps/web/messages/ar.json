@@ -1,6 +1,7 @@
 {
   "nav": {
     "search": "البحث",
+    "searchPublicNetworks": "البحث في الشبكات العامة",
     "signIn": "تسجيل الدخول",
     "signUp": "سجل",
     "profile": "الملف الشخصي",

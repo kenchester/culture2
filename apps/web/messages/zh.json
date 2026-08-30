@@ -1,6 +1,7 @@
 {
   "nav": {
     "search": "搜索",
+    "searchPublicNetworks": "搜索公开网络",
     "signIn": "登录",
     "signUp": "注册",
     "profile": "简介",

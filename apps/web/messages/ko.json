@@ -1,6 +1,7 @@
 {
   "nav": {
     "search": "검색",
+    "searchPublicNetworks": "공개 네트워크 검색",
     "signIn": "로그인",
     "signUp": "가입하기",
     "profile": "프로필",

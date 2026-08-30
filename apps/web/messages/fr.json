@@ -1,6 +1,7 @@
 {
   "nav": {
     "search": "Recherche",
+    "searchPublicNetworks": "Rechercher des réseaux publics",
     "signIn": "Connexion",
     "signUp": "Inscrivez-vous",
     "profile": "Profil",

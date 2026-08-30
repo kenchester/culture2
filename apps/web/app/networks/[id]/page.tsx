@@ -124,28 +124,33 @@ export default async function NetworkPage({
 
   // A campus-anchored network only ever exists because it was launched
   // from within learn.culturemesh.com (see 00000000000058_campus_place_
-  // type.sql) - however someone actually got to this URL (an old bookmark,
-  // a search result, My Networks, a shared link), it should always resolve
-  // under that host, never the plain site, so the surrounding chrome (the
-  // logo, sign-in, etc.) doesn't disagree with the page it's framing.
-  // Skipped for embeds (an iframe shouldn't be redirected out from under
-  // its parent page) and locally (no real subdomain to redirect to -
-  // buildSubdomainUrl's own localhost fallback would otherwise send this
-  // right back to the same URL and loop).
+  // type.sql), so it should always resolve under that host - and,
+  // symmetrically, every other network should never end up canonically
+  // hosted there. Without this, a network's host is just an accident of
+  // whichever page someone happened to launch or link it from: "Search"
+  // is reachable from within a learn-hosted school page too (finding real
+  // native speakers - see getSuggestedSpeakerNetwork below), and its
+  // launch action (app/search/actions.ts) redirects with a plain relative
+  // path, so a public India-in-Michigan network launched from there would
+  // otherwise permanently keep a learn.culturemesh.com URL for a network
+  // that has nothing to do with any school. Skipped for embeds (an iframe
+  // shouldn't be redirected out from under its parent page) and locally
+  // (no real subdomain to redirect to - buildSubdomainUrl's own localhost
+  // fallback would otherwise send this right back to the same URL and
+  // loop).
   const mainSiteUrl = await getMainSiteUrl();
-  if (
-    location?.type === "campus" &&
-    !isEmbedded &&
-    !mainSiteUrl.includes("localhost") &&
-    !mainSiteUrl.includes("127.0.0.1") &&
-    !(await isLearnHost())
-  ) {
+  const belongsUnderLearn = location?.type === "campus";
+  const isLocalDev = mainSiteUrl.includes("localhost") || mainSiteUrl.includes("127.0.0.1");
+  if (!isEmbedded && !isLocalDev && belongsUnderLearn !== (await isLearnHost())) {
     const params = new URLSearchParams();
     if (error) params.set("error", error);
     if (invited) params.set("invited", invited);
     if (inviteError) params.set("inviteError", inviteError);
     const query = params.size > 0 ? `?${params.toString()}` : "";
-    redirect(buildSubdomainUrl(mainSiteUrl, "learn", `/networks/${network.id}${query}`));
+    const target = belongsUnderLearn
+      ? buildSubdomainUrl(mainSiteUrl, "learn", `/networks/${network.id}${query}`)
+      : `${mainSiteUrl}/networks/${network.id}${query}`;
+    redirect(target);
   }
 
   const [
