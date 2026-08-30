@@ -7,7 +7,7 @@ const TABS = [
   { href: "/admin/embed-partners", label: "Embed" },
   { href: "/admin/organizations", label: "Organizations" },
   { href: "/admin/trending", label: "Trending Networks" },
-  { href: "/admin/places", label: "Languages & Geography" },
+  { href: "/admin/places", label: "Languages/Geography" },
   { href: "/admin/translations", label: "Translations" },
   { href: "/admin/religions", label: "Religions" },
   { href: "/admin/product-updates", label: "Product Updates" },
@@ -24,7 +24,7 @@ export function AdminTabs() {
           <Link
             key={tab.href}
             href={tab.href}
-            className={`px-3 py-2 text-sm font-medium transition-colors ${
+            className={`whitespace-nowrap px-3 py-2 text-sm font-medium transition-colors ${
               isActive
                 ? "border-b-2 border-primary text-primary"
                 : "text-muted hover:text-primary"
