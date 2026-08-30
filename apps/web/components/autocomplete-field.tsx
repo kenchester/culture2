@@ -18,6 +18,28 @@ export type ReligionOption = { id: number; name: string };
 
 export type AutocompleteOption = PlaceOption | LanguageOption | ReligionOption;
 
+// Place IDs where the "country" type label is deliberately never shown -
+// a display-only choice, not a data model one (these stay type='country'
+// in the database, since that's the correct granularity for the
+// places-hierarchy search/matching logic - see 00000000000001_initial_schema.sql).
+// Taiwan, Hong Kong, and Macao showing a "country" badge reads as taking a
+// political position CultureMesh has no reason to take; the same is true,
+// evenhandedly, of Puerto Rico and the other US-administered territories
+// that appear as separate "country" entries in this places data (Guam,
+// American Samoa, the U.S. Virgin Islands, the Northern Mariana Islands).
+// Matched by id, not name, since a displayed name can be locale-translated
+// (geo_translations) and wouldn't match a hardcoded English string.
+const SUPPRESS_COUNTRY_LABEL_PLACE_IDS = new Set([
+  228, // Taiwan
+  95, // Hong Kong
+  148, // Macao
+  182, // Puerto Rico
+  92, // Guam
+  11, // American Samoa
+  240, // U.S. Virgin Islands
+  149, // Northern Mariana Islands
+]);
+
 export function optionLabel(option: AutocompleteOption) {
   if ("type" in option) {
     return option.parent ? `${option.name}, ${option.parent.name}` : option.name;
@@ -155,7 +177,7 @@ export function AutocompleteField({
                   className="w-full px-3 py-2 text-left hover:bg-primary-light"
                 >
                   {optionLabel(option)}
-                  {"type" in option && (
+                  {"type" in option && !SUPPRESS_COUNTRY_LABEL_PLACE_IDS.has(option.id) && (
                     <span className="ml-2 text-xs text-muted">{option.type}</span>
                   )}
                 </button>
