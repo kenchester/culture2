@@ -192,7 +192,8 @@
     "weeklyPromptPlaceholder": "예를 들어, 집에서 가장 좋아하는 식사를 설명해 주세요.",
     "weeklyPromptSave": "저장 프롬프트",
     "connectWithSpeakersHeading": "더 많은 {language} 연사와 연결하세요",
-    "connectWithSpeakersIntro": "메인 CultureMesh 사이트 근처에 {location} 활발한 네트워크가 있습니다."
+    "connectWithSpeakersIntro": "메인 CultureMesh 사이트 근처에 {location} 활발한 네트워크가 있습니다.",
+    "originInLinked": "{origin} <loc>{location}</loc>"
   },
   "editableEntry": {
     "save": "저장",
@@ -430,7 +431,6 @@
     "exampleNetworkBadge": "예시 네트워크",
     "heading": "언어 이머전 {name}",
     "exampleNetworksIntro": "각 언어 네트워크는 대학별로 다르며, 대상 언어로 되지 않은 게시물이나 답변은 필터링 및 차단되어 언어 유창성을 증진합니다.",
-    "pendingNotice": "학생으로 {name} 인정받는다. 프로그램 관리자가 곧 언어를 배정할 거예요.",
     "bannerRequestButton": "학교에서 CultureMesh Learn 요청하기",
     "exampleNetworksHeading": "예시 네트워크 {name}",
     "getStartedHeadingWithDomain": "{domain} 학교 이메일로 로그인하세요",
@@ -447,6 +447,7 @@
     "verifyEmailLabel": "학교 이메일",
     "verifyEmailSubmit": "코드 전송",
     "verifyCodeLabel": "우리가 보낸 {email} 코드를 입력해",
-    "verifyCodeSubmit": "검증"
+    "verifyCodeSubmit": "검증",
+    "pendingNotice": "학생으로 {name} 인정받고 있습니다. 프로그램 관리자가 곧 언어 네트워크를 배정해 줄 것이고, 아래에서 바로 시작해도 됩니다."
   }
 }

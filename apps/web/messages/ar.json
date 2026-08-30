@@ -192,7 +192,8 @@
     "weeklyPromptPlaceholder": "مثلا: صف لك وجبتك المفضلة من المنزل.",
     "weeklyPromptSave": "طلب الحفظ",
     "connectWithSpeakersHeading": "تواصل مع المزيد {language} من المتحدثين",
-    "connectWithSpeakersIntro": "هناك شبكة نشطة بالقرب {location} من الموقع الرئيسي ل CultureMesh الإلكتروني."
+    "connectWithSpeakersIntro": "هناك شبكة نشطة بالقرب {location} من الموقع الرئيسي ل CultureMesh الإلكتروني.",
+    "originInLinked": "{origin} في <loc>{location}</loc>"
   },
   "editableEntry": {
     "save": "حفظ",
@@ -430,7 +431,6 @@
     "exampleNetworkBadge": "مثال على شبكة",
     "heading": "الانغماس اللغوي في {name}",
     "exampleNetworksIntro": "كل شبكة لغوية خاصة بجامعتك، وأي منشورات أو ردود لم تكتب باللغة المستهدفة سيتم تصفيتها وحجبها لتعزيز الطلاقة في اللغة.",
-    "pendingNotice": "أنت معترف بك كطالب.{name} مدير البرنامج سيكلفك لغتك قريبا.",
     "bannerRequestButton": "اطلب CultureMesh Learn في مدرستك",
     "exampleNetworksHeading": "أمثلة على الشبكات في {name}",
     "getStartedHeadingWithDomain": "سجل الدخول عبر بريدك {domain} الإلكتروني المدرسي",
@@ -447,6 +447,7 @@
     "verifyEmailLabel": "البريد الإلكتروني للمدرسة",
     "verifyEmailSubmit": "إرسال الرمز",
     "verifyCodeLabel": "أدخل الرمز الذي أرسلناه إلى {email}",
-    "verifyCodeSubmit": "تحقق"
+    "verifyCodeSubmit": "تحقق",
+    "pendingNotice": "أنت معترف بك {name} كطالب. سيكلفك مدير البرنامج شبكة لغاتك قريبا، أو يمكنك البدء بها أدناه."
   }
 }

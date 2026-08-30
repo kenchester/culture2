@@ -192,7 +192,8 @@
     "weeklyPromptPlaceholder": "Por exemplo, descreva sua refeição favorita de casa.",
     "weeklyPromptSave": "Prompt de salvamento",
     "connectWithSpeakersHeading": "Conecte-se com mais {language} palestrantes",
-    "connectWithSpeakersIntro": "Há uma rede ativa perto {location} do site principal do CultureMesh."
+    "connectWithSpeakersIntro": "Há uma rede ativa perto {location} do site principal do CultureMesh.",
+    "originInLinked": "{origin} em <loc>{location}</loc>"
   },
   "editableEntry": {
     "save": "Salvar",
@@ -430,7 +431,6 @@
     "exampleNetworkBadge": "Rede de Exemplo",
     "heading": "Imersão linguística em {name}",
     "exampleNetworksIntro": "Cada rede de idiomas é específica para sua universidade, e quaisquer postagens ou respostas não feitas no idioma alvo serão filtradas e bloqueadas para promover a fluência linguística.",
-    "pendingNotice": "Você é reconhecido como estudante{name}. O administrador do seu programa vai designar sua língua em breve.",
     "bannerRequestButton": "Solicite o CultureMesh Learn na sua escola",
     "exampleNetworksHeading": "Redes de exemplo em {name}",
     "getStartedHeadingWithDomain": "Faça login com o e-mail da sua {domain} escola",
@@ -447,6 +447,7 @@
     "verifyEmailLabel": "E-mail escolar",
     "verifyEmailSubmit": "Enviar código",
     "verifyCodeLabel": "Insira o código que enviamos para {email}",
-    "verifyCodeSubmit": "Verificar"
+    "verifyCodeSubmit": "Verificar",
+    "pendingNotice": "Você é reconhecido como estudante{name}. O administrador do seu programa vai designar sua rede de idiomas em breve, ou você pode começar logo abaixo."
   }
 }

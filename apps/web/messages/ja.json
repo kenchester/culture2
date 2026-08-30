@@ -192,7 +192,8 @@
     "weeklyPromptPlaceholder": "例えば、自宅で一番好きな食事を説明してください。",
     "weeklyPromptSave": "セーブプロンプト",
     "connectWithSpeakersHeading": "より多くの{language}スピーカーとつながる",
-    "connectWithSpeakersIntro": "メインのCultureMeshサイトの近く{location}にはアクティブなネットワークがあります。"
+    "connectWithSpeakersIntro": "メインのCultureMeshサイトの近く{location}にはアクティブなネットワークがあります。",
+    "originInLinked": "{origin}において<loc>{location}</loc>"
   },
   "editableEntry": {
     "save": "セーブ",
@@ -430,7 +431,6 @@
     "exampleNetworkBadge": "ネットワークの例",
     "heading": "言語イマージョン{name}",
     "exampleNetworksIntro": "各言語ネットワークは大学ごとに特有であり、対象言語でない投稿や返信は言語流暢さを促進するためにフィルタリング・ブロックされます。",
-    "pendingNotice": "あなたは学生として{name}認められています。プログラム管理者がまもなく言語を割り当てます。",
     "bannerRequestButton": "学校でCultureMesh Learnをリクエストする",
     "exampleNetworksHeading": "ネットワークの例{name}",
     "getStartedHeadingWithDomain": "学校の{domain}メールアドレスでログインしてください",
@@ -447,6 +447,7 @@
     "verifyEmailLabel": "学校のメール",
     "verifyEmailSubmit": "コードを送れ",
     "verifyCodeLabel": "送った{email}コードを入力してください",
-    "verifyCodeSubmit": "検証"
+    "verifyCodeSubmit": "検証",
+    "pendingNotice": "あなたは学生として{name}認められています。プログラム管理者がまもなく言語ネットワークを割り当てますし、下から始めても構いません。"
   }
 }

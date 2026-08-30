@@ -192,7 +192,8 @@
     "weeklyPromptPlaceholder": "Например, опишите ваше любимое блюдо из дома.",
     "weeklyPromptSave": "Запрос сохранить",
     "connectWithSpeakersHeading": "Свяжитесь с большим количеством {language} колонок",
-    "connectWithSpeakersIntro": "Рядом {location} с основным сайтом CultureMesh есть активная сеть."
+    "connectWithSpeakersIntro": "Рядом {location} с основным сайтом CultureMesh есть активная сеть.",
+    "originInLinked": "{origin} в <loc>{location}</loc>"
   },
   "editableEntry": {
     "save": "Сохранить",
@@ -430,7 +431,6 @@
     "exampleNetworkBadge": "Пример сети",
     "heading": "Языковое погружение в {name}",
     "exampleNetworksIntro": "Каждая языковая сеть специфична для вашего университета, и любые посты или ответы, не опубликованные на целевом языке, будут фильтрованы и блокированы для повышения беглости языка.",
-    "pendingNotice": "Тебя признают {name} студентом. Администратор вашей программы скоро назначит вам язык.",
     "bannerRequestButton": "Запросите CultureMesh Учитесь в своей школе",
     "exampleNetworksHeading": "Примеры сетей в {name}",
     "getStartedHeadingWithDomain": "Войдите с помощью {domain} школьной электронной почты",
@@ -447,6 +447,7 @@
     "verifyEmailLabel": "Школьная электронная почта",
     "verifyEmailSubmit": "Отправить код",
     "verifyCodeLabel": "Введите код, который {email} мы отправили",
-    "verifyCodeSubmit": "Проверьте"
+    "verifyCodeSubmit": "Проверьте",
+    "pendingNotice": "Вас признают {name} студентом. Администратор вашей программы скоро назначит вашу языковую сеть, или вы можете начать работу ниже."
   }
 }

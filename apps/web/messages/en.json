@@ -228,6 +228,7 @@
   },
   "network": {
     "originIn": "{origin} in {location}",
+    "originInLinked": "{origin} in <loc>{location}</loc>",
     "memberPostCounts": "{members} members, {posts} posts",
     "events": "Events",
     "leaveNetwork": "Leave network",
@@ -425,7 +426,7 @@
     "memberPostCounts": "{members} members, {posts} posts",
     "exampleNetworkBadge": "Example Network",
     "exampleNetworksIntro": "Each language network is specific to your university, and any posts or replies not made in the target language will be filtered and blocked to promote language fluency.",
-    "pendingNotice": "You're recognized as a {name} student. Your program admin will assign your language soon.",
+    "pendingNotice": "You're recognized as a {name} student. Your program admin will assign your language network soon, or you can go ahead and get it started below.",
     "bannerRequestButton": "Request CultureMesh Learn at your school",
     "getStartedHeadingWithDomain": "Log in with your {domain} school email",
     "getStartedHeadingGeneric": "Log in with your school email",

@@ -192,7 +192,8 @@
     "weeklyPromptPlaceholder": "Zum Beispiel: Beschreiben Sie Ihr Lieblingsessen von zu Hause.",
     "weeklyPromptSave": "Speicher-Eingabeaufforderung",
     "connectWithSpeakersHeading": "Verbinden Sie sich mit mehr Sprechern {language}",
-    "connectWithSpeakersIntro": "In der Nähe {location} der Hauptseite von CultureMesh gibt es ein aktives Netzwerk."
+    "connectWithSpeakersIntro": "In der Nähe {location} der Hauptseite von CultureMesh gibt es ein aktives Netzwerk.",
+    "originInLinked": "{origin} in <loc>{location}</loc>"
   },
   "editableEntry": {
     "save": "Speichern",
@@ -430,7 +431,6 @@
     "exampleNetworkBadge": "Beispielnetzwerk",
     "heading": "Sprachimmersion bei {name}",
     "exampleNetworksIntro": "Jedes Sprachnetzwerk ist spezifisch für Ihre Universität, und Beiträge oder Antworten, die nicht in der Zielsprache verfasst sind, werden gefiltert und gesperrt, um die Sprachflüssigkeit zu fördern.",
-    "pendingNotice": "Du wirst als {name} Student anerkannt. Dein Programmadministrator wird dir bald deine Sprache zuweisen.",
     "bannerRequestButton": "Fordern Sie CultureMesh Learn an Ihrer Schule an",
     "exampleNetworksHeading": "Beispielnetzwerke bei {name}",
     "getStartedHeadingWithDomain": "Melden Sie sich mit Ihrer {domain} Schul-E-Mail an",
@@ -447,6 +447,7 @@
     "verifyEmailLabel": "Schul-E-Mail",
     "verifyEmailSubmit": "Code senden",
     "verifyCodeLabel": "Gib den Code ein, an den wir gesendet haben {email}",
-    "verifyCodeSubmit": "Verifizieren"
+    "verifyCodeSubmit": "Verifizieren",
+    "pendingNotice": "Du wirst als {name} Student anerkannt. Dein Programmadministrator wird dir bald dein Sprachnetzwerk zuweisen, oder du kannst es unten starten."
   }
 }

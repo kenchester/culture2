@@ -190,6 +190,17 @@ export default async function NetworkPage({
         : Promise.resolve(null),
     ]);
 
+  // A campus-type location (00000000000058_campus_place_type.sql) only
+  // ever belongs to one org, and every one of that org's networks shares
+  // the exact same location_place_id - so this is enough to find "the"
+  // school a network belongs to, with no join table needed. Deliberately
+  // scoped to campus locations only: a public network anchored to a real
+  // city/region/country has no such school to link back to.
+  const { data: gatingOrgForLocation } =
+    location?.type === "campus"
+      ? await supabase.from("organizations").select("slug").eq("location_place_id", location.id).maybeSingle()
+      : { data: null };
+
   const originName = translatedLanguageName ?? translatedOriginName ?? religion?.name ?? "?";
   const isMember = Boolean(membership);
   const myLikedPostIds = new Set((myLikes ?? []).map((l) => l.post_id as number));
@@ -205,7 +216,19 @@ export default async function NetworkPage({
         <div>
           <h1 className="font-display text-3xl text-ink">{network.title}</h1>
           <p className="text-sm text-muted">
-            {t("originIn", { origin: originName, location: translatedLocationName ?? "?" })}
+            {gatingOrgForLocation ? (
+              t.rich("originInLinked", {
+                origin: originName,
+                location: translatedLocationName ?? "?",
+                loc: (chunks) => (
+                  <Link href={`/learn/${gatingOrgForLocation.slug}`} className="text-primary hover:underline">
+                    {chunks}
+                  </Link>
+                ),
+              })
+            ) : (
+              t("originIn", { origin: originName, location: translatedLocationName ?? "?" })
+            )}
           </p>
         </div>
 
