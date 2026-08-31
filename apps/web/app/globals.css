@@ -78,8 +78,19 @@ html[data-theme="zine"] {
   --color-primary-hover: #b81a3d;
   --color-primary-light: #ffe3e9;
 
-  --font-sans: var(--font-space-mono);
-  --font-display: var(--font-archivo-black);
+  /* Tailwind's `@theme inline` bakes the *resolved* value of --font-sans/
+     --font-display into the generated .font-sans/.font-display utility
+     rules at build time (confirmed in the compiled CSS: .font-display{
+     font-family:var(--font-newsreader)} - it references --font-newsreader
+     directly, not --font-display). Overriding --font-sans/--font-display
+     themselves here is therefore a no-op; the underlying variables they
+     were pointed at have to be overridden instead. --color-* tokens don't
+     have this problem because they're declared as self-referencing
+     aliases (--color-primary: var(--color-primary)), which is the
+     standard Tailwind v4 pattern for keeping a token runtime-overridable -
+     the font tokens above just weren't declared that way. */
+  --font-geist-sans: var(--font-space-mono);
+  --font-newsreader: var(--font-archivo-black);
 
   --radius-sm: 0px;
   --radius-md: 0px;
