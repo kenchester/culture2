@@ -455,6 +455,7 @@
     "verifyCodeLabel": "أدخل الرمز الذي أرسلناه إلى {email}",
     "verifyCodeSubmit": "تحقق",
     "addSchoolLink": "إضافة شبكة مدرسة أخرى",
+    "addSchoolClose": "إغلاق",
     "addSchoolSubheading": "هل تنتمي إلى أكثر من مدرسة؟ أدخل بريد المدرسة الأخرى وسنتحقق منه.",
     "addSchoolPlaceholder": "you@school.edu",
     "addSchoolSubmit": "تحقق وأرسل الرمز",

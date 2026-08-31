@@ -455,6 +455,7 @@
     "verifyCodeLabel": "Введите код, который {email} мы отправили",
     "verifyCodeSubmit": "Проверьте",
     "addSchoolLink": "Добавить сеть другой школы",
+    "addSchoolClose": "Закрыть",
     "addSchoolSubheading": "Учитесь больше чем в одной школе? Введите email другой школы, и мы проверим.",
     "addSchoolPlaceholder": "you@school.edu",
     "addSchoolSubmit": "Проверить и отправить код",

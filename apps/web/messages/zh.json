@@ -455,6 +455,7 @@
     "verifyCodeLabel": "输入我们发给的{email}代码",
     "verifyCodeSubmit": "验证",
     "addSchoolLink": "添加另一所学校的网络",
+    "addSchoolClose": "关闭",
     "addSchoolSubheading": "你还属于其他学校吗？输入你在该校的邮箱，我们来核实。",
     "addSchoolPlaceholder": "you@school.edu",
     "addSchoolSubmit": "核实并发送验证码",

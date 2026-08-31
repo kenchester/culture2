@@ -455,6 +455,7 @@
     "verifyCodeLabel": "우리가 보낸 {email} 코드를 입력해",
     "verifyCodeSubmit": "검증",
     "addSchoolLink": "다른 학교 네트워크 추가",
+    "addSchoolClose": "닫기",
     "addSchoolSubheading": "둘 이상의 학교에 소속되어 있나요? 다른 학교 이메일을 입력하면 확인해드립니다.",
     "addSchoolPlaceholder": "you@school.edu",
     "addSchoolSubmit": "확인 후 코드 전송",

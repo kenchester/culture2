@@ -455,6 +455,7 @@
     "verifyCodeLabel": "Insira o código que enviamos para {email}",
     "verifyCodeSubmit": "Verificar",
     "addSchoolLink": "Adicionar rede de outra escola",
+    "addSchoolClose": "Fechar",
     "addSchoolSubheading": "Pertence a mais de uma escola? Digite o e-mail da outra escola e verificaremos.",
     "addSchoolPlaceholder": "you@school.edu",
     "addSchoolSubmit": "Verificar e enviar código",
