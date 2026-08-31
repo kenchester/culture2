@@ -6,6 +6,7 @@
     "signUp": "Sign up",
     "profile": "Profile",
     "myNetworks": "My networks",
+    "schools": "Schools",
     "messages": "Messages",
     "settings": "Settings",
     "admin": "Admin",
@@ -454,6 +455,14 @@
     "verifyEmailLabel": "School email",
     "verifyEmailSubmit": "Send code",
     "verifyCodeLabel": "Enter the code we sent to {email}",
-    "verifyCodeSubmit": "Verify"
+    "verifyCodeSubmit": "Verify",
+    "addSchoolLink": "Add a school network",
+    "addSchoolSubheading": "Belong to more than one school? Enter your other school email and we'll check.",
+    "addSchoolPlaceholder": "you@school.edu",
+    "addSchoolSubmit": "Check & send code",
+    "addSchoolNoMatch": "{domain} isn't on CultureMesh yet, but we've noted your interest."
+  },
+  "schools": {
+    "heading": "Your schools"
   }
 }

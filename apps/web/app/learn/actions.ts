@@ -3,6 +3,7 @@
 import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import { domainMatchCandidates } from "@/lib/school-domain";
+import { sendSchoolVerificationCode } from "@/lib/school-email-verification";
 
 function normalizeDomain(raw: string): string {
   return raw
@@ -69,4 +70,54 @@ export async function resolveLearnSlugForEmail(email: string): Promise<string | 
     .in("domain", domainMatchCandidates(domain));
   const org = (orgs ?? []).sort((a, b) => b.domain!.length - a.domain!.length)[0];
   return org?.slug ?? null;
+}
+
+// Backs the "Add a school network" link (app/learn/add-school-link.tsx),
+// shown at the bottom of a real school's page for someone who belongs to
+// more than one - unlike VerifySchoolEmailForm (which already knows which
+// org it's verifying against, since it's rendered on that org's own page),
+// this starts from just an email address and has to figure out which
+// school it belongs to first. Reuses the exact same domain-match logic as
+// checkSchoolDomain above, then - if a real (non-example school; Acme
+// isn't something to "add") match is found - sends the verification code
+// immediately and redirects straight to that school's page mid-flow
+// (?verifyEmail=...), so VerifySchoolEmailForm there picks up at the code-
+// entry step rather than making them type the email a second time.
+export async function requestAddSchoolCode(formData: FormData) {
+  const email = (formData.get("email") as string)?.trim().toLowerCase();
+  const backToSlug = formData.get("backToSlug") as string;
+  const backTo = `/learn/${backToSlug}`;
+
+  const supabase = await createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
+  if (!user) {
+    redirect(`/sign-in?returnTo=${encodeURIComponent(backTo)}`);
+  }
+  if (!email || !email.includes("@")) {
+    redirect(`${backTo}?addSchoolError=${encodeURIComponent("Enter a valid email address.")}`);
+  }
+
+  const domain = normalizeDomain(email.split("@")[1] ?? "");
+  const { data: orgs } = await supabase
+    .from("organizations")
+    .select("slug, domain, is_example")
+    .in("domain", domainMatchCandidates(domain));
+  const org = (orgs ?? [])
+    .filter((o) => !o.is_example)
+    .sort((a, b) => b.domain!.length - a.domain!.length)[0];
+
+  if (!org) {
+    await supabase.from("organization_leads").insert({ domain });
+    redirect(`${backTo}?addSchoolNoMatch=${encodeURIComponent(domain)}`);
+  }
+
+  const result = await sendSchoolVerificationCode(user.id, email);
+  if (!result.ok) {
+    redirect(`${backTo}?addSchoolError=${encodeURIComponent(result.error)}`);
+  }
+
+  redirect(`/learn/${org.slug}?verifyEmail=${encodeURIComponent(email)}`);
 }

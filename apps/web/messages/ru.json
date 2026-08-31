@@ -10,7 +10,8 @@
     "admin": "Админ",
     "signOut": "Выход",
     "changeLanguage": "Сменить язык",
-    "myNetworks": "Мои сети"
+    "myNetworks": "Мои сети",
+    "schools": "Школы"
   },
   "search": {
     "speak": "Говори",
@@ -453,6 +454,11 @@
     "verifyEmailSubmit": "Отправить код",
     "verifyCodeLabel": "Введите код, который {email} мы отправили",
     "verifyCodeSubmit": "Проверьте",
+    "addSchoolLink": "Добавить сеть другой школы",
+    "addSchoolSubheading": "Учитесь больше чем в одной школе? Введите email другой школы, и мы проверим.",
+    "addSchoolPlaceholder": "you@school.edu",
+    "addSchoolSubmit": "Проверить и отправить код",
+    "addSchoolNoMatch": "{domain} пока нет на CultureMesh, но мы отметили ваш интерес.",
     "pendingNotice": "Вас признают {name} студентом. Администратор вашей программы скоро назначит вашу языковую сеть, или вы можете начать работу ниже."
   },
   "myNetworks": {
@@ -461,5 +467,8 @@
     "findNetworks": "Найдите сеть для вступления",
     "previousPage": "← Предыдущие 10 сетей",
     "nextPage": "Следующие 10 сетей →"
+  },
+  "schools": {
+    "heading": "Ваши школы"
   }
 }

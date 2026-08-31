@@ -10,7 +10,8 @@
     "admin": "Administración",
     "signOut": "Desconectarse",
     "changeLanguage": "Cambiar el idioma",
-    "myNetworks": "Mis redes"
+    "myNetworks": "Mis redes",
+    "schools": "Escuelas"
   },
   "search": {
     "speak": "Habla",
@@ -453,6 +454,11 @@
     "verifyEmailSubmit": "Código de envío",
     "verifyCodeLabel": "Introduce el código que enviamos a {email}",
     "verifyCodeSubmit": "Verificar",
+    "addSchoolLink": "Agregar otra escuela",
+    "addSchoolSubheading": "¿Perteneces a más de una escuela? Ingresa el correo de la otra escuela y lo verificaremos.",
+    "addSchoolPlaceholder": "you@school.edu",
+    "addSchoolSubmit": "Verificar y enviar código",
+    "addSchoolNoMatch": "{domain} aún no está en CultureMesh, pero anotamos tu interés.",
     "pendingNotice": "Estás reconocido como estudiante{name}. Tu administrador del programa asignará pronto tu red de idiomas, o puedes empezar a empezar abajo."
   },
   "myNetworks": {
@@ -461,5 +467,8 @@
     "findNetworks": "Busca una red a la que unirte",
     "previousPage": "← Cadenas anteriores de 10",
     "nextPage": "Las próximas 10 cadenas →"
+  },
+  "schools": {
+    "heading": "Tus escuelas"
   }
 }

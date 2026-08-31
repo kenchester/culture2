@@ -4,9 +4,7 @@ import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { claimWhitelistSeat } from "@/lib/organization-whitelist";
-import { sendEmail } from "@/lib/email";
-
-const VERIFICATION_CODE_TTL_MINUTES = 15;
+import { sendSchoolVerificationCode } from "@/lib/school-email-verification";
 
 // Self-serve network creation for a real (non-example) school: any
 // recognized member - not just an org admin - can start a network for a
@@ -149,25 +147,9 @@ export async function requestEmailVerificationCode(formData: FormData) {
     redirect(`${backTo}?verifyError=${encodeURIComponent("Enter a valid email address.")}`);
   }
 
-  const admin = createAdminClient();
-  const code = String(Math.floor(100000 + Math.random() * 900000));
-  const expiresAt = new Date(Date.now() + VERIFICATION_CODE_TTL_MINUTES * 60 * 1000).toISOString();
-
-  const { error: insertError } = await admin
-    .from("pending_email_verifications")
-    .insert({ profile_id: user.id, email, code, expires_at: expiresAt });
-  if (insertError) {
-    redirect(`${backTo}?verifyError=${encodeURIComponent("Could not send a code. Try again.")}`);
-  }
-
-  try {
-    await sendEmail({
-      to: email,
-      subject: "Your CultureMesh verification code",
-      text: `Your verification code is ${code}. It expires in ${VERIFICATION_CODE_TTL_MINUTES} minutes.\n\nIf you didn't request this, you can ignore this email.`,
-    });
-  } catch {
-    redirect(`${backTo}?verifyError=${encodeURIComponent("Could not send the email. Try again.")}`);
+  const result = await sendSchoolVerificationCode(user.id, email);
+  if (!result.ok) {
+    redirect(`${backTo}?verifyError=${encodeURIComponent(result.error)}`);
   }
 
   redirect(`${backTo}?verifyEmail=${encodeURIComponent(email)}`);

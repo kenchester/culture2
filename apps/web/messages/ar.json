@@ -10,7 +10,8 @@
     "admin": "المسؤول",
     "signOut": "تسجيل الخروج",
     "changeLanguage": "تغيير اللغة",
-    "myNetworks": "شبكاتي"
+    "myNetworks": "شبكاتي",
+    "schools": "المدارس"
   },
   "search": {
     "speak": "تحدث",
@@ -453,6 +454,11 @@
     "verifyEmailSubmit": "إرسال الرمز",
     "verifyCodeLabel": "أدخل الرمز الذي أرسلناه إلى {email}",
     "verifyCodeSubmit": "تحقق",
+    "addSchoolLink": "إضافة شبكة مدرسة أخرى",
+    "addSchoolSubheading": "هل تنتمي إلى أكثر من مدرسة؟ أدخل بريد المدرسة الأخرى وسنتحقق منه.",
+    "addSchoolPlaceholder": "you@school.edu",
+    "addSchoolSubmit": "تحقق وأرسل الرمز",
+    "addSchoolNoMatch": "{domain} ليست على CultureMesh بعد، لكننا سجّلنا اهتمامك.",
     "pendingNotice": "أنت معترف بك {name} كطالب. سيكلفك مدير البرنامج شبكة لغاتك قريبا، أو يمكنك البدء بها أدناه."
   },
   "myNetworks": {
@@ -461,5 +467,8 @@
     "findNetworks": "ابحث عن شبكة للانضمام إليها",
     "previousPage": "← الشبكات العشر السابقة",
     "nextPage": "الشبكات العشرة القادمة →"
+  },
+  "schools": {
+    "heading": "مدارسك"
   }
 }

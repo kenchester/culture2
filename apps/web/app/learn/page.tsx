@@ -1,55 +1,79 @@
-import Link from "next/link";
 import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import { resolveLearnSlugForEmail } from "@/app/learn/actions";
 
-// The bare learn.culturemesh.com root - not any one school's page. Every
-// school lives at /learn/{slug} (see app/learn/[slug]/page.tsx); this is
-// just the entry point that gets a visitor there. A real "choose your
-// school" picker is a natural follow-up once more schools exist - for now
-// the minimal list below is just enough that the root doesn't silently
-// misroute as schools are added, not a designed experience.
+// The bare learn.culturemesh.com root - never a page of its own. Resolution
+// order:
+//   1. Signed in, recognized at a real (non-example) school, last active
+//      there (profiles.last_learn_organization_id, kept current by
+//      lib/organization-whitelist.ts on every /learn/[slug] visit) -> that
+//      school.
+//   2. Signed in, recognized at a real school but no visit recorded yet
+//      (organization_whitelist.claimed_by) - the most recently claimed one.
+//      Covers both "recognized at exactly one school" and "recognized at
+//      several, never yet visited any of them from this entry point" -
+//      either way, never surface a "choose your school" picker here; that
+//      only exists behind the nav's "Schools" item (app/schools/page.tsx)
+//      for someone who deliberately wants to switch.
+//   3. Signed in under an email whose domain matches a school, but with no
+//      organization_whitelist row at all yet - true first-ever visit,
+//      landing straight at this bare root before claimWhitelistSeat has
+//      ever run for them. Self-healing: once they land on that school's
+//      page, claimWhitelistSeat runs and cases 1/2 take over from here on.
+//   4. Everyone else (signed out, or signed in with no real-school
+//      recognition at all) - the example org, exactly as an anonymous
+//      visitor has always seen.
 export default async function LearnRootPage() {
   const supabase = await createClient();
-
-  // A signed-in visitor whose verified email matches an approved school
-  // should land straight on their own school's page, even though the
-  // example org (Acme) is what an anonymous visitor sees here - same
-  // domain-match logic the sign-in flow already uses (otp-form.tsx).
   const {
     data: { user },
   } = await supabase.auth.getUser();
-  if (user?.email) {
-    const ownSlug = await resolveLearnSlugForEmail(user.email);
-    if (ownSlug) {
-      redirect(`/learn/${ownSlug}`);
+
+  if (user) {
+    const { data: profile } = await supabase
+      .from("profiles")
+      .select("last_learn_organization_id")
+      .eq("id", user.id)
+      .maybeSingle();
+
+    if (profile?.last_learn_organization_id) {
+      const { data: lastOrg } = await supabase
+        .from("organizations")
+        .select("slug, is_example")
+        .eq("id", profile.last_learn_organization_id)
+        .maybeSingle();
+      if (lastOrg && !lastOrg.is_example) {
+        redirect(`/learn/${lastOrg.slug}`);
+      }
+    }
+
+    const { data: claims } = await supabase
+      .from("organization_whitelist")
+      .select("claimed_at, organization:organizations(slug, is_example)")
+      .eq("claimed_by", user.id)
+      .order("claimed_at", { ascending: false });
+    type ClaimRow = { organization: { slug: string; is_example: boolean } | null };
+    const realClaim = ((claims ?? []) as unknown as ClaimRow[]).find(
+      (c) => c.organization && !c.organization.is_example,
+    );
+    if (realClaim?.organization) {
+      redirect(`/learn/${realClaim.organization.slug}`);
+    }
+
+    if (user.email) {
+      const ownSlug = await resolveLearnSlugForEmail(user.email);
+      if (ownSlug) {
+        const { data: matchedOrg } = await supabase
+          .from("organizations")
+          .select("is_example")
+          .eq("slug", ownSlug)
+          .maybeSingle();
+        if (matchedOrg && !matchedOrg.is_example) {
+          redirect(`/learn/${ownSlug}`);
+        }
+      }
     }
   }
 
-  const { data: orgs } = await supabase.from("organizations").select("name, slug").eq("subdomain", "learn");
-
-  if (!orgs || orgs.length === 0) {
-    return <div className="mx-auto max-w-lg px-4 py-12 text-body">Not configured.</div>;
-  }
-
-  if (orgs.length === 1) {
-    redirect(`/learn/${orgs[0].slug}`);
-  }
-
-  return (
-    <div className="mx-auto flex w-full max-w-lg flex-1 flex-col gap-4 px-4 py-12">
-      <h1 className="font-display text-2xl text-ink">Choose your school</h1>
-      <div className="flex flex-col gap-2">
-        {orgs.map((org) => (
-          <Link
-            key={org.slug}
-            href={`/learn/${org.slug}`}
-            className="rounded-lg border border-border bg-surface p-4 font-medium text-ink transition-colors hover:border-primary"
-          >
-            {org.name}
-          </Link>
-        ))}
-      </div>
-    </div>
-  );
+  redirect("/learn/acme-university");
 }

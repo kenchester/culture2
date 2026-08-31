@@ -40,6 +40,19 @@ export async function enrollInLanguages(
     );
 }
 
+// profiles.last_learn_organization_id (00000000000069) drives the smart
+// redirect at learn.culturemesh.com's bare root - whoever's real school
+// they were most recently confirmed a member of, not a "choose your
+// school" picker on every visit. Deliberately never set for the example
+// org (Acme): visiting it to poke around a demo, as an admin or
+// otherwise, shouldn't hijack someone's "home" school.
+async function recordLastVisitedIfRealSchool(admin: SupabaseClient, userId: string, organizationId: number, isExample: boolean) {
+  if (isExample) {
+    return;
+  }
+  await admin.from("profiles").update({ last_learn_organization_id: organizationId }).eq("id", userId);
+}
+
 // Runs on every authenticated request under /learn/[slug] - the whole point
 // is that whitelisting can happen before OR after someone has an account, so
 // this has to check on every visit rather than only at sign-up. Cheap when
@@ -77,7 +90,7 @@ export async function claimWhitelistSeat(slug: string) {
 
   const { data: org } = await admin
     .from("organizations")
-    .select("id, domain, domain_signin_enabled")
+    .select("id, domain, domain_signin_enabled, is_example")
     .eq("slug", slug)
     .maybeSingle();
   if (!org) {
@@ -96,6 +109,7 @@ export async function claimWhitelistSeat(slug: string) {
       continue;
     }
     if (entry.claimed_by) {
+      await recordLastVisitedIfRealSchool(admin, user.id, org.id, org.is_example);
       return;
     }
 
@@ -114,6 +128,7 @@ export async function claimWhitelistSeat(slug: string) {
       .from("organization_whitelist")
       .update({ claimed_by: user.id, claimed_at: new Date().toISOString() })
       .eq("id", entry.id);
+    await recordLastVisitedIfRealSchool(admin, user.id, org.id, org.is_example);
     return;
   }
 
@@ -160,6 +175,7 @@ export async function claimWhitelistSeat(slug: string) {
   if (languageIds.length > 0) {
     await enrollInLanguages(admin, org.id, user.id, languageIds);
   }
+  await recordLastVisitedIfRealSchool(admin, user.id, org.id, org.is_example);
 }
 
 export type LearnAccess = {

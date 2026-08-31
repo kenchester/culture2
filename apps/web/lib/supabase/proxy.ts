@@ -42,6 +42,7 @@ export const RESERVED_LEARN_SLUGS = [
   "networks",
   "profile",
   "redeemed",
+  "schools",
   "search",
   "settings",
   "start",

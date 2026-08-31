@@ -10,7 +10,8 @@
     "admin": "行政",
     "signOut": "签出",
     "changeLanguage": "更改语言",
-    "myNetworks": "我的网络"
+    "myNetworks": "我的网络",
+    "schools": "学校"
   },
   "search": {
     "speak": "说话",
@@ -453,6 +454,11 @@
     "verifyEmailSubmit": "发送代码",
     "verifyCodeLabel": "输入我们发给的{email}代码",
     "verifyCodeSubmit": "验证",
+    "addSchoolLink": "添加另一所学校的网络",
+    "addSchoolSubheading": "你还属于其他学校吗？输入你在该校的邮箱，我们来核实。",
+    "addSchoolPlaceholder": "you@school.edu",
+    "addSchoolSubmit": "核实并发送验证码",
+    "addSchoolNoMatch": "{domain} 目前还未加入 CultureMesh，我们已记录你的兴趣。",
     "pendingNotice": "你被认可为{name}学生。你的项目管理员很快会分配你的语言网络，或者你可以在下面开始。"
   },
   "myNetworks": {
@@ -461,5 +467,8 @@
     "findNetworks": "找一个网络加入",
     "previousPage": "← 之前的10个网络",
     "nextPage": "接下来的10个网络 →"
+  },
+  "schools": {
+    "heading": "我的学校"
   }
 }

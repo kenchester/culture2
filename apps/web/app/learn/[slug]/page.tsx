@@ -4,6 +4,7 @@ import { createClient } from "@/lib/supabase/server";
 import { DomainCheckBanner } from "@/app/learn/domain-check-banner";
 import { GetStartedBanner } from "@/app/learn/get-started-banner";
 import { VerifySchoolEmailForm } from "@/app/learn/verify-school-email-form";
+import { AddSchoolLink } from "@/app/learn/add-school-link";
 import { LearnSearchForm } from "@/app/learn/learn-search-form";
 import { LaunchNetworkForm } from "@/app/learn/[slug]/launch-network-form";
 
@@ -31,10 +32,21 @@ export default async function LearnPage({
     error?: string;
     verifyEmail?: string;
     verifyError?: string;
+    addSchoolNoMatch?: string;
+    addSchoolError?: string;
   }>;
 }) {
   const { slug } = await params;
-  const { domainMatch, domainNoMatch, domainError, error, verifyEmail, verifyError } = await searchParams;
+  const {
+    domainMatch,
+    domainNoMatch,
+    domainError,
+    error,
+    verifyEmail,
+    verifyError,
+    addSchoolNoMatch,
+    addSchoolError,
+  } = await searchParams;
   const t = await getTranslations("learn");
   const supabase = await createClient();
 
@@ -185,6 +197,10 @@ export default async function LearnPage({
             </div>
           )}
         </div>
+      )}
+
+      {org && !org.is_example && (
+        <AddSchoolLink slug={slug} noMatchDomain={addSchoolNoMatch} error={addSchoolError} />
       )}
     </div>
   );

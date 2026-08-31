@@ -10,7 +10,8 @@
     "admin": "管理",
     "signOut": "サインアウト",
     "changeLanguage": "言語の変更",
-    "myNetworks": "私のネットワーク"
+    "myNetworks": "私のネットワーク",
+    "schools": "学校"
   },
   "search": {
     "speak": "話せ",
@@ -453,6 +454,11 @@
     "verifyEmailSubmit": "コードを送れ",
     "verifyCodeLabel": "送った{email}コードを入力してください",
     "verifyCodeSubmit": "検証",
+    "addSchoolLink": "別の学校のネットワークを追加",
+    "addSchoolSubheading": "複数の学校に所属していますか？もう一方の学校のメールアドレスを入力してください。",
+    "addSchoolPlaceholder": "you@school.edu",
+    "addSchoolSubmit": "確認してコードを送信",
+    "addSchoolNoMatch": "{domain} はまだ CultureMesh に登録されていませんが、ご関心を記録しました。",
     "pendingNotice": "あなたは学生として{name}認められています。プログラム管理者がまもなく言語ネットワークを割り当てますし、下から始めても構いません。"
   },
   "myNetworks": {
@@ -461,5 +467,8 @@
     "findNetworks": "参加するネットワークを見つけましょう",
     "previousPage": "← 過去10のネットワーク",
     "nextPage": "次の10ネットワーク→"
+  },
+  "schools": {
+    "heading": "あなたの学校"
   }
 }

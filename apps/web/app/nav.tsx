@@ -35,7 +35,7 @@ type Profile = {
   is_admin: boolean;
 };
 
-function UserMenu({ user, profile }: { user: User; profile: Profile | null }) {
+function UserMenu({ user, profile, hasSchools }: { user: User; profile: Profile | null; hasSchools: boolean }) {
   const t = useTranslations("nav");
   const [open, setOpen] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
@@ -109,6 +109,15 @@ function UserMenu({ user, profile }: { user: User; profile: Profile | null }) {
           >
             {t("myNetworks")}
           </Link>
+          {hasSchools && (
+            <Link
+              href="/schools"
+              onClick={() => setOpen(false)}
+              className="block px-3 py-2 text-body hover:bg-primary-light hover:text-primary"
+            >
+              {t("schools")}
+            </Link>
+          )}
           <Link
             href="/messages"
             onClick={() => setOpen(false)}
@@ -150,6 +159,7 @@ export function Nav({ isLearnHost = false }: { isLearnHost?: boolean }) {
   const t = useTranslations("nav");
   const [user, setUser] = useState<User | null>(null);
   const [profile, setProfile] = useState<Profile | null>(null);
+  const [hasSchools, setHasSchools] = useState(false);
   const pathname = usePathname();
   const searchParams = useSearchParams();
 
@@ -165,12 +175,28 @@ export function Nav({ isLearnHost = false }: { isLearnHost?: boolean }) {
       setProfile(data ?? null);
     }
 
+    // Gates the dropdown's "Schools" item (app/schools/page.tsx) - only
+    // recognition at a real school counts, same is_example exclusion as
+    // that page's own query, so the item never appears for someone whose
+    // only "membership" is poking around the Acme demo as an admin.
+    async function loadHasSchools(userId: string) {
+      const { data } = await supabase
+        .from("organization_whitelist")
+        .select("organization:organizations!inner(is_example)")
+        .eq("claimed_by", userId)
+        .eq("organizations.is_example", false)
+        .limit(1);
+      setHasSchools((data?.length ?? 0) > 0);
+    }
+
     supabase.auth.getUser().then(({ data }) => {
       setUser(data.user);
       if (data.user) {
         loadProfile(data.user.id);
+        loadHasSchools(data.user.id);
       } else {
         setProfile(null);
+        setHasSchools(false);
       }
     });
     // Every sign-in/sign-up/sign-out in this app happens through a server
@@ -186,8 +212,10 @@ export function Nav({ isLearnHost = false }: { isLearnHost?: boolean }) {
       setUser(session?.user ?? null);
       if (session?.user) {
         loadProfile(session.user.id);
+        loadHasSchools(session.user.id);
       } else {
         setProfile(null);
+        setHasSchools(false);
       }
     });
     return () => subscription.unsubscribe();
@@ -232,7 +260,7 @@ export function Nav({ isLearnHost = false }: { isLearnHost?: boolean }) {
         <NavLink href="/search">{isLearnHost ? t("searchPublicNetworks") : t("search")}</NavLink>
         <LanguageSwitcher />
         {user ? (
-          <UserMenu user={user} profile={profile} />
+          <UserMenu user={user} profile={profile} hasSchools={hasSchools} />
         ) : (
           <>
             <NavLink href={signInHref}>{t("signIn")}</NavLink>
