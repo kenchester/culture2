@@ -140,7 +140,11 @@ export default async function LearnPage({
       ) : null}
 
       {isPending && org && (
-        <p className="rounded-md bg-primary-light px-3 py-2 text-sm text-body">
+        // Success-green, not primary-tinted: this is good news ("you're
+        // recognized"), and on the Campus Zine theme primary-light is a
+        // pale pink that reads as a warning/error rather than a helpful
+        // heads-up.
+        <p className="rounded-md bg-success-bg px-3 py-2 text-sm text-success">
           {t("pendingNotice", { name: org.name })}
         </p>
       )}
