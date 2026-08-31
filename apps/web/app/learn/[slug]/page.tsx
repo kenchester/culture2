@@ -1,6 +1,8 @@
 import Link from "next/link";
+import { redirect } from "next/navigation";
 import { getTranslations } from "next-intl/server";
 import { createClient } from "@/lib/supabase/server";
+import { buildSubdomainUrl, getMainSiteUrl, isLearnHost } from "@/lib/site-url";
 import { DomainCheckBanner } from "@/app/learn/domain-check-banner";
 import { GetStartedBanner } from "@/app/learn/get-started-banner";
 import { VerifySchoolEmailForm } from "@/app/learn/verify-school-email-form";
@@ -47,6 +49,35 @@ export default async function LearnPage({
     addSchoolNoMatch,
     addSchoolError,
   } = await searchParams;
+
+  // Every /learn/{slug} page belongs on learn.culturemesh.com, full stop -
+  // unlike a network (which may or may not be campus-anchored), there's no
+  // such thing as a "public, non-learn" org page, so this canonicalizes
+  // unconditionally rather than branching on is_example. Symmetric with
+  // the opposite-direction redirect on /networks/[id] (a non-campus
+  // network visited on the learn host bounces back to the plain site) -
+  // without this, a relative link built while browsing the plain host
+  // (e.g. app/schools/page.tsx's school list) would otherwise render this
+  // page under the wrong host instead of bouncing to the right one.
+  // Skipped locally: no real subdomain to redirect to there, and
+  // buildSubdomainUrl's own localhost fallback would otherwise send this
+  // right back to the same URL and loop.
+  const mainSiteUrl = await getMainSiteUrl();
+  const isLocalDev = mainSiteUrl.includes("localhost") || mainSiteUrl.includes("127.0.0.1");
+  if (!isLocalDev && !(await isLearnHost())) {
+    const params = new URLSearchParams();
+    if (domainMatch) params.set("domainMatch", domainMatch);
+    if (domainNoMatch) params.set("domainNoMatch", domainNoMatch);
+    if (domainError) params.set("domainError", domainError);
+    if (error) params.set("error", error);
+    if (verifyEmail) params.set("verifyEmail", verifyEmail);
+    if (verifyError) params.set("verifyError", verifyError);
+    if (addSchoolNoMatch) params.set("addSchoolNoMatch", addSchoolNoMatch);
+    if (addSchoolError) params.set("addSchoolError", addSchoolError);
+    const query = params.size > 0 ? `?${params.toString()}` : "";
+    redirect(buildSubdomainUrl(mainSiteUrl, "learn", `/learn/${slug}${query}`));
+  }
+
   const t = await getTranslations("learn");
   const supabase = await createClient();
 
