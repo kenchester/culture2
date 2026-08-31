@@ -47,3 +47,88 @@ body {
   background: var(--color-background);
   color: var(--color-ink);
 }
+
+/* ===========================================================
+   Campus Zine — learn.culturemesh.com only (set via html[data-
+   theme="zine"] in app/layout.tsx, driven by isLearnHost()).
+   Bright riso-print palette, typewriter body copy, sharp corners,
+   thick black keylines - a photocopied-flyer feel instead of the
+   warm-editorial look the rest of the site uses.
+
+   This works as a pure token/utility override, not a parallel
+   component tree: every shared page and component already renders
+   through the semantic classes below (bg-surface, text-ink,
+   border-border, rounded-md, shadow-sm, font-display, ...) rather
+   than raw Tailwind palette classes, confirmed by grep before
+   writing this - so redefining what those tokens resolve to here
+   reskins every page under learn.* for free, with zero changes to
+   the ~30 files that render them. Left success/error colors alone
+   deliberately (semantic, not brand - a red error should stay
+   legibly "error red" here too, not become riso pink).
+   =========================================================== */
+html[data-theme="zine"] {
+  --color-background: #fcfbf5;
+  --color-surface: #ffffff;
+  --color-ink: #17181c;
+  --color-body: #2c2d31;
+  --color-muted: #6b6d64;
+  --color-border: #17181c;
+
+  --color-primary: #e0234e;
+  --color-primary-hover: #b81a3d;
+  --color-primary-light: #ffe3e9;
+
+  --font-sans: var(--font-space-mono);
+  --font-display: var(--font-archivo-black);
+
+  --radius-sm: 0px;
+  --radius-md: 0px;
+  --radius-lg: 0px;
+  --radius-xl: 0px;
+}
+
+/* Headlines read as stamped/screenprinted, not just a different
+   typeface - every h1/h2 in the app already carries font-display. */
+html[data-theme="zine"] .font-display {
+  text-transform: uppercase;
+  letter-spacing: -0.01em;
+}
+
+/* Tailwind's `border` utility bakes in a fixed 1px width (verified in
+   the compiled output, not swappable via a --border-width token), so
+   thickening it site-wide means overriding the utility class itself
+   here rather than a CSS variable - same reasoning for `shadow-*`,
+   whose box-shadow value is composed directly into the utility rule.
+   Both overrides win on specificity alone (an attribute-scoped rule
+   beats the bare utility class), no !important needed. */
+html[data-theme="zine"] .border,
+html[data-theme="zine"] .border-2 {
+  border-width: 2px;
+}
+html[data-theme="zine"] .border-t,
+html[data-theme="zine"] .border-t-2 {
+  border-top-width: 2px;
+}
+html[data-theme="zine"] .border-b,
+html[data-theme="zine"] .border-b-2 {
+  border-bottom-width: 2px;
+}
+html[data-theme="zine"] .border-r {
+  border-right-width: 2px;
+}
+
+html[data-theme="zine"] .shadow-sm,
+html[data-theme="zine"] .shadow-md,
+html[data-theme="zine"] .shadow-lg {
+  box-shadow: 4px 4px 0 0 var(--color-ink);
+}
+
+/* Button.tsx's primary variant pairs bg-primary with text-white -
+   white-on-#E0234E lands under WCAG AA for normal-weight text
+   (~3.5:1, needs 4.5:1), so ink-on-pink both fixes contrast and
+   reads more like ink on printed paper than a software button.
+   Scoped to the exact class pairing so unrelated text-white usage
+   (e.g. on the dark ink-colored surfaces elsewhere) is untouched. */
+html[data-theme="zine"] .bg-primary.text-white {
+  color: var(--color-ink);
+}
