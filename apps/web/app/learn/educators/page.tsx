@@ -72,7 +72,7 @@ const FEATURES = [
 const FAQ = [
   {
     q: "What does it cost?",
-    a: "Nothing. There's no paid tier to unlock, seat limit, or trial period.",
+    a: "School networks will cost nothing for half a year (or more, if requested). Individual instructors can request access without any commitment, seat limit, or financial details, and we merely ping you to consider introducing CultureMesh Learn to your department leadership as the trial comes to a close.",
   },
   {
     q: "How long does setup actually take?",
@@ -182,7 +182,7 @@ export default async function EducatorsPage() {
           <div className="mt-8 flex flex-col gap-6">
             {FAQ.map((item) => (
               <div key={item.q}>
-                <h3 className="font-medium text-ink">{item.q}</h3>
+                <h3 className="font-medium text-ink underline">{item.q}</h3>
                 <p className="mt-1 text-body">{item.a}</p>
               </div>
             ))}
