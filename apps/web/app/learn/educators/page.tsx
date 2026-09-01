@@ -10,6 +10,17 @@ import { LiveDemoPicker } from "@/app/learn/educators/live-demo-picker";
 const ctaClassName =
   "inline-flex items-center justify-center rounded-md bg-primary px-5 py-2.5 text-base font-medium text-white transition-colors hover:bg-primary-hover";
 
+// /learn/start requires signing in with an institutional email first - the
+// right flow for a student or admin who already knows their school's
+// domain, but too much friction for a coordinator who just wants to raise
+// their hand. Routes here instead: the contact form's own subject picker
+// (app/(marketing)/contact/subject-field.tsx) shows a required "your
+// institution" field the moment this subject is selected, so nothing about
+// this request is lost by skipping the sign-in-gated form.
+const learnInterestHref = `/contact?subject=${encodeURIComponent("CultureMesh Learn Interest")}&message=${encodeURIComponent(
+  "I'd like to bring CultureMesh Learn to my program.",
+)}`;
+
 type DemoNetworkRow = {
   language: { name: string } | null;
   network: { id: number; member_count: number; post_count: number } | null;
@@ -84,12 +95,20 @@ export default async function EducatorsPage() {
     .select("language:languages(name), network:networks(id, member_count, post_count)")
     .eq("organization_id", 1);
 
+  // Display-only shortening for this one tile - the full "Mandarin
+  // Chinese/Putonghua" (the real language name everywhere else in the app)
+  // wraps to three lines in a 4-up grid and looks cramped next to the
+  // other three single-line labels.
+  const SHORT_LANGUAGE_NAME: Record<string, string> = {
+    "Mandarin Chinese/Putonghua": "Mandarin Chinese",
+  };
+
   const demoRows = (demoLanguages ?? []) as unknown as DemoNetworkRow[];
   const demoNetworks = demoRows
     .filter((row) => row.language && row.network)
     .map((row) => ({
       id: row.network!.id,
-      language: row.language!.name,
+      language: SHORT_LANGUAGE_NAME[row.language!.name] ?? row.language!.name,
       memberCount: row.network!.member_count,
       postCount: row.network!.post_count,
     }));
@@ -109,7 +128,7 @@ export default async function EducatorsPage() {
             ends.
           </p>
           <div className="flex flex-wrap gap-3">
-            <Link href="/learn/start" className={ctaClassName}>
+            <Link href={learnInterestHref} className={ctaClassName}>
               Request CultureMesh Learn for your program
             </Link>
           </div>
@@ -178,7 +197,7 @@ export default async function EducatorsPage() {
           Tell us about your program and we&apos;ll get your school set up - most requests are live
           within a few days.
         </p>
-        <Link href="/learn/start" className={ctaClassName}>
+        <Link href={learnInterestHref} className={ctaClassName}>
           Request CultureMesh Learn for your program
         </Link>
       </div>

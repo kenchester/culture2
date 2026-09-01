@@ -275,6 +275,7 @@
     "emailLabel": "你的邮箱",
     "subjectLabel": "主题",
     "subjectPlaceholder": "选择一个主题",
+    "institutionLabel": "所在机构",
     "subjects": {
       "general": "一般问题",
       "problem": "举报问题",

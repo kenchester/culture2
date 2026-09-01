@@ -338,6 +338,7 @@
     "emailLabel": "Your email",
     "subjectLabel": "Subject",
     "subjectPlaceholder": "Choose a subject",
+    "institutionLabel": "Your institution",
     "subjects": {
       "general": "General question",
       "problem": "Report a problem",

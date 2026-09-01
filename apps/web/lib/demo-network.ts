@@ -20,13 +20,25 @@ export async function isExampleNetwork(
 }
 
 // Half a network's demo posts/replies show as posted "now", half as "this
-// time yesterday" - split by id parity, which is stable across renders
-// without needing a stored flag. The extra per-item spread (up to ~4h,
-// derived from the id itself) keeps a network's feed from showing a wall
-// of identical timestamps.
-export function demoPostTimestamp(itemId: number): string {
-  const dayOffsetMs = itemId % 2 === 0 ? 0 : 24 * 60 * 60 * 1000;
-  const spreadMs = ((itemId * 37) % 240) * 60 * 1000;
+// time yesterday" - split by *position in the list*, not id parity (an
+// earlier version split by id % 2, which scattered "today" and "yesterday"
+// items at random through the feed instead of reading as an actual
+// timeline). index/total describe the item's place in whatever order it's
+// already being rendered in; newestFirst says which end of that order is
+// most recent - true for the main post feed (query orders by created_at
+// desc, newest at the top), false for a reply thread (orders ascending,
+// oldest at the top, newest at the bottom). Whichever half is "today" gets
+// evenly spaced minutes-ago offsets within it (freshest item in that half
+// first) so consecutive items still read as a plausible timeline instead
+// of a wall of identical timestamps.
+export function demoPostTimestamp(index: number, total: number, newestFirst: boolean): string {
+  const half = Math.ceil(total / 2);
+  const rankFromNewest = newestFirst ? index : total - 1 - index;
+  const isToday = rankFromNewest < half;
+  const rankWithinHalf = isToday ? rankFromNewest : rankFromNewest - half;
+  const stepMinutes = 12;
+  const dayOffsetMs = isToday ? 0 : 24 * 60 * 60 * 1000;
+  const spreadMs = rankWithinHalf * stepMinutes * 60 * 1000;
   return new Date(Date.now() - dayOffsetMs - spreadMs).toISOString();
 }
 

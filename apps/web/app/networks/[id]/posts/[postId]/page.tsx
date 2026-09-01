@@ -56,6 +56,24 @@ export default async function PostPage({
 
   const isExample = network ? await isExampleNetwork(supabase, network.location_place_id) : false;
 
+  // This post's own displayed timestamp has to land on the same "today"/
+  // "yesterday" it shows as in the network's main feed (app/networks/
+  // [id]/page.tsx) - that page derives it from the post's position among
+  // all of the network's posts (newest first), so this fetches the same
+  // ordering to find this post's rank in it. Skipped entirely for real
+  // networks, where the real created_at is just used as-is.
+  let postRankIndex = 0;
+  let postRankTotal = 1;
+  if (isExample) {
+    const { data: networkPosts } = await supabase
+      .from("posts")
+      .select("id")
+      .eq("network_id", post.network_id)
+      .order("created_at", { ascending: false });
+    postRankTotal = networkPosts?.length ?? 1;
+    postRankIndex = Math.max(0, networkPosts?.findIndex((p) => p.id === post.id) ?? 0);
+  }
+
   const myLikedPostIds = new Set((myLikes ?? []).map((l) => l.post_id).filter(Boolean));
   const myLikedReplyIds = new Set((myLikes ?? []).map((l) => l.reply_id).filter(Boolean));
 
@@ -112,7 +130,9 @@ export default async function PostPage({
             itemId={post.id}
             body={post.body}
             media={post.media_type && postMediaUrl ? { type: post.media_type as "audio" | "video", url: postMediaUrl } : null}
-            createdAt={isExample ? demoPostTimestamp(post.id) : post.created_at}
+            createdAt={
+              isExample ? demoPostTimestamp(postRankIndex, postRankTotal, true) : post.created_at
+            }
             canModify={user?.id === author?.id}
             likeCount={extractCount(post.likes)}
             liked={myLikedPostIds.has(post.id)}
@@ -132,7 +152,7 @@ export default async function PostPage({
       </div>
 
       <div className="flex flex-col gap-4 pl-8">
-        {replies?.map((reply) => {
+        {replies?.map((reply, replyIndex) => {
           const replyAuthor = reply.author as unknown as Author | null;
           const replyAvatarUrl = replyAuthor
             ? getAvatarUrl(supabase, replyAuthor.img_path)
@@ -167,7 +187,16 @@ export default async function PostPage({
                       ? { type: reply.media_type as "audio" | "video", url: replyMediaUrls.get(reply.id)! }
                       : null
                   }
-                  createdAt={isExample ? demoPostTimestamp(reply.id) : reply.created_at}
+                  createdAt={
+                    // Replies render oldest-first (order by created_at
+                    // asc), the opposite of the post feed's newest-first
+                    // order - newestFirst: false keeps "today" landing on
+                    // the newest (bottom) replies here too, not the
+                    // oldest (top) ones.
+                    isExample
+                      ? demoPostTimestamp(replyIndex, replies?.length ?? 1, false)
+                      : reply.created_at
+                  }
                   canModify={user?.id === replyAuthor?.id}
                   likeCount={extractCount(reply.likes)}
                   liked={myLikedReplyIds.has(reply.id)}

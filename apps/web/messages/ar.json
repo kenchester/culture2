@@ -275,6 +275,7 @@
     "emailLabel": "بريدك الإلكتروني",
     "subjectLabel": "الموضوع",
     "subjectPlaceholder": "اختر موضوعا",
+    "institutionLabel": "مؤسستك",
     "subjects": {
       "general": "سؤال عام",
       "problem": "أبلغ عن مشكلة",

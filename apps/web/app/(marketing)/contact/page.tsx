@@ -1,7 +1,8 @@
 import { getTranslations } from "next-intl/server";
 import { sendContactMessage } from "@/app/(marketing)/contact/actions";
+import { SubjectField } from "@/app/(marketing)/contact/subject-field";
 import { Button } from "@/components/ui/button";
-import { Field, fieldClass, Input, Label, Textarea } from "@/components/ui/input";
+import { Field, Input, Label, Textarea } from "@/components/ui/input";
 
 // Pulled out of the component body: React's purity lint rule flags a
 // direct Date.now() call inside a component's render, but this page is
@@ -14,9 +15,15 @@ function serverNow() {
 export default async function ContactPage({
   searchParams,
 }: {
-  searchParams: Promise<{ error?: string; sent?: string; subject?: string; message?: string }>;
+  searchParams: Promise<{
+    error?: string;
+    sent?: string;
+    subject?: string;
+    message?: string;
+    institution?: string;
+  }>;
 }) {
-  const { error, sent, subject, message } = await searchParams;
+  const { error, sent, subject, message, institution } = await searchParams;
   const t = await getTranslations("contact");
 
   return (
@@ -61,20 +68,7 @@ export default async function ContactPage({
           <Label htmlFor="email">{t("emailLabel")}</Label>
           <Input id="email" name="email" type="email" required />
         </Field>
-        <Field>
-          <Label htmlFor="subject">{t("subjectLabel")}</Label>
-          <select id="subject" name="subject" required defaultValue={subject ?? ""} className={fieldClass}>
-            <option value="" disabled>
-              {t("subjectPlaceholder")}
-            </option>
-            <option value="General question">{t("subjects.general")}</option>
-            <option value="Report a problem">{t("subjects.problem")}</option>
-            <option value="Embassy or partner inquiry">{t("subjects.embassy")}</option>
-            <option value="CultureMesh Learn Interest">{t("subjects.learn")}</option>
-            <option value="Privacy or data request">{t("subjects.privacy")}</option>
-            <option value="Other">{t("subjects.other")}</option>
-          </select>
-        </Field>
+        <SubjectField initialSubject={subject} initialInstitution={institution} />
         <Field>
           <Label htmlFor="message">{t("messageLabel")}</Label>
           <Textarea id="message" name="message" required rows={6} defaultValue={message ?? ""} />

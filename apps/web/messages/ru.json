@@ -275,6 +275,7 @@
     "emailLabel": "Твоя электронная почта",
     "subjectLabel": "Тема",
     "subjectPlaceholder": "Выберите предмет",
+    "institutionLabel": "Ваше учебное заведение",
     "subjects": {
       "general": "Общий вопрос",
       "problem": "Сообщите о проблеме",

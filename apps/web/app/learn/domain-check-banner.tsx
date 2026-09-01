@@ -46,7 +46,19 @@ export async function DomainCheckBanner({
       {domainNoMatch && (
         <div className="flex flex-col gap-2 rounded-md bg-success-bg px-3 py-2 text-sm text-body">
           <p>{t("bannerNoMatch", { domain: domainNoMatch })}</p>
-          <Link href="/learn/start" className="self-start font-medium text-primary hover:underline">
+          {/* /learn/start requires signing in with an institutional email
+              first - too much friction for someone who just typed a domain
+              to check whether their school is on here yet. Routes to the
+              contact form instead (its subject picker shows a required
+              "your institution" field for this exact subject - see
+              app/(marketing)/contact/subject-field.tsx), no sign-in
+              needed. */}
+          <Link
+            href={`/contact?subject=${encodeURIComponent("CultureMesh Learn Interest")}&message=${encodeURIComponent(
+              `I'd like to bring CultureMesh Learn to ${domainNoMatch}.`,
+            )}`}
+            className="self-start font-medium text-primary hover:underline"
+          >
             {t("bannerRequestButton")}
           </Link>
         </div>

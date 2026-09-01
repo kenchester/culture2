@@ -28,13 +28,16 @@ export async function sendContactMessage(formData: FormData) {
   const email = formData.get("email") as string;
   const subject = formData.get("subject") as string;
   const message = formData.get("message") as string;
+  // Only present when subject is "CultureMesh Learn Interest" - see
+  // app/(marketing)/contact/subject-field.tsx.
+  const institution = formData.get("institution") as string | null;
 
   const { error } = await resend.emails.send({
     from: "CultureMesh Contact Form <noreply@culturemesh.com>",
     to: "kenchester2@gmail.com",
     replyTo: email,
     subject: `[Contact form] ${subject}: ${name}`,
-    text: `From: ${name} <${email}>\nSubject: ${subject}\n\n${message}`,
+    text: `From: ${name} <${email}>\nSubject: ${subject}${institution ? `\nInstitution: ${institution}` : ""}\n\n${message}`,
   });
 
   if (error) {

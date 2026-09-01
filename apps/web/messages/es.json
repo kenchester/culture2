@@ -275,6 +275,7 @@
     "emailLabel": "Tu correo electrónico",
     "subjectLabel": "Tema",
     "subjectPlaceholder": "Elige una materia",
+    "institutionLabel": "Tu institución",
     "subjects": {
       "general": "Pregunta general",
       "problem": "Reporta un problema",

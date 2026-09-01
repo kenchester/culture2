@@ -352,7 +352,7 @@ export default async function NetworkPage({
           )}
 
           <div className="flex flex-col gap-4">
-            {posts?.map((post) => {
+            {posts?.map((post, postIndex) => {
               const author = post.author as unknown as Author | null;
               const avatarUrl = author ? getAvatarUrl(supabase, author.img_path) : null;
               const replyCount =
@@ -400,7 +400,9 @@ export default async function NetworkPage({
                           ? { type: post.media_type as "audio" | "video", url: postMediaUrls.get(post.id)! }
                           : null
                       }
-                      createdAt={isExample ? demoPostTimestamp(post.id) : post.created_at}
+                      createdAt={
+                        isExample ? demoPostTimestamp(postIndex, posts.length, true) : post.created_at
+                      }
                       canModify={user?.id === author?.id}
                       likeCount={likeCountValue}
                       liked={myLikedPostIds.has(post.id)}

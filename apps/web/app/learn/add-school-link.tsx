@@ -71,7 +71,17 @@ export function AddSchoolLink({
         {noMatchDomain && (
           <div className="flex flex-col gap-2 rounded-md bg-success-bg px-3 py-2 text-sm text-body">
             <p>{t("addSchoolNoMatch", { domain: noMatchDomain })}</p>
-            <Link href="/learn/start" className="self-start font-medium text-primary hover:underline">
+            {/* /learn/start requires signing in with an institutional email
+                first - too much friction here. Routes to the contact form
+                instead (no sign-in needed - its subject picker shows a
+                required "your institution" field for this exact subject,
+                see app/(marketing)/contact/subject-field.tsx). */}
+            <Link
+              href={`/contact?subject=${encodeURIComponent("CultureMesh Learn Interest")}&message=${encodeURIComponent(
+                `I'd like to bring CultureMesh Learn to ${noMatchDomain}.`,
+              )}`}
+              className="self-start font-medium text-primary hover:underline"
+            >
               {t("bannerRequestButton")}
             </Link>
           </div>
