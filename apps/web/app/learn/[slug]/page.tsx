@@ -237,6 +237,15 @@ export default async function LearnPage({
       {org && !org.is_example && (
         <AddSchoolLink slug={slug} noMatchDomain={addSchoolNoMatch} error={addSchoolError} />
       )}
+
+      {org?.is_example && (
+        <Link
+          href="/learn/educators"
+          className="inline-flex w-fit items-center justify-center rounded-md bg-primary px-5 py-2.5 text-base font-medium text-white transition-colors hover:bg-primary-hover"
+        >
+          Why CultureMesh Learn?
+        </Link>
+      )}
     </div>
   );
 }

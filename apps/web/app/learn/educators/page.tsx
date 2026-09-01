@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { createClient } from "@/lib/supabase/server";
+import { LiveDemoPicker } from "@/app/learn/educators/live-demo-picker";
 
 // Matches Button's own primary-variant class composition (components/ui/
 // button.tsx) at a larger size - Button itself renders a literal <button>
@@ -11,7 +12,7 @@ const ctaClassName =
 
 type DemoNetworkRow = {
   language: { name: string } | null;
-  network: { member_count: number; post_count: number } | null;
+  network: { id: number; member_count: number; post_count: number } | null;
 };
 
 // A sales/outreach page for language teachers, program coordinators, and
@@ -80,12 +81,18 @@ export default async function EducatorsPage() {
   const supabase = await createClient();
   const { data: demoLanguages } = await supabase
     .from("organization_languages")
-    .select("language:languages(name), network:networks(member_count, post_count)")
+    .select("language:languages(name), network:networks(id, member_count, post_count)")
     .eq("organization_id", 1);
 
   const demoRows = (demoLanguages ?? []) as unknown as DemoNetworkRow[];
-  const totalMembers = demoRows.reduce((sum, row) => sum + (row.network?.member_count ?? 0), 0);
-  const totalPosts = demoRows.reduce((sum, row) => sum + (row.network?.post_count ?? 0), 0);
+  const demoNetworks = demoRows
+    .filter((row) => row.language && row.network)
+    .map((row) => ({
+      id: row.network!.id,
+      language: row.language!.name,
+      memberCount: row.network!.member_count,
+      postCount: row.network!.post_count,
+    }));
 
   return (
     <div className="flex flex-1 flex-col">
@@ -105,12 +112,6 @@ export default async function EducatorsPage() {
             <Link href="/learn/start" className={ctaClassName}>
               Request CultureMesh Learn for your program
             </Link>
-            <a
-              href="#demo"
-              className="inline-flex items-center justify-center rounded-md border border-border bg-surface px-5 py-2.5 text-base font-medium text-ink transition-colors hover:bg-primary-light"
-            >
-              See a live example
-            </a>
           </div>
         </div>
       </div>
@@ -129,6 +130,15 @@ export default async function EducatorsPage() {
           CultureMesh Learn is a school-gated practice space built around that specific gap - not a
           general chat app repurposed for class, and not another solo drilling app.
         </p>
+        {demoNetworks.length > 0 && (
+          <>
+            <p className="mt-6 text-body">
+              Don&apos;t take our word for it - Acme University is a real, working example on
+              CultureMesh. Click a network below to see it live.
+            </p>
+            <LiveDemoPicker networks={demoNetworks} />
+          </>
+        )}
       </div>
 
       {/* Feature walkthrough */}
@@ -144,41 +154,6 @@ export default async function EducatorsPage() {
             ))}
           </div>
         </div>
-      </div>
-
-      {/* Live demo */}
-      <div id="demo" className="mx-auto w-full max-w-3xl scroll-mt-8 px-4 py-14">
-        <h2 className="font-display text-2xl text-ink">See it live</h2>
-        <p className="mt-3 text-body">
-          Acme University is a real, working example on CultureMesh - not screenshots, not a staged
-          walkthrough. Click in and use it the way a student would.
-        </p>
-        {demoRows.length > 0 && (
-          <div className="mt-6 grid grid-cols-2 gap-3 sm:grid-cols-4">
-            {demoRows.map((row) =>
-              row.language && row.network ? (
-                <div key={row.language.name} className="rounded-lg border border-border bg-surface p-4">
-                  <p className="font-medium text-ink">{row.language.name}</p>
-                  <p className="mt-1 text-sm text-muted">
-                    {row.network.member_count} members, {row.network.post_count} posts
-                  </p>
-                </div>
-              ) : null,
-            )}
-          </div>
-        )}
-        <p className="mt-3 text-sm text-muted">
-          {demoRows.length} live language networks - {totalMembers} members, {totalPosts} real posts,
-          right now.
-        </p>
-        <a
-          href="https://learn.culturemesh.com/learn/acme-university"
-          target="_blank"
-          rel="noreferrer"
-          className="mt-6 inline-flex items-center justify-center rounded-md bg-primary px-5 py-2.5 text-base font-medium text-white transition-colors hover:bg-primary-hover"
-        >
-          Open the live example →
-        </a>
       </div>
 
       {/* FAQ */}
