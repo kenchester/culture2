@@ -134,7 +134,7 @@ export default async function EducatorsPage() {
           <>
             <p className="mt-6 text-body">
               Don&apos;t take our word for it - Acme University is a real, working example on
-              CultureMesh. Click a network below to see it live.
+              CultureMesh. <strong className="font-semibold text-ink">Click a network below to see it live.</strong>
             </p>
             <LiveDemoPicker networks={demoNetworks} />
           </>
