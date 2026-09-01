@@ -72,7 +72,7 @@ const FEATURES = [
 const FAQ = [
   {
     q: "What does it cost?",
-    a: "School networks will cost nothing for half a year (or more, if requested). Individual instructors can request access without any commitment, seat limit, or financial details, and we merely ping you to consider introducing CultureMesh Learn to your department leadership as the trial comes to a close.",
+    a: "School networks will cost nothing for half a year (or more, if requested). Individual instructors can request access without any commitment, seat limit, or financial details. We merely ping you to consider introducing CultureMesh Learn to your department leadership as the trial comes to a close.",
   },
   {
     q: "How long does setup actually take?",

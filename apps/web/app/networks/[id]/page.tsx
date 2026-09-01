@@ -281,6 +281,12 @@ export default async function NetworkPage({
 
         <p className="text-sm text-muted">
           {t("memberPostCounts", { members: network.member_count, posts: network.post_count })}
+          <Link
+            href={`/networks/${network.id}/events${isEmbedded ? "?embed=1" : ""}`}
+            className="ml-3 font-medium text-primary hover:underline"
+          >
+            {t("events")}
+          </Link>
         </p>
 
         {(network.instructor_prompt || canManagePrompt) && (
@@ -314,13 +320,6 @@ export default async function NetworkPage({
             )}
           </div>
         )}
-
-        <Link
-          href={`/networks/${network.id}/events${isEmbedded ? "?embed=1" : ""}`}
-          className="text-sm font-medium text-primary hover:underline"
-        >
-          {t("events")}
-        </Link>
 
         {user ? (
           <form action={isMember ? leaveNetwork : joinNetwork}>
