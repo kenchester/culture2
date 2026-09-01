@@ -339,6 +339,7 @@
     "subjectLabel": "Subject",
     "subjectPlaceholder": "Choose a subject",
     "institutionLabel": "Your institution",
+    "embassyLabel": "Your embassy or other institution",
     "subjects": {
       "general": "General question",
       "problem": "Report a problem",

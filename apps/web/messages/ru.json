@@ -276,6 +276,7 @@
     "subjectLabel": "Тема",
     "subjectPlaceholder": "Выберите предмет",
     "institutionLabel": "Ваше учебное заведение",
+    "embassyLabel": "Ваше посольство или другое учреждение",
     "subjects": {
       "general": "Общий вопрос",
       "problem": "Сообщите о проблеме",

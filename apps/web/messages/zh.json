@@ -276,6 +276,7 @@
     "subjectLabel": "主题",
     "subjectPlaceholder": "选择一个主题",
     "institutionLabel": "所在机构",
+    "embassyLabel": "您的使馆或其他机构",
     "subjects": {
       "general": "一般问题",
       "problem": "举报问题",

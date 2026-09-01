@@ -276,6 +276,7 @@
     "subjectLabel": "제목",
     "subjectPlaceholder": "주제를 선택하세요",
     "institutionLabel": "소속 기관",
+    "embassyLabel": "귀하의 대사관 또는 기타 기관",
     "subjects": {
       "general": "일반 질문",
       "problem": "문제 신고",

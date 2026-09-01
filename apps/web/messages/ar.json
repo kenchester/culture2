@@ -276,6 +276,7 @@
     "subjectLabel": "الموضوع",
     "subjectPlaceholder": "اختر موضوعا",
     "institutionLabel": "مؤسستك",
+    "embassyLabel": "سفارتك أو مؤسستك الأخرى",
     "subjects": {
       "general": "سؤال عام",
       "problem": "أبلغ عن مشكلة",

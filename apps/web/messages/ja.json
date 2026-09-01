@@ -276,6 +276,7 @@
     "subjectLabel": "主題",
     "subjectPlaceholder": "テーマを選びましょう",
     "institutionLabel": "所属機関",
+    "embassyLabel": "大使館またはその他の機関",
     "subjects": {
       "general": "一般的な質問",
       "problem": "問題を報告してください",

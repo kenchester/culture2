@@ -276,6 +276,7 @@
     "subjectLabel": "Assunto",
     "subjectPlaceholder": "Escolha um assunto",
     "institutionLabel": "Sua instituição",
+    "embassyLabel": "Sua embaixada ou outra instituição",
     "subjects": {
       "general": "Pergunta geral",
       "problem": "Reporte um problema",
