@@ -238,7 +238,13 @@ export default async function LearnPage({
         <AddSchoolLink slug={slug} noMatchDomain={addSchoolNoMatch} error={addSchoolError} />
       )}
 
-      {org?.is_example && (
+      {/* Every /learn/{slug} page gets this, not just Acme's example one -
+          someone already signed in and recognized at their own real
+          school (e.g. MSU) still has no way to reach the pitch page
+          without leaving the learn.culturemesh.com context (and, since
+          they're already recognized, they'd never naturally land on
+          Acme's page to find it there). */}
+      {org && (
         <Link
           href="/learn/educators"
           className="inline-flex w-fit items-center justify-center rounded-md bg-primary px-5 py-2.5 text-base font-medium text-white transition-colors hover:bg-primary-hover"
