@@ -29,13 +29,19 @@ export function LiveDemoPicker({ networks }: { networks: DemoNetwork[] }) {
             key={network.id}
             type="button"
             onClick={() => setActiveId(network.id)}
-            className={`rounded-lg border p-4 text-left transition-colors ${
+            // min-w-0: a grid item's intrinsic min-width defaults to its
+            // content's min-content size, not the track width - harmless
+            // under this page's own sans-serif font, but "Mandarin Chinese/
+            // Putonghua" overflowed its box on learn.culturemesh.com's
+            // Campus Zine theme, whose monospace body font (Space Mono)
+            // makes the same text measurably wider per character.
+            className={`min-w-0 rounded-lg border p-4 text-left transition-colors ${
               activeId === network.id
                 ? "border-primary bg-primary-light"
                 : "border-border bg-surface hover:border-primary"
             }`}
           >
-            <p className="font-medium text-ink">{network.language}</p>
+            <p className="break-words font-medium text-ink">{network.language}</p>
             <p className="mt-1 text-sm text-muted">
               {network.memberCount} members, {network.postCount} posts
             </p>
