@@ -3,8 +3,10 @@ import { notFound } from "next/navigation";
 import { getTranslations } from "next-intl/server";
 import { createClient } from "@/lib/supabase/server";
 import { getDisplayName } from "@/lib/profiles";
+import { demoEventTimestamp } from "@/lib/demo-network";
 import { cancelRsvp, rsvp } from "@/app/networks/[id]/events/[eventId]/actions";
 import { Button } from "@/components/ui/button";
+import { LocalDateTime } from "@/components/local-datetime";
 
 const STATUSES = ["going", "interested", "declined"] as const;
 
@@ -25,7 +27,7 @@ export default async function EventPage({
   const { data: event } = await supabase
     .from("events")
     .select(
-      "id, title, description, event_date, location, host:host_id(id, username, first_name, last_name)",
+      "id, title, description, event_date, location, demo_days_from_now, host:host_id(id, username, first_name, last_name)",
     )
     .eq("id", eventId)
     .single();
@@ -76,7 +78,13 @@ export default async function EventPage({
       <div>
         <h1 className="font-display text-3xl text-ink">{event.title}</h1>
         <p className="text-sm text-muted">
-          {new Date(event.event_date).toLocaleString()}
+          <LocalDateTime
+            iso={
+              event.demo_days_from_now != null
+                ? demoEventTimestamp(event.demo_days_from_now)
+                : event.event_date
+            }
+          />
           {event.location ? ` · ${event.location}` : ""}
         </p>
         {host && (

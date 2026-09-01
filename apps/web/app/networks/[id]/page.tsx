@@ -7,6 +7,7 @@ import { type Author, getAvatarUrl, getDisplayName } from "@/lib/profiles";
 import { getGeoName } from "@/lib/geo-translation";
 import { getPostMediaUrl } from "@/lib/post-media";
 import { buildSubdomainUrl, getMainSiteUrl, isLearnHost } from "@/lib/site-url";
+import { demoPostTimestamp, isExampleNetwork } from "@/lib/demo-network";
 import type { Locale } from "@/lib/locale";
 import { createPost, joinNetwork, leaveNetwork, setNetworkPrompt } from "@/app/networks/actions";
 import { EditableEntry } from "@/app/networks/editable-entry";
@@ -162,6 +163,7 @@ export default async function NetworkPage({
     { data: myLikes },
     { data: canManagePrompt },
     suggestedNetwork,
+    isExample,
   ] = await Promise.all([
     network.language_id
       ? supabase.from("languages").select("id, name, iso_code").eq("id", network.language_id).single()
@@ -198,6 +200,7 @@ export default async function NetworkPage({
       ? supabase.rpc("can_manage_network_prompt", { p_network_id: network.id })
       : Promise.resolve({ data: false }),
     getSuggestedSpeakerNetwork(supabase, network),
+    isExampleNetwork(supabase, network.location_place_id),
   ]);
 
   const [translatedLanguageName, translatedOriginName, translatedLocationName, translatedSuggestedLocationName] =
@@ -397,6 +400,7 @@ export default async function NetworkPage({
                           ? { type: post.media_type as "audio" | "video", url: postMediaUrls.get(post.id)! }
                           : null
                       }
+                      createdAt={isExample ? demoPostTimestamp(post.id) : post.created_at}
                       canModify={user?.id === author?.id}
                       likeCount={likeCountValue}
                       liked={myLikedPostIds.has(post.id)}

@@ -5,6 +5,7 @@ import { getTranslations } from "next-intl/server";
 import { createClient } from "@/lib/supabase/server";
 import { type Author, getAvatarUrl, getDisplayName } from "@/lib/profiles";
 import { getPostMediaUrl } from "@/lib/post-media";
+import { demoPostTimestamp, isExampleNetwork } from "@/lib/demo-network";
 import { createReply } from "./actions";
 import { EditableEntry } from "@/app/networks/editable-entry";
 import { PostComposer } from "@/app/networks/[id]/post-composer";
@@ -39,7 +40,7 @@ export default async function PostPage({
     data: { user },
   } = await supabase.auth.getUser();
 
-  const [{ data: replies }, { data: myLikes }] = await Promise.all([
+  const [{ data: replies }, { data: myLikes }, { data: network }] = await Promise.all([
     supabase
       .from("post_replies")
       .select(
@@ -50,7 +51,10 @@ export default async function PostPage({
     user
       ? supabase.from("likes").select("post_id, reply_id").eq("user_id", user.id)
       : Promise.resolve({ data: null }),
+    supabase.from("networks").select("location_place_id").eq("id", post.network_id).single(),
   ]);
+
+  const isExample = network ? await isExampleNetwork(supabase, network.location_place_id) : false;
 
   const myLikedPostIds = new Set((myLikes ?? []).map((l) => l.post_id).filter(Boolean));
   const myLikedReplyIds = new Set((myLikes ?? []).map((l) => l.reply_id).filter(Boolean));
@@ -108,6 +112,7 @@ export default async function PostPage({
             itemId={post.id}
             body={post.body}
             media={post.media_type && postMediaUrl ? { type: post.media_type as "audio" | "video", url: postMediaUrl } : null}
+            createdAt={isExample ? demoPostTimestamp(post.id) : post.created_at}
             canModify={user?.id === author?.id}
             likeCount={extractCount(post.likes)}
             liked={myLikedPostIds.has(post.id)}
@@ -162,6 +167,7 @@ export default async function PostPage({
                       ? { type: reply.media_type as "audio" | "video", url: replyMediaUrls.get(reply.id)! }
                       : null
                   }
+                  createdAt={isExample ? demoPostTimestamp(reply.id) : reply.created_at}
                   canModify={user?.id === replyAuthor?.id}
                   likeCount={extractCount(reply.likes)}
                   liked={myLikedReplyIds.has(reply.id)}

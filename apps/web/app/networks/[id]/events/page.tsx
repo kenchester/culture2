@@ -6,6 +6,8 @@ import { createEvent } from "@/app/networks/[id]/events/actions";
 import { EventDateField } from "@/app/networks/[id]/events/event-date-field";
 import { Button } from "@/components/ui/button";
 import { Field, Input, Label, Textarea } from "@/components/ui/input";
+import { LocalDateTime } from "@/components/local-datetime";
+import { demoEventTimestamp } from "@/lib/demo-network";
 
 export default async function EventsPage({
   params,
@@ -46,7 +48,7 @@ export default async function EventsPage({
       : Promise.resolve({ data: null }),
     supabase
       .from("events")
-      .select("id, title, event_date, location")
+      .select("id, title, event_date, location, demo_days_from_now")
       .eq("network_id", network.id)
       .order("event_date", { ascending: true }),
   ]);
@@ -99,7 +101,13 @@ export default async function EventsPage({
               {event.title}
             </span>
             <span className="text-sm text-muted">
-              {new Date(event.event_date).toLocaleString()}
+              <LocalDateTime
+                iso={
+                  event.demo_days_from_now != null
+                    ? demoEventTimestamp(event.demo_days_from_now)
+                    : event.event_date
+                }
+              />
               {event.location ? ` · ${event.location}` : ""}
             </span>
           </Link>

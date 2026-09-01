@@ -7,6 +7,7 @@ import { deletePost, reportContent, toggleLike, translateEntry, updatePost } fro
 import { deleteReply, updateReply } from "@/app/networks/[id]/posts/[postId]/actions";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/input";
+import { LocalDateTime } from "@/components/local-datetime";
 import { Linkify } from "@/lib/linkify";
 import type { Locale } from "@/lib/locale";
 
@@ -41,6 +42,7 @@ export function EditableEntry({
   itemId,
   body,
   media,
+  createdAt,
   canModify,
   likeCount,
   liked,
@@ -50,6 +52,7 @@ export function EditableEntry({
   itemId: number;
   body: string;
   media?: { type: "audio" | "video"; url: string } | null;
+  createdAt: string;
   canModify: boolean;
   likeCount: number;
   liked: boolean;
@@ -259,6 +262,9 @@ export function EditableEntry({
           )}
         </div>
       </div>
+      <p className="text-xs text-muted">
+        <LocalDateTime iso={createdAt} />
+      </p>
       {mode === "confirmDelete" && (
         <div className="flex items-center gap-2 text-sm text-body">
           <span>{t(`deleteConfirm.${kind}`)}</span>
