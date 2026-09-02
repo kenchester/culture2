@@ -29,7 +29,7 @@ Team CultureMesh`,
   },
   prospective: {
     title: "Your students are requesting CultureMesh for language learning",
-    body: `CultureMesh Learn, a pioneering language-learning network for guided student practice, has been requested by students at [School Name].
+    body: `CultureMesh Learn, a pioneering language-learning network for guided student practice, has been requested by students at your school.
 
 ${GAP_PARAGRAPHS}
 
