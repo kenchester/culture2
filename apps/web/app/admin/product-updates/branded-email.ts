@@ -1,12 +1,16 @@
-// Renders the Onboarded School / Yet-to-be-onboarded School outreach body
-// (app/admin/product-updates/actions.ts's sendOutreachEmail) into a real
-// branded email, not the bare "<div>text</div>" the first version sent.
-// Deliberately NOT the Campus Zine theme (app/globals.css's data-theme
-// "zine") - that's the student-facing look for learn.culturemesh.com
-// itself; this audience is a program coordinator or department admin
-// deciding whether to take the product seriously, so it borrows the
-// site's other, warm-editorial palette instead (same tokens as
-// app/(marketing)/contact and the rest of the plain-host site).
+// Renders the two kinds of email the admin Product Updates page can send
+// (app/admin/product-updates/actions.ts) into a real branded email, not
+// bare "<div>text</div>": the Site-Wide Update goes to every opted-in
+// CultureMesh user under the general "CultureMesh" brand, while the
+// Onboarded/Yet-to-be-onboarded School outreach goes to program contacts
+// under the "CultureMesh Learn" sub-brand - same shell, different
+// header/tagline/footer (renderSiteUpdateEmail vs renderOutreachEmail
+// below). Deliberately NOT the Campus Zine theme (app/globals.css's
+// data-theme "zine") - that's the student-facing look for
+// learn.culturemesh.com itself; both these audiences (a general user
+// reading a changelog, or a program coordinator sizing up the product)
+// call for the site's other, warm-editorial palette instead (same tokens
+// as app/(marketing)/contact and the rest of the plain-host site).
 //
 // Email-safe system font stacks, not the site's actual webfonts - most
 // mail clients strip @font-face/custom fonts outright, so reaching for one
@@ -31,12 +35,21 @@ function escapeHtml(value: string): string {
   return value.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
 }
 
+type Brand = {
+  // The word after "CultureMesh" in the header, set in the accent color -
+  // omitted entirely for the general-audience brand (just "CultureMesh"),
+  // present for the Learn sub-brand ("CultureMesh Learn").
+  subBrand?: string;
+  tagline: string;
+  footerLabel: string;
+};
+
 // text: markdown links reduced to "label (url)" for plain-text clients.
 // html: same links turned into real, brand-colored <a href> - escapeHtml
 // runs first, which is safe for the URL too (a literal "&" in a query
-// string, like the contact link's "subject=...&message=...", is exactly
-// what HTML expects escaped to "&amp;" inside an href attribute).
-export function renderOutreachEmail(body: string): { text: string; html: string } {
+// string, like the outreach contact link's "subject=...&message=...", is
+// exactly what HTML expects escaped to "&amp;" inside an href attribute).
+function renderBrandedEmail(body: string, brand: Brand): { text: string; html: string } {
   const text = body.replace(MARKDOWN_LINK, (_match, label: string, url: string) => `${label} (${url})`);
   const linkedHtml = escapeHtml(body)
     .replace(
@@ -45,13 +58,31 @@ export function renderOutreachEmail(body: string): { text: string; html: string 
         `<a href="${url}" style="color:${PRIMARY};font-weight:600;text-decoration:underline;">${label}</a>`,
     )
     .replace(/\n/g, "<br>");
-  return { text, html: wrapBrandedShell(linkedHtml) };
+  return { text, html: wrapBrandedShell(linkedHtml, brand) };
+}
+
+// The Onboarded School / Yet-to-be-onboarded School outreach audiences.
+export function renderOutreachEmail(body: string): { text: string; html: string } {
+  return renderBrandedEmail(body, {
+    subBrand: "Learn",
+    tagline: "Language-Learning Networks",
+    footerLabel: "CultureMesh Learn",
+  });
+}
+
+// The Site-Wide Update audience - every user opted into product_updates
+// emails, not a school-specific outreach list.
+export function renderSiteUpdateEmail(body: string): { text: string; html: string } {
+  return renderBrandedEmail(body, {
+    tagline: "Connecting Global Diasporas",
+    footerLabel: "CultureMesh",
+  });
 }
 
 // Table-based layout throughout, not flexbox/grid - Outlook desktop's Word
 // rendering engine ignores most modern CSS, so tables remain the one
 // layout primitive that behaves the same across every major mail client.
-function wrapBrandedShell(innerHtml: string): string {
+function wrapBrandedShell(innerHtml: string, brand: Brand): string {
   return `<!doctype html>
 <html>
   <body style="margin:0;padding:0;background-color:${BACKGROUND};">
@@ -65,10 +96,10 @@ function wrapBrandedShell(innerHtml: string): string {
             <tr>
               <td style="padding:32px 40px 0 40px;">
                 <div style="font-family:${SERIF_STACK};font-size:22px;color:${INK};">
-                  CultureMesh <span style="color:${PRIMARY};">Learn</span>
+                  CultureMesh${brand.subBrand ? ` <span style="color:${PRIMARY};">${brand.subBrand}</span>` : ""}
                 </div>
                 <div style="font-family:${SANS_STACK};font-size:11px;letter-spacing:0.08em;text-transform:uppercase;color:${MUTED};margin-top:6px;">
-                  Language-Learning Networks
+                  ${brand.tagline}
                 </div>
               </td>
             </tr>
@@ -80,7 +111,7 @@ function wrapBrandedShell(innerHtml: string): string {
             <tr>
               <td style="padding:24px 40px 32px 40px;">
                 <div style="border-top:1px solid ${BORDER};padding-top:16px;font-family:${SANS_STACK};font-size:12px;color:${MUTED};">
-                  CultureMesh Learn &middot; <a href="https://culturemesh.com" style="color:${MUTED};">culturemesh.com</a>
+                  ${brand.footerLabel} &middot; <a href="https://culturemesh.com" style="color:${MUTED};">culturemesh.com</a>
                 </div>
               </td>
             </tr>

@@ -6,7 +6,7 @@ import { createClient } from "@/lib/supabase/server";
 import { sendBulkEmails } from "@/lib/email";
 import { getOptedInRecipients } from "@/lib/notifications";
 import { getSiteUrl } from "@/lib/site-url";
-import { renderOutreachEmail } from "@/app/admin/product-updates/outreach-email-template";
+import { renderOutreachEmail, renderSiteUpdateEmail } from "@/app/admin/product-updates/branded-email";
 
 export async function postProductUpdate(formData: FormData) {
   const title = formData.get("title") as string;
@@ -48,11 +48,13 @@ export async function postProductUpdate(formData: FormData) {
 
     if (recipients.length > 0) {
       const siteUrl = await getSiteUrl();
+      const { text, html } = renderSiteUpdateEmail(`${body}\n\n[Visit CultureMesh](${siteUrl})`);
       await sendBulkEmails(
         recipients.map((r) => ({
           to: r.email,
           subject: `CultureMesh update: ${title}`,
-          text: `${body}\n\n${siteUrl}`,
+          text,
+          html,
         })),
       );
     }
