@@ -62,3 +62,91 @@ export async function postProductUpdate(formData: FormData) {
   revalidatePath("/admin/product-updates");
   redirect("/admin/product-updates?posted=1");
 }
+
+const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+// Deliberately plain "[label](url)" markdown, not a full markdown parser -
+// the Body field is a bare textarea (no rich-text editor anywhere in this
+// app), so this is the smallest syntax that still lets an admin see and
+// edit link placement inline instead of juggling raw <a> tags.
+const MARKDOWN_LINK = /\[([^\]]+)\]\((https?:\/\/[^\s)]+)\)/g;
+
+function escapeHtml(value: string): string {
+  return value.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+}
+
+// text: markdown links reduced to "label (url)" for plain-text clients.
+// html: same links turned into real <a href> - escapeHtml runs first, which
+// is safe for the URL too (a literal "&" in a query string, like the
+// contact link's "subject=...&message=...", is exactly what HTML expects
+// escaped to "&amp;" inside an href attribute).
+function renderEmailBody(body: string): { text: string; html: string } {
+  const text = body.replace(MARKDOWN_LINK, (_match, label: string, url: string) => `${label} (${url})`);
+  const html = escapeHtml(body)
+    .replace(MARKDOWN_LINK, (_match, label: string, url: string) => `<a href="${url}">${label}</a>`)
+    .replace(/\n/g, "<br>");
+  return { text, html };
+}
+
+// The Onboarded School / Yet-to-be-onboarded School audiences
+// (app/admin/product-updates/update-form.tsx) - unlike postProductUpdate
+// above, this is never a site-wide announcement: it's a handful to dozens
+// of pasted, admin-curated addresses (often not CultureMesh users at all
+// yet), so nothing here touches product_updates or getOptedInRecipients.
+export async function sendOutreachEmail(formData: FormData) {
+  const title = ((formData.get("title") as string) ?? "").trim();
+  const greeting = ((formData.get("greeting") as string) ?? "").trim();
+  const body = ((formData.get("body") as string) ?? "").trim();
+  const emailsRaw = (formData.get("emails") as string) ?? "";
+
+  const supabase = await createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
+  if (!user) {
+    redirect("/sign-in");
+  }
+
+  if (!title || !body) {
+    redirect(`/admin/product-updates?error=${encodeURIComponent("Title and body are required.")}`);
+  }
+
+  // Tolerates "a@b.com, c@d.com" and "a@b.com,c@d.com" alike - trimming
+  // each piece after the split handles both without needing a fancier
+  // regex, same approach sendNetworkInvites (app/networks/actions.ts)
+  // already uses for its own comma-separated email box.
+  const emails = Array.from(
+    new Set(
+      emailsRaw
+        .split(",")
+        .map((e) => e.trim())
+        .filter((e) => EMAIL_PATTERN.test(e)),
+    ),
+  );
+
+  if (emails.length === 0) {
+    redirect(`/admin/product-updates?error=${encodeURIComponent("Enter at least one valid email address.")}`);
+  }
+
+  const fullBody = greeting ? `${greeting}\n\n${body}` : body;
+  const { text, html } = renderEmailBody(fullBody);
+
+  // Sending IS the point of this action (unlike postProductUpdate's
+  // notification email, there's no other successful side effect to fall
+  // back on), so a failure here has to surface as a real error.
+  try {
+    await sendBulkEmails(
+      emails.map((to) => ({
+        to,
+        subject: title,
+        text,
+        html: `<div style="font-family:sans-serif;line-height:1.6">${html}</div>`,
+      })),
+    );
+  } catch (e) {
+    const message = e instanceof Error ? e.message : "Something went wrong sending the emails.";
+    redirect(`/admin/product-updates?error=${encodeURIComponent(message)}`);
+  }
+
+  redirect(`/admin/product-updates?posted=1&sentCount=${emails.length}`);
+}

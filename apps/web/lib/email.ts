@@ -16,12 +16,14 @@ export async function sendEmail({
   to,
   subject,
   text,
+  html,
 }: {
   to: string;
   subject: string;
   text: string;
+  html?: string;
 }) {
-  const { error } = await resend.emails.send({ from: FROM, to, subject, text });
+  const { error } = await resend.emails.send({ from: FROM, to, subject, text, ...(html ? { html } : {}) });
   if (error) {
     throw new Error(error.message);
   }
@@ -33,12 +35,18 @@ export async function sendEmail({
 const BATCH_SIZE = 100;
 
 export async function sendBulkEmails(
-  recipients: { to: string; subject: string; text: string }[],
+  recipients: { to: string; subject: string; text: string; html?: string }[],
 ) {
   for (let i = 0; i < recipients.length; i += BATCH_SIZE) {
     const chunk = recipients.slice(i, i + BATCH_SIZE);
     const { error } = await resend.batch.send(
-      chunk.map((r) => ({ from: FROM, to: r.to, subject: r.subject, text: r.text })),
+      chunk.map((r) => ({
+        from: FROM,
+        to: r.to,
+        subject: r.subject,
+        text: r.text,
+        ...(r.html ? { html: r.html } : {}),
+      })),
     );
     if (error) {
       throw new Error(error.message);

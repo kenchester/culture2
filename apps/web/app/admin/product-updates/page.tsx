@@ -1,7 +1,5 @@
 import { createClient } from "@/lib/supabase/server";
-import { postProductUpdate } from "@/app/admin/product-updates/actions";
-import { Button } from "@/components/ui/button";
-import { Field, Input, Label, Textarea } from "@/components/ui/input";
+import { UpdateForm } from "@/app/admin/product-updates/update-form";
 
 type ProductUpdateRow = {
   id: number;
@@ -13,9 +11,9 @@ type ProductUpdateRow = {
 export default async function AdminProductUpdatesPage({
   searchParams,
 }: {
-  searchParams: Promise<{ error?: string; posted?: string }>;
+  searchParams: Promise<{ error?: string; posted?: string; sentCount?: string }>;
 }) {
-  const { error, posted } = await searchParams;
+  const { error, posted, sentCount } = await searchParams;
   const supabase = await createClient();
 
   const { data: updates } = (await supabase
@@ -30,28 +28,13 @@ export default async function AdminProductUpdatesPage({
       )}
       {posted && (
         <p className="rounded-md bg-success-bg px-3 py-2 text-sm text-success">
-          Published, and emailed to everyone opted into product updates.
+          {sentCount
+            ? `Sent to ${sentCount} recipient${sentCount === "1" ? "" : "s"}.`
+            : "Published, and emailed to everyone opted into product updates."}
         </p>
       )}
 
-      <form action={postProductUpdate} className="flex flex-col gap-4">
-        <Field>
-          <Label htmlFor="update-title">Title</Label>
-          <Input id="update-title" name="title" placeholder="e.g. New: reply notifications" required />
-        </Field>
-        <Field>
-          <Label htmlFor="update-body">Body</Label>
-          <Textarea
-            id="update-body"
-            name="body"
-            placeholder="What's new..."
-            required
-          />
-        </Field>
-        <Button type="submit" className="self-start">
-          Publish Update
-        </Button>
-      </form>
+      <UpdateForm />
 
       <div className="flex flex-col gap-4 border-t border-border pt-6">
         {updates?.map((update) => (
