@@ -6,6 +6,7 @@ import { createClient } from "@/lib/supabase/server";
 import { sendBulkEmails } from "@/lib/email";
 import { getOptedInRecipients } from "@/lib/notifications";
 import { getSiteUrl } from "@/lib/site-url";
+import { renderOutreachEmail } from "@/app/admin/product-updates/outreach-email-template";
 
 export async function postProductUpdate(formData: FormData) {
   const title = formData.get("title") as string;
@@ -64,28 +65,6 @@ export async function postProductUpdate(formData: FormData) {
 }
 
 const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-// Deliberately plain "[label](url)" markdown, not a full markdown parser -
-// the Body field is a bare textarea (no rich-text editor anywhere in this
-// app), so this is the smallest syntax that still lets an admin see and
-// edit link placement inline instead of juggling raw <a> tags.
-const MARKDOWN_LINK = /\[([^\]]+)\]\((https?:\/\/[^\s)]+)\)/g;
-
-function escapeHtml(value: string): string {
-  return value.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
-}
-
-// text: markdown links reduced to "label (url)" for plain-text clients.
-// html: same links turned into real <a href> - escapeHtml runs first, which
-// is safe for the URL too (a literal "&" in a query string, like the
-// contact link's "subject=...&message=...", is exactly what HTML expects
-// escaped to "&amp;" inside an href attribute).
-function renderEmailBody(body: string): { text: string; html: string } {
-  const text = body.replace(MARKDOWN_LINK, (_match, label: string, url: string) => `${label} (${url})`);
-  const html = escapeHtml(body)
-    .replace(MARKDOWN_LINK, (_match, label: string, url: string) => `<a href="${url}">${label}</a>`)
-    .replace(/\n/g, "<br>");
-  return { text, html };
-}
 
 // The Onboarded School / Yet-to-be-onboarded School audiences
 // (app/admin/product-updates/update-form.tsx) - unlike postProductUpdate
@@ -137,7 +116,7 @@ export async function sendOutreachEmail(formData: FormData) {
   }
 
   const fullBody = greeting ? `${greeting}\n\n${body}` : body;
-  const { text, html } = renderEmailBody(fullBody);
+  const { text, html } = renderOutreachEmail(fullBody);
 
   // Sending IS the point of this action (unlike postProductUpdate's
   // notification email, there's no other successful side effect to fall
@@ -148,7 +127,7 @@ export async function sendOutreachEmail(formData: FormData) {
         to,
         subject: title,
         text,
-        html: `<div style="font-family:sans-serif;line-height:1.6">${html}</div>`,
+        html,
       })),
     );
   } catch (e) {
