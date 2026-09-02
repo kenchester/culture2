@@ -106,7 +106,7 @@ export async function createPost(formData: FormData) {
     if (blocked) {
       redirect(
         `/networks/${networkId}?error=${encodeURIComponent(
-          `Please keep your post mostly in ${orgLanguage.name} for this network - proper nouns and building names are fine.`,
+          `Please keep your post mostly in ${orgLanguage.name} for this network - proper nouns, like campus buildings, are fine.`,
         )}${embedSuffix}`,
       );
     }
@@ -187,7 +187,7 @@ export async function checkPostLanguagePurity(
 
   return {
     blocked: true,
-    message: `Please keep your post mostly in ${orgLanguage.name} for this network - proper nouns and building names are fine.`,
+    message: `Please keep your post mostly in ${orgLanguage.name} for this network - proper nouns, like campus buildings, are fine.`,
   };
 }
 
