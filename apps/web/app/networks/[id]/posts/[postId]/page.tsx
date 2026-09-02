@@ -8,6 +8,7 @@ import { getPostMediaUrl } from "@/lib/post-media";
 import { demoPostTimestamp, isExampleNetwork } from "@/lib/demo-network";
 import { createReply } from "./actions";
 import { EditableEntry } from "@/app/networks/editable-entry";
+import { DemoReplyThread, type RealDemoReply } from "@/app/networks/[id]/posts/[postId]/demo-reply-thread";
 import { PostComposer } from "@/app/networks/[id]/post-composer";
 
 export default async function PostPage({
@@ -100,6 +101,26 @@ export default async function PostPage({
   if (isEmbedded) signInParams.set("embed", "1");
   const signInHref = `/sign-in?${signInParams.toString()}`;
 
+  // Same plain-serializable-array handoff as app/networks/[id]/page.tsx's
+  // realDemoPosts, for Acme's ephemeral reply thread (DemoReplyThread).
+  const realDemoReplies: RealDemoReply[] = isExample
+    ? (replies ?? []).map((reply, replyIndex) => {
+        const replyAuthor = reply.author as unknown as Author | null;
+        return {
+          id: reply.id,
+          body: reply.body,
+          media:
+            reply.media_type && replyMediaUrls.get(reply.id)
+              ? { type: reply.media_type as "audio" | "video", url: replyMediaUrls.get(reply.id)! }
+              : null,
+          createdAt: demoPostTimestamp(replyIndex, replies?.length ?? 1, false),
+          authorName: replyAuthor ? getDisplayName(replyAuthor) : t("someone"),
+          authorHref: replyAuthor ? `/profile/${replyAuthor.id}` : "#",
+          avatarUrl: replyAuthor ? getAvatarUrl(supabase, replyAuthor.img_path) : null,
+        };
+      })
+    : [];
+
   return (
     <div className="mx-auto flex w-full max-w-lg flex-1 flex-col gap-6 px-4 py-12">
       <Link href={`/networks/${id}${embedSuffix}`} className="text-sm text-muted underline">
@@ -151,82 +172,79 @@ export default async function PostPage({
         </div>
       </div>
 
-      <div className="flex flex-col gap-4 pl-8">
-        {replies?.map((reply, replyIndex) => {
-          const replyAuthor = reply.author as unknown as Author | null;
-          const replyAvatarUrl = replyAuthor
-            ? getAvatarUrl(supabase, replyAuthor.img_path)
-            : null;
-
-          return (
-            <div key={reply.id} className="flex gap-3">
-              {replyAvatarUrl ? (
-                <Image
-                  src={replyAvatarUrl}
-                  alt=""
-                  width={24}
-                  height={24}
-                  className="h-6 w-6 shrink-0 rounded-full object-cover"
-                />
-              ) : (
-                <div className="h-6 w-6 shrink-0 rounded-full bg-border" />
-              )}
-              <div className="flex flex-1 flex-col gap-1">
-                <Link
-                  href={replyAuthor ? `/profile/${replyAuthor.id}` : "#"}
-                  className="text-sm font-medium text-ink underline hover:text-primary"
-                >
-                  {replyAuthor ? getDisplayName(replyAuthor) : t("someone")}
-                </Link>
-                <EditableEntry
-                  kind="reply"
-                  itemId={reply.id}
-                  body={reply.body}
-                  media={
-                    reply.media_type && replyMediaUrls.get(reply.id)
-                      ? { type: reply.media_type as "audio" | "video", url: replyMediaUrls.get(reply.id)! }
-                      : null
-                  }
-                  createdAt={
-                    // Replies render oldest-first (order by created_at
-                    // asc), the opposite of the post feed's newest-first
-                    // order - newestFirst: false keeps "today" landing on
-                    // the newest (bottom) replies here too, not the
-                    // oldest (top) ones.
-                    isExample
-                      ? demoPostTimestamp(replyIndex, replies?.length ?? 1, false)
-                      : reply.created_at
-                  }
-                  canModify={user?.id === replyAuthor?.id}
-                  likeCount={extractCount(reply.likes)}
-                  liked={myLikedReplyIds.has(reply.id)}
-                />
-              </div>
-            </div>
-          );
-        })}
-        {replies?.length === 0 && <p className="text-sm text-muted">{t("noRepliesYet")}</p>}
-      </div>
-
-      {user ? (
-        <form action={createReply} className="flex flex-col gap-2 border-t border-border pt-6">
-          <input type="hidden" name="postId" value={post.id} />
-          <input type="hidden" name="networkId" value={id} />
-          {isEmbedded && <input type="hidden" name="embed" value="1" />}
-          {error && (
-            <p className="rounded-md bg-error-bg px-3 py-2 text-sm text-error">{error}</p>
-          )}
-          <PostComposer
-            idPrefix="reply"
-            bodyLabel={t("replyLabel")}
-            bodyPlaceholder={t("replyPlaceholder")}
-            submitLabel={t("replySubmit")}
-          />
-        </form>
+      {isExample ? (
+        <DemoReplyThread networkId={post.network_id} realReplies={realDemoReplies} />
       ) : (
-        <Link href={signInHref} className="text-sm font-medium text-primary hover:underline">
-          {t("signInToReply")}
-        </Link>
+        <>
+          <div className="flex flex-col gap-4 pl-8">
+            {replies?.map((reply) => {
+              const replyAuthor = reply.author as unknown as Author | null;
+              const replyAvatarUrl = replyAuthor
+                ? getAvatarUrl(supabase, replyAuthor.img_path)
+                : null;
+
+              return (
+                <div key={reply.id} className="flex gap-3">
+                  {replyAvatarUrl ? (
+                    <Image
+                      src={replyAvatarUrl}
+                      alt=""
+                      width={24}
+                      height={24}
+                      className="h-6 w-6 shrink-0 rounded-full object-cover"
+                    />
+                  ) : (
+                    <div className="h-6 w-6 shrink-0 rounded-full bg-border" />
+                  )}
+                  <div className="flex flex-1 flex-col gap-1">
+                    <Link
+                      href={replyAuthor ? `/profile/${replyAuthor.id}` : "#"}
+                      className="text-sm font-medium text-ink underline hover:text-primary"
+                    >
+                      {replyAuthor ? getDisplayName(replyAuthor) : t("someone")}
+                    </Link>
+                    <EditableEntry
+                      kind="reply"
+                      itemId={reply.id}
+                      body={reply.body}
+                      media={
+                        reply.media_type && replyMediaUrls.get(reply.id)
+                          ? { type: reply.media_type as "audio" | "video", url: replyMediaUrls.get(reply.id)! }
+                          : null
+                      }
+                      createdAt={reply.created_at}
+                      canModify={user?.id === replyAuthor?.id}
+                      likeCount={extractCount(reply.likes)}
+                      liked={myLikedReplyIds.has(reply.id)}
+                    />
+                  </div>
+                </div>
+              );
+            })}
+            {replies?.length === 0 && <p className="text-sm text-muted">{t("noRepliesYet")}</p>}
+          </div>
+
+          {user ? (
+            <form action={createReply} className="flex flex-col gap-2 border-t border-border pt-6">
+              <input type="hidden" name="postId" value={post.id} />
+              <input type="hidden" name="networkId" value={id} />
+              {isEmbedded && <input type="hidden" name="embed" value="1" />}
+              {error && (
+                <p className="rounded-md bg-error-bg px-3 py-2 text-sm text-error">{error}</p>
+              )}
+              <PostComposer
+                idPrefix="reply"
+                bodyLabel={t("replyLabel")}
+                bodyPlaceholder={t("replyPlaceholder")}
+                submitLabel={t("replySubmit")}
+              />
+            </form>
+          ) : (
+            <Link href={signInHref} className="text-sm font-medium text-primary hover:underline">
+              {t("signInToReply")}
+            </Link>
+          )}
+        </>
       )}
     </div>
   );

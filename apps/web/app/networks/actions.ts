@@ -158,6 +158,39 @@ export async function createPost(formData: FormData) {
   revalidatePath(`/networks/${networkId}`);
 }
 
+// Read-only sibling of the purity check embedded in createPost above - no
+// insert, no auth check (same already-unauthenticated shape as
+// translateEntry below), used only by the Acme demo's simulated composer
+// (app/networks/demo-composer.tsx) so a visitor can see the same
+// off-language rejection UX a real member gets, without a real post ever
+// being created.
+export async function checkPostLanguagePurity(
+  networkId: number,
+  body: string,
+): Promise<{ blocked: boolean; message?: string }> {
+  const supabase = await createClient();
+  const { data: orgNetwork } = await supabase
+    .from("organization_languages")
+    .select("language:languages(name, iso_code)")
+    .eq("network_id", networkId)
+    .maybeSingle();
+  const orgLanguage = orgNetwork?.language as unknown as { name: string; iso_code: string | null } | null;
+
+  if (!orgLanguage?.iso_code) {
+    return { blocked: false };
+  }
+
+  const { blocked } = checkLanguagePurity(body, orgLanguage.iso_code);
+  if (!blocked) {
+    return { blocked: false };
+  }
+
+  return {
+    blocked: true,
+    message: `Please keep your post mostly in ${orgLanguage.name} for this network - proper nouns and building names are fine.`,
+  };
+}
+
 type ActionResult = { ok: true } | { error: string };
 
 export async function updatePost(postId: number, body: string): Promise<ActionResult> {

@@ -52,7 +52,9 @@ export function LiveDemoPicker({ networks }: { networks: DemoNetwork[] }) {
       {active && (
         <div className="mt-6 overflow-hidden rounded-lg border border-border bg-surface">
           <div className="flex items-center justify-between border-b border-border px-4 py-2">
-            <p className="text-sm font-medium text-ink">{active.language} at Acme University - live</p>
+            <p className="text-sm font-medium text-ink">
+              {active.language} at Acme University - demo content will not be saved
+            </p>
             <button
               type="button"
               onClick={() => setActiveId(null)}

@@ -47,7 +47,17 @@ type Status = "idle" | "recording" | "preview" | "uploading" | "error";
 // (not React state/controlled inputs) immediately before calling
 // form.requestSubmit(), so the values are guaranteed correct at the exact
 // moment the browser reads the form, with no risk of a stale re-render.
-export function RecordMedia({ kind }: { kind: "audio" | "video" }) {
+//
+// onEphemeralPost switches "Post this recording" to a completely different,
+// simpler path (see postRecording below) used only by the Acme demo's
+// simulated composer - no auth check, no upload, no real form to submit.
+export function RecordMedia({
+  kind,
+  onEphemeralPost,
+}: {
+  kind: "audio" | "video";
+  onEphemeralPost?: (data: { type: "audio" | "video"; url: string; durationSeconds: number }) => void;
+}) {
   const [status, setStatus] = useState<Status>("idle");
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
   const [elapsedSeconds, setElapsedSeconds] = useState(0);
@@ -161,8 +171,12 @@ export function RecordMedia({ kind }: { kind: "audio" | "video" }) {
     setStatus("idle");
   }
 
-  function clearStagedRecording() {
-    if (previewUrl) URL.revokeObjectURL(previewUrl);
+  // revoke: false when the caller (the Acme demo's ephemeral flow) is
+  // taking ownership of the object URL to keep it playable in a locally
+  // rendered "post" - it only ever gets cleaned up by the tab going away,
+  // same as every other ephemeral demo post/reply.
+  function clearStagedRecording(revoke = true) {
+    if (revoke && previewUrl) URL.revokeObjectURL(previewUrl);
     setPreviewUrl(null);
     setElapsedSeconds(0);
     setStatus("idle");
@@ -175,6 +189,17 @@ export function RecordMedia({ kind }: { kind: "audio" | "video" }) {
     if (!previewUrl) return;
     setStatus("uploading");
     setErrorMessage(null);
+
+    // Acme demo mode (app/networks/demo-composer.tsx): never touches
+    // Supabase auth, storage, or a real form - the recording is "posted"
+    // by handing its local blob URL straight to the caller's in-memory
+    // feed, which is the entire point (no real resources ever consumed,
+    // nothing persisted, gone on refresh).
+    if (onEphemeralPost) {
+      onEphemeralPost({ type: kind, url: previewUrl, durationSeconds: elapsedSeconds });
+      clearStagedRecording(false);
+      return;
+    }
 
     const supabase = createClient();
     const {

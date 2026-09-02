@@ -473,5 +473,15 @@
   },
   "schools": {
     "heading": "مدارسك"
+  },
+  "demoNetwork": {
+    "studentView": "وجهة نظر الطلاب",
+    "instructorView": "وجهة نظر المدرب",
+    "previewBadge": "معاينة - غير محفوظ",
+    "remove": "إزالة",
+    "editPromptLink": "تعديل",
+    "setPromptLink": "حدد موضوع هذا الأسبوع",
+    "posting": "النشر...",
+    "you": "أنت"
   }
 }

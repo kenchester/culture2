@@ -1,11 +1,15 @@
 import { type ButtonHTMLAttributes } from "react";
 
-type ButtonVariant = "primary" | "secondary" | "ghost";
+type ButtonVariant = "primary" | "secondary" | "ghost" | "success";
 
 const variantClasses: Record<ButtonVariant, string> = {
   primary: "bg-primary text-white hover:bg-primary-hover",
   secondary: "border border-border bg-surface text-ink hover:bg-primary-light",
   ghost: "text-body underline underline-offset-2 hover:text-primary",
+  // Reuses the existing --color-success token (already used for success
+  // banners) rather than inventing a new color - just applied to a button
+  // for the first time here, for the Acme demo's Instructor view toggle.
+  success: "bg-success text-white hover:opacity-90",
 };
 
 export function Button({

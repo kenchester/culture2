@@ -473,5 +473,15 @@
   },
   "schools": {
     "heading": "Ваши школы"
+  },
+  "demoNetwork": {
+    "studentView": "Взгляд студентов",
+    "instructorView": "Взгляд инструктора",
+    "previewBadge": "Превью — не сохранено",
+    "remove": "Удалить",
+    "editPromptLink": "Редактирование",
+    "setPromptLink": "Задайте задание на эту неделю",
+    "posting": "Публикация...",
+    "you": "Ты"
   }
 }

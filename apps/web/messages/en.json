@@ -254,6 +254,16 @@
     "connectWithSpeakersHeading": "Connect with more {language} speakers",
     "connectWithSpeakersIntro": "There's an active network near {location} on the main CultureMesh site."
   },
+  "demoNetwork": {
+    "studentView": "Student view",
+    "instructorView": "Instructor view",
+    "previewBadge": "Preview - not saved",
+    "remove": "Remove",
+    "editPromptLink": "Edit",
+    "setPromptLink": "Set this week's prompt",
+    "posting": "Posting…",
+    "you": "You"
+  },
   "myNetworks": {
     "heading": "My networks",
     "empty": "You haven't joined any networks yet.",

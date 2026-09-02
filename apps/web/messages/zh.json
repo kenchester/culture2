@@ -473,5 +473,15 @@
   },
   "schools": {
     "heading": "我的学校"
+  },
+  "demoNetwork": {
+    "studentView": "学生视角",
+    "instructorView": "讲师视角",
+    "previewBadge": "预览 - 未保存",
+    "remove": "删除",
+    "editPromptLink": "编辑",
+    "setPromptLink": "设定本周的提示",
+    "posting": "发布......",
+    "you": "你"
   }
 }

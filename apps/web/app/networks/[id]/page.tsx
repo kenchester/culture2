@@ -11,6 +11,7 @@ import { demoPostTimestamp, isExampleNetwork } from "@/lib/demo-network";
 import type { Locale } from "@/lib/locale";
 import { createPost, joinNetwork, leaveNetwork, setNetworkPrompt } from "@/app/networks/actions";
 import { EditableEntry } from "@/app/networks/editable-entry";
+import { DemoNetworkFeed, type RealDemoPost } from "@/app/networks/[id]/demo-network-feed";
 import { InviteFriendsBox } from "@/app/networks/[id]/invite-friends-box";
 import { PostComposer } from "@/app/networks/[id]/post-composer";
 import { Button } from "@/components/ui/button";
@@ -257,6 +258,41 @@ export default async function NetworkPage({
   if (isEmbedded) signInParams.set("embed", "1");
   const signInHref = `/sign-in?${signInParams.toString()}`;
 
+  // Acme's ephemeral demo mode (DemoNetworkFeed) needs these as a plain
+  // serializable array rather than JSX - same per-post values the real
+  // .map() below computes inline, just built once up front so both the
+  // demo and real render paths can share this one pass over `posts`.
+  const embedSuffix = isEmbedded ? "?embed=1" : "";
+  const realDemoPosts: RealDemoPost[] = isExample
+    ? (posts ?? []).map((post, postIndex) => {
+        const author = post.author as unknown as Author | null;
+        const avatarUrl = author ? getAvatarUrl(supabase, author.img_path) : null;
+        const replyCount =
+          (post.post_replies as unknown as { count: number } | { count: number }[] | null) ?? { count: 0 };
+        const replyCountValue = Array.isArray(replyCount) ? (replyCount[0]?.count ?? 0) : replyCount.count;
+        return {
+          id: post.id,
+          body: post.body,
+          media:
+            post.media_type && postMediaUrls.get(post.id)
+              ? { type: post.media_type as "audio" | "video", url: postMediaUrls.get(post.id)! }
+              : null,
+          videoUrl: post.video_url,
+          createdAt: demoPostTimestamp(postIndex, (posts ?? []).length, true),
+          authorName: author ? getDisplayName(author) : t("someone"),
+          authorHref: author ? `/profile/${author.id}` : "#",
+          avatarUrl,
+          replyHref: `/networks/${network.id}/posts/${post.id}${embedSuffix}`,
+          replyCountLabel:
+            replyCountValue === 0
+              ? t("replyLabel.zero")
+              : replyCountValue === 1
+                ? t("replyLabel.one")
+                : t("replyLabel.other", { count: replyCountValue }),
+        };
+      })
+    : [];
+
   return (
     <div className="mx-auto grid w-full max-w-4xl flex-1 grid-cols-1 gap-8 px-4 py-12 lg:grid-cols-[1fr_18rem]">
       <div className="flex w-full max-w-lg flex-col gap-6">
@@ -289,150 +325,158 @@ export default async function NetworkPage({
           </Link>
         </p>
 
-        {(network.instructor_prompt || canManagePrompt) && (
-          <div className="flex flex-col gap-2 rounded-md border border-primary bg-primary-light p-3">
-            {network.instructor_prompt && (
-              <div>
-                <p className="text-xs font-semibold uppercase tracking-wide text-primary">
-                  {t("weeklyPrompt")}
-                </p>
-                <p className="text-sm text-body">{network.instructor_prompt}</p>
+        {isExample ? (
+          <DemoNetworkFeed
+            networkId={network.id}
+            realPrompt={network.instructor_prompt}
+            realPosts={realDemoPosts}
+          />
+        ) : (
+          <>
+            {(network.instructor_prompt || canManagePrompt) && (
+              <div className="flex flex-col gap-2 rounded-md border border-primary bg-primary-light p-3">
+                {network.instructor_prompt && (
+                  <div>
+                    <p className="text-xs font-semibold uppercase tracking-wide text-primary">
+                      {t("weeklyPrompt")}
+                    </p>
+                    <p className="text-sm text-body">{network.instructor_prompt}</p>
+                  </div>
+                )}
+                {canManagePrompt && (
+                  <form action={setNetworkPrompt} className="flex flex-col gap-2">
+                    <input type="hidden" name="networkId" value={network.id} />
+                    {isEmbedded && <input type="hidden" name="embed" value="1" />}
+                    <Field>
+                      <Label htmlFor="prompt">{t("weeklyPromptEditLabel")}</Label>
+                      <Textarea
+                        id="prompt"
+                        name="prompt"
+                        defaultValue={network.instructor_prompt ?? ""}
+                        placeholder={t("weeklyPromptPlaceholder")}
+                        rows={2}
+                      />
+                    </Field>
+                    <Button type="submit" variant="secondary" className="self-start">
+                      {t("weeklyPromptSave")}
+                    </Button>
+                  </form>
+                )}
               </div>
             )}
-            {canManagePrompt && (
-              <form action={setNetworkPrompt} className="flex flex-col gap-2">
+
+            {user ? (
+              <form action={isMember ? leaveNetwork : joinNetwork}>
                 <input type="hidden" name="networkId" value={network.id} />
                 {isEmbedded && <input type="hidden" name="embed" value="1" />}
-                <Field>
-                  <Label htmlFor="prompt">{t("weeklyPromptEditLabel")}</Label>
-                  <Textarea
-                    id="prompt"
-                    name="prompt"
-                    defaultValue={network.instructor_prompt ?? ""}
-                    placeholder={t("weeklyPromptPlaceholder")}
-                    rows={2}
-                  />
-                </Field>
-                <Button type="submit" variant="secondary" className="self-start">
-                  {t("weeklyPromptSave")}
-                </Button>
+                <Button type="submit">{isMember ? t("leaveNetwork") : t("joinNetwork")}</Button>
               </form>
+            ) : (
+              <Link href={signInHref} className="text-sm font-medium text-primary hover:underline">
+                {t("signInToJoin")}
+              </Link>
             )}
-          </div>
-        )}
 
-        {user ? (
-          <form action={isMember ? leaveNetwork : joinNetwork}>
-            <input type="hidden" name="networkId" value={network.id} />
-            {isEmbedded && <input type="hidden" name="embed" value="1" />}
-            <Button type="submit">{isMember ? t("leaveNetwork") : t("joinNetwork")}</Button>
-          </form>
-        ) : (
-          <Link href={signInHref} className="text-sm font-medium text-primary hover:underline">
-            {t("signInToJoin")}
-          </Link>
-        )}
-
-        <div className="flex flex-col gap-4 border-t border-border pt-6">
-          {isMember && (
-            <form action={createPost} className="flex flex-col gap-2">
-              <input type="hidden" name="networkId" value={network.id} />
-              {isEmbedded && <input type="hidden" name="embed" value="1" />}
-              {error && (
-                <p className="rounded-md bg-error-bg px-3 py-2 text-sm text-error">{error}</p>
-              )}
-              <PostComposer
-                idPrefix="post"
-                bodyLabel={t("postLabel")}
-                bodyPlaceholder={t("postPlaceholder")}
-                submitLabel={t("postSubmit")}
-              />
-            </form>
-          )}
-
-          <div className="flex flex-col gap-4">
-            {posts?.map((post, postIndex) => {
-              const author = post.author as unknown as Author | null;
-              const avatarUrl = author ? getAvatarUrl(supabase, author.img_path) : null;
-              const replyCount =
-                (post.post_replies as unknown as
-                  | { count: number }
-                  | { count: number }[]
-                  | null) ?? { count: 0 };
-              const replyCountValue = Array.isArray(replyCount)
-                ? (replyCount[0]?.count ?? 0)
-                : replyCount.count;
-              const likeCount =
-                (post.likes as unknown as { count: number } | { count: number }[] | null) ?? {
-                  count: 0,
-                };
-              const likeCountValue = Array.isArray(likeCount)
-                ? (likeCount[0]?.count ?? 0)
-                : likeCount.count;
-
-              return (
-                <div key={post.id} className="flex gap-3 border-b border-border pb-4">
-                  {avatarUrl ? (
-                    <Image
-                      src={avatarUrl}
-                      alt=""
-                      width={32}
-                      height={32}
-                      className="h-8 w-8 shrink-0 rounded-full object-cover"
-                    />
-                  ) : (
-                    <div className="h-8 w-8 shrink-0 rounded-full bg-border" />
+            <div className="flex flex-col gap-4 border-t border-border pt-6">
+              {isMember && (
+                <form action={createPost} className="flex flex-col gap-2">
+                  <input type="hidden" name="networkId" value={network.id} />
+                  {isEmbedded && <input type="hidden" name="embed" value="1" />}
+                  {error && (
+                    <p className="rounded-md bg-error-bg px-3 py-2 text-sm text-error">{error}</p>
                   )}
-                  <div className="flex flex-1 flex-col gap-1">
-                    <Link
-                      href={author ? `/profile/${author.id}` : "#"}
-                      className="text-sm font-medium text-ink underline hover:text-primary"
-                    >
-                      {author ? getDisplayName(author) : t("someone")}
-                    </Link>
-                    <EditableEntry
-                      kind="post"
-                      itemId={post.id}
-                      body={post.body}
-                      media={
-                        post.media_type && postMediaUrls.get(post.id)
-                          ? { type: post.media_type as "audio" | "video", url: postMediaUrls.get(post.id)! }
-                          : null
-                      }
-                      createdAt={
-                        isExample ? demoPostTimestamp(postIndex, posts.length, true) : post.created_at
-                      }
-                      canModify={user?.id === author?.id}
-                      likeCount={likeCountValue}
-                      liked={myLikedPostIds.has(post.id)}
-                    />
-                    {post.video_url && (
-                      <a
-                        href={post.video_url}
-                        className="text-sm text-primary underline"
-                        target="_blank"
-                        rel="noreferrer"
-                      >
-                        {post.video_url}
-                      </a>
-                    )}
-                    <Link
-                      href={`/networks/${network.id}/posts/${post.id}${isEmbedded ? "?embed=1" : ""}`}
-                      className="text-sm text-muted underline hover:text-primary"
-                    >
-                      {replyCountValue === 0
-                        ? t("replyLabel.zero")
-                        : replyCountValue === 1
-                          ? t("replyLabel.one")
-                          : t("replyLabel.other", { count: replyCountValue })}
-                    </Link>
-                  </div>
-                </div>
-              );
-            })}
-            {posts?.length === 0 && <p className="text-sm text-muted">{t("noPostsYet")}</p>}
-          </div>
-        </div>
+                  <PostComposer
+                    idPrefix="post"
+                    bodyLabel={t("postLabel")}
+                    bodyPlaceholder={t("postPlaceholder")}
+                    submitLabel={t("postSubmit")}
+                  />
+                </form>
+              )}
+
+              <div className="flex flex-col gap-4">
+                {posts?.map((post) => {
+                  const author = post.author as unknown as Author | null;
+                  const avatarUrl = author ? getAvatarUrl(supabase, author.img_path) : null;
+                  const replyCount =
+                    (post.post_replies as unknown as
+                      | { count: number }
+                      | { count: number }[]
+                      | null) ?? { count: 0 };
+                  const replyCountValue = Array.isArray(replyCount)
+                    ? (replyCount[0]?.count ?? 0)
+                    : replyCount.count;
+                  const likeCount =
+                    (post.likes as unknown as { count: number } | { count: number }[] | null) ?? {
+                      count: 0,
+                    };
+                  const likeCountValue = Array.isArray(likeCount)
+                    ? (likeCount[0]?.count ?? 0)
+                    : likeCount.count;
+
+                  return (
+                    <div key={post.id} className="flex gap-3 border-b border-border pb-4">
+                      {avatarUrl ? (
+                        <Image
+                          src={avatarUrl}
+                          alt=""
+                          width={32}
+                          height={32}
+                          className="h-8 w-8 shrink-0 rounded-full object-cover"
+                        />
+                      ) : (
+                        <div className="h-8 w-8 shrink-0 rounded-full bg-border" />
+                      )}
+                      <div className="flex flex-1 flex-col gap-1">
+                        <Link
+                          href={author ? `/profile/${author.id}` : "#"}
+                          className="text-sm font-medium text-ink underline hover:text-primary"
+                        >
+                          {author ? getDisplayName(author) : t("someone")}
+                        </Link>
+                        <EditableEntry
+                          kind="post"
+                          itemId={post.id}
+                          body={post.body}
+                          media={
+                            post.media_type && postMediaUrls.get(post.id)
+                              ? { type: post.media_type as "audio" | "video", url: postMediaUrls.get(post.id)! }
+                              : null
+                          }
+                          createdAt={post.created_at}
+                          canModify={user?.id === author?.id}
+                          likeCount={likeCountValue}
+                          liked={myLikedPostIds.has(post.id)}
+                        />
+                        {post.video_url && (
+                          <a
+                            href={post.video_url}
+                            className="text-sm text-primary underline"
+                            target="_blank"
+                            rel="noreferrer"
+                          >
+                            {post.video_url}
+                          </a>
+                        )}
+                        <Link
+                          href={`/networks/${network.id}/posts/${post.id}${isEmbedded ? "?embed=1" : ""}`}
+                          className="text-sm text-muted underline hover:text-primary"
+                        >
+                          {replyCountValue === 0
+                            ? t("replyLabel.zero")
+                            : replyCountValue === 1
+                              ? t("replyLabel.one")
+                              : t("replyLabel.other", { count: replyCountValue })}
+                        </Link>
+                      </div>
+                    </div>
+                  );
+                })}
+                {posts?.length === 0 && <p className="text-sm text-muted">{t("noPostsYet")}</p>}
+              </div>
+            </div>
+          </>
+        )}
       </div>
 
       {!isEmbedded && (user || suggestedNetwork) && (

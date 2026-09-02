@@ -473,5 +473,15 @@
   },
   "schools": {
     "heading": "Suas escolas"
+  },
+  "demoNetwork": {
+    "studentView": "Visão do estudante",
+    "instructorView": "Visão do instrutor",
+    "previewBadge": "Prévia - não salvo",
+    "remove": "Remover",
+    "editPromptLink": "Edit",
+    "setPromptLink": "Defina o tema desta semana",
+    "posting": "Postando...",
+    "you": "Você"
   }
 }

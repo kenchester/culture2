@@ -15,7 +15,7 @@ import type { Locale } from "@/lib/locale";
 // emoji - this site is used by embassies and other professional
 // organizations, so the like control should read closer to YouTube's
 // understated thumbs-up than a colorful 👍.
-function ThumbsUpIcon({ filled }: { filled: boolean }) {
+export function ThumbsUpIcon({ filled }: { filled: boolean }) {
   return (
     <svg
       viewBox="0 0 24 24"

@@ -473,5 +473,15 @@
   },
   "schools": {
     "heading": "あなたの学校"
+  },
+  "demoNetwork": {
+    "studentView": "学生の視点",
+    "instructorView": "インストラクター視点",
+    "previewBadge": "プレビュー - 保存されていません",
+    "remove": "削除",
+    "editPromptLink": "編集",
+    "setPromptLink": "今週のプロンプトを設定しましょう",
+    "posting": "投稿中...",
+    "you": "お前だ"
   }
 }

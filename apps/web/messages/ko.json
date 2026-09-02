@@ -473,5 +473,15 @@
   },
   "schools": {
     "heading": "내 학교"
+  },
+  "demoNetwork": {
+    "studentView": "학생 시점",
+    "instructorView": "강사의 관점",
+    "previewBadge": "미리보기 - 저장되지 않음",
+    "remove": "제거",
+    "editPromptLink": "수정",
+    "setPromptLink": "이번 주 프롬프트를 설정하세요",
+    "posting": "게시...",
+    "you": "너"
   }
 }
