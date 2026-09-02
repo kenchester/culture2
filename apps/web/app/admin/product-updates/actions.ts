@@ -111,6 +111,14 @@ export async function sendOutreachEmail(formData: FormData) {
     redirect(`/admin/product-updates?error=${encodeURIComponent("Title and body are required.")}`);
   }
 
+  // The <select> is required and starts unselected client-side (a picked
+  // default was too easy to send past without noticing it was wrong for
+  // the recipient's time zone) - this is the server-side backstop for that
+  // same rule, not a client-only nicety.
+  if (!greeting) {
+    redirect(`/admin/product-updates?error=${encodeURIComponent("Select a greeting.")}`);
+  }
+
   // Tolerates "a@b.com, c@d.com" and "a@b.com,c@d.com" alike - trimming
   // each piece after the split handles both without needing a fancier
   // regex, same approach sendNetworkInvites (app/networks/actions.ts)

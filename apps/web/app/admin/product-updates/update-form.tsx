@@ -24,7 +24,12 @@ export function UpdateForm() {
   const [audience, setAudience] = useState<Audience>("site-wide");
   const [title, setTitle] = useState("");
   const [body, setBody] = useState("");
-  const [greeting, setGreeting] = useState<string>(GREETINGS[0]);
+  // Starts unselected on purpose, every time an outreach audience is
+  // chosen (not just once) - a pre-picked default was too easy to send
+  // straight past without noticing it still said "Good morning!" to a
+  // recipient in a different time zone. Left blank + required forces a
+  // deliberate choice each send.
+  const [greeting, setGreeting] = useState("");
 
   const isOutreach = audience !== "site-wide";
 
@@ -36,6 +41,7 @@ export function UpdateForm() {
     } else {
       setTitle(OUTREACH_TEMPLATES[next].title);
       setBody(OUTREACH_TEMPLATES[next].body);
+      setGreeting("");
     }
   }
 
@@ -67,7 +73,11 @@ export function UpdateForm() {
             value={greeting}
             onChange={(e) => setGreeting(e.target.value)}
             className={fieldClass}
+            required
           >
+            <option value="" disabled>
+              Select a greeting...
+            </option>
             {GREETINGS.map((g) => (
               <option key={g} value={g}>
                 {g}
