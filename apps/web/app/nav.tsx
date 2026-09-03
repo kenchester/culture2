@@ -3,7 +3,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname, useSearchParams } from "next/navigation";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { useTranslations } from "next-intl";
 import type { User } from "@supabase/supabase-js";
 import { createClient } from "@/lib/supabase/client";
@@ -11,6 +11,7 @@ import { signOut } from "@/app/(auth)/actions";
 import { Logo } from "@/components/logo";
 import { getAvatarUrl, getDisplayName } from "@/lib/profiles";
 import { LanguageSwitcher } from "@/app/language-switcher";
+import { useMenu } from "@/components/use-menu";
 
 function NavLink({ href, children }: { href: string; children: React.ReactNode }) {
   const pathname = usePathname();
@@ -35,31 +36,35 @@ type Profile = {
   is_admin: boolean;
 };
 
+const USER_MENU_ID = "user-menu";
+
 function UserMenu({ user, profile, hasSchools }: { user: User; profile: Profile | null; hasSchools: boolean }) {
   const t = useTranslations("nav");
-  const [open, setOpen] = useState(false);
-  const menuRef = useRef<HTMLDivElement>(null);
   const supabase = createClient();
 
   const displayName = profile ? getDisplayName(profile) : user.email;
   const avatarUrl = profile ? getAvatarUrl(supabase, profile.img_path) : null;
 
-  useEffect(() => {
-    if (!open) return;
-    function handleClick(event: MouseEvent) {
-      if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
-        setOpen(false);
-      }
-    }
-    document.addEventListener("mousedown", handleClick);
-    return () => document.removeEventListener("mousedown", handleClick);
-  }, [open]);
+  // Profile, My networks, [Schools], Messages, Settings, [Admin], Sign out
+  const itemCount = 5 + (hasSchools ? 1 : 0) + (profile?.is_admin ? 1 : 0);
+  const { open, setOpen, close, containerRef, triggerRef, setItemRef, onTriggerKeyDown, onMenuKeyDown } =
+    useMenu(itemCount);
+  // Items are conditional, so indices are handed out in render order at
+  // render time rather than hardcoded - keeps the arrow-key order matching
+  // the visual order whether or not Schools/Admin are present.
+  let itemIndex = 0;
 
   return (
-    <div className="relative" ref={menuRef}>
+    <div className="relative" ref={containerRef}>
       <button
+        ref={triggerRef}
         type="button"
         onClick={() => setOpen((prev) => !prev)}
+        onKeyDown={onTriggerKeyDown}
+        aria-haspopup="true"
+        aria-expanded={open}
+        aria-controls={open ? USER_MENU_ID : undefined}
+        aria-label={t("userMenu")}
         className="flex items-center gap-2 rounded-full text-body transition-colors hover:text-primary"
       >
         {avatarUrl ? (
@@ -79,6 +84,7 @@ function UserMenu({ user, profile, hasSchools }: { user: User; profile: Profile 
         <svg
           viewBox="0 0 20 20"
           fill="currentColor"
+          aria-hidden="true"
           className={`h-4 w-4 transition-transform ${open ? "rotate-180" : ""}`}
         >
           <path
@@ -90,52 +96,70 @@ function UserMenu({ user, profile, hasSchools }: { user: User; profile: Profile 
       </button>
 
       {open && (
-        <div className="absolute right-0 top-full mt-2 w-48 overflow-hidden rounded-md border border-border bg-surface py-1 text-sm shadow-md">
+        <div
+          id={USER_MENU_ID}
+          role="menu"
+          aria-label={t("userMenu")}
+          onKeyDown={onMenuKeyDown}
+          className="absolute right-0 top-full mt-2 w-48 overflow-hidden rounded-md border border-border bg-surface py-1 text-sm shadow-md"
+        >
           <div className="border-b border-border px-3 py-2">
             <p className="truncate font-medium text-ink">{displayName}</p>
             <p className="truncate text-xs text-muted">{user.email}</p>
           </div>
           <Link
+            ref={setItemRef(itemIndex++)}
+            role="menuitem"
             href={`/profile/${user.id}`}
-            onClick={() => setOpen(false)}
+            onClick={() => close(false)}
             className="block px-3 py-2 text-body hover:bg-primary-light hover:text-primary"
           >
             {t("profile")}
           </Link>
           <Link
+            ref={setItemRef(itemIndex++)}
+            role="menuitem"
             href="/my-networks"
-            onClick={() => setOpen(false)}
+            onClick={() => close(false)}
             className="block px-3 py-2 text-body hover:bg-primary-light hover:text-primary"
           >
             {t("myNetworks")}
           </Link>
           {hasSchools && (
             <Link
+              ref={setItemRef(itemIndex++)}
+              role="menuitem"
               href="/schools"
-              onClick={() => setOpen(false)}
+              onClick={() => close(false)}
               className="block px-3 py-2 text-body hover:bg-primary-light hover:text-primary"
             >
               {t("schools")}
             </Link>
           )}
           <Link
+            ref={setItemRef(itemIndex++)}
+            role="menuitem"
             href="/messages"
-            onClick={() => setOpen(false)}
+            onClick={() => close(false)}
             className="block px-3 py-2 text-body hover:bg-primary-light hover:text-primary"
           >
             {t("messages")}
           </Link>
           <Link
+            ref={setItemRef(itemIndex++)}
+            role="menuitem"
             href="/settings"
-            onClick={() => setOpen(false)}
+            onClick={() => close(false)}
             className="block px-3 py-2 text-body hover:bg-primary-light hover:text-primary"
           >
             {t("settings")}
           </Link>
           {profile?.is_admin && (
             <Link
+              ref={setItemRef(itemIndex++)}
+              role="menuitem"
               href="/admin/embed-partners"
-              onClick={() => setOpen(false)}
+              onClick={() => close(false)}
               className="block px-3 py-2 text-body hover:bg-primary-light hover:text-primary"
             >
               {t("admin")}
@@ -143,6 +167,8 @@ function UserMenu({ user, profile, hasSchools }: { user: User; profile: Profile 
           )}
           <form action={signOut}>
             <button
+              ref={setItemRef(itemIndex++)}
+              role="menuitem"
               type="submit"
               className="block w-full border-t border-border px-3 py-2 text-left text-body hover:bg-primary-light hover:text-primary"
             >
@@ -247,7 +273,7 @@ export function Nav({ isLearnHost = false }: { isLearnHost?: boolean }) {
   return (
     <nav className="sticky top-0 z-10 flex flex-wrap items-center justify-between gap-y-3 border-b border-border bg-surface/90 px-4 py-3 backdrop-blur-sm sm:px-6">
       <Link href="/" className="flex items-center">
-        <Logo className="h-8" priority />
+        <Logo className="h-8" priority alt={t("homeLogoAlt")} />
       </Link>
       <div className="flex flex-wrap items-center gap-x-5 gap-y-2 text-sm">
         {/* "Search" also finds real native/heritage speakers outside a

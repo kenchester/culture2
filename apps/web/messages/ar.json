@@ -11,7 +11,10 @@
     "signOut": "تسجيل الخروج",
     "changeLanguage": "تغيير اللغة",
     "myNetworks": "شبكاتي",
-    "schools": "المدارس"
+    "schools": "المدارس",
+    "skipToContent": "تخطي إلى المحتوى الرئيسي",
+    "homeLogoAlt": "CultureMesh — الصفحة الرئيسية",
+    "userMenu": "قائمة الحساب"
   },
   "search": {
     "speak": "تحدث",

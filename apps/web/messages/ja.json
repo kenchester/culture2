@@ -11,7 +11,10 @@
     "signOut": "サインアウト",
     "changeLanguage": "言語の変更",
     "myNetworks": "私のネットワーク",
-    "schools": "学校"
+    "schools": "学校",
+    "skipToContent": "メインコンテンツへスキップ",
+    "homeLogoAlt": "CultureMesh — ホーム",
+    "userMenu": "アカウントメニュー"
   },
   "search": {
     "speak": "話せ",

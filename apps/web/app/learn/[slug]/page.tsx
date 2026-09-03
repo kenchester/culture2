@@ -9,6 +9,7 @@ import { VerifySchoolEmailForm } from "@/app/learn/verify-school-email-form";
 import { AddSchoolLink } from "@/app/learn/add-school-link";
 import { LearnSearchForm } from "@/app/learn/learn-search-form";
 import { LaunchNetworkForm } from "@/app/learn/[slug]/launch-network-form";
+import { FormError, FormSuccess, InlineError } from "@/components/ui/form-error";
 
 type OrgLanguageRow = {
   language: { name: string } | null;
@@ -175,13 +176,13 @@ export default async function LearnPage({
         // recognized"), and on the Campus Zine theme primary-light is a
         // pale pink that reads as a warning/error rather than a helpful
         // heads-up.
-        <p className="rounded-md bg-success-bg px-3 py-2 text-sm text-success">
+        <FormSuccess>
           {t("pendingNotice", { name: org.name })}
-        </p>
+        </FormSuccess>
       )}
 
       {!org ? (
-        <p className="text-sm text-error">{t("misconfigured")}</p>
+        <InlineError>{t("misconfigured")}</InlineError>
       ) : (
         <div className="flex flex-col gap-3">
           {org.is_example ? (
@@ -195,7 +196,7 @@ export default async function LearnPage({
             isRecognizedMember && (
               <>
                 <h2 className="font-display text-xl text-ink">{t("launchNetworkHeading")}</h2>
-                {error && <p className="rounded-md bg-error-bg px-3 py-2 text-sm text-error">{error}</p>}
+                {error && <FormError>{error}</FormError>}
                 <div className="rounded-lg border border-border bg-surface p-4 sm:p-6">
                   <LaunchNetworkForm organizationId={org.id} slug={slug} />
                 </div>

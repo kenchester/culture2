@@ -11,7 +11,10 @@
     "signOut": "Desconectarse",
     "changeLanguage": "Cambiar el idioma",
     "myNetworks": "Mis redes",
-    "schools": "Escuelas"
+    "schools": "Escuelas",
+    "skipToContent": "Saltar al contenido principal",
+    "homeLogoAlt": "CultureMesh — inicio",
+    "userMenu": "Menú de cuenta"
   },
   "search": {
     "speak": "Habla",

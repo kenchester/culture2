@@ -10,6 +10,7 @@ import { Textarea } from "@/components/ui/input";
 import { LocalDateTime } from "@/components/local-datetime";
 import { Linkify } from "@/lib/linkify";
 import type { Locale } from "@/lib/locale";
+import { InlineError } from "@/components/ui/form-error";
 
 // A minimal outline icon (fill toggles solid when liked) rather than an
 // emoji - this site is used by embassies and other professional
@@ -151,7 +152,7 @@ export function EditableEntry({
           onChange={(e) => setDraft(e.target.value)}
           autoFocus
         />
-        {error && <p className="text-sm text-error">{error}</p>}
+        {error && <InlineError>{error}</InlineError>}
         <div className="flex gap-2">
           <Button
             type="button"
@@ -286,7 +287,7 @@ export function EditableEntry({
           </button>
         </div>
       )}
-      {error && <p className="text-sm text-error">{error}</p>}
+      {error && <InlineError>{error}</InlineError>}
     </div>
   );
 }

@@ -8,14 +8,23 @@
   --color-surface: #ffffff;
   --color-ink: #241f1b;
   --color-body: #4a423c;
-  --color-muted: #857a70;
+  /* Darkened from #857a70 (3.96:1 on background - under the WCAG AA 4.5:1
+     floor for normal text, and this token carries timestamps, member/post
+     counts and helper text site-wide). Smallest shift that clears it. */
+  --color-muted: #7a7067;
   --color-border: #e4dcd3;
 
-  --color-primary: #b75b3d;
-  --color-primary-hover: #96472f;
+  /* Darkened from #b75b3d, which failed AA in two places it's used
+     constantly: as link text on the page background (4.33:1) and as text
+     inside primary-light boxes like the weekly prompt (3.70:1). Hue is
+     unchanged - still terracotta, just deeper. primary-hover moves with
+     it so hover stays visibly darker than rest. */
+  --color-primary: #a15036;
+  --color-primary-hover: #823f2b;
   --color-primary-light: #f3e4db;
 
-  --color-success: #3a7d52;
+  /* Darkened from #3a7d52 (4.37:1 on success-bg). */
+  --color-success: #387950;
   --color-success-bg: #e9f3ec;
   --color-error: #b3392a;
   --color-error-bg: #fbeae7;
@@ -48,6 +57,37 @@ body {
   color: var(--color-ink);
 }
 
+/* A single, consistently visible keyboard focus indicator (WCAG 2.4.7 /
+   2.4.13). Deliberately :focus-visible, not :focus - the browser only
+   matches it for keyboard and assistive-tech interaction, so a mouse user
+   clicking a button sees exactly what they saw before, with no new ring
+   appearing on click. Two-tone (accent ring + background-colored offset)
+   so it stays visible against both the warm-editorial surfaces and the
+   Zine theme's black keylines, rather than disappearing into whichever
+   element it happens to land on.
+   #main-content is focused programmatically by the skip link; it gets no
+   ring since it's a whole-page container, not a control. */
+:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px;
+  border-radius: 2px;
+}
+
+#main-content:focus-visible {
+  outline: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
 /* ===========================================================
    Campus Zine — learn.culturemesh.com only (set via html[data-
    theme="zine"] in app/layout.tsx, driven by isLearnHost()).
@@ -74,8 +114,12 @@ html[data-theme="zine"] {
   --color-muted: #6b6d64;
   --color-border: #17181c;
 
-  --color-primary: #e0234e;
-  --color-primary-hover: #b81a3d;
+  /* Darkened from #e0234e, which missed AA as link text on this theme's
+     background (4.48:1) and failed clearly inside primary-light chips
+     like the composer's mode pills and the "Preview - not saved" badge
+     (3.85:1). Still the same riso hot pink, ~9% deeper. */
+  --color-primary: #cc2047;
+  --color-primary-hover: #a81a3a;
   --color-primary-light: #ffe3e9;
 
   /* Tailwind's `@theme inline` bakes the *resolved* value of --font-sans/
@@ -134,12 +178,10 @@ html[data-theme="zine"] .shadow-lg {
   box-shadow: 4px 4px 0 0 var(--color-ink);
 }
 
-/* Button.tsx's primary variant pairs bg-primary with text-white -
-   white-on-#E0234E lands under WCAG AA for normal-weight text
-   (~3.5:1, needs 4.5:1), so ink-on-pink both fixes contrast and
-   reads more like ink on printed paper than a software button.
-   Scoped to the exact class pairing so unrelated text-white usage
-   (e.g. on the dark ink-colored surfaces elsewhere) is untouched. */
-html[data-theme="zine"] .bg-primary.text-white {
-  color: var(--color-ink);
-}
+/* An earlier version of this file forced ink-on-pink for primary buttons
+   here, on the stated grounds that white-on-#E0234E was ~3.5:1 and failed
+   AA. Measured, that was backwards: white on that pink is 4.65:1 (passes)
+   while the ink override was 3.82:1 (fails) - the override was making the
+   thing it meant to fix worse. Removed, so primary buttons keep
+   Button.tsx's own text-white; against the darkened --color-primary above
+   that's now 5.43:1. */

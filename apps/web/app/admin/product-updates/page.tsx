@@ -1,5 +1,6 @@
 import { createClient } from "@/lib/supabase/server";
 import { UpdateForm } from "@/app/admin/product-updates/update-form";
+import { FormError, FormSuccess } from "@/components/ui/form-error";
 
 type ProductUpdateRow = {
   id: number;
@@ -24,14 +25,14 @@ export default async function AdminProductUpdatesPage({
   return (
     <div className="flex w-full flex-col gap-8">
       {error && (
-        <p className="rounded-md bg-error-bg px-3 py-2 text-sm text-error">{error}</p>
+        <FormError>{error}</FormError>
       )}
       {posted && (
-        <p className="rounded-md bg-success-bg px-3 py-2 text-sm text-success">
+        <FormSuccess>
           {sentCount
             ? `Sent to ${sentCount} recipient${sentCount === "1" ? "" : "s"}.`
             : "Published, and emailed to everyone opted into product updates."}
-        </p>
+        </FormSuccess>
       )}
 
       <UpdateForm />

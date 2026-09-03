@@ -11,7 +11,10 @@
     "signOut": "签出",
     "changeLanguage": "更改语言",
     "myNetworks": "我的网络",
-    "schools": "学校"
+    "schools": "学校",
+    "skipToContent": "跳转到主要内容",
+    "homeLogoAlt": "CultureMesh — 首页",
+    "userMenu": "账户菜单"
   },
   "search": {
     "speak": "说话",

@@ -6,6 +6,7 @@ import { checkPostLanguagePurity } from "@/app/networks/actions";
 import { RecordMedia } from "@/app/networks/[id]/record-media";
 import { Button } from "@/components/ui/button";
 import { Field, Label, Textarea } from "@/components/ui/input";
+import { InlineError } from "@/components/ui/form-error";
 
 type Mode = "text" | "audio" | "video";
 
@@ -95,9 +96,15 @@ export function DemoComposer({
               placeholder={bodyPlaceholder}
               value={bodyValue}
               onChange={(e) => setBodyValue(e.target.value)}
+              aria-invalid={error ? true : undefined}
+              aria-describedby={error ? `${idPrefix}-error` : undefined}
             />
           </Field>
-          {error && <p className="text-sm text-error">{error}</p>}
+          {/* The language-purity rejection is the one error in this flow a
+              user is genuinely likely to hit, and it previously appeared
+              with no announcement at all - a screen reader user would just
+              find their post silently not posted. */}
+          {error && <InlineError id={`${idPrefix}-error`}>{error}</InlineError>}
           <Button
             type="button"
             onClick={handleSubmitText}

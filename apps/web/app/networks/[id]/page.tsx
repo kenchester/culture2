@@ -16,6 +16,7 @@ import { InviteFriendsBox } from "@/app/networks/[id]/invite-friends-box";
 import { PostComposer } from "@/app/networks/[id]/post-composer";
 import { Button } from "@/components/ui/button";
 import { Field, Label, Textarea } from "@/components/ui/input";
+import { FormError } from "@/components/ui/form-error";
 
 // Below this, a network's activity is too thin to be worth suggesting -
 // checked live against real data (32 networks total, median member count 1)
@@ -383,7 +384,7 @@ export default async function NetworkPage({
                   <input type="hidden" name="networkId" value={network.id} />
                   {isEmbedded && <input type="hidden" name="embed" value="1" />}
                   {error && (
-                    <p className="rounded-md bg-error-bg px-3 py-2 text-sm text-error">{error}</p>
+                    <FormError>{error}</FormError>
                   )}
                   <PostComposer
                     idPrefix="post"

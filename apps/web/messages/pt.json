@@ -11,7 +11,10 @@
     "signOut": "Sair",
     "changeLanguage": "Mude a linguagem",
     "myNetworks": "Minhas redes",
-    "schools": "Escolas"
+    "schools": "Escolas",
+    "skipToContent": "Pular para o conteúdo principal",
+    "homeLogoAlt": "CultureMesh — início",
+    "userMenu": "Menu de contas"
   },
   "search": {
     "speak": "Fale",

@@ -11,7 +11,10 @@
     "signOut": "로그아웃",
     "changeLanguage": "언어 변경",
     "myNetworks": "내 네트워크",
-    "schools": "학교"
+    "schools": "학교",
+    "skipToContent": "주요 내용으로 건너뛰기",
+    "homeLogoAlt": "CultureMesh — 홈",
+    "userMenu": "계정 메뉴"
   },
   "search": {
     "speak": "말해봐",

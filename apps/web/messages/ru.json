@@ -11,7 +11,10 @@
     "signOut": "Выход",
     "changeLanguage": "Сменить язык",
     "myNetworks": "Мои сети",
-    "schools": "Школы"
+    "schools": "Школы",
+    "skipToContent": "Перейти к основному содержанию",
+    "homeLogoAlt": "CultureMesh — дом",
+    "userMenu": "Меню аккаунта"
   },
   "search": {
     "speak": "Говори",

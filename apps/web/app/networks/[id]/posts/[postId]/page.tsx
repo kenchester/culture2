@@ -10,6 +10,7 @@ import { createReply } from "./actions";
 import { EditableEntry } from "@/app/networks/editable-entry";
 import { DemoReplyThread, type RealDemoReply } from "@/app/networks/[id]/posts/[postId]/demo-reply-thread";
 import { PostComposer } from "@/app/networks/[id]/post-composer";
+import { FormError } from "@/components/ui/form-error";
 
 export default async function PostPage({
   params,
@@ -230,7 +231,7 @@ export default async function PostPage({
               <input type="hidden" name="networkId" value={id} />
               {isEmbedded && <input type="hidden" name="embed" value="1" />}
               {error && (
-                <p className="rounded-md bg-error-bg px-3 py-2 text-sm text-error">{error}</p>
+                <FormError>{error}</FormError>
               )}
               <PostComposer
                 idPrefix="reply"

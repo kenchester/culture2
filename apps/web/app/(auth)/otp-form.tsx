@@ -15,8 +15,14 @@ import { resolveLearnSlugForEmail } from "@/app/learn/actions";
 import { createClient } from "@/lib/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Field, Input, Label } from "@/components/ui/input";
+import { FormError } from "@/components/ui/form-error";
 import { PasswordInput } from "@/components/ui/password-input";
 import { HiddenUsernameField } from "@/components/ui/hidden-username-field";
+
+// One id for the single `error` state this form renders across all of its
+// steps - each step shows at most one error at a time, so the inputs on
+// that step can all point aria-describedby here.
+const ERROR_ID = "auth-error";
 
 // The sanctioned way to ask Safari (and any other browser with strict
 // third-party cookie blocking) for an exception, before a session cookie
@@ -263,9 +269,7 @@ export function OtpForm({
     return (
       <div className="flex flex-col gap-4">
         <p className="text-center text-sm text-body">{t("bridge.explanation")}</p>
-        {error && (
-          <p className="rounded-md bg-error-bg px-3 py-2 text-sm text-error">{error}</p>
-        )}
+        {error && <FormError id={ERROR_ID}>{error}</FormError>}
         {isEmbedded ? (
           <>
             <a
@@ -303,9 +307,7 @@ export function OtpForm({
             b: (chunks) => <span className="font-medium text-ink">{chunks}</span>,
           })}
         </p>
-        {error && (
-          <p className="rounded-md bg-error-bg px-3 py-2 text-sm text-error">{error}</p>
-        )}
+        {error && <FormError id={ERROR_ID}>{error}</FormError>}
         <Button
           type="button"
           onClick={() => {
@@ -351,14 +353,14 @@ export function OtpForm({
             b: (chunks) => <span className="font-medium text-ink">{chunks}</span>,
           })}
         </p>
-        {error && (
-          <p className="rounded-md bg-error-bg px-3 py-2 text-sm text-error">{error}</p>
-        )}
+        {error && <FormError id={ERROR_ID}>{error}</FormError>}
         <Field>
           <Label htmlFor="password">{t("password.label")}</Label>
           <PasswordInput
             id="password"
             name="password"
+            aria-invalid={error ? true : undefined}
+            aria-describedby={error ? ERROR_ID : undefined}
             autoComplete="current-password"
             required
             autoFocus
@@ -409,14 +411,14 @@ export function OtpForm({
             b: (chunks) => <span className="font-medium text-ink">{chunks}</span>,
           })}
         </p>
-        {error && (
-          <p className="rounded-md bg-error-bg px-3 py-2 text-sm text-error">{error}</p>
-        )}
+        {error && <FormError id={ERROR_ID}>{error}</FormError>}
         <Field>
           <Label htmlFor="token">{t("code.label")}</Label>
           <Input
             id="token"
             name="token"
+            aria-invalid={error ? true : undefined}
+            aria-describedby={error ? ERROR_ID : undefined}
             inputMode="numeric"
             autoComplete="one-time-code"
             required
@@ -493,12 +495,18 @@ export function OtpForm({
           </p>
         </div>
       )}
-      {error && (
-        <p className="rounded-md bg-error-bg px-3 py-2 text-sm text-error">{error}</p>
-      )}
+      {error && <FormError id={ERROR_ID}>{error}</FormError>}
       <Field>
         <Label htmlFor="email">{t("email.label")}</Label>
-        <Input id="email" name="email" type="email" required autoFocus />
+        <Input
+          id="email"
+          name="email"
+          type="email"
+          required
+          autoFocus
+          aria-invalid={error ? true : undefined}
+          aria-describedby={error ? ERROR_ID : undefined}
+        />
       </Field>
       <Field>
         <Label htmlFor="name">{t("email.nameLabel")}</Label>

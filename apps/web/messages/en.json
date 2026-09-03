@@ -11,7 +11,10 @@
     "settings": "Settings",
     "admin": "Admin",
     "signOut": "Sign out",
-    "changeLanguage": "Change language"
+    "changeLanguage": "Change language",
+    "skipToContent": "Skip to main content",
+    "homeLogoAlt": "CultureMesh — home",
+    "userMenu": "Account menu"
   },
   "search": {
     "speak": "Speak",

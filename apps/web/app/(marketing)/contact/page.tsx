@@ -3,6 +3,7 @@ import { sendContactMessage } from "@/app/(marketing)/contact/actions";
 import { SubjectField } from "@/app/(marketing)/contact/subject-field";
 import { Button } from "@/components/ui/button";
 import { Field, Input, Label, Textarea } from "@/components/ui/input";
+import { FormError, FormSuccess } from "@/components/ui/form-error";
 
 // Pulled out of the component body: React's purity lint rule flags a
 // direct Date.now() call inside a component's render, but this page is
@@ -34,12 +35,12 @@ export default async function ContactPage({
       </div>
 
       {sent && (
-        <p className="rounded-md bg-success-bg px-3 py-2 text-sm text-success">
+        <FormSuccess>
           {t("sent")}
-        </p>
+        </FormSuccess>
       )}
       {error && (
-        <p className="rounded-md bg-error-bg px-3 py-2 text-sm text-error">{error}</p>
+        <FormError>{error}</FormError>
       )}
 
       <form action={sendContactMessage} className="flex flex-col gap-4">
