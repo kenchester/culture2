@@ -249,8 +249,17 @@ export function OrganizationManager({
               </Button>
             </form>
 
-            <div className="border-t border-border pt-3">
+            {/* Manage networks sits opposite the destructive org-level
+                control: renaming or removing a single network is the
+                routine operation, and deleting the whole school is not. */}
+            <div className="flex flex-wrap items-center justify-between gap-3 border-t border-border pt-3">
               <DeleteOrgForm org={org} deleteOrganization={deleteOrganization} />
+              <Link
+                href={`/admin/organizations/${org.id}/networks`}
+                className="text-sm font-medium text-primary hover:underline"
+              >
+                Manage networks →
+              </Link>
             </div>
           </div>
         ))}
