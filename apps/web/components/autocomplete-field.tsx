@@ -59,6 +59,7 @@ export function AutocompleteField({
   defaultValue,
   placeType,
   initialOption = null,
+  excludeSigned = false,
 }: {
   label: string;
   kind: "place" | "language" | "religion";
@@ -75,6 +76,10 @@ export function AutocompleteField({
   defaultValue?: string;
   placeType?: "country" | "region" | "city" | ("country" | "region" | "city")[];
   initialOption?: AutocompleteOption | null;
+  // Language pickers only: drops signed languages from the results. For
+  // fields asking which *written* language some text is in, where a signed
+  // language is never a valid answer.
+  excludeSigned?: boolean;
 }) {
   const [query, setQuery] = useState("");
   const [options, setOptions] = useState<AutocompleteOption[]>([]);
@@ -126,7 +131,7 @@ export function AutocompleteField({
       // the translated name in place of the English one, so results
       // already render localized with no further change needed here.
       fetch(
-        `${searchUrl}?q=${encodeURIComponent(query)}&kind=${kind}${typeParam}&locale=${locale}`,
+        `${searchUrl}?q=${encodeURIComponent(query)}&kind=${kind}${typeParam}&locale=${locale}${excludeSigned ? "&excludeSigned=1" : ""}`,
         { signal: controller.signal },
       )
         .then((r) => r.json())
@@ -137,7 +142,7 @@ export function AutocompleteField({
       clearTimeout(timeout);
       controller.abort();
     };
-  }, [query, kind, selected, searchUrl, disabled, placeTypeParam, locale]);
+  }, [query, kind, selected, searchUrl, disabled, placeTypeParam, locale, excludeSigned]);
 
   const visibleOptions = disabled || selected ? [] : options;
 

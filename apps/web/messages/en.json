@@ -318,7 +318,7 @@
     "addSummary": "Add optional summary text",
     "addSummaryHelp": "Sign languages can't be transcribed automatically. If you'd like, add a short written summary so people who are visually impaired or don't sign can follow along.",
     "summaryLanguageLabel": "Language of your summary",
-    "summaryLanguagePlaceholder": "Start typing a language…"
+    "summaryLanguagePlaceholder": "Start typing any non-signed language…"
   },
   "suggestNetwork": {
     "heading": "Suggest a network",

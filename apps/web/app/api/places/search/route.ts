@@ -43,6 +43,23 @@ export async function GET(request: NextRequest) {
     if (error) {
       return NextResponse.json({ error: error.message }, { status: 500 });
     }
+
+    // excludeSigned is for fields asking which *written* language a piece
+    // of text is in - the signed-language summary composer, today. A
+    // signed language has no written form, so "American Sign Language" is
+    // never a valid answer there, and picking it would store a summary
+    // tagged with a language that has no iso_code: Translate would have no
+    // source language and screen readers no lang to switch to. Filtered
+    // here rather than in search_languages, which is shared by every
+    // language picker in the app and should keep returning all of them.
+    if (searchParams.get("excludeSigned") === "1") {
+      const { data: signed } = await supabase.from("languages").select("id").eq("is_signed", true);
+      const signedIds = new Set((signed ?? []).map((l) => l.id));
+      return NextResponse.json(
+        ((data ?? []) as { id: number }[]).filter((row) => !signedIds.has(row.id)),
+      );
+    }
+
     return NextResponse.json(data);
   }
 

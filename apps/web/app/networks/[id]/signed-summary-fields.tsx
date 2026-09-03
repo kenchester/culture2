@@ -39,6 +39,9 @@ export function SignedSummaryFields({ idPrefix }: { idPrefix: string }) {
         kind="language"
         hiddenName="summaryLanguageId"
         placeholder={t("summaryLanguagePlaceholder")}
+        // A summary is written text, so a signed language is never a valid
+        // answer here - the placeholder says so and the results back it up.
+        excludeSigned
       />
     </div>
   );
