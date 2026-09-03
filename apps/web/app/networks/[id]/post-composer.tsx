@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { useTranslations } from "next-intl";
 import { RecordMedia } from "@/app/networks/[id]/record-media";
 import { Button } from "@/components/ui/button";
 import { Field, Label, Textarea } from "@/components/ui/input";
@@ -28,7 +29,6 @@ export function PostComposer({
   bodyPlaceholder,
   submitLabel,
   isSignedLanguage = false,
-  languages,
 }: {
   idPrefix: string;
   bodyLabel: string;
@@ -36,11 +36,14 @@ export function PostComposer({
   submitLabel: string;
   /** networks.language -> languages.is_signed. Hides Audio and offers a summary. */
   isSignedLanguage?: boolean;
-  /** For the summary's language picker; only needed when isSignedLanguage. */
-  languages?: { id: number; name: string }[];
 }) {
+  const t = useTranslations("editableEntry");
   const [mode, setMode] = useState<Mode>("text");
   const [bodyValue, setBodyValue] = useState("");
+  // Owned here rather than inside either child: the checkbox lives among
+  // RecordMedia's pre-record options, but the panel it opens renders above
+  // RecordMedia, so neither component can hold the state on its own.
+  const [showSummary, setShowSummary] = useState(false);
 
   // A signed language has no spoken form, so an audio post in one of these
   // networks is either a mistake or off-language - hiding the tab is
@@ -87,13 +90,27 @@ export function PostComposer({
         // itself once the upload finishes - no separate submit button here,
         // there'd be two "Post" controls on screen otherwise.
         <>
-          {/* Rendered above RecordMedia rather than inside it, so the
-              summary fields are already filled in by the time the
-              recording's own Post button submits the surrounding form. */}
-          {isSignedLanguage && mode === "video" && (
-            <SignedSummaryFields idPrefix={idPrefix} languages={languages ?? []} />
+          {/* Above RecordMedia so the summary is already filled in by the
+              time the recording's own Post button submits the form. */}
+          {isSignedLanguage && mode === "video" && showSummary && (
+            <SignedSummaryFields idPrefix={idPrefix} />
           )}
-          <RecordMedia key={mode} kind={mode} />
+          <RecordMedia
+            key={mode}
+            kind={mode}
+            extraControls={
+              isSignedLanguage && mode === "video" ? (
+                <label className="flex items-center gap-2 text-sm text-body">
+                  <input
+                    type="checkbox"
+                    checked={showSummary}
+                    onChange={(e) => setShowSummary(e.target.checked)}
+                  />
+                  {t("addSummary")}
+                </label>
+              ) : undefined
+            }
+          />
         </>
       )}
     </div>

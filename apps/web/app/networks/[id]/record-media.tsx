@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, type ReactNode } from "react";
 import { createClient } from "@/lib/supabase/client";
 import { createBlurredVideoStream } from "@/lib/video-background-blur";
 import { Button } from "@/components/ui/button";
@@ -54,9 +54,15 @@ type Status = "idle" | "recording" | "preview" | "uploading" | "error";
 export function RecordMedia({
   kind,
   onEphemeralPost,
+  extraControls,
 }: {
   kind: "audio" | "video";
   onEphemeralPost?: (data: { type: "audio" | "video"; url: string; durationSeconds: number }) => void;
+  // Rendered beside "Blur my background" in the idle state. Used by
+  // PostComposer for the signed-language summary toggle, which belongs
+  // visually with the other pre-record options even though the panel it
+  // opens is owned further up the tree.
+  extraControls?: ReactNode;
 }) {
   const [status, setStatus] = useState<Status>("idle");
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
@@ -264,16 +270,21 @@ export function RecordMedia({
 
       {status === "idle" && (
         <div className="flex flex-col items-start gap-2">
-          {kind === "video" && (
-            <label className="flex items-center gap-2 text-sm text-body">
-              <input
-                type="checkbox"
-                checked={blurEnabled}
-                onChange={(e) => setBlurEnabled(e.target.checked)}
-                disabled={blurLoading}
-              />
-              Blur my background
-            </label>
+          {(kind === "video" || extraControls) && (
+            <div className="flex flex-wrap items-center gap-x-6 gap-y-2">
+              {kind === "video" && (
+                <label className="flex items-center gap-2 text-sm text-body">
+                  <input
+                    type="checkbox"
+                    checked={blurEnabled}
+                    onChange={(e) => setBlurEnabled(e.target.checked)}
+                    disabled={blurLoading}
+                  />
+                  Blur my background
+                </label>
+              )}
+              {extraControls}
+            </div>
           )}
           <Button type="button" variant="secondary" onClick={startRecording} disabled={blurLoading}>
             {blurLoading

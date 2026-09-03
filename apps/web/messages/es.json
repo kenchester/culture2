@@ -244,7 +244,8 @@
     "addSummaryHelp": "Un vídeo firmado no se puede transcribir automáticamente. Si quieres, añade un breve resumen escrito para que quienes no firmen puedan seguir.",
     "summaryLanguageLabel": "Lenguaje de tu resumen",
     "processingRecording": "Subir tu grabación y escribir la transcripción...",
-    "posting": "Publicando..."
+    "posting": "Publicando...",
+    "summaryLanguagePlaceholder": "Empieza a escribir un idioma..."
   },
   "suggestNetwork": {
     "heading": "Sugiere una red",

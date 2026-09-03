@@ -244,7 +244,8 @@
     "addSummaryHelp": "署名入りの動画は自動的に文字起こしできません。もしよければ、署名しない人もついていけるように短い要約を追加してください。",
     "summaryLanguageLabel": "要約の文言",
     "processingRecording": "録音を投稿し、書き起こしを書くこと...",
-    "posting": "投稿中..."
+    "posting": "投稿中...",
+    "summaryLanguagePlaceholder": "言語をタイプし始め..."
   },
   "suggestNetwork": {
     "heading": "ネットワークを提案してください",

@@ -244,7 +244,8 @@
     "addSummaryHelp": "签名视频无法自动转录。如果你愿意，可以加上简短的书面摘要，这样不签名的人也能跟上。",
     "summaryLanguageLabel": "摘要的措辞",
     "processingRecording": "发布录音并撰写文字稿......",
-    "posting": "发布......"
+    "posting": "发布......",
+    "summaryLanguagePlaceholder": "开始输入一种语言......"
   },
   "suggestNetwork": {
     "heading": "建议一个网络",

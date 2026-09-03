@@ -315,9 +315,10 @@
     "hideTranscript": "Hide transcript",
     "transcriptPending": "Transcript not available for this recording.",
     "summaryLabel": "Summary",
-    "addSummary": "Add a written summary",
-    "addSummaryHelp": "A signed video can't be transcribed automatically. If you'd like, add a short written summary so people who don't sign can follow along.",
-    "summaryLanguageLabel": "Language of your summary"
+    "addSummary": "Add optional summary text",
+    "addSummaryHelp": "Sign languages can't be transcribed automatically. If you'd like, add a short written summary so people who are visually impaired or don't sign can follow along.",
+    "summaryLanguageLabel": "Language of your summary",
+    "summaryLanguagePlaceholder": "Start typing a language…"
   },
   "suggestNetwork": {
     "heading": "Suggest a network",

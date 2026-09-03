@@ -105,9 +105,6 @@ export default async function PostPage({
   const isSignedLanguage = Boolean(
     (network?.language as unknown as { is_signed?: boolean } | null)?.is_signed,
   );
-  const { data: summaryLanguages } = isSignedLanguage
-    ? await supabase.from("languages").select("id, name").order("name")
-    : { data: null };
 
   const returnTo = `/networks/${id}/posts/${postId}${embedSuffix}`;
   const signInParams = new URLSearchParams({ returnTo });
@@ -277,7 +274,6 @@ export default async function PostPage({
                 bodyPlaceholder={t("replyPlaceholder")}
                 submitLabel={t("replySubmit")}
                 isSignedLanguage={isSignedLanguage}
-                languages={summaryLanguages ?? []}
               />
               <PostingIndicator />
             </form>

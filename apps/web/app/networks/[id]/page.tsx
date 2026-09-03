@@ -259,13 +259,11 @@ export default async function NetworkPage({
     ),
   );
 
-  // Only fetched for signed-language networks, where the composer offers
-  // an optional written summary and needs a language picker for it -
-  // every other network never renders that control.
+
+  // Drives both hiding the Audio tab and offering the written-summary
+  // panel - a signed language has no spoken form (see languages.is_signed,
+  // 00000000000072).
   const isSignedLanguage = Boolean((language as { is_signed?: boolean } | null)?.is_signed);
-  const { data: summaryLanguages } = isSignedLanguage
-    ? await supabase.from("languages").select("id, name").order("name")
-    : { data: null };
 
   const returnTo = `/networks/${network.id}${isEmbedded ? "?embed=1" : ""}`;
   const signInParams = new URLSearchParams({ returnTo });
@@ -416,7 +414,6 @@ export default async function NetworkPage({
                     bodyPlaceholder={t("postPlaceholder")}
                     submitLabel={t("postSubmit")}
                     isSignedLanguage={isSignedLanguage}
-                    languages={summaryLanguages ?? []}
                   />
                   <PostingIndicator />
                 </form>
