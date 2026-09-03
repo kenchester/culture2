@@ -4,7 +4,7 @@ import { createClient } from "@/lib/supabase/server";
 import { launchNetwork } from "@/app/search/actions";
 import { getGeoName } from "@/lib/geo-translation";
 import type { Locale } from "@/lib/locale";
-import { Button } from "@/components/ui/button";
+import { SubmitButton } from "@/components/ui/submit-button";
 
 type ResultsT = Awaited<ReturnType<typeof getTranslations>>;
 
@@ -234,7 +234,7 @@ export default async function SearchResultsPage({
               <input type="hidden" name="originId" value={originId} />
               <input type="hidden" name="locationId" value={locationId} />
               <input type="hidden" name="title" value={title} />
-              <Button type="submit">{t("launchNetwork")}</Button>
+              <SubmitButton>{t("launchNetwork")}</SubmitButton>
             </form>
           </section>
         )}
@@ -391,7 +391,7 @@ export default async function SearchResultsPage({
                     <input type="hidden" name="originId" value={origin.id} />
                     <input type="hidden" name="locationId" value={location.id} />
                     <input type="hidden" name="title" value={title} />
-                    <Button type="submit">{t("launchNetwork")}</Button>
+                    <SubmitButton>{t("launchNetwork")}</SubmitButton>
                   </form>
                 </>
               )}

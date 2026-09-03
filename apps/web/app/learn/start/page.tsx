@@ -3,8 +3,8 @@ import { createClient } from "@/lib/supabase/server";
 import { getDisplayName } from "@/lib/profiles";
 import { submitOrganizationRequest } from "@/app/learn/start/actions";
 import { AutocompleteField } from "@/components/autocomplete-field";
-import { Button } from "@/components/ui/button";
 import { Field, Input, Label } from "@/components/ui/input";
+import { SubmitButton } from "@/components/ui/submit-button";
 
 // Free, self-serve path to a single class/language at a school - the
 // "sell a whole language department" flow stays the manual admin form
@@ -101,9 +101,9 @@ export default async function StartClassPage({
           hiddenName="parentPlaceId"
           placeholder="e.g. Chicago"
         />
-        <Button type="submit" className="self-start">
+        <SubmitButton className="self-start">
           Submit for approval
-        </Button>
+        </SubmitButton>
       </form>
     </div>
   );

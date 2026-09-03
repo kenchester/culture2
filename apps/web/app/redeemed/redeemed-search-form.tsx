@@ -1,6 +1,6 @@
 import { getTranslations } from "next-intl/server";
 import { AutocompleteField } from "@/components/autocomplete-field";
-import { Button } from "@/components/ui/button";
+import { SubmitButton } from "@/components/ui/submit-button";
 
 // Origin is fixed to Christian and hidden entirely - unlike faith's
 // FaithSearchForm, this subdomain doesn't let the visitor pick a religion
@@ -19,9 +19,9 @@ export async function RedeemedSearchForm({ religionId }: { religionId: number })
         queryName="locationQuery"
         placeholder={t("locationPlaceholder")}
       />
-      <Button type="submit" className="w-full">
+      <SubmitButton className="w-full">
         {t("submit")}
-      </Button>
+      </SubmitButton>
     </form>
   );
 }

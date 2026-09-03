@@ -5,8 +5,8 @@ import { getAvatarUrl, getDisplayName } from "@/lib/profiles";
 import { updateProfile } from "@/app/profile/actions";
 import { AvatarUpload } from "@/app/profile/[id]/avatar-upload";
 import { startConversation } from "@/app/messages/actions";
-import { Button } from "@/components/ui/button";
 import { Field, Input, Label, Textarea } from "@/components/ui/input";
+import { SubmitButton } from "@/components/ui/submit-button";
 
 export default async function ProfilePage({
   params,
@@ -63,7 +63,7 @@ export default async function ProfilePage({
       {user && !isOwnProfile && (
         <form action={startConversation}>
           <input type="hidden" name="otherUserId" value={profile.id} />
-          <Button type="submit">Message</Button>
+          <SubmitButton>Message</SubmitButton>
         </form>
       )}
 
@@ -103,7 +103,7 @@ export default async function ProfilePage({
                 defaultValue={profile.about_me ?? ""}
               />
             </Field>
-            <Button type="submit">Save</Button>
+            <SubmitButton>Save</SubmitButton>
           </form>
         </div>
       )}

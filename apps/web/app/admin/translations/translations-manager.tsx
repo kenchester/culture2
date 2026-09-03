@@ -8,8 +8,8 @@ import {
   type EntityTranslations,
   type TranslationRow,
 } from "@/app/admin/translations/actions";
-import { Button } from "@/components/ui/button";
 import { Field, Input, Label } from "@/components/ui/input";
+import { SubmitButton } from "@/components/ui/submit-button";
 
 const SOURCE_LABEL: Record<NonNullable<TranslationRow["source"]>, string> = {
   cldr: "Standard",
@@ -127,9 +127,9 @@ export function TranslationsManager({
             ))}
           </div>
 
-          <Button type="submit" className="self-start">
+          <SubmitButton className="self-start">
             Save
-          </Button>
+          </SubmitButton>
         </form>
       )}
     </div>

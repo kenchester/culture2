@@ -8,8 +8,8 @@ import {
 import { setNetworkPrompt } from "@/app/networks/actions";
 import { getLearnAccess } from "@/lib/organization-whitelist";
 import { getDisplayName } from "@/lib/profiles";
-import { Button } from "@/components/ui/button";
 import { Field, Input, Label, Textarea } from "@/components/ui/input";
+import { SubmitButton } from "@/components/ui/submit-button";
 
 type WhitelistRow = {
   id: number;
@@ -142,9 +142,9 @@ export default async function LearnAdminPage({
                   rows={2}
                 />
               </Field>
-              <Button type="submit" variant="secondary" className="self-start">
+              <SubmitButton variant="secondary" className="self-start">
                 Save prompt
-              </Button>
+              </SubmitButton>
             </form>
 
             <div>
@@ -199,9 +199,9 @@ export default async function LearnAdminPage({
                   ))}
                 </div>
               </fieldset>
-              <Button type="submit" className="self-start">
+              <SubmitButton className="self-start">
                 Whitelist
-              </Button>
+              </SubmitButton>
             </form>
           </div>
 
@@ -243,9 +243,9 @@ export default async function LearnAdminPage({
                   ))}
                 </div>
               </fieldset>
-              <Button type="submit" className="self-start">
+              <SubmitButton className="self-start">
                 Upload roster
-              </Button>
+              </SubmitButton>
             </form>
           </div>
 
@@ -276,9 +276,9 @@ export default async function LearnAdminPage({
                     </div>
                     <form action={removeWhitelistedMember}>
                       <input type="hidden" name="whitelistId" value={entry.id} />
-                      <Button type="submit" variant="ghost">
+                      <SubmitButton variant="ghost">
                         Remove
-                      </Button>
+                      </SubmitButton>
                     </form>
                   </div>
                   {isPending && (
@@ -290,9 +290,9 @@ export default async function LearnAdminPage({
                           {language.name}
                         </label>
                       ))}
-                      <Button type="submit" variant="secondary">
+                      <SubmitButton variant="secondary">
                         Assign
-                      </Button>
+                      </SubmitButton>
                     </form>
                   )}
                 </div>

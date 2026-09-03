@@ -3,8 +3,8 @@
 import { useState } from "react";
 import { postProductUpdate, sendOutreachEmail } from "@/app/admin/product-updates/actions";
 import { GREETINGS, OUTREACH_TEMPLATES, type OutreachKind } from "@/app/admin/product-updates/outreach-templates";
-import { Button } from "@/components/ui/button";
 import { Field, fieldClass, Input, Label, Textarea } from "@/components/ui/input";
+import { SubmitButton } from "@/components/ui/submit-button";
 
 type Audience = "site-wide" | OutreachKind;
 
@@ -124,9 +124,9 @@ export function UpdateForm() {
         </Field>
       )}
 
-      <Button type="submit" className="self-start">
+      <SubmitButton className="self-start">
         {isOutreach ? "Send Email" : "Publish Update"}
-      </Button>
+      </SubmitButton>
     </form>
   );
 }

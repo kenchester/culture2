@@ -18,6 +18,7 @@ import { Field, Input, Label } from "@/components/ui/input";
 import { FormError } from "@/components/ui/form-error";
 import { PasswordInput } from "@/components/ui/password-input";
 import { HiddenUsernameField } from "@/components/ui/hidden-username-field";
+import { SubmitButton } from "@/components/ui/submit-button";
 
 // One id for the single `error` state this form renders across all of its
 // steps - each step shows at most one error at a time, so the inputs on
@@ -368,9 +369,9 @@ export function OtpForm({
             hideLabel={t("password.hide")}
           />
         </Field>
-        <Button type="submit" className="w-full" disabled={isPending}>
+        <SubmitButton className="w-full" disabled={isPending}>
           {isPending ? t("password.signingIn") : t("password.submit")}
-        </Button>
+        </SubmitButton>
         <button
           type="button"
           onClick={() => {
@@ -443,9 +444,9 @@ export function OtpForm({
             />
           </Field>
         )}
-        <Button type="submit" className="w-full" disabled={isPending}>
+        <SubmitButton className="w-full" disabled={isPending}>
           {isPending ? t("code.verifying") : t("code.submit")}
-        </Button>
+        </SubmitButton>
         <button
           type="button"
           onClick={() => {
@@ -512,9 +513,9 @@ export function OtpForm({
         <Label htmlFor="name">{t("email.nameLabel")}</Label>
         <Input id="name" name="name" placeholder={t("email.namePlaceholder")} />
       </Field>
-      <Button type="submit" className="w-full" disabled={isPending}>
+      <SubmitButton className="w-full" disabled={isPending}>
         {isPending ? t("email.continuing") : t("email.submit")}
-      </Button>
+      </SubmitButton>
     </form>
   );
 }

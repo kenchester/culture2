@@ -5,6 +5,7 @@ import { AutocompleteField, type LanguageOption } from "@/components/autocomplet
 import { getLanguageDetails } from "@/app/admin/places/actions";
 import { Button } from "@/components/ui/button";
 import { Field, Input, Label } from "@/components/ui/input";
+import { SubmitButton } from "@/components/ui/submit-button";
 
 // Shared by the add and edit forms so the two can't drift - the help text
 // is the only place an admin learns what these fields are for, and it
@@ -127,9 +128,9 @@ export function LanguageManager({
             isSigned={newIsSigned}
             onIsSignedChange={setNewIsSigned}
           />
-          <Button type="submit" className="self-start">
+          <SubmitButton className="self-start">
             Add
-          </Button>
+          </SubmitButton>
         </form>
       </div>
 
@@ -162,9 +163,9 @@ export function LanguageManager({
               onIsSignedChange={setEditIsSigned}
             />
             <div className="flex gap-2">
-              <Button type="submit" disabled={loadingDetails}>
+              <SubmitButton disabled={loadingDetails}>
                 {loadingDetails ? "Loading…" : "Save"}
-              </Button>
+              </SubmitButton>
               <Button type="button" variant="secondary" onClick={() => setEditing(null)}>
                 Cancel
               </Button>

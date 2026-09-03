@@ -15,9 +15,9 @@ import { DemoNetworkFeed, type RealDemoPost } from "@/app/networks/[id]/demo-net
 import { InviteFriendsBox } from "@/app/networks/[id]/invite-friends-box";
 import { PostComposer } from "@/app/networks/[id]/post-composer";
 import { PostingIndicator } from "@/components/posting-indicator";
-import { Button } from "@/components/ui/button";
 import { Field, Label, Textarea } from "@/components/ui/input";
 import { FormError } from "@/components/ui/form-error";
+import { SubmitButton } from "@/components/ui/submit-button";
 
 // Below this, a network's activity is too thin to be worth suggesting -
 // checked live against real data (32 networks total, median member count 1)
@@ -380,9 +380,9 @@ export default async function NetworkPage({
                         rows={2}
                       />
                     </Field>
-                    <Button type="submit" variant="secondary" className="self-start">
+                    <SubmitButton variant="secondary" className="self-start">
                       {t("weeklyPromptSave")}
-                    </Button>
+                    </SubmitButton>
                   </form>
                 )}
               </div>
@@ -392,7 +392,7 @@ export default async function NetworkPage({
               <form action={isMember ? leaveNetwork : joinNetwork}>
                 <input type="hidden" name="networkId" value={network.id} />
                 {isEmbedded && <input type="hidden" name="embed" value="1" />}
-                <Button type="submit">{isMember ? t("leaveNetwork") : t("joinNetwork")}</Button>
+                <SubmitButton>{isMember ? t("leaveNetwork") : t("joinNetwork")}</SubmitButton>
               </form>
             ) : (
               <Link href={signInHref} className="text-sm font-medium text-primary hover:underline">

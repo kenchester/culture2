@@ -9,6 +9,7 @@ import {
 } from "@/components/autocomplete-field";
 import { Button } from "@/components/ui/button";
 import { Field, Input, Label } from "@/components/ui/input";
+import { SubmitButton } from "@/components/ui/submit-button";
 
 export function AdminPartnerForm({
   action,
@@ -274,9 +275,9 @@ export function AdminPartnerForm({
       </div>
 
       <div className="flex gap-3">
-        <Button type="submit" className="self-start">
+        <SubmitButton className="self-start">
           Create partner
-        </Button>
+        </SubmitButton>
         <Button
           type="button"
           variant="secondary"

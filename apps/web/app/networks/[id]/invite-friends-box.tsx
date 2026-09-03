@@ -1,7 +1,7 @@
 import { getTranslations } from "next-intl/server";
 import { sendNetworkInvites } from "@/app/networks/actions";
-import { Button } from "@/components/ui/button";
 import { Field, Label, Textarea } from "@/components/ui/input";
+import { SubmitButton } from "@/components/ui/submit-button";
 
 // Plain server-rendered form - no client interactivity needed, so this
 // stays a native form post like the rest of the app's simple forms
@@ -40,9 +40,9 @@ export async function InviteFriendsBox({
             required
           />
         </Field>
-        <Button type="submit" className="self-start">
+        <SubmitButton className="self-start">
           {t("submit")}
-        </Button>
+        </SubmitButton>
       </form>
     </div>
   );

@@ -1,7 +1,7 @@
 import { getTranslations } from "next-intl/server";
 import { createClient } from "@/lib/supabase/server";
-import { Button } from "@/components/ui/button";
 import { Field, Label, fieldClass } from "@/components/ui/input";
+import { SubmitButton } from "@/components/ui/submit-button";
 
 // The main site's search lets you type any language or place - this one
 // doesn't. Acme's origin is locked to exactly the 4 languages it offers (a
@@ -48,9 +48,9 @@ export async function LearnSearchForm({ organizationId }: { organizationId: numb
           ))}
         </select>
       </Field>
-      <Button type="submit" className="w-full">
+      <SubmitButton className="w-full">
         {t("submit")}
-      </Button>
+      </SubmitButton>
     </form>
   );
 }

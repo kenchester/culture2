@@ -5,6 +5,7 @@ import Link from "next/link";
 import { AutocompleteField } from "@/components/autocomplete-field";
 import { Button } from "@/components/ui/button";
 import { Field, Input, Label } from "@/components/ui/input";
+import { SubmitButton } from "@/components/ui/submit-button";
 
 type OrgRow = {
   id: number;
@@ -56,9 +57,9 @@ function DeleteOrgForm({
         </Label>
         <Input id={`confirm-slug-${org.id}`} name="confirmSlug" placeholder={org.slug} required />
       </Field>
-      <Button type="submit" variant="ghost">
+      <SubmitButton variant="ghost">
         Confirm delete
-      </Button>
+      </SubmitButton>
       <Button type="button" variant="ghost" onClick={() => setConfirming(false)}>
         Cancel
       </Button>
@@ -115,13 +116,13 @@ export function OrganizationManager({
               <div className="flex gap-2 pt-2">
                 <form action={approveOrganizationRequest}>
                   <input type="hidden" name="requestId" value={request.id} />
-                  <Button type="submit">Approve</Button>
+                  <SubmitButton>Approve</SubmitButton>
                 </form>
                 <form action={rejectOrganizationRequest}>
                   <input type="hidden" name="requestId" value={request.id} />
-                  <Button type="submit" variant="ghost">
+                  <SubmitButton variant="ghost">
                     Reject
-                  </Button>
+                  </SubmitButton>
                 </form>
               </div>
             </div>
@@ -157,9 +158,9 @@ export function OrganizationManager({
             hiddenName="parentPlaceId"
             placeholder="e.g. Chicago"
           />
-          <Button type="submit" className="self-start">
+          <SubmitButton className="self-start">
             Create organization
-          </Button>
+          </SubmitButton>
         </form>
       </div>
 
@@ -215,9 +216,9 @@ export function OrganizationManager({
                   kind="language"
                   hiddenName="languageId"
                 />
-                <Button type="submit" variant="secondary" className="self-start">
+                <SubmitButton variant="secondary" className="self-start">
                   Add language
-                </Button>
+                </SubmitButton>
               </form>
 
               {org.organization_admins.length === 0 && (
@@ -227,9 +228,9 @@ export function OrganizationManager({
                     <Label htmlFor={`invite-email-${org.id}`}>Invite first admin (email)</Label>
                     <Input id={`invite-email-${org.id}`} name="email" type="email" required />
                   </Field>
-                  <Button type="submit" variant="secondary" className="self-start">
+                  <SubmitButton variant="secondary" className="self-start">
                     Send invite
-                  </Button>
+                  </SubmitButton>
                 </form>
               )}
             </div>
@@ -244,9 +245,9 @@ export function OrganizationManager({
                 <input type="checkbox" name="domainSigninEnabled" defaultChecked={org.domain_signin_enabled} />
                 Recognize matching-domain sign-ins
               </label>
-              <Button type="submit" variant="secondary">
+              <SubmitButton variant="secondary">
                 Save
-              </Button>
+              </SubmitButton>
             </form>
 
             {/* Manage networks sits opposite the destructive org-level

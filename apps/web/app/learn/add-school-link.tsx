@@ -5,7 +5,7 @@ import Link from "next/link";
 import { useTranslations } from "next-intl";
 import { requestAddSchoolCode } from "@/app/learn/actions";
 import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
+import { SubmitButton } from "@/components/ui/submit-button";
 
 // A quiet escape hatch, not a second GetStartedBanner/DomainCheckBanner -
 // only rendered on a real (non-example) school's page, for someone who
@@ -66,7 +66,7 @@ export function AddSchoolLink({
             aria-label={t("addSchoolLink")}
             required
           />
-          <Button type="submit">{t("addSchoolSubmit")}</Button>
+          <SubmitButton>{t("addSchoolSubmit")}</SubmitButton>
         </form>
         {noMatchDomain && (
           <div className="flex flex-col gap-2 rounded-md bg-success-bg px-3 py-2 text-sm text-body">

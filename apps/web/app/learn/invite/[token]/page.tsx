@@ -1,6 +1,6 @@
 import { createAdminClient } from "@/lib/supabase/admin";
 import { acceptOrganizationInvite } from "@/app/learn/invite/[token]/actions";
-import { Button } from "@/components/ui/button";
+import { SubmitButton } from "@/components/ui/submit-button";
 
 export default async function OrganizationInvitePage({
   params,
@@ -42,9 +42,9 @@ export default async function OrganizationInvitePage({
             </p>
             <form action={acceptOrganizationInvite}>
               <input type="hidden" name="token" value={token} />
-              <Button type="submit" className="w-full">
+              <SubmitButton className="w-full">
                 Accept invite
-              </Button>
+              </SubmitButton>
             </form>
           </>
         )}

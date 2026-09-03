@@ -3,7 +3,7 @@
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { launchNetworkForEmbed } from "@/app/embed/[partnerSlug]/actions";
-import { Button } from "@/components/ui/button";
+import { SubmitButton } from "@/components/ui/submit-button";
 
 export function EmbedLaunchForm({
   originKind,
@@ -51,9 +51,9 @@ export function EmbedLaunchForm({
       {error && (
         <p className="rounded-md bg-error-bg px-3 py-2 text-sm text-error">{error}</p>
       )}
-      <Button type="submit" disabled={pending}>
+      <SubmitButton disabled={pending}>
         Launch this network
-      </Button>
+      </SubmitButton>
     </form>
   );
 }

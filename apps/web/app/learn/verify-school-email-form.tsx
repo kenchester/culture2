@@ -1,7 +1,7 @@
 import { getTranslations } from "next-intl/server";
 import { requestEmailVerificationCode, verifyEmailCode } from "@/app/learn/[slug]/actions";
-import { Button } from "@/components/ui/button";
 import { Field, Input, Label } from "@/components/ui/input";
+import { SubmitButton } from "@/components/ui/submit-button";
 
 // Shown instead of GetStartedBanner when someone is already signed in -
 // under their main CultureMesh account, or one tied to a school they've
@@ -49,7 +49,7 @@ export async function VerifySchoolEmailForm({
               <Input id="verify-code" name="code" inputMode="numeric" autoComplete="one-time-code" placeholder="123456" required />
             </Field>
           </div>
-          <Button type="submit">{t("verifyCodeSubmit")}</Button>
+          <SubmitButton>{t("verifyCodeSubmit")}</SubmitButton>
         </form>
       ) : (
         <form action={requestEmailVerificationCode} className="flex flex-col gap-2 sm:flex-row sm:items-end">
@@ -66,7 +66,7 @@ export async function VerifySchoolEmailForm({
               />
             </Field>
           </div>
-          <Button type="submit">{t("verifyEmailSubmit")}</Button>
+          <SubmitButton>{t("verifyEmailSubmit")}</SubmitButton>
         </form>
       )}
     </div>

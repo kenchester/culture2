@@ -2,10 +2,10 @@ import { redirect } from "next/navigation";
 import { getTranslations } from "next-intl/server";
 import { createClient } from "@/lib/supabase/server";
 import { updateNotificationPrefs, updatePassword } from "@/app/settings/actions";
-import { Button } from "@/components/ui/button";
 import { Field, Label } from "@/components/ui/input";
 import { PasswordInput } from "@/components/ui/password-input";
 import { HiddenUsernameField } from "@/components/ui/hidden-username-field";
+import { SubmitButton } from "@/components/ui/submit-button";
 
 export default async function SettingsPage({
   searchParams,
@@ -95,9 +95,9 @@ export default async function SettingsPage({
             />
             {t("notifications.productUpdates")}
           </label>
-          <Button type="submit" className="w-full">
+          <SubmitButton className="w-full">
             {t("notifications.save")}
-          </Button>
+          </SubmitButton>
         </form>
       </div>
       <div className="flex flex-col gap-4 rounded-lg border border-border bg-surface p-6 shadow-sm sm:p-8">
@@ -124,9 +124,9 @@ export default async function SettingsPage({
               hideLabel={tAuth("password.hide")}
             />
           </Field>
-          <Button type="submit" className="w-full">
+          <SubmitButton className="w-full">
             {hasPassword ? t("password.updateSubmit") : t("password.setSubmit")}
-          </Button>
+          </SubmitButton>
         </form>
       </div>
     </div>

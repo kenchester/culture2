@@ -4,6 +4,7 @@ import { useState } from "react";
 import { AutocompleteField } from "@/components/autocomplete-field";
 import { Button } from "@/components/ui/button";
 import { Field, Input, Label } from "@/components/ui/input";
+import { SubmitButton } from "@/components/ui/submit-button";
 
 type Religion = { id: number; name: string; aliases: string[] };
 
@@ -37,7 +38,7 @@ export function ReligionManager({
               placeholder="e.g. Zoroastrianism"
             />
           </Field>
-          <Button type="submit">Add</Button>
+          <SubmitButton>Add</SubmitButton>
         </form>
       </div>
 
@@ -76,7 +77,7 @@ export function ReligionManager({
                 onChange={(e) => setEditAliases(e.target.value)}
               />
             </Field>
-            <Button type="submit">Save</Button>
+            <SubmitButton>Save</SubmitButton>
             <Button type="button" variant="secondary" onClick={() => setEditing(null)}>
               Cancel
             </Button>

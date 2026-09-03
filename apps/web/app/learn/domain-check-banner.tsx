@@ -2,7 +2,7 @@ import Link from "next/link";
 import { getTranslations } from "next-intl/server";
 import { checkSchoolDomain } from "@/app/learn/actions";
 import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
+import { SubmitButton } from "@/components/ui/submit-button";
 
 // No client state needed - a plain server-rendered form posting to a
 // server action, same shape as FaithSearchForm/RedeemedSearchForm. Renders
@@ -36,7 +36,7 @@ export async function DomainCheckBanner({
           className="flex-1"
           aria-label={t("bannerHeading")}
         />
-        <Button type="submit">{t("bannerSubmit")}</Button>
+        <SubmitButton>{t("bannerSubmit")}</SubmitButton>
       </form>
       {domainMatch && (
         <p className="rounded-md bg-success-bg px-3 py-2 text-sm text-success">

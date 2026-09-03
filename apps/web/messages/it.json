@@ -309,7 +309,8 @@
     "copyright": "© {year} CultureMesh LLC. Tutti i diritti riservati."
   },
   "common": {
-    "legalDisclaimer": "Questa pagina è stata tradotta automaticamente. La versione inglese è la versione legalmente vincolante."
+    "legalDisclaimer": "Questa pagina è stata tradotta automaticamente. La versione inglese è la versione legalmente vincolante.",
+    "loading": "Caricamento..."
   },
   "terms": {
     "title": "Termini e Condizioni",

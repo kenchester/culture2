@@ -4,6 +4,7 @@ import { useState } from "react";
 import { AutocompleteField, type PlaceOption } from "@/components/autocomplete-field";
 import { Button } from "@/components/ui/button";
 import { Field, Input, Label } from "@/components/ui/input";
+import { SubmitButton } from "@/components/ui/submit-button";
 
 type PlaceType = "country" | "region" | "city";
 
@@ -112,9 +113,9 @@ export function PlaceManager({
               onParentTypeChange={setNewCityParentType}
             />
           )}
-          <Button type="submit" className="self-start">
+          <SubmitButton className="self-start">
             Add
-          </Button>
+          </SubmitButton>
         </form>
       </div>
 
@@ -176,9 +177,9 @@ export function PlaceManager({
               />
             )}
             <div className="flex gap-2">
-              <Button type="submit" className="self-start">
+              <SubmitButton className="self-start">
                 Save
-              </Button>
+              </SubmitButton>
               <Button type="button" variant="secondary" onClick={() => setEditing(null)}>
                 Cancel
               </Button>

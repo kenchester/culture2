@@ -309,7 +309,8 @@
     "copyright": "© {year} CultureMesh有限责任公司。版权所有。"
   },
   "common": {
-    "legalDisclaimer": "本页已自动翻译。英文版是具有法律约束力的版本。"
+    "legalDisclaimer": "本页已自动翻译。英文版是具有法律约束力的版本。",
+    "loading": "加载中......"
   },
   "terms": {
     "title": "条款与条件",

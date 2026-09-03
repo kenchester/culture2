@@ -3,9 +3,9 @@
 import { useState } from "react";
 import { useTranslations } from "next-intl";
 import { RecordMedia } from "@/app/networks/[id]/record-media";
-import { Button } from "@/components/ui/button";
 import { Field, Label, Textarea } from "@/components/ui/input";
 import { SignedSummaryFields } from "@/app/networks/[id]/signed-summary-fields";
+import { SubmitButton } from "@/components/ui/submit-button";
 
 type Mode = "text" | "audio" | "video";
 
@@ -81,9 +81,9 @@ export function PostComposer({
               onChange={(e) => setBodyValue(e.target.value)}
             />
           </Field>
-          <Button type="submit" disabled={bodyValue.trim().length === 0} className="self-start">
+          <SubmitButton disabled={bodyValue.trim().length === 0} className="self-start">
             {submitLabel}
-          </Button>
+          </SubmitButton>
         </>
       ) : (
         // RecordMedia's own "Post this recording" button submits the form

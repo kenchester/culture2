@@ -309,7 +309,8 @@
     "copyright": "© {year} CultureMesh LLC. Alle Rechte vorbehalten."
   },
   "common": {
-    "legalDisclaimer": "Diese Seite wurde automatisch übersetzt. Die englische Version ist die rechtlich bindende Version."
+    "legalDisclaimer": "Diese Seite wurde automatisch übersetzt. Die englische Version ist die rechtlich bindende Version.",
+    "loading": "Lädt..."
   },
   "terms": {
     "title": "Geschäfts- und Kaufbedingungen",

@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { AutocompleteField } from "@/components/autocomplete-field";
-import { Button } from "@/components/ui/button";
+import { SubmitButton } from "@/components/ui/submit-button";
 
 // Used only for a "global origin" partner - one without a single locked
 // origin, so the visitor has to pick their own, same shape as the main
@@ -60,7 +60,7 @@ export function EmbedSearchForm({
         queryName="locationQuery"
         searchUrl={`/api/embed/${partnerSlug}/places/search`}
       />
-      <Button type="submit">Search</Button>
+      <SubmitButton>Search</SubmitButton>
     </form>
   );
 }

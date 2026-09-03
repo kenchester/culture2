@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { useTranslations } from "next-intl";
 import { AutocompleteField } from "@/components/autocomplete-field";
-import { Button } from "@/components/ui/button";
+import { SubmitButton } from "@/components/ui/submit-button";
 
 export function SearchForm() {
   const t = useTranslations("search");
@@ -51,9 +51,9 @@ export function SearchForm() {
         queryName="locationQuery"
         placeholder={t("locationPlaceholder")}
       />
-      <Button type="submit" className="w-full">
+      <SubmitButton className="w-full">
         {t("submit")}
-      </Button>
+      </SubmitButton>
     </form>
   );
 }

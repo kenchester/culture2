@@ -2,8 +2,8 @@
 
 import { useEffect, useRef, useState } from "react";
 import { createClient } from "@/lib/supabase/client";
-import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { SubmitButton } from "@/components/ui/submit-button";
 
 type Message = {
   id: number;
@@ -97,9 +97,9 @@ export function MessageThread({
           aria-label="Message"
           className="flex-1"
         />
-        <Button type="submit" disabled={sending}>
+        <SubmitButton disabled={sending}>
           Send
-        </Button>
+        </SubmitButton>
       </form>
     </div>
   );

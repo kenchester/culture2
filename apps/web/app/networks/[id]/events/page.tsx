@@ -4,10 +4,10 @@ import { getTranslations } from "next-intl/server";
 import { createClient } from "@/lib/supabase/server";
 import { createEvent } from "@/app/networks/[id]/events/actions";
 import { EventDateField } from "@/app/networks/[id]/events/event-date-field";
-import { Button } from "@/components/ui/button";
 import { Field, Input, Label, Textarea } from "@/components/ui/input";
 import { LocalDateTime } from "@/components/local-datetime";
 import { demoEventTimestamp } from "@/lib/demo-network";
+import { SubmitButton } from "@/components/ui/submit-button";
 
 export default async function EventsPage({
   params,
@@ -84,9 +84,9 @@ export default async function EventsPage({
             <Label htmlFor="event-location">{t("locationLabel")}</Label>
             <Input id="event-location" name="location" />
           </Field>
-          <Button type="submit" className="self-start">
+          <SubmitButton className="self-start">
             {t("submit")}
-          </Button>
+          </SubmitButton>
         </form>
       )}
 

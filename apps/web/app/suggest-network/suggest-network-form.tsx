@@ -3,8 +3,8 @@
 import { useState } from "react";
 import { useTranslations } from "next-intl";
 import { suggestNetwork } from "@/app/suggest-network/actions";
-import { Button } from "@/components/ui/button";
 import { Field, Input, Label } from "@/components/ui/input";
+import { SubmitButton } from "@/components/ui/submit-button";
 
 const PLACE_TYPES = ["city", "region", "country"] as const;
 
@@ -59,9 +59,9 @@ export function SuggestNetworkForm() {
           </div>
         </Field>
       )}
-      <Button type="submit" className="w-full">
+      <SubmitButton className="w-full">
         {t("submit")}
-      </Button>
+      </SubmitButton>
     </form>
   );
 }

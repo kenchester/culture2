@@ -309,7 +309,8 @@
     "copyright": "© {year} 컬처메시 LLC. 판권 소유."
   },
   "common": {
-    "legalDisclaimer": "이 페이지는 자동으로 번역되었습니다. 영어 판이 법적 구속력이 있는 판입니다."
+    "legalDisclaimer": "이 페이지는 자동으로 번역되었습니다. 영어 판이 법적 구속력이 있는 판입니다.",
+    "loading": "로딩 중..."
   },
   "terms": {
     "title": "이용 약관",

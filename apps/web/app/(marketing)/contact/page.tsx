@@ -1,9 +1,9 @@
 import { getTranslations } from "next-intl/server";
 import { sendContactMessage } from "@/app/(marketing)/contact/actions";
 import { SubjectField } from "@/app/(marketing)/contact/subject-field";
-import { Button } from "@/components/ui/button";
 import { Field, Input, Label, Textarea } from "@/components/ui/input";
 import { FormError, FormSuccess } from "@/components/ui/form-error";
+import { SubmitButton } from "@/components/ui/submit-button";
 
 // Pulled out of the component body: React's purity lint rule flags a
 // direct Date.now() call inside a component's render, but this page is
@@ -74,9 +74,9 @@ export default async function ContactPage({
           <Label htmlFor="message">{t("messageLabel")}</Label>
           <Textarea id="message" name="message" required rows={6} defaultValue={message ?? ""} />
         </Field>
-        <Button type="submit" className="self-start">
+        <SubmitButton className="self-start">
           {t("submit")}
-        </Button>
+        </SubmitButton>
       </form>
     </div>
   );
