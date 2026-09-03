@@ -43,3 +43,8 @@ supabase/.temp
 # belongs in git, regardless of how the scripts in scripts/migration/ are
 # invoked
 /scripts/migration/output/
+
+# Claude Code local state - settings.local.json is a per-machine tool
+# permission allowlist, scheduled_tasks.lock is a runtime PID lock.
+# Neither is project code and neither is portable between machines.
+.claude/
