@@ -150,11 +150,16 @@ export async function createPost(formData: FormData) {
   // Skipped entirely for signed languages: there's no speech in a signed
   // video for Whisper to find, and sign recognition isn't a solved problem
   // at any price. Those posts use the optional written summary instead.
-  let detectedLanguage: string | null = null;
   if (mediaPath && inserted) {
     const networkLanguage = await getNetworkLanguage(supabase, Number(networkId));
     if (!networkLanguage?.is_signed) {
-      detectedLanguage = await transcribeStoredMedia(supabase, "posts", inserted.id, mediaPath);
+      await transcribeStoredMedia(
+        supabase,
+        "posts",
+        inserted.id,
+        mediaPath,
+        networkLanguage?.iso_code,
+      );
     }
   }
 
@@ -189,33 +194,6 @@ export async function createPost(formData: FormData) {
   }
 
   revalidatePath(`/networks/${networkId}`);
-
-  // Advisory, never a block. Deliberately post-hoc: the post is already
-  // live by this point and stays live regardless. Speech isn't held to the
-  // same bar as text here because the errors compound - a purity check on
-  // a media post would be dictionary-checking Whisper's *guess* at what
-  // someone said, so a beginner with a strong accent would get rejected
-  // for the transcriber's mistakes rather than their own. Speaking a
-  // language badly is the thing being practiced, not a violation.
-  // Gated on orgLanguage, i.e. organization_languages membership, exactly
-  // like the text purity check above - so both the block (text) and the
-  // advisory (speech) apply only inside a school's language program, never
-  // on the open site. A public network is just a community; an adult
-  // there may reasonably post in whatever language they like, and being
-  // told their own speech "might not be in Mandarin" would be both wrong
-  // and unwelcome. Transcription itself still runs everywhere, since the
-  // accessibility requirement isn't scoped to schools.
-  if (
-    detectedLanguage &&
-    orgLanguage?.iso_code &&
-    detectedLanguage !== orgLanguage.iso_code
-  ) {
-    redirect(
-      `/networks/${networkId}?langNotice=${encodeURIComponent(
-        `That recording sounded like it might not be in ${orgLanguage.name}. It's posted either way - just a heads up.`,
-      )}${embedSuffix}`,
-    );
-  }
 }
 
 // Read-only sibling of the purity check embedded in createPost above - no

@@ -47,6 +47,9 @@ async function main() {
   const { data: signedLanguages } = await admin.from("languages").select("id").eq("is_signed", true);
   const signedIds = new Set((signedLanguages ?? []).map((l) => l.id));
   const { data: networks } = await admin.from("networks").select("id, language_id");
+  const { data: allLanguages } = await admin.from("languages").select("id, iso_code");
+  const isoByLanguageId = new Map((allLanguages ?? []).map((l) => [l.id, l.iso_code as string | null]));
+  const languageIdByNetwork = new Map((networks ?? []).map((n) => [n.id, n.language_id as number | null]));
   const signedNetworkIds = new Set(
     (networks ?? []).filter((n) => n.language_id && signedIds.has(n.language_id)).map((n) => n.id),
   );
@@ -90,11 +93,18 @@ async function main() {
         continue;
       }
 
+      // Same language hint the live path passes - Whisper's auto-detection
+      // is unreliable on accented L2 speech (it labelled two genuinely
+      // Mandarin clips "en"), and the hint also cuts latency.
+      const langId = networkId ? languageIdByNetwork.get(networkId) : null;
+      const isoHint = langId ? isoByLanguageId.get(langId) : null;
+
       const form = new FormData();
       form.set("file", blob, mediaPath.split("/").pop() ?? "recording.webm");
       form.set("model", MODEL);
       form.set("response_format", "verbose_json");
       form.set("timestamp_granularities[]", "segment");
+      if (isoHint) form.set("language", isoHint);
 
       const res = await fetch(GROQ_URL, {
         method: "POST",
@@ -130,7 +140,7 @@ async function main() {
         .from(table)
         .update({
           transcript: text,
-          transcript_language: normalizeLanguage(data.language) || null,
+          transcript_language: isoHint || normalizeLanguage(data.language) || null,
           transcript_segments: segments.length > 0 ? segments : null,
         })
         .eq("id", row.id as number);

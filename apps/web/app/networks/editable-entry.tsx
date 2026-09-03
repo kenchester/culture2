@@ -294,10 +294,19 @@ export function EditableEntry({
           carry an author-written summary, which is really a translation
           into whichever written language they chose - hence its own lang. */}
       {media && transcript && (
-        <TranscriptDisclosure transcript={transcript} language={transcriptLanguage} />
+        <TranscriptDisclosure
+          kind={kind}
+          itemId={itemId}
+          field="transcript"
+          transcript={transcript}
+          language={transcriptLanguage}
+        />
       )}
       {media && summary?.text && (
         <TranscriptDisclosure
+          kind={kind}
+          itemId={itemId}
+          field="summary"
           transcript={summary.text}
           language={summary.language}
           label={{ show: t("summaryLabel"), hide: t("hideTranscript") }}

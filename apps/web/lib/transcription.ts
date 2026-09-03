@@ -59,12 +59,16 @@ function normalizeLanguage(raw: string | undefined): string {
  * ogg/opus and would have required ffmpeg infrastructure this stack
  * doesn't have.
  *
- * Deliberately sends NO `language` parameter. Passing one improves
- * accuracy and latency, but it also tells Whisper what to assume, which
- * destroys detection as an independent signal. We want the honest detected
- * language so the soft "this sounded like English" advisory means
- * something, and so an off-language post transcribes as what was actually
- * said rather than as target-language-shaped nonsense.
+ * Sends the network's language as a hint when we know it. An earlier
+ * version deliberately omitted it, to keep Whisper's detected language an
+ * independent signal for a soft "this sounded like English" advisory.
+ * Real learner speech killed that idea: two genuinely Mandarin videos from
+ * a second-language speaker were both detected as "en" (the transcripts
+ * were correctly in Chinese characters - only the language label was
+ * wrong), so the advisory fired on 100% of real posts. Detection is not
+ * trustworthy for exactly the accented L2 speech this product exists to
+ * host, so the advisory is gone and the hint - which also cuts latency -
+ * is passed instead.
  *
  * Returns null on any failure. Transcription is strictly best-effort:
  * `transcript` is nullable by design and a failed call must never turn a
@@ -73,6 +77,7 @@ function normalizeLanguage(raw: string | undefined): string {
 export async function transcribeMedia(
   blob: Blob,
   fileName: string,
+  languageHint?: string | null,
 ): Promise<TranscriptionResult | null> {
   for (let attempt = 0; attempt < 2; attempt++) {
     try {
@@ -81,6 +86,9 @@ export async function transcribeMedia(
       form.set("model", MODEL);
       form.set("response_format", "verbose_json");
       form.set("timestamp_granularities[]", "segment");
+      if (languageHint) {
+        form.set("language", languageHint);
+      }
 
       const res = await fetch(GROQ_TRANSCRIPTION_URL, {
         method: "POST",
@@ -159,6 +167,7 @@ export async function transcribeStoredMedia(
   table: "posts" | "post_replies",
   rowId: number,
   mediaPath: string,
+  languageHint?: string | null,
 ): Promise<string | null> {
   try {
     const { data: blob, error } = await supabase.storage.from("post-media").download(mediaPath);
@@ -170,7 +179,7 @@ export async function transcribeStoredMedia(
     // media_path already carries the right one (webm on Chrome/Firefox,
     // mp4/m4a on Safari - see RecordMedia's extensionFor).
     const fileName = mediaPath.split("/").pop() ?? "recording.webm";
-    const result = await transcribeMedia(blob, fileName);
+    const result = await transcribeMedia(blob, fileName, languageHint);
     if (!result) {
       return null;
     }
@@ -179,7 +188,11 @@ export async function transcribeStoredMedia(
       .from(table)
       .update({
         transcript: result.text,
-        transcript_language: result.language || null,
+        // With a hint passed, Whisper's returned label is just an echo of
+        // it, so prefer the code we actually know. Only fall back to
+        // detection for networks with no language of their own (a
+        // place-based network like "People from India in Michigan").
+        transcript_language: languageHint || result.language || null,
         transcript_segments: result.segments.length > 0 ? result.segments : null,
       })
       .eq("id", rowId);

@@ -14,9 +14,10 @@ import { EditableEntry } from "@/app/networks/editable-entry";
 import { DemoNetworkFeed, type RealDemoPost } from "@/app/networks/[id]/demo-network-feed";
 import { InviteFriendsBox } from "@/app/networks/[id]/invite-friends-box";
 import { PostComposer } from "@/app/networks/[id]/post-composer";
+import { PostingIndicator } from "@/components/posting-indicator";
 import { Button } from "@/components/ui/button";
 import { Field, Label, Textarea } from "@/components/ui/input";
-import { FormError, FormSuccess } from "@/components/ui/form-error";
+import { FormError } from "@/components/ui/form-error";
 
 // Below this, a network's activity is too thin to be worth suggesting -
 // checked live against real data (32 networks total, median member count 1)
@@ -94,11 +95,10 @@ export default async function NetworkPage({
     embed?: string;
     invited?: string;
     inviteError?: string;
-    langNotice?: string;
   }>;
 }) {
   const { id } = await params;
-  const { error, embed, invited, inviteError, langNotice } = await searchParams;
+  const { error, embed, invited, inviteError } = await searchParams;
   const isEmbedded = embed === "1";
   const supabase = await createClient();
   const t = await getTranslations("network");
@@ -410,9 +410,6 @@ export default async function NetworkPage({
                   {error && (
                     <FormError>{error}</FormError>
                   )}
-                  {/* Advisory only - the post is already live. See the note
-                      in createPost on why speech is never blocked. */}
-                  {langNotice && <FormSuccess>{langNotice}</FormSuccess>}
                   <PostComposer
                     idPrefix="post"
                     bodyLabel={t("postLabel")}
@@ -421,6 +418,7 @@ export default async function NetworkPage({
                     isSignedLanguage={isSignedLanguage}
                     languages={summaryLanguages ?? []}
                   />
+                  <PostingIndicator />
                 </form>
               )}
 

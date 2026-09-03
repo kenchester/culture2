@@ -154,10 +154,19 @@ export function DemoEntry({
           uploaded or transcribed for them - so this only ever renders for
           the network's real seeded recordings. */}
       {media && transcript && (
-        <TranscriptDisclosure transcript={transcript} language={transcriptLanguage} />
+        <TranscriptDisclosure
+          kind={kind}
+          itemId={itemId}
+          field="transcript"
+          transcript={transcript}
+          language={transcriptLanguage}
+        />
       )}
       {media && summary?.text && (
         <TranscriptDisclosure
+          kind={kind}
+          itemId={itemId}
+          field="summary"
           transcript={summary.text}
           language={summary.language}
           label={{ show: t("summaryLabel"), hide: t("hideTranscript") }}

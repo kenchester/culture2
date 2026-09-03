@@ -242,7 +242,8 @@
     "summaryLabel": "Resumen",
     "addSummary": "Añadir un resumen escrito",
     "addSummaryHelp": "Un vídeo firmado no se puede transcribir automáticamente. Si quieres, añade un breve resumen escrito para que quienes no firmen puedan seguir.",
-    "summaryLanguageLabel": "Lenguaje de tu resumen"
+    "summaryLanguageLabel": "Lenguaje de tu resumen",
+    "processingRecording": "Subir tu grabación y escribir la transcripción..."
   },
   "suggestNetwork": {
     "heading": "Sugiere una red",

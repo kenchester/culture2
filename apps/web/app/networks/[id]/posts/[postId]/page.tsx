@@ -10,17 +10,18 @@ import { createReply } from "./actions";
 import { EditableEntry } from "@/app/networks/editable-entry";
 import { DemoReplyThread, type RealDemoReply } from "@/app/networks/[id]/posts/[postId]/demo-reply-thread";
 import { PostComposer } from "@/app/networks/[id]/post-composer";
-import { FormError, FormSuccess } from "@/components/ui/form-error";
+import { PostingIndicator } from "@/components/posting-indicator";
+import { FormError } from "@/components/ui/form-error";
 
 export default async function PostPage({
   params,
   searchParams,
 }: {
   params: Promise<{ id: string; postId: string }>;
-  searchParams: Promise<{ error?: string; embed?: string; langNotice?: string }>;
+  searchParams: Promise<{ error?: string; embed?: string }>;
 }) {
   const { id, postId } = await params;
-  const { error, embed, langNotice } = await searchParams;
+  const { error, embed } = await searchParams;
   const isEmbedded = embed === "1";
   const embedSuffix = isEmbedded ? "?embed=1" : "";
   const supabase = await createClient();
@@ -270,7 +271,6 @@ export default async function PostPage({
               {error && (
                 <FormError>{error}</FormError>
               )}
-              {langNotice && <FormSuccess>{langNotice}</FormSuccess>}
               <PostComposer
                 idPrefix="reply"
                 bodyLabel={t("replyLabel")}
@@ -279,6 +279,7 @@ export default async function PostPage({
                 isSignedLanguage={isSignedLanguage}
                 languages={summaryLanguages ?? []}
               />
+              <PostingIndicator />
             </form>
           ) : (
             <Link href={signInHref} className="text-sm font-medium text-primary hover:underline">

@@ -242,7 +242,8 @@
     "summaryLabel": "Résumé",
     "addSummary": "Ajoutez un résumé écrit",
     "addSummaryHelp": "Une vidéo signée ne peut pas être transcrite automatiquement. Si vous le souhaitez, ajoutez un court résumé écrit pour que les personnes qui ne signent pas puissent suivre.",
-    "summaryLanguageLabel": "Formulation de votre résumé"
+    "summaryLanguageLabel": "Formulation de votre résumé",
+    "processingRecording": "Poster ton enregistrement et écrire la transcription..."
   },
   "suggestNetwork": {
     "heading": "Suggérez un réseau",

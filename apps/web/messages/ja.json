@@ -242,7 +242,8 @@
     "summaryLabel": "概要",
     "addSummary": "書面による要約を追加してください",
     "addSummaryHelp": "署名入りの動画は自動的に文字起こしできません。もしよければ、署名しない人もついていけるように短い要約を追加してください。",
-    "summaryLanguageLabel": "要約の文言"
+    "summaryLanguageLabel": "要約の文言",
+    "processingRecording": "録音を投稿し、書き起こしを書くこと..."
   },
   "suggestNetwork": {
     "heading": "ネットワークを提案してください",
