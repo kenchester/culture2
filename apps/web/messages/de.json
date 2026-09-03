@@ -243,7 +243,8 @@
     "addSummary": "Fügen Sie eine schriftliche Zusammenfassung hinzu",
     "addSummaryHelp": "Ein signiertes Video kann nicht automatisch transkribiert werden. Wenn Sie möchten, fügen Sie eine kurze schriftliche Zusammenfassung hinzu, damit diejenigen, die nicht unterschreiben, folgen können.",
     "summaryLanguageLabel": "Sprache Ihrer Zusammenfassung",
-    "processingRecording": "Deine Aufnahme posten und das Transkript schreiben..."
+    "processingRecording": "Deine Aufnahme posten und das Transkript schreiben...",
+    "posting": "Posten..."
   },
   "suggestNetwork": {
     "heading": "Schlage ein Netzwerk vor.",

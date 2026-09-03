@@ -243,7 +243,8 @@
     "addSummary": "서면 요약을 추가하세요",
     "addSummaryHelp": "서명된 영상은 자동으로 전사할 수 없습니다. 원한다면 서명하지 않는 사람들도 따라올 수 있도록 짧은 요약을 추가하세요.",
     "summaryLanguageLabel": "요약의 언어",
-    "processingRecording": "녹음을 올리고 대본을 작성하는 것..."
+    "processingRecording": "녹음을 올리고 대본을 작성하는 것...",
+    "posting": "게시..."
   },
   "suggestNetwork": {
     "heading": "네트워크 제안",

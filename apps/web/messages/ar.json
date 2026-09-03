@@ -243,7 +243,8 @@
     "addSummary": "أضف ملخصا مكتوبا",
     "addSummaryHelp": "لا يمكن نسخ الفيديو الموقع تلقائيا. إذا رغبت، أضف ملخصا مكتوبا قصيرا حتى يتمكن من لا يوقعون من متابعة الطلب.",
     "summaryLanguageLabel": "لغة ملخصك",
-    "processingRecording": "نشر تسجيلك وكتابة النص..."
+    "processingRecording": "نشر تسجيلك وكتابة النص...",
+    "posting": "النشر..."
   },
   "suggestNetwork": {
     "heading": "اقترح شبكة",

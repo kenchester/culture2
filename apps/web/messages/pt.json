@@ -243,7 +243,8 @@
     "addSummary": "Adicione um resumo escrito",
     "addSummaryHelp": "Um vídeo assinado não pode ser transcrito automaticamente. Se quiser, adicione um resumo escrito curto para que quem não assina possa acompanhar.",
     "summaryLanguageLabel": "Linguagem do seu resumo",
-    "processingRecording": "Postar sua gravação e escrever a transcrição..."
+    "processingRecording": "Postar sua gravação e escrever a transcrição...",
+    "posting": "Postando..."
   },
   "suggestNetwork": {
     "heading": "Sugira uma rede",
