@@ -6,7 +6,7 @@ import { createClient } from "@/lib/supabase/server";
 import { sendBulkEmails } from "@/lib/email";
 import { getOptedInRecipients } from "@/lib/notifications";
 import { getSiteUrl } from "@/lib/site-url";
-import { renderOutreachEmail, renderSiteUpdateEmail } from "@/app/admin/product-updates/branded-email";
+import { renderOutreachEmail, renderSiteUpdateEmail } from "@/lib/branded-email";
 
 export async function postProductUpdate(formData: FormData) {
   const title = formData.get("title") as string;

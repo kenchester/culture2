@@ -9,6 +9,11 @@ const envSchema = z.object({
   AZURE_TRANSLATOR_KEY: z.string().min(1),
   AZURE_TRANSLATOR_ENDPOINT: z.url(),
   AZURE_TRANSLATOR_REGION: z.string().min(1),
+  // Vercel sets this automatically for every project (Settings > Cron
+  // Jobs) and sends it as "Authorization: Bearer <value>" on every cron
+  // invocation - app/api/cron/signup-reminders checks it to make sure the
+  // route can't be triggered by anyone who just finds the URL.
+  CRON_SECRET: z.string().min(1),
 });
 
 export const env = envSchema.parse({
@@ -19,4 +24,5 @@ export const env = envSchema.parse({
   AZURE_TRANSLATOR_KEY: process.env.AZURE_TRANSLATOR_KEY,
   AZURE_TRANSLATOR_ENDPOINT: process.env.AZURE_TRANSLATOR_ENDPOINT,
   AZURE_TRANSLATOR_REGION: process.env.AZURE_TRANSLATOR_REGION,
+  CRON_SECRET: process.env.CRON_SECRET,
 });
