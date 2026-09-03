@@ -235,7 +235,14 @@
     "showOriginal": "Voir le texte original",
     "report": "Rapport",
     "reporting": "Rapport...",
-    "reported": "Rapporté"
+    "reported": "Rapporté",
+    "showTranscript": "Transcription de l’émission",
+    "hideTranscript": "Masquer la transcription",
+    "transcriptPending": "La transcription n’est pas disponible pour cet enregistrement.",
+    "summaryLabel": "Résumé",
+    "addSummary": "Ajoutez un résumé écrit",
+    "addSummaryHelp": "Une vidéo signée ne peut pas être transcrite automatiquement. Si vous le souhaitez, ajoutez un court résumé écrit pour que les personnes qui ne signent pas puissent suivre.",
+    "summaryLanguageLabel": "Formulation de votre résumé"
   },
   "suggestNetwork": {
     "heading": "Suggérez un réseau",

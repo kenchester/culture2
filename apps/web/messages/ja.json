@@ -235,7 +235,14 @@
     "showOriginal": "原文を見る",
     "report": "レポート",
     "reporting": "報告します...",
-    "reported": "報告"
+    "reported": "報告",
+    "showTranscript": "番組の書き起こし",
+    "hideTranscript": "書き起こしを隠す",
+    "transcriptPending": "この録音の書き起こしは利用できません。",
+    "summaryLabel": "概要",
+    "addSummary": "書面による要約を追加してください",
+    "addSummaryHelp": "署名入りの動画は自動的に文字起こしできません。もしよければ、署名しない人もついていけるように短い要約を追加してください。",
+    "summaryLanguageLabel": "要約の文言"
   },
   "suggestNetwork": {
     "heading": "ネットワークを提案してください",

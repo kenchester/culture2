@@ -22,6 +22,10 @@ export type RealDemoPost = {
   avatarUrl: string | null;
   replyHref: string;
   replyCountLabel: string;
+  transcript: string | null;
+  transcriptLanguage: string | null;
+  hasCaptions: boolean;
+  summary: { text: string; language: string | null } | null;
 };
 
 type EphemeralPost = EphemeralItem & { localId: string; createdAt: string };
@@ -214,6 +218,10 @@ export function DemoNetworkFeed({
                   media={post.media}
                   createdAt={post.createdAt}
                   isEphemeral={false}
+                  transcript={post.transcript}
+                  transcriptLanguage={post.transcriptLanguage}
+                  hasCaptions={post.hasCaptions}
+                  summary={post.summary}
                 />
                 {post.videoUrl && (
                   <a

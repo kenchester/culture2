@@ -235,7 +235,14 @@
     "showOriginal": "查看原文",
     "report": "报道",
     "reporting": "报告......",
-    "reported": "报道"
+    "reported": "报道",
+    "showTranscript": "节目文字记录",
+    "hideTranscript": "隐藏文字记录",
+    "transcriptPending": "本次录音无法提供文字记录。",
+    "summaryLabel": "摘要",
+    "addSummary": "添加书面摘要",
+    "addSummaryHelp": "签名视频无法自动转录。如果你愿意，可以加上简短的书面摘要，这样不签名的人也能跟上。",
+    "summaryLanguageLabel": "摘要的措辞"
   },
   "suggestNetwork": {
     "heading": "建议一个网络",

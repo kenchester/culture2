@@ -8,6 +8,7 @@ import { deleteReply, updateReply } from "@/app/networks/[id]/posts/[postId]/act
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/input";
 import { LocalDateTime } from "@/components/local-datetime";
+import { TranscriptDisclosure } from "@/components/transcript-disclosure";
 import { Linkify } from "@/lib/linkify";
 import type { Locale } from "@/lib/locale";
 import { InlineError } from "@/components/ui/form-error";
@@ -48,6 +49,10 @@ export function EditableEntry({
   likeCount,
   liked,
   redirectAfterDelete,
+  transcript,
+  transcriptLanguage,
+  hasCaptions,
+  summary,
 }: {
   kind: "post" | "reply";
   itemId: number;
@@ -58,6 +63,12 @@ export function EditableEntry({
   likeCount: number;
   liked: boolean;
   redirectAfterDelete?: string;
+  transcript?: string | null;
+  transcriptLanguage?: string | null;
+  /** Whether transcript_segments exist, i.e. whether the captions route will 200. */
+  hasCaptions?: boolean;
+  /** Signed-language posts only: an author-written summary and its language. */
+  summary?: { text: string; language: string | null } | null;
 }) {
   const t = useTranslations("editableEntry");
   const locale = useLocale() as Locale;
@@ -192,8 +203,23 @@ export function EditableEntry({
               src={`${media.url}#t=1`}
               controls
               playsInline
+              // crossOrigin is required for <track> to load: the media
+              // itself comes from a signed Supabase Storage URL (a
+              // different origin), and without this the browser refuses to
+              // apply a same-origin text track to a cross-origin video.
+              crossOrigin="anonymous"
               className="max-h-64 w-full min-w-0 rounded-md"
-            />
+            >
+              {hasCaptions && (
+                <track
+                  kind="captions"
+                  src={`/api/captions/${kind}/${itemId}`}
+                  srcLang={transcriptLanguage || "und"}
+                  label={t("showTranscript")}
+                  default
+                />
+              )}
+            </video>
           ) : (
             <audio src={media.url} controls className="w-full min-w-0" />
           )
@@ -263,6 +289,20 @@ export function EditableEntry({
           )}
         </div>
       </div>
+      {/* Text alternatives for media, both collapsed by default. A signed
+          video has no transcript (nothing to transcribe) and instead may
+          carry an author-written summary, which is really a translation
+          into whichever written language they chose - hence its own lang. */}
+      {media && transcript && (
+        <TranscriptDisclosure transcript={transcript} language={transcriptLanguage} />
+      )}
+      {media && summary?.text && (
+        <TranscriptDisclosure
+          transcript={summary.text}
+          language={summary.language}
+          label={{ show: t("summaryLabel"), hide: t("hideTranscript") }}
+        />
+      )}
       <p className="text-xs text-muted">
         <LocalDateTime iso={createdAt} />
       </p>

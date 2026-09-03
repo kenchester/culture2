@@ -5,6 +5,7 @@ import { useLocale, useTranslations } from "next-intl";
 import { translateEntry } from "@/app/networks/actions";
 import { ThumbsUpIcon } from "@/app/networks/editable-entry";
 import { LocalDateTime } from "@/components/local-datetime";
+import { TranscriptDisclosure } from "@/components/transcript-disclosure";
 import { Linkify } from "@/lib/linkify";
 import type { Locale } from "@/lib/locale";
 
@@ -33,6 +34,10 @@ export function DemoEntry({
   createdAt,
   isEphemeral,
   onRemove,
+  transcript,
+  transcriptLanguage,
+  hasCaptions,
+  summary,
 }: {
   kind: "post" | "reply";
   itemId: number | null;
@@ -41,6 +46,10 @@ export function DemoEntry({
   createdAt: string;
   isEphemeral: boolean;
   onRemove?: () => void;
+  transcript?: string | null;
+  transcriptLanguage?: string | null;
+  hasCaptions?: boolean;
+  summary?: { text: string; language: string | null } | null;
 }) {
   const t = useTranslations("editableEntry");
   const tDemo = useTranslations("demoNetwork");
@@ -83,8 +92,19 @@ export function DemoEntry({
               src={`${media.url}#t=1`}
               controls
               playsInline
+              crossOrigin="anonymous"
               className="max-h-64 w-full min-w-0 rounded-md"
-            />
+            >
+              {hasCaptions && itemId !== null && (
+                <track
+                  kind="captions"
+                  src={`/api/captions/${kind}/${itemId}`}
+                  srcLang={transcriptLanguage || "und"}
+                  label={t("showTranscript")}
+                  default
+                />
+              )}
+            </video>
           ) : (
             <audio src={media.url} controls className="w-full min-w-0" />
           )
@@ -130,6 +150,19 @@ export function DemoEntry({
           )}
         </div>
       </div>
+      {/* Ephemeral demo posts never have a transcript - nothing is
+          uploaded or transcribed for them - so this only ever renders for
+          the network's real seeded recordings. */}
+      {media && transcript && (
+        <TranscriptDisclosure transcript={transcript} language={transcriptLanguage} />
+      )}
+      {media && summary?.text && (
+        <TranscriptDisclosure
+          transcript={summary.text}
+          language={summary.language}
+          label={{ show: t("summaryLabel"), hide: t("hideTranscript") }}
+        />
+      )}
       <p className="flex items-center gap-2 text-xs text-muted">
         <LocalDateTime iso={createdAt} />
         {isEphemeral && (

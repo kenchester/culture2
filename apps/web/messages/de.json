@@ -235,7 +235,14 @@
     "showOriginal": "Originaltext ansehen",
     "report": "Bericht",
     "reporting": "Meldung...",
-    "reported": "Berichtet"
+    "reported": "Berichtet",
+    "showTranscript": "Serientranskript",
+    "hideTranscript": "Transkript ausblenden",
+    "transcriptPending": "Transkript für diese Aufnahme nicht verfügbar.",
+    "summaryLabel": "Zusammenfassung",
+    "addSummary": "Fügen Sie eine schriftliche Zusammenfassung hinzu",
+    "addSummaryHelp": "Ein signiertes Video kann nicht automatisch transkribiert werden. Wenn Sie möchten, fügen Sie eine kurze schriftliche Zusammenfassung hinzu, damit diejenigen, die nicht unterschreiben, folgen können.",
+    "summaryLanguageLabel": "Sprache Ihrer Zusammenfassung"
   },
   "suggestNetwork": {
     "heading": "Schlage ein Netzwerk vor.",

@@ -14,6 +14,11 @@ const envSchema = z.object({
   // invocation - app/api/cron/signup-reminders checks it to make sure the
   // route can't be triggered by anyone who just finds the URL.
   CRON_SECRET: z.string().min(1),
+  // Groq Whisper, for audio/video transcription (lib/transcription.ts).
+  // Like every key here it's required at build time, so it has to exist in
+  // all three Vercel environments before a deploy - a missing one fails
+  // the build outright rather than degrading at runtime.
+  GROQ_API_KEY: z.string().min(1),
 });
 
 export const env = envSchema.parse({
@@ -25,4 +30,5 @@ export const env = envSchema.parse({
   AZURE_TRANSLATOR_ENDPOINT: process.env.AZURE_TRANSLATOR_ENDPOINT,
   AZURE_TRANSLATOR_REGION: process.env.AZURE_TRANSLATOR_REGION,
   CRON_SECRET: process.env.CRON_SECRET,
+  GROQ_API_KEY: process.env.GROQ_API_KEY,
 });

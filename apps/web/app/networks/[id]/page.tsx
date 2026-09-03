@@ -16,7 +16,7 @@ import { InviteFriendsBox } from "@/app/networks/[id]/invite-friends-box";
 import { PostComposer } from "@/app/networks/[id]/post-composer";
 import { Button } from "@/components/ui/button";
 import { Field, Label, Textarea } from "@/components/ui/input";
-import { FormError } from "@/components/ui/form-error";
+import { FormError, FormSuccess } from "@/components/ui/form-error";
 
 // Below this, a network's activity is too thin to be worth suggesting -
 // checked live against real data (32 networks total, median member count 1)
@@ -94,10 +94,11 @@ export default async function NetworkPage({
     embed?: string;
     invited?: string;
     inviteError?: string;
+    langNotice?: string;
   }>;
 }) {
   const { id } = await params;
-  const { error, embed, invited, inviteError } = await searchParams;
+  const { error, embed, invited, inviteError, langNotice } = await searchParams;
   const isEmbedded = embed === "1";
   const supabase = await createClient();
   const t = await getTranslations("network");
@@ -168,7 +169,11 @@ export default async function NetworkPage({
     isExample,
   ] = await Promise.all([
     network.language_id
-      ? supabase.from("languages").select("id, name, iso_code").eq("id", network.language_id).single()
+      ? supabase
+          .from("languages")
+          .select("id, name, iso_code, is_signed")
+          .eq("id", network.language_id)
+          .single()
       : Promise.resolve({ data: null }),
     network.origin_place_id
       ? supabase
@@ -191,7 +196,7 @@ export default async function NetworkPage({
     supabase
       .from("posts")
       .select(
-        "id, body, video_url, media_type, media_path, created_at, author:user_id(id, username, first_name, last_name, img_path), post_replies(count), likes(count)",
+        "id, body, video_url, media_type, media_path, created_at, transcript, transcript_language, transcript_segments, summary_text, summary_language:languages!summary_language_id(iso_code), author:user_id(id, username, first_name, last_name, img_path), post_replies(count), likes(count)",
       )
       .eq("network_id", network.id)
       .order("created_at", { ascending: false }),
@@ -254,6 +259,14 @@ export default async function NetworkPage({
     ),
   );
 
+  // Only fetched for signed-language networks, where the composer offers
+  // an optional written summary and needs a language picker for it -
+  // every other network never renders that control.
+  const isSignedLanguage = Boolean((language as { is_signed?: boolean } | null)?.is_signed);
+  const { data: summaryLanguages } = isSignedLanguage
+    ? await supabase.from("languages").select("id, name").order("name")
+    : { data: null };
+
   const returnTo = `/networks/${network.id}${isEmbedded ? "?embed=1" : ""}`;
   const signInParams = new URLSearchParams({ returnTo });
   if (isEmbedded) signInParams.set("embed", "1");
@@ -290,6 +303,17 @@ export default async function NetworkPage({
               : replyCountValue === 1
                 ? t("replyLabel.one")
                 : t("replyLabel.other", { count: replyCountValue }),
+          transcript: post.transcript,
+          transcriptLanguage: post.transcript_language,
+          hasCaptions: Boolean(post.transcript_segments),
+          summary: post.summary_text
+            ? {
+                text: post.summary_text,
+                language:
+                  (post.summary_language as unknown as { iso_code: string | null } | null)
+                    ?.iso_code ?? null,
+              }
+            : null,
         };
       })
     : [];
@@ -386,11 +410,16 @@ export default async function NetworkPage({
                   {error && (
                     <FormError>{error}</FormError>
                   )}
+                  {/* Advisory only - the post is already live. See the note
+                      in createPost on why speech is never blocked. */}
+                  {langNotice && <FormSuccess>{langNotice}</FormSuccess>}
                   <PostComposer
                     idPrefix="post"
                     bodyLabel={t("postLabel")}
                     bodyPlaceholder={t("postPlaceholder")}
                     submitLabel={t("postSubmit")}
+                    isSignedLanguage={isSignedLanguage}
+                    languages={summaryLanguages ?? []}
                   />
                 </form>
               )}
@@ -448,6 +477,19 @@ export default async function NetworkPage({
                           canModify={user?.id === author?.id}
                           likeCount={likeCountValue}
                           liked={myLikedPostIds.has(post.id)}
+                          transcript={post.transcript}
+                          transcriptLanguage={post.transcript_language}
+                          hasCaptions={Boolean(post.transcript_segments)}
+                          summary={
+                            post.summary_text
+                              ? {
+                                  text: post.summary_text,
+                                  language:
+                                    (post.summary_language as unknown as { iso_code: string | null } | null)
+                                      ?.iso_code ?? null,
+                                }
+                              : null
+                          }
                         />
                         {post.video_url && (
                           <a

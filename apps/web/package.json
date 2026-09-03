@@ -11,7 +11,8 @@
     "backfill-iso-codes": "tsx scripts/backfill-iso-codes.ts",
     "backfill-geo-cldr": "tsx scripts/backfill-geo-cldr.ts",
     "fix-mojibake-names": "tsx scripts/fix-mojibake-names.ts",
-    "seed-acme-university": "tsx scripts/seed-acme-university.ts"
+    "seed-acme-university": "tsx scripts/seed-acme-university.ts",
+    "backfill-transcripts": "tsx scripts/backfill-transcripts.ts"
   },
   "dependencies": {
     "@mediapipe/tasks-vision": "^1.0.1",

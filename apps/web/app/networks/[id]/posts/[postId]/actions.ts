@@ -6,6 +6,7 @@ import { createClient } from "@/lib/supabase/server";
 import { sendEmail } from "@/lib/email";
 import { getOptedInRecipients } from "@/lib/notifications";
 import { getSiteUrl } from "@/lib/site-url";
+import { getNetworkLanguage, transcribeStoredMedia } from "@/lib/transcription";
 
 export async function createReply(formData: FormData) {
   const postId = formData.get("postId") as string;
@@ -22,6 +23,15 @@ export async function createReply(formData: FormData) {
   const mediaDurationRaw = formData.get("mediaDurationSeconds") as string;
   const mediaDurationSeconds = mediaDurationRaw ? Number(mediaDurationRaw) : null;
 
+  // Signed-language networks only (app/networks/[id]/signed-summary-fields.tsx).
+  // The pair is enforced by a check constraint (00000000000072): a summary
+  // without its language is not storable, since the language is what makes
+  // it translatable and readable by a screen reader.
+  const summaryTextRaw = ((formData.get("summaryText") as string) ?? "").trim();
+  const summaryLanguageRaw = (formData.get("summaryLanguageId") as string) || "";
+  const summaryText = summaryTextRaw && summaryLanguageRaw ? summaryTextRaw : null;
+  const summaryLanguageId = summaryText ? Number(summaryLanguageRaw) : null;
+
   const supabase = await createClient();
   const {
     data: { user },
@@ -31,19 +41,36 @@ export async function createReply(formData: FormData) {
     redirect(`/sign-in?error=${encodeURIComponent("Sign in to reply.")}`);
   }
 
-  const { error } = await supabase.from("post_replies").insert({
-    post_id: Number(postId),
-    user_id: user.id,
-    body,
-    media_type: mediaType,
-    media_path: mediaPath,
-    media_duration_seconds: mediaDurationSeconds,
-  });
+  const { data: inserted, error } = await supabase
+    .from("post_replies")
+    .insert({
+      post_id: Number(postId),
+      user_id: user.id,
+      body,
+      media_type: mediaType,
+      media_path: mediaPath,
+      media_duration_seconds: mediaDurationSeconds,
+      summary_text: summaryText,
+      summary_language_id: summaryLanguageId,
+    })
+    .select("id")
+    .single();
 
   if (error) {
     redirect(
       `/networks/${networkId}/posts/${postId}?error=${encodeURIComponent(error.message)}${embedSuffix}`,
     );
+  }
+
+  // Same post-hoc, best-effort transcription as createPost (see the long
+  // note there on why this runs after the insert and never blocks).
+  let detectedLanguage: string | null = null;
+  let targetLanguage: { name: string; iso_code: string | null; is_signed: boolean } | null = null;
+  if (mediaPath && inserted) {
+    targetLanguage = await getNetworkLanguage(supabase, Number(networkId));
+    if (!targetLanguage?.is_signed) {
+      detectedLanguage = await transcribeStoredMedia(supabase, "post_replies", inserted.id, mediaPath);
+    }
   }
 
   // Best-effort - a failed notification must never turn a successful
@@ -71,6 +98,18 @@ export async function createReply(formData: FormData) {
   }
 
   revalidatePath(`/networks/${networkId}/posts/${postId}`);
+
+  if (
+    detectedLanguage &&
+    targetLanguage?.iso_code &&
+    detectedLanguage !== targetLanguage.iso_code
+  ) {
+    redirect(
+      `/networks/${networkId}/posts/${postId}?langNotice=${encodeURIComponent(
+        `That recording sounded like it might not be in ${targetLanguage.name}. It's posted either way - just a heads up.`,
+      )}${embedSuffix}`,
+    );
+  }
 }
 
 type ActionResult = { ok: true } | { error: string };

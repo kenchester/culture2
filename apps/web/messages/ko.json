@@ -235,7 +235,14 @@
     "showOriginal": "원본 텍스트 보기",
     "report": "리포트",
     "reporting": "보고합니다...",
-    "reported": "보도"
+    "reported": "보도",
+    "showTranscript": "쇼 대본",
+    "hideTranscript": "대본 숨기기",
+    "transcriptPending": "이 녹음에는 대본이 제공되지 않습니다.",
+    "summaryLabel": "요약",
+    "addSummary": "서면 요약을 추가하세요",
+    "addSummaryHelp": "서명된 영상은 자동으로 전사할 수 없습니다. 원한다면 서명하지 않는 사람들도 따라올 수 있도록 짧은 요약을 추가하세요.",
+    "summaryLanguageLabel": "요약의 언어"
   },
   "suggestNetwork": {
     "heading": "네트워크 제안",

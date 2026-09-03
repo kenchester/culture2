@@ -10,17 +10,17 @@ import { createReply } from "./actions";
 import { EditableEntry } from "@/app/networks/editable-entry";
 import { DemoReplyThread, type RealDemoReply } from "@/app/networks/[id]/posts/[postId]/demo-reply-thread";
 import { PostComposer } from "@/app/networks/[id]/post-composer";
-import { FormError } from "@/components/ui/form-error";
+import { FormError, FormSuccess } from "@/components/ui/form-error";
 
 export default async function PostPage({
   params,
   searchParams,
 }: {
   params: Promise<{ id: string; postId: string }>;
-  searchParams: Promise<{ error?: string; embed?: string }>;
+  searchParams: Promise<{ error?: string; embed?: string; langNotice?: string }>;
 }) {
   const { id, postId } = await params;
-  const { error, embed } = await searchParams;
+  const { error, embed, langNotice } = await searchParams;
   const isEmbedded = embed === "1";
   const embedSuffix = isEmbedded ? "?embed=1" : "";
   const supabase = await createClient();
@@ -29,7 +29,7 @@ export default async function PostPage({
   const { data: post } = await supabase
     .from("posts")
     .select(
-      "id, body, video_url, media_type, media_path, created_at, network_id, author:user_id(id, username, first_name, last_name, img_path), likes(count)",
+      "id, body, video_url, media_type, media_path, created_at, network_id, transcript, transcript_language, transcript_segments, summary_text, summary_language:languages!summary_language_id(iso_code), author:user_id(id, username, first_name, last_name, img_path), likes(count)",
     )
     .eq("id", postId)
     .single();
@@ -46,14 +46,18 @@ export default async function PostPage({
     supabase
       .from("post_replies")
       .select(
-        "id, body, media_type, media_path, created_at, author:user_id(id, username, first_name, last_name, img_path), likes(count)",
+        "id, body, media_type, media_path, created_at, transcript, transcript_language, transcript_segments, summary_text, summary_language:languages!summary_language_id(iso_code), author:user_id(id, username, first_name, last_name, img_path), likes(count)",
       )
       .eq("post_id", postId)
       .order("created_at", { ascending: true }),
     user
       ? supabase.from("likes").select("post_id, reply_id").eq("user_id", user.id)
       : Promise.resolve({ data: null }),
-    supabase.from("networks").select("location_place_id").eq("id", post.network_id).single(),
+    supabase
+      .from("networks")
+      .select("location_place_id, language:languages(is_signed)")
+      .eq("id", post.network_id)
+      .single(),
   ]);
 
   const isExample = network ? await isExampleNetwork(supabase, network.location_place_id) : false;
@@ -96,6 +100,13 @@ export default async function PostPage({
       (replies ?? []).map(async (reply) => [reply.id, await getPostMediaUrl(reply.media_path)] as const),
     ).then((entries) => new Map(entries)),
   ]);
+
+  const isSignedLanguage = Boolean(
+    (network?.language as unknown as { is_signed?: boolean } | null)?.is_signed,
+  );
+  const { data: summaryLanguages } = isSignedLanguage
+    ? await supabase.from("languages").select("id, name").order("name")
+    : { data: null };
 
   const returnTo = `/networks/${id}/posts/${postId}${embedSuffix}`;
   const signInParams = new URLSearchParams({ returnTo });
@@ -159,6 +170,19 @@ export default async function PostPage({
             likeCount={extractCount(post.likes)}
             liked={myLikedPostIds.has(post.id)}
             redirectAfterDelete={`/networks/${id}${embedSuffix}`}
+            transcript={post.transcript}
+            transcriptLanguage={post.transcript_language}
+            hasCaptions={Boolean(post.transcript_segments)}
+            summary={
+              post.summary_text
+                ? {
+                    text: post.summary_text,
+                    language:
+                      (post.summary_language as unknown as { iso_code: string | null } | null)?.iso_code ??
+                      null,
+                  }
+                : null
+            }
           />
           {post.video_url && (
             <a
@@ -217,6 +241,19 @@ export default async function PostPage({
                       canModify={user?.id === replyAuthor?.id}
                       likeCount={extractCount(reply.likes)}
                       liked={myLikedReplyIds.has(reply.id)}
+                      transcript={reply.transcript}
+                      transcriptLanguage={reply.transcript_language}
+                      hasCaptions={Boolean(reply.transcript_segments)}
+                      summary={
+                        reply.summary_text
+                          ? {
+                              text: reply.summary_text,
+                              language:
+                                (reply.summary_language as unknown as { iso_code: string | null } | null)?.iso_code ??
+                                null,
+                            }
+                          : null
+                      }
                     />
                   </div>
                 </div>
@@ -233,11 +270,14 @@ export default async function PostPage({
               {error && (
                 <FormError>{error}</FormError>
               )}
+              {langNotice && <FormSuccess>{langNotice}</FormSuccess>}
               <PostComposer
                 idPrefix="reply"
                 bodyLabel={t("replyLabel")}
                 bodyPlaceholder={t("replyPlaceholder")}
                 submitLabel={t("replySubmit")}
+                isSignedLanguage={isSignedLanguage}
+                languages={summaryLanguages ?? []}
               />
             </form>
           ) : (

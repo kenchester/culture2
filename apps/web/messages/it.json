@@ -235,7 +235,14 @@
     "showOriginal": "Visualizza testo originale",
     "report": "Rapporto",
     "reporting": "Riferimento...",
-    "reported": "Segnalazione"
+    "reported": "Segnalazione",
+    "showTranscript": "Trascrizione dello show",
+    "hideTranscript": "Nascondi la trascrizione",
+    "transcriptPending": "Trascrizione non disponibile per questa registrazione.",
+    "summaryLabel": "Sommario",
+    "addSummary": "Aggiungi un riassunto scritto",
+    "addSummaryHelp": "Un video firmato non può essere trascritto automaticamente. Se vuoi, aggiungi un breve riassunto scritto così chi non firma può seguire.",
+    "summaryLanguageLabel": "Linguaggio del tuo riassunto"
   },
   "suggestNetwork": {
     "heading": "Suggerisci una rete",

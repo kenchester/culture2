@@ -235,7 +235,14 @@
     "showOriginal": "Ver texto original",
     "report": "Relatório",
     "reporting": "Reportando...",
-    "reported": "Relatado"
+    "reported": "Relatado",
+    "showTranscript": "Transcrição do programa",
+    "hideTranscript": "Ocultar transcrição",
+    "transcriptPending": "Transcrição não disponível para esta gravação.",
+    "summaryLabel": "Resumo",
+    "addSummary": "Adicione um resumo escrito",
+    "addSummaryHelp": "Um vídeo assinado não pode ser transcrito automaticamente. Se quiser, adicione um resumo escrito curto para que quem não assina possa acompanhar.",
+    "summaryLanguageLabel": "Linguagem do seu resumo"
   },
   "suggestNetwork": {
     "heading": "Sugira uma rede",

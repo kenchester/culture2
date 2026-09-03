@@ -4,6 +4,7 @@ import { useState } from "react";
 import { RecordMedia } from "@/app/networks/[id]/record-media";
 import { Button } from "@/components/ui/button";
 import { Field, Label, Textarea } from "@/components/ui/input";
+import { SignedSummaryFields } from "@/app/networks/[id]/signed-summary-fields";
 
 type Mode = "text" | "audio" | "video";
 
@@ -26,19 +27,32 @@ export function PostComposer({
   bodyLabel,
   bodyPlaceholder,
   submitLabel,
+  isSignedLanguage = false,
+  languages,
 }: {
   idPrefix: string;
   bodyLabel: string;
   bodyPlaceholder: string;
   submitLabel: string;
+  /** networks.language -> languages.is_signed. Hides Audio and offers a summary. */
+  isSignedLanguage?: boolean;
+  /** For the summary's language picker; only needed when isSignedLanguage. */
+  languages?: { id: number; name: string }[];
 }) {
   const [mode, setMode] = useState<Mode>("text");
   const [bodyValue, setBodyValue] = useState("");
 
+  // A signed language has no spoken form, so an audio post in one of these
+  // networks is either a mistake or off-language - hiding the tab is
+  // clearer than letting someone record into a void. Matches the
+  // educators page's own framing that for ASL, video "isn't an add-on
+  // here, it's the only way a student can post".
+  const modes = isSignedLanguage ? MODES.filter((m) => m.value !== "audio") : MODES;
+
   return (
     <div className="flex flex-col gap-2">
       <div className="flex gap-1 text-sm">
-        {MODES.map((m) => (
+        {modes.map((m) => (
           <button
             key={m.value}
             type="button"
@@ -72,7 +86,15 @@ export function PostComposer({
         // RecordMedia's own "Post this recording" button submits the form
         // itself once the upload finishes - no separate submit button here,
         // there'd be two "Post" controls on screen otherwise.
-        <RecordMedia key={mode} kind={mode} />
+        <>
+          {/* Rendered above RecordMedia rather than inside it, so the
+              summary fields are already filled in by the time the
+              recording's own Post button submits the surrounding form. */}
+          {isSignedLanguage && mode === "video" && (
+            <SignedSummaryFields idPrefix={idPrefix} languages={languages ?? []} />
+          )}
+          <RecordMedia key={mode} kind={mode} />
+        </>
       )}
     </div>
   );

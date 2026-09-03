@@ -308,7 +308,14 @@
     "translateFailed": "Translation failed. Please try again.",
     "report": "Report",
     "reporting": "Reporting…",
-    "reported": "Reported"
+    "reported": "Reported",
+    "showTranscript": "Show transcript",
+    "hideTranscript": "Hide transcript",
+    "transcriptPending": "Transcript not available for this recording.",
+    "summaryLabel": "Summary",
+    "addSummary": "Add a written summary",
+    "addSummaryHelp": "A signed video can't be transcribed automatically. If you'd like, add a short written summary so people who don't sign can follow along.",
+    "summaryLanguageLabel": "Language of your summary"
   },
   "suggestNetwork": {
     "heading": "Suggest a network",

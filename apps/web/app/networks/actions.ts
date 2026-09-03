@@ -12,6 +12,7 @@ import { getDisplayName } from "@/lib/profiles";
 import { translateText } from "@/lib/azure-translator";
 import { toAzureCode, type Locale } from "@/lib/locale";
 import { checkLanguagePurity } from "@/lib/language-purity-check";
+import { getNetworkLanguage, transcribeStoredMedia } from "@/lib/transcription";
 
 const MAX_INVITES = 20;
 const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -76,6 +77,15 @@ export async function createPost(formData: FormData) {
   const mediaDurationRaw = formData.get("mediaDurationSeconds") as string;
   const mediaDurationSeconds = mediaDurationRaw ? Number(mediaDurationRaw) : null;
 
+  // Signed-language networks only (app/networks/[id]/signed-summary-fields.tsx).
+  // The pair is enforced by a check constraint (00000000000072): a summary
+  // without its language is not storable, since the language is what makes
+  // it translatable and readable by a screen reader.
+  const summaryTextRaw = ((formData.get("summaryText") as string) ?? "").trim();
+  const summaryLanguageRaw = (formData.get("summaryLanguageId") as string) || "";
+  const summaryText = summaryTextRaw && summaryLanguageRaw ? summaryTextRaw : null;
+  const summaryLanguageId = summaryText ? Number(summaryLanguageRaw) : null;
+
   const supabase = await createClient();
   const {
     data: { user },
@@ -112,17 +122,41 @@ export async function createPost(formData: FormData) {
     }
   }
 
-  const { error } = await supabase.from("posts").insert({
-    network_id: Number(networkId),
-    user_id: user.id,
-    body,
-    media_type: mediaType,
-    media_path: mediaPath,
-    media_duration_seconds: mediaDurationSeconds,
-  });
+  const { data: inserted, error } = await supabase
+    .from("posts")
+    .insert({
+      network_id: Number(networkId),
+      user_id: user.id,
+      body,
+      media_type: mediaType,
+      media_path: mediaPath,
+      media_duration_seconds: mediaDurationSeconds,
+      summary_text: summaryText,
+      summary_language_id: summaryLanguageId,
+    })
+    .select("id")
+    .single();
 
   if (error) {
     redirect(`/networks/${networkId}?error=${encodeURIComponent(error.message)}${embedSuffix}`);
+  }
+
+  // Transcription runs after the insert, never before: the post is already
+  // safely created, so a slow or failed Whisper call can't cost anyone
+  // their recording. Site-wide, not just org-gated networks - WCAG
+  // 1.2.1/1.2.2/1.2.3 (all Level A) apply to every audio/video post on the
+  // site, not only school ones.
+  //
+  // Skipped entirely for signed languages: there's no speech in a signed
+  // video for Whisper to find, and sign recognition isn't a solved problem
+  // at any price. Those posts use the optional written summary instead.
+  let detectedLanguage: string | null = null;
+  let targetLanguage: { name: string; iso_code: string | null; is_signed: boolean } | null = null;
+  if (mediaPath && inserted) {
+    targetLanguage = await getNetworkLanguage(supabase, Number(networkId));
+    if (!targetLanguage?.is_signed) {
+      detectedLanguage = await transcribeStoredMedia(supabase, "posts", inserted.id, mediaPath);
+    }
   }
 
   // Best-effort - a failed notification must never turn a successful post
@@ -156,6 +190,25 @@ export async function createPost(formData: FormData) {
   }
 
   revalidatePath(`/networks/${networkId}`);
+
+  // Advisory, never a block. Deliberately post-hoc: the post is already
+  // live by this point and stays live regardless. Speech isn't held to the
+  // same bar as text here because the errors compound - a purity check on
+  // a media post would be dictionary-checking Whisper's *guess* at what
+  // someone said, so a beginner with a strong accent would get rejected
+  // for the transcriber's mistakes rather than their own. Speaking a
+  // language badly is the thing being practiced, not a violation.
+  if (
+    detectedLanguage &&
+    targetLanguage?.iso_code &&
+    detectedLanguage !== targetLanguage.iso_code
+  ) {
+    redirect(
+      `/networks/${networkId}?langNotice=${encodeURIComponent(
+        `That recording sounded like it might not be in ${targetLanguage.name}. It's posted either way - just a heads up.`,
+      )}${embedSuffix}`,
+    );
+  }
 }
 
 // Read-only sibling of the purity check embedded in createPost above - no
@@ -439,6 +492,11 @@ export async function translateEntry(
   kind: "post" | "reply",
   itemId: number,
   targetLocale: Locale,
+  // Which piece of text to translate. A media post has no body worth
+  // translating but may have a transcript (Whisper) or an author-written
+  // summary (signed languages) - all three are cached separately, hence
+  // the field column added in 00000000000073.
+  field: "body" | "transcript" | "summary" = "body",
 ): Promise<{ ok: true; text: string } | { error: string }> {
   const supabase = await createClient();
   const t = await getTranslations("editableEntry");
@@ -449,6 +507,7 @@ export async function translateEntry(
     .select("translated_body")
     .eq(column, itemId)
     .eq("target_locale", targetLocale)
+    .eq("field", field)
     .maybeSingle();
 
   if (cached) {
@@ -456,15 +515,21 @@ export async function translateEntry(
   }
 
   const table = kind === "post" ? "posts" : "post_replies";
-  const { data: entry } = await supabase.from(table).select("body").eq("id", itemId).single();
+  const sourceColumn = field === "body" ? "body" : field === "transcript" ? "transcript" : "summary_text";
+  const { data: entry } = await supabase
+    .from(table)
+    .select(sourceColumn)
+    .eq("id", itemId)
+    .single();
 
-  if (!entry) {
+  const sourceText = (entry as Record<string, string | null> | null)?.[sourceColumn];
+  if (!sourceText) {
     return { error: t("translateNotFound") };
   }
 
   let translated: string;
   try {
-    const result = await translateText(entry.body, toAzureCode(targetLocale));
+    const result = await translateText(sourceText, toAzureCode(targetLocale));
     translated = result.text;
   } catch {
     return { error: t("translateFailed") };
@@ -477,7 +542,7 @@ export async function translateEntry(
   try {
     await supabase
       .from("post_translations")
-      .insert({ [column]: itemId, target_locale: targetLocale, translated_body: translated });
+      .insert({ [column]: itemId, target_locale: targetLocale, field, translated_body: translated });
   } catch {
     // cache write failure is non-fatal
   }
