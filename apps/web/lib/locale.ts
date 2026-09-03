@@ -41,6 +41,13 @@ export function toAzureCode(locale: Locale): string {
   return LOCALE_TO_AZURE_CODE[locale] ?? locale;
 }
 
+// Same mapping, for a *source* language that isn't necessarily one of our
+// UI locales - a transcript or a signed-language summary can be in any
+// language in the database, not just the 11 the interface is offered in.
+export function toAzureSourceCode(isoCode: string): string {
+  return (LOCALE_TO_AZURE_CODE as Record<string, string>)[isoCode] ?? isoCode;
+}
+
 export const RTL_LOCALES: ReadonlySet<Locale> = new Set(["ar"]);
 
 /**

@@ -1,5 +1,6 @@
 import "server-only";
 import type { SupabaseClient } from "@supabase/supabase-js";
+import { createAdminClient } from "@/lib/supabase/admin";
 import { env } from "@/lib/env";
 
 const GROQ_TRANSCRIPTION_URL = "https://api.groq.com/openai/v1/audio/transcriptions";
@@ -8,6 +9,24 @@ const GROQ_TRANSCRIPTION_URL = "https://api.groq.com/openai/v1/audio/transcripti
 // inadequate in practice - see the plan's note on why we don't block posts
 // on that accuracy either way.
 const MODEL = "whisper-large-v3-turbo";
+
+// A short priming prompt, per language, biasing *how* Whisper writes what
+// it hears - not what it hears. Only added where there's a demonstrated
+// problem to solve.
+//
+// zh: without this, Whisper freely mixes Traditional characters into a
+// Simplified-Chinese network (這個狗很可愛 where 这个狗很可爱 was meant)
+// and will sometimes translate a whole segment into English mid-clip
+// rather than transcribing it. A Simplified-Chinese prompt fixed both on
+// a real 34-second learner recording: all Traditional characters became
+// Simplified, and the segment Whisper had rendered as "Kennie Jishal,
+// this is my good friend" came back as Chinese.
+//
+// Note this is a different mechanism from priming with vocabulary, which
+// was tested separately and does NOT fix homophone/tone errors.
+const LANGUAGE_PROMPTS: Record<string, string> = {
+  zh: "以下是普通话内容，请使用简体中文转写。",
+};
 
 export type TranscriptionSegment = { start: number; end: number; text: string };
 
@@ -88,6 +107,10 @@ export async function transcribeMedia(
       form.set("timestamp_granularities[]", "segment");
       if (languageHint) {
         form.set("language", languageHint);
+        const prompt = LANGUAGE_PROMPTS[languageHint];
+        if (prompt) {
+          form.set("prompt", prompt);
+        }
       }
 
       const res = await fetch(GROQ_TRANSCRIPTION_URL, {
@@ -184,7 +207,7 @@ export async function transcribeStoredMedia(
       return null;
     }
 
-    await supabase
+    const { error: updateError } = await supabase
       .from(table)
       .update({
         transcript: result.text,
@@ -196,6 +219,23 @@ export async function transcribeStoredMedia(
         transcript_segments: result.segments.length > 0 ? result.segments : null,
       })
       .eq("id", rowId);
+
+    // Any cached translation of this row's *previous* transcript is now
+    // wrong, and post_translations is read before Azure is ever called - so
+    // without this the stale text wins forever. Only reachable via the
+    // admin client: DELETE here is granted to service_role, not to
+    // authenticated (00000000000076), since this is a cache shared by
+    // every viewer.
+    if (!updateError) {
+      try {
+        const admin = createAdminClient();
+        const column = table === "posts" ? "post_id" : "reply_id";
+        await admin.from("post_translations").delete().eq(column, rowId).eq("field", "transcript");
+      } catch {
+        // Best-effort: a stale cache entry is a worse outcome than a
+        // failed delete, but neither should cost the poster their post.
+      }
+    }
 
     return result.language || null;
   } catch {

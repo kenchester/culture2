@@ -14,6 +14,12 @@ import { createClient } from "@supabase/supabase-js";
 const GROQ_URL = "https://api.groq.com/openai/v1/audio/transcriptions";
 const MODEL = "whisper-large-v3-turbo";
 
+// Mirrors LANGUAGE_PROMPTS in lib/transcription.ts - see the note there on
+// why Simplified Chinese needs an explicit nudge.
+const LANGUAGE_PROMPTS: Record<string, string> = {
+  zh: "以下是普通话内容，请使用简体中文转写。",
+};
+
 const LANGUAGE_NAME_TO_ISO: Record<string, string> = {
   english: "en", spanish: "es", french: "fr", chinese: "zh", mandarin: "zh",
   arabic: "ar", portuguese: "pt", german: "de", italian: "it",
@@ -104,7 +110,10 @@ async function main() {
       form.set("model", MODEL);
       form.set("response_format", "verbose_json");
       form.set("timestamp_granularities[]", "segment");
-      if (isoHint) form.set("language", isoHint);
+      if (isoHint) {
+        form.set("language", isoHint);
+        if (LANGUAGE_PROMPTS[isoHint]) form.set("prompt", LANGUAGE_PROMPTS[isoHint]);
+      }
 
       const res = await fetch(GROQ_URL, {
         method: "POST",
@@ -144,6 +153,15 @@ async function main() {
           transcript_segments: segments.length > 0 ? segments : null,
         })
         .eq("id", row.id as number);
+
+      // Same cache invalidation the live path does (lib/transcription.ts):
+      // rewriting a transcript makes any cached translation of the previous
+      // one wrong, and the cache is consulted before Azure.
+      await admin
+        .from("post_translations")
+        .delete()
+        .eq(table === "posts" ? "post_id" : "reply_id", row.id as number)
+        .eq("field", "transcript");
 
       console.log(`  ${table}#${row.id}: [${normalizeLanguage(data.language)}] ${text.slice(0, 70)}`);
       done += 1;

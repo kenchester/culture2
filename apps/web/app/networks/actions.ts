@@ -10,7 +10,7 @@ import { getOptedInRecipients } from "@/lib/notifications";
 import { getSiteUrl } from "@/lib/site-url";
 import { getDisplayName } from "@/lib/profiles";
 import { translateText } from "@/lib/azure-translator";
-import { toAzureCode, type Locale } from "@/lib/locale";
+import { toAzureCode, toAzureSourceCode, type Locale } from "@/lib/locale";
 import { checkLanguagePurity } from "@/lib/language-purity-check";
 import { getNetworkLanguage, transcribeStoredMedia } from "@/lib/transcription";
 
@@ -501,20 +501,48 @@ export async function translateEntry(
 
   const table = kind === "post" ? "posts" : "post_replies";
   const sourceColumn = field === "body" ? "body" : field === "transcript" ? "transcript" : "summary_text";
+  // Also pull whichever column records the source language, so Azure can be
+  // told what it's translating from instead of guessing.
+  const languageColumn =
+    field === "transcript"
+      ? "transcript_language"
+      : field === "summary"
+        ? "summary_language:languages!summary_language_id(iso_code)"
+        : null;
   const { data: entry } = await supabase
     .from(table)
-    .select(sourceColumn)
+    .select([sourceColumn, languageColumn].filter(Boolean).join(", "))
     .eq("id", itemId)
     .single();
 
-  const sourceText = (entry as Record<string, string | null> | null)?.[sourceColumn];
+  const row = entry as Record<string, unknown> | null;
+  const sourceText = row?.[sourceColumn] as string | null | undefined;
   if (!sourceText) {
     return { error: t("translateNotFound") };
   }
 
+  // Without this, Azure auto-detects - and a transcript is very often
+  // mixed-script, because Whisper sometimes drops an English fragment into
+  // otherwise Chinese speech. Auto-detection then reads the whole string
+  // as English, translates en->en, and hands back the input completely
+  // unchanged, which surfaces as "the Translate button does nothing".
+  // Confirmed against a real 34-second Mandarin post: detected "en",
+  // output byte-identical to the input. We already know the true source
+  // language, so there's no reason to make Azure guess.
+  const sourceIso =
+    field === "transcript"
+      ? (row?.transcript_language as string | null)
+      : field === "summary"
+        ? ((row?.summary_language as { iso_code: string | null } | null)?.iso_code ?? null)
+        : null;
+
   let translated: string;
   try {
-    const result = await translateText(sourceText, toAzureCode(targetLocale));
+    const result = await translateText(
+      sourceText,
+      toAzureCode(targetLocale),
+      sourceIso ? toAzureSourceCode(sourceIso) : undefined,
+    );
     translated = result.text;
   } catch {
     return { error: t("translateFailed") };

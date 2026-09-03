@@ -1,0 +1,24 @@
+-- post_translations is an on-demand cache keyed on (target, locale, field),
+-- written once and reused forever. That was safe when the only translatable
+-- text was a post body, which changes only via updatePost. It stopped being
+-- safe once transcripts arrived: re-running transcription (a backfill, or a
+-- retry after a Groq 429) rewrites `transcript` in place, leaving any
+-- cached translation of the *previous* transcript still sitting in the
+-- cache and served forever after.
+--
+-- That's not hypothetical - it shipped. A real post was re-transcribed
+-- after a fix, and the Translate button kept returning the pre-fix text,
+-- because the stale cache row won before Azure was ever called.
+--
+-- service_role gets DELETE so lib/transcription.ts can invalidate the
+-- cache for a row it has just rewritten. Deliberately not granted to
+-- `authenticated`: this is a shared cache across all viewers, and there's
+-- no reason an individual user should be able to evict other people's
+-- entries.
+--
+-- SELECT is granted at the same time purely so scripts and diagnostics can
+-- read the table through the admin client. Its absence was actively
+-- misleading: a service_role read returned "permission denied", which the
+-- Supabase client surfaces as an empty result unless the error is checked,
+-- so the cache looked empty while it was not.
+grant select, delete on post_translations to service_role;
