@@ -24,6 +24,17 @@ const MODEL = "whisper-large-v3-turbo";
 //
 // Note this is a different mechanism from priming with vocabulary, which
 // was tested separately and does NOT fix homophone/tone errors.
+//
+// Deliberately contains no Latin text, and must stay that way. Whisper
+// decodes autoregressively, conditioning on what it has already emitted
+// (and on this prompt), so English context actively biases it toward
+// hearing subsequent Mandarin as English. Measured on a real recording
+// where the speaker said their own English name immediately before
+// 给你介绍: with this prompt Whisper produced "Kenny 介绍"; appending just
+// "我叫Ken Chester。" to the prompt degraded it further to "Kenny Jishal";
+// with no prompt at all the whole segment came out as English prose. So
+// adding example names here to "help with proper nouns" would make things
+// measurably worse, not better.
 const LANGUAGE_PROMPTS: Record<string, string> = {
   zh: "以下是普通话内容，请使用简体中文转写。",
 };
