@@ -1,7 +1,7 @@
 import { getTranslations } from "next-intl/server";
 import { launchLanguageNetwork } from "@/app/learn/[slug]/actions";
 import { AutocompleteField } from "@/components/autocomplete-field";
-import { Button } from "@/components/ui/button";
+import { SubmitButton } from "@/components/ui/submit-button";
 
 // Real schools (unlike Acme's fixed 4-language demo) aren't limited to a
 // pre-set list - any recognized member can search the full language list
@@ -16,9 +16,9 @@ export async function LaunchNetworkForm({ organizationId, slug }: { organization
       <input type="hidden" name="organizationId" value={organizationId} />
       <input type="hidden" name="slug" value={slug} />
       <AutocompleteField label={t("languageLabel")} kind="language" hiddenName="languageId" />
-      <Button type="submit" className="w-full">
+      <SubmitButton className="w-full" pendingLabel={t("launchNetworkSubmitting")}>
         {t("launchNetworkSubmit")}
-      </Button>
+      </SubmitButton>
     </form>
   );
 }

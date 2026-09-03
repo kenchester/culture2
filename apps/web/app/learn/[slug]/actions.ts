@@ -39,7 +39,20 @@ export async function launchLanguageNetwork(formData: FormData) {
 
   const admin = createAdminClient();
 
-  const [{ data: adminMembership }, { data: whitelistEntry }] = await Promise.all([
+  // All five of these are independent of one another, so they go out in a
+  // single round trip rather than five sequential ones. This action was
+  // taking 3-4 seconds, most of it spent waiting on queries that never
+  // needed to be ordered. `language` is fetched unconditionally even
+  // though it's only used when creating a network - one extra cheap
+  // lookup by primary key is a better trade than an extra sequential
+  // round trip in the common (create) case.
+  const [
+    { data: adminMembership },
+    { data: whitelistEntry },
+    { data: org },
+    { data: existingLink },
+    { data: language },
+  ] = await Promise.all([
     admin
       .from("organization_admins")
       .select("user_id")
@@ -52,32 +65,33 @@ export async function launchLanguageNetwork(formData: FormData) {
       .eq("organization_id", organizationId)
       .eq("claimed_by", user.id)
       .maybeSingle(),
+    admin
+      .from("organizations")
+      .select("name, location_place_id")
+      .eq("id", organizationId)
+      .single(),
+    admin
+      .from("organization_languages")
+      .select("network_id")
+      .eq("organization_id", organizationId)
+      .eq("language_id", languageId)
+      .maybeSingle(),
+    admin.from("languages").select("name").eq("id", languageId).single(),
   ]);
 
   if (!adminMembership && !whitelistEntry) {
     redirect(`${backTo}?error=${encodeURIComponent("Only recognized members of this school can launch a network.")}`);
   }
 
-  const { data: org } = await admin
-    .from("organizations")
-    .select("name, location_place_id")
-    .eq("id", organizationId)
-    .single();
   if (!org) {
     redirect(backTo);
   }
-
-  const { data: existingLink } = await admin
-    .from("organization_languages")
-    .select("network_id")
-    .eq("organization_id", organizationId)
-    .eq("language_id", languageId)
-    .maybeSingle();
 
   if (existingLink) {
     redirect(`/networks/${existingLink.network_id}`);
   }
 
+  // Depends on org.location_place_id, so it can't join the batch above.
   const { data: existingNetwork } = await admin
     .from("networks")
     .select("id")
@@ -88,7 +102,6 @@ export async function launchLanguageNetwork(formData: FormData) {
   let networkId = existingNetwork?.id;
 
   if (!networkId) {
-    const { data: language } = await admin.from("languages").select("name").eq("id", languageId).single();
     const { data: newNetwork, error: networkError } = await admin
       .from("networks")
       .insert({
@@ -106,16 +119,21 @@ export async function launchLanguageNetwork(formData: FormData) {
     networkId = newNetwork.id;
   }
 
-  const { error: linkError } = await admin
-    .from("organization_languages")
-    .insert({ organization_id: organizationId, language_id: languageId, network_id: networkId });
+  // Both only need networkId, so they don't have to wait on each other.
+  const [{ error: linkError }] = await Promise.all([
+    admin
+      .from("organization_languages")
+      .insert({ organization_id: organizationId, language_id: languageId, network_id: networkId }),
+    admin
+      .from("network_members")
+      .upsert(
+        { network_id: networkId, user_id: user.id },
+        { onConflict: "network_id,user_id", ignoreDuplicates: true },
+      ),
+  ]);
   if (linkError) {
     redirect(`${backTo}?error=${encodeURIComponent(linkError.message)}`);
   }
-
-  await admin
-    .from("network_members")
-    .upsert({ network_id: networkId, user_id: user.id }, { onConflict: "network_id,user_id", ignoreDuplicates: true });
 
   redirect(`/networks/${networkId}`);
 }

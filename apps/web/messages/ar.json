@@ -474,7 +474,8 @@
     "addSchoolPlaceholder": "you@school.edu",
     "addSchoolSubmit": "تحقق وأرسل الرمز",
     "addSchoolNoMatch": "{domain} ليست على CultureMesh بعد، لكننا سجّلنا اهتمامك.",
-    "pendingNotice": "أنت معترف بك {name} كطالب. سيكلفك مدير البرنامج شبكة لغاتك قريبا، أو يمكنك البدء بها أدناه."
+    "pendingNotice": "أنت معترف بك {name} كطالب. سيكلفك مدير البرنامج شبكة لغاتك قريبا، أو يمكنك البدء بها أدناه.",
+    "launchNetworkSubmitting": "الإطلاق..."
   },
   "myNetworks": {
     "heading": "شبكاتي",

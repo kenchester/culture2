@@ -474,7 +474,8 @@
     "addSchoolPlaceholder": "you@school.edu",
     "addSchoolSubmit": "Verifica e invia codice",
     "addSchoolNoMatch": "{domain} non è ancora su CultureMesh, ma abbiamo registrato il tuo interesse.",
-    "pendingNotice": "Sei riconosciuto come studente{name}. L'amministratore del tuo programma assegnerà presto la tua rete linguistica, oppure puoi iniziare qui sotto."
+    "pendingNotice": "Sei riconosciuto come studente{name}. L'amministratore del tuo programma assegnerà presto la tua rete linguistica, oppure puoi iniziare qui sotto.",
+    "launchNetworkSubmitting": "Lancio..."
   },
   "myNetworks": {
     "heading": "Le mie reti",

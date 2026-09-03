@@ -473,6 +473,7 @@
     "currentNetworksEmpty": "No networks yet - launch the first one above.",
     "launchNetworkHeading": "Launch a network for your target language",
     "launchNetworkSubmit": "Launch network",
+    "launchNetworkSubmitting": "Launching…",
     "verifyHeadingWithDomain": "Verify your {domain} email",
     "verifyHeadingGeneric": "Verify your school email",
     "verifySubheading": "You're signed in under a different email - confirm you also have one at {name} and we'll add it to your account, no new sign-up needed.",
