@@ -240,12 +240,12 @@
     "hideTranscript": "隐藏文字记录",
     "transcriptPending": "本次录音无法提供文字记录。",
     "summaryLabel": "摘要",
-    "addSummary": "添加书面摘要",
-    "addSummaryHelp": "签名视频无法自动转录。如果你愿意，可以加上简短的书面摘要，这样不签名的人也能跟上。",
     "summaryLanguageLabel": "摘要的措辞",
     "processingRecording": "发布录音并撰写文字稿......",
     "posting": "发布......",
-    "summaryLanguagePlaceholder": "开始输入一种语言......"
+    "addSummary": "添加可选摘要文本",
+    "addSummaryHelp": "手语不能自动转录。如果你愿意，可以加上简短的书面摘要，方便视障或不会手语的人跟上。",
+    "summaryLanguagePlaceholder": "开始输入任何非手语......"
   },
   "suggestNetwork": {
     "heading": "建议一个网络",

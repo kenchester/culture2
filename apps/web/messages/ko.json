@@ -240,12 +240,12 @@
     "hideTranscript": "대본 숨기기",
     "transcriptPending": "이 녹음에는 대본이 제공되지 않습니다.",
     "summaryLabel": "요약",
-    "addSummary": "서면 요약을 추가하세요",
-    "addSummaryHelp": "서명된 영상은 자동으로 전사할 수 없습니다. 원한다면 서명하지 않는 사람들도 따라올 수 있도록 짧은 요약을 추가하세요.",
     "summaryLanguageLabel": "요약의 언어",
     "processingRecording": "녹음을 올리고 대본을 작성하는 것...",
     "posting": "게시...",
-    "summaryLanguagePlaceholder": "언어를 타이핑하기 시작해..."
+    "addSummary": "선택 요약 텍스트 추가",
+    "addSummaryHelp": "수화는 자동으로 전사할 수 없습니다. 원한다면 시각장애인이나 수화를 하지 않는 사람들이 따라올 수 있도록 짧은 요약을 추가하세요.",
+    "summaryLanguagePlaceholder": "비수화 언어를 입력하기 시작하세요..."
   },
   "suggestNetwork": {
     "heading": "네트워크 제안",

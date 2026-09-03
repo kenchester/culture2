@@ -240,12 +240,12 @@
     "hideTranscript": "إخفاء النص",
     "transcriptPending": "النص غير متوفر لهذا التسجيل.",
     "summaryLabel": "الملخص",
-    "addSummary": "أضف ملخصا مكتوبا",
-    "addSummaryHelp": "لا يمكن نسخ الفيديو الموقع تلقائيا. إذا رغبت، أضف ملخصا مكتوبا قصيرا حتى يتمكن من لا يوقعون من متابعة الطلب.",
     "summaryLanguageLabel": "لغة ملخصك",
     "processingRecording": "نشر تسجيلك وكتابة النص...",
     "posting": "النشر...",
-    "summaryLanguagePlaceholder": "ابدأ بكتابة لغة..."
+    "addSummary": "إضافة نص ملخص اختياري",
+    "addSummaryHelp": "لا يمكن نسخ لغات الإشارة تلقائيا. إذا رغبت، أضف ملخصا مكتوبا قصيرا حتى يتمكن الأشخاص ضعاف البصر أو لا يمارسون الإشارة من متابعة الكتابة.",
+    "summaryLanguagePlaceholder": "ابدأ بكتابة أي لغة غير إشارة..."
   },
   "suggestNetwork": {
     "heading": "اقترح شبكة",

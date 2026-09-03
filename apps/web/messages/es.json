@@ -240,12 +240,12 @@
     "hideTranscript": "Ocultar transcripción",
     "transcriptPending": "La transcripción no está disponible para esta grabación.",
     "summaryLabel": "Resumen",
-    "addSummary": "Añadir un resumen escrito",
-    "addSummaryHelp": "Un vídeo firmado no se puede transcribir automáticamente. Si quieres, añade un breve resumen escrito para que quienes no firmen puedan seguir.",
     "summaryLanguageLabel": "Lenguaje de tu resumen",
     "processingRecording": "Subir tu grabación y escribir la transcripción...",
     "posting": "Publicando...",
-    "summaryLanguagePlaceholder": "Empieza a escribir un idioma..."
+    "addSummary": "Añadir texto resumen opcional",
+    "addSummaryHelp": "Las lenguas de signos no se pueden transcribir automáticamente. Si quieres, añade un breve resumen escrito para que las personas con discapacidad visual o que no señan puedan seguir.",
+    "summaryLanguagePlaceholder": "Empieza a escribir cualquier idioma que no sea de signos..."
   },
   "suggestNetwork": {
     "heading": "Sugiere una red",

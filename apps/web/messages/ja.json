@@ -240,12 +240,12 @@
     "hideTranscript": "書き起こしを隠す",
     "transcriptPending": "この録音の書き起こしは利用できません。",
     "summaryLabel": "概要",
-    "addSummary": "書面による要約を追加してください",
-    "addSummaryHelp": "署名入りの動画は自動的に文字起こしできません。もしよければ、署名しない人もついていけるように短い要約を追加してください。",
     "summaryLanguageLabel": "要約の文言",
     "processingRecording": "録音を投稿し、書き起こしを書くこと...",
     "posting": "投稿中...",
-    "summaryLanguagePlaceholder": "言語をタイプし始め..."
+    "addSummary": "任意の要約テキストの追加",
+    "addSummaryHelp": "手話は自動的に書き起こしられるわけではありません。もしよければ、視覚障害者や手話ができない人も理解できるように短い文章の要約を追加してください。",
+    "summaryLanguagePlaceholder": "手話以外の言語を入力し始めてください..."
   },
   "suggestNetwork": {
     "heading": "ネットワークを提案してください",
