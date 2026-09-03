@@ -151,10 +151,9 @@ export async function createPost(formData: FormData) {
   // video for Whisper to find, and sign recognition isn't a solved problem
   // at any price. Those posts use the optional written summary instead.
   let detectedLanguage: string | null = null;
-  let targetLanguage: { name: string; iso_code: string | null; is_signed: boolean } | null = null;
   if (mediaPath && inserted) {
-    targetLanguage = await getNetworkLanguage(supabase, Number(networkId));
-    if (!targetLanguage?.is_signed) {
+    const networkLanguage = await getNetworkLanguage(supabase, Number(networkId));
+    if (!networkLanguage?.is_signed) {
       detectedLanguage = await transcribeStoredMedia(supabase, "posts", inserted.id, mediaPath);
     }
   }
@@ -198,14 +197,22 @@ export async function createPost(formData: FormData) {
   // someone said, so a beginner with a strong accent would get rejected
   // for the transcriber's mistakes rather than their own. Speaking a
   // language badly is the thing being practiced, not a violation.
+  // Gated on orgLanguage, i.e. organization_languages membership, exactly
+  // like the text purity check above - so both the block (text) and the
+  // advisory (speech) apply only inside a school's language program, never
+  // on the open site. A public network is just a community; an adult
+  // there may reasonably post in whatever language they like, and being
+  // told their own speech "might not be in Mandarin" would be both wrong
+  // and unwelcome. Transcription itself still runs everywhere, since the
+  // accessibility requirement isn't scoped to schools.
   if (
     detectedLanguage &&
-    targetLanguage?.iso_code &&
-    detectedLanguage !== targetLanguage.iso_code
+    orgLanguage?.iso_code &&
+    detectedLanguage !== orgLanguage.iso_code
   ) {
     redirect(
       `/networks/${networkId}?langNotice=${encodeURIComponent(
-        `That recording sounded like it might not be in ${targetLanguage.name}. It's posted either way - just a heads up.`,
+        `That recording sounded like it might not be in ${orgLanguage.name}. It's posted either way - just a heads up.`,
       )}${embedSuffix}`,
     );
   }

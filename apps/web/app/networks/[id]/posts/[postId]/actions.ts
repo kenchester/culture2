@@ -65,13 +65,26 @@ export async function createReply(formData: FormData) {
   // Same post-hoc, best-effort transcription as createPost (see the long
   // note there on why this runs after the insert and never blocks).
   let detectedLanguage: string | null = null;
-  let targetLanguage: { name: string; iso_code: string | null; is_signed: boolean } | null = null;
   if (mediaPath && inserted) {
-    targetLanguage = await getNetworkLanguage(supabase, Number(networkId));
-    if (!targetLanguage?.is_signed) {
+    const networkLanguage = await getNetworkLanguage(supabase, Number(networkId));
+    if (!networkLanguage?.is_signed) {
       detectedLanguage = await transcribeStoredMedia(supabase, "post_replies", inserted.id, mediaPath);
     }
   }
+
+  // The advisory - not the transcription - is scoped to a school's
+  // language program via organization_languages, matching createPost.
+  // Public networks get transcripts and captions but no language nudge.
+  const { data: orgNetwork } = detectedLanguage
+    ? await supabase
+        .from("organization_languages")
+        .select("language:languages(name, iso_code)")
+        .eq("network_id", Number(networkId))
+        .maybeSingle()
+    : { data: null };
+  const orgLanguage = orgNetwork?.language as unknown as
+    | { name: string; iso_code: string | null }
+    | null;
 
   // Best-effort - a failed notification must never turn a successful
   // reply into an error page for the person replying.
@@ -101,12 +114,12 @@ export async function createReply(formData: FormData) {
 
   if (
     detectedLanguage &&
-    targetLanguage?.iso_code &&
-    detectedLanguage !== targetLanguage.iso_code
+    orgLanguage?.iso_code &&
+    detectedLanguage !== orgLanguage.iso_code
   ) {
     redirect(
       `/networks/${networkId}/posts/${postId}?langNotice=${encodeURIComponent(
-        `That recording sounded like it might not be in ${targetLanguage.name}. It's posted either way - just a heads up.`,
+        `That recording sounded like it might not be in ${orgLanguage.name}. It's posted either way - just a heads up.`,
       )}${embedSuffix}`,
     );
   }
