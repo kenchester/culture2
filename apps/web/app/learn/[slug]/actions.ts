@@ -1,5 +1,6 @@
 "use server";
 
+import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import { createAdminClient } from "@/lib/supabase/admin";
@@ -88,6 +89,10 @@ export async function launchLanguageNetwork(formData: FormData) {
   }
 
   if (existingLink) {
+    // Nothing was created, but network_members may still gain this user
+    // on a later pass, and the membership counts shown on the school page
+    // are rendered from the same cached payload.
+    revalidatePath(backTo);
     redirect(`/networks/${existingLink.network_id}`);
   }
 
@@ -134,6 +139,13 @@ export async function launchLanguageNetwork(formData: FormData) {
   if (linkError) {
     redirect(`${backTo}?error=${encodeURIComponent(linkError.message)}`);
   }
+
+  // The school page we're navigating away from now lists one more network
+  // than the copy sitting in the router cache. Without this, hitting Back
+  // after a launch shows the old list and the network appears missing
+  // until a manual reload - the redirect below leaves that cached entry
+  // untouched, since it's a different route.
+  revalidatePath(backTo);
 
   redirect(`/networks/${networkId}`);
 }
@@ -213,6 +225,11 @@ export async function verifyEmailCode(formData: FormData) {
   await admin.from("pending_email_verifications").delete().eq("profile_id", user.id).eq("email", email);
 
   await claimWhitelistSeat(slug);
+
+  // claimWhitelistSeat has just changed how this page renders (the
+  // get-started banner gives way to the recognized-member view), so the
+  // cached copy is wrong even though the URL is unchanged.
+  revalidatePath(backTo);
 
   redirect(backTo);
 }

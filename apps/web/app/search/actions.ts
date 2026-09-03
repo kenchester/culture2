@@ -1,5 +1,6 @@
 "use server";
 
+import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 
@@ -28,6 +29,14 @@ export async function launchNetwork(formData: FormData) {
   if (error) {
     redirect(`${resultsUrl}&error=${encodeURIComponent(error.message)}`);
   }
+
+  // Same reason as launchLanguageNetwork: the results page still has a
+  // cached copy offering to launch a network that now exists, so going
+  // Back after launching would show the old "no network yet" state.
+  // revalidatePath matches on pathname only, which is what we want here -
+  // every origin/location combination that could list this network is
+  // invalidated, not just the one query string we came from.
+  revalidatePath("/search/results");
 
   redirect(`/networks/${networkId}`);
 }
