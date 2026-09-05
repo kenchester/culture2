@@ -1,5 +1,6 @@
 import "server-only";
 import { z } from "zod";
+import { resolveTranslatorEndpoint } from "@/lib/azure-endpoint";
 
 const envSchema = z.object({
   NEXT_PUBLIC_SUPABASE_URL: z.url(),
@@ -7,7 +8,10 @@ const envSchema = z.object({
   SUPABASE_SECRET_KEY: z.string().min(1),
   RESEND_API_KEY: z.string().min(1),
   AZURE_TRANSLATOR_KEY: z.string().min(1),
-  AZURE_TRANSLATOR_ENDPOINT: z.url(),
+  // Rejects the shared global endpoint and normalizes the trailing slash -
+  // see lib/azure-endpoint.ts for why both are worth failing the build over
+  // rather than surfacing later as a bogus 401.
+  AZURE_TRANSLATOR_ENDPOINT: z.string().transform(resolveTranslatorEndpoint),
   AZURE_TRANSLATOR_REGION: z.string().min(1),
   // Vercel sets this automatically for every project (Settings > Cron
   // Jobs) and sends it as "Authorization: Bearer <value>" on every cron

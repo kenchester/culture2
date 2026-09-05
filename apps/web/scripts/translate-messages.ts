@@ -6,12 +6,16 @@
 //
 // Run via: npm run translate-messages [-- --force]
 //
+// Pass --check to test the Azure credentials/endpoint and exit without
+// translating anything: npm run translate-messages -- --check
+//
 // Deliberately does NOT import lib/env.ts or lib/azure-translator.ts -
 // both pull in the "server-only" package, which throws unconditionally
 // when resolved outside a webpack server bundle (i.e. in this plain
 // Node/tsx script).
 
 import fs from "node:fs";
+import { resolveTranslatorEndpoint } from "../lib/azure-endpoint";
 import path from "node:path";
 
 try {
@@ -93,13 +97,15 @@ function restorePlaceholders(text: string, placeholders: string[]): string {
 
 async function translateBatch(texts: string[], targetAzureCode: string): Promise<string[]> {
   const key = process.env.AZURE_TRANSLATOR_KEY;
-  const endpoint = process.env.AZURE_TRANSLATOR_ENDPOINT;
   const region = process.env.AZURE_TRANSLATOR_REGION;
-  if (!key || !endpoint || !region) {
+  if (!key || !region) {
     throw new Error(
-      "Missing AZURE_TRANSLATOR_KEY / AZURE_TRANSLATOR_ENDPOINT / AZURE_TRANSLATOR_REGION in environment",
+      "Missing AZURE_TRANSLATOR_KEY / AZURE_TRANSLATOR_REGION in environment",
     );
   }
+  // Same validation the app uses, so this script can't succeed against a
+  // configuration the app would reject (or vice versa).
+  const endpoint = resolveTranslatorEndpoint(process.env.AZURE_TRANSLATOR_ENDPOINT);
 
   const protectedTexts = texts.map(protectPlaceholders);
 
@@ -119,11 +125,124 @@ async function translateBatch(texts: string[], targetAzureCode: string): Promise
   });
 
   if (!res.ok) {
-    throw new Error(`Azure Translator request failed: ${res.status} ${await res.text()}`);
+    const body = await res.text();
+    // 401 here is far more often a wrong endpoint than a wrong key - Azure
+    // returns the identical 401001 for both - so say so rather than
+    // sending whoever hits this off to rotate a working key.
+    const hint =
+      res.status === 401
+        ? `\n\nA 401 from Azure Translator usually means the endpoint is wrong, not the key.` +
+          `\nThis resource has a custom subdomain and only accepts its own endpoint:` +
+          `\n  https://<resource-name>.cognitiveservices.azure.com/translator/text/v3.0/` +
+          `\nCurrently using: ${endpoint}`
+        : "";
+    throw new Error(`Azure Translator request failed: ${res.status} ${body}${hint}`);
   }
 
   const json = (await res.json()) as Array<{ translations: Array<{ text: string }> }>;
   return json.map((item, i) => restorePlaceholders(item.translations[0].text, protectedTexts[i].placeholders));
+}
+
+// --check: diagnose the Azure configuration without translating anything.
+//
+// The whole point of this is the order of operations. Azure returns HTTP
+// 401 for both "wrong endpoint for this resource" and "key is nonsense",
+// and on the GLOBAL host those two responses are byte-identical - verified
+// by sending the literal string "definitely-not-a-key" and diffing it
+// against a known-good key's response. So a 401 observed against the wrong
+// host tells you nothing, and the natural next move (rotate the key) is
+// wasted work on a key that was fine.
+//
+// Trying the resource's own endpoint FIRST is what makes the result
+// readable, because there the two failures finally diverge:
+//
+//   resource endpoint + valid key  -> 200
+//   resource endpoint + bad key    -> 401, error.code 401  (generic)
+//   global endpoint   + valid key  -> 401, error.code 401001
+//   global endpoint   + bad key    -> 401, error.code 401001  (identical)
+//
+// Hence: 401001 means the endpoint, not the key - no matter which key
+// produced it. Only a plain 401 from the resource endpoint implicates the
+// key itself.
+async function checkConfiguration(): Promise<boolean> {
+  const key = process.env.AZURE_TRANSLATOR_KEY;
+  const region = process.env.AZURE_TRANSLATOR_REGION;
+
+  let endpoint: string;
+  try {
+    endpoint = resolveTranslatorEndpoint(process.env.AZURE_TRANSLATOR_ENDPOINT);
+  } catch (error) {
+    console.error(`FAIL  endpoint\n${(error as Error).message}`);
+    return false;
+  }
+
+  console.log(`endpoint  ${endpoint}`);
+  console.log(`region    ${region ?? "(unset)"}`);
+  console.log(`key       ${key ? `set, ${key.length} chars` : "(unset)"}`);
+  console.log();
+
+  if (!key) {
+    console.error("FAIL  AZURE_TRANSLATOR_KEY is not set.");
+    return false;
+  }
+
+  const url = new URL("translate", endpoint);
+  url.searchParams.set("api-version", "3.0");
+  url.searchParams.set("to", "es");
+  console.log(`POST ${url}`);
+
+  const headers: Record<string, string> = {
+    "Ocp-Apim-Subscription-Key": key,
+    "Content-Type": "application/json",
+  };
+  // Optional on a custom-subdomain endpoint (confirmed: 200 with and
+  // without), required on the global one. Send it when we have it.
+  if (region) headers["Ocp-Apim-Subscription-Region"] = region;
+
+  let res: Response;
+  try {
+    res = await fetch(url, { method: "POST", headers, body: JSON.stringify([{ Text: "ping" }]) });
+  } catch (error) {
+    console.error(`\nFAIL  could not reach the endpoint: ${(error as Error).message}`);
+    return false;
+  }
+
+  const body = await res.text();
+
+  if (res.ok) {
+    const json = JSON.parse(body) as Array<{ translations: Array<{ text: string }> }>;
+    console.log(`\nOK  HTTP 200 - "ping" -> "${json[0]?.translations[0]?.text}"`);
+    console.log("Endpoint, key, and region are all working.");
+    return true;
+  }
+
+  let azureCode: string | number | undefined;
+  try {
+    azureCode = (JSON.parse(body) as { error?: { code?: string | number } }).error?.code;
+  } catch {
+    // Non-JSON body; fall through and print it raw.
+  }
+
+  console.error(`\nFAIL  HTTP ${res.status}${azureCode ? ` (Azure error.code ${azureCode})` : ""}`);
+
+  if (String(azureCode) === "401001") {
+    console.error(
+      "\nThis is an ENDPOINT problem, not a key problem.\n" +
+        "401001 is what Azure returns when the host doesn't serve this resource - a valid\n" +
+        "key and a fabricated one produce the same response, so don't rotate the key on\n" +
+        "the strength of it. Point AZURE_TRANSLATOR_ENDPOINT at the resource's own host:\n" +
+        "  https://<resource-name>.cognitiveservices.azure.com/translator/text/v3.0/",
+    );
+  } else if (res.status === 401) {
+    console.error(
+      "\nThe endpoint above is a resource-specific host, and it answered - so this one\n" +
+        "really does look like the KEY (or the region header). Check both keys on the\n" +
+        "resource's Keys and Endpoint page.",
+    );
+  } else {
+    console.error(`\n${body}`);
+  }
+  return false;
 }
 
 function readMessages(locale: string): MessageTree {
@@ -135,6 +254,12 @@ function readMessages(locale: string): MessageTree {
 }
 
 async function main() {
+  if (process.argv.includes("--check")) {
+    const ok = await checkConfiguration();
+    if (!ok) process.exit(1);
+    return;
+  }
+
   const force = process.argv.includes("--force");
 
   const flatEn = flatten(readMessages("en"));
