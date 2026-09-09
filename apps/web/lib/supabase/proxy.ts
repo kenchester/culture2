@@ -2,7 +2,7 @@ import { createServerClient } from "@supabase/ssr";
 import { NextResponse, type NextRequest } from "next/server";
 import { publicEnv } from "@/lib/env.public";
 import { getAuthCookieOptions } from "@/lib/supabase/cookie-options";
-import { detectLocaleFromCountry } from "@/lib/locale";
+import { detectLocale } from "@/lib/locale";
 
 // Each sequestered subdomain gets its home/search path rewritten to its
 // own page - faith.culturemesh.com to a full religion picker,
@@ -103,6 +103,30 @@ export async function updateSession(request: NextRequest) {
   const buildResponse = () =>
     rewriteUrl ? NextResponse.rewrite(rewriteUrl, { request }) : NextResponse.next({ request });
 
+  // One-time locale bootstrap: only runs while no NEXT_LOCALE cookie exists,
+  // so a visitor's own choice (via the language switcher) always wins on
+  // every later request.
+  //
+  // This has to happen BEFORE the first buildResponse(), for two reasons.
+  // buildResponse() forwards the request headers downstream, so setting the
+  // cookie on the *request* is what lets the very first page render in the
+  // detected language instead of English - previously the cookie was only
+  // set on the response, so a new visitor's first page was always English
+  // and only the second one was translated. And it can't be done later
+  // either: Supabase's setAll() rebuilds `response` from scratch, so a
+  // rebuild after that point would silently drop refreshed auth cookies.
+  const bootstrapLocale = request.cookies.get("NEXT_LOCALE")
+    ? null
+    : detectLocale(
+        request.headers.get("accept-language"),
+        // Only populated on Vercel's network, so local dev always falls
+        // through to the Accept-Language result (or "en").
+        request.headers.get("x-vercel-ip-country"),
+      );
+  if (bootstrapLocale) {
+    request.cookies.set("NEXT_LOCALE", bootstrapLocale);
+  }
+
   let response = buildResponse();
 
   const supabase = createServerClient(
@@ -131,17 +155,21 @@ export async function updateSession(request: NextRequest) {
   // reading the cookie) so a revoked/expired session can't slip through.
   await supabase.auth.getUser();
 
-  // One-time locale bootstrap: only fires while no NEXT_LOCALE cookie exists
-  // yet, so a visitor's own choice (set via the language switcher) always
-  // wins on every later request. x-vercel-ip-country is only populated on
-  // Vercel's network, so local dev always falls back to "en" here.
-  if (!request.cookies.get("NEXT_LOCALE")) {
-    const country = request.headers.get("x-vercel-ip-country");
-    response.cookies.set("NEXT_LOCALE", detectLocaleFromCountry(country), {
+  // Persist the bootstrapped locale for the browser. Done on the final
+  // response object (after any setAll rebuilds) so it can't be discarded.
+  if (bootstrapLocale) {
+    response.cookies.set("NEXT_LOCALE", bootstrapLocale, {
       path: "/",
       maxAge: 60 * 60 * 24 * 365,
     });
   }
+  // No "Vary: Accept-Language" here, deliberately. Appending it from the
+  // proxy doesn't survive - Next.js writes its own Vary (rsc,
+  // next-router-state-tree, ..., Accept-Encoding) over the top, verified by
+  // inspecting the response headers. It isn't needed anyway: Accept-Language
+  // is only ever read on the bootstrap path, and every response that takes
+  // that path carries a Set-Cookie, which keeps it out of shared caches.
+  // Once the cookie exists the header is never consulted again.
 
   if (isSequesteredHost(request.headers.get("host") ?? "")) {
     response.headers.set("X-Robots-Tag", "noindex, nofollow");

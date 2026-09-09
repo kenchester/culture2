@@ -117,3 +117,91 @@ export function detectLocaleFromCountry(country: string | null | undefined): Loc
   if (!country) return "en";
   return COUNTRY_TO_LOCALE[country.toUpperCase()] ?? "en";
 }
+
+// The Chinese we ship is Simplified (LOCALE_LABELS.zh is 简体中文), so only
+// the Simplified-writing tags map onto it. zh-TW / zh-HK / zh-MO / zh-Hant
+// are Traditional and deliberately do NOT match - serving Simplified to a
+// Traditional reader is its own kind of wrong, and falling through to the
+// next language they listed is better. This matches the existing choice in
+// COUNTRY_TO_LOCALE, which maps CN to zh but leaves TW out entirely.
+const SIMPLIFIED_CHINESE_TAGS = new Set(["zh", "zh-hans", "zh-cn", "zh-sg", "zh-my"]);
+
+/** One BCP-47 tag -> a supported locale, or null if we don't offer it. */
+function localeFromTag(tag: string): Locale | null {
+  const lower = tag.toLowerCase();
+  // "*" means "anything else is fine" - it states no preference, so it
+  // tells us nothing and must not beat the IP fallback.
+  if (!lower || lower === "*") return null;
+
+  if (lower === "zh" || lower.startsWith("zh-")) {
+    return SIMPLIFIED_CHINESE_TAGS.has(lower) || lower.startsWith("zh-hans") ? "zh" : null;
+  }
+
+  // Region and script subtags don't change which translation we serve:
+  // pt-BR and pt-PT both get "pt", en-GB and en-US both get "en".
+  const primary = lower.split("-")[0];
+  return isLocale(primary) ? primary : null;
+}
+
+/**
+ * Parses an Accept-Language header into the supported locales it asks for,
+ * most-preferred first, de-duplicated.
+ *
+ * Handles the q-value grammar properly: "zh-CN,zh;q=0.9,en;q=0.8" means
+ * Simplified Chinese, then Chinese, then English. A tag with no q is 1.0
+ * (the strongest preference), and q=0 means "explicitly not this" and is
+ * dropped rather than ranked last. Equal q values keep header order, which
+ * is what the spec intends.
+ */
+export function parseAcceptLanguage(header: string | null | undefined): Locale[] {
+  if (!header) return [];
+
+  const ranked = header
+    .split(",")
+    .map((part, index) => {
+      const [rawTag, ...params] = part.split(";");
+      const qParam = params.map((p) => p.trim()).find((p) => p.toLowerCase().startsWith("q="));
+      const parsed = qParam ? Number.parseFloat(qParam.slice(2)) : 1;
+      return {
+        tag: rawTag.trim(),
+        // A malformed q is treated as "unspecified" (1.0) rather than
+        // discarding an otherwise usable preference.
+        q: Number.isFinite(parsed) ? parsed : 1,
+        index,
+      };
+    })
+    .filter((entry) => entry.tag && entry.q > 0)
+    .sort((a, b) => b.q - a.q || a.index - b.index);
+
+  const locales: Locale[] = [];
+  for (const { tag } of ranked) {
+    const locale = localeFromTag(tag);
+    if (locale && !locales.includes(locale)) locales.push(locale);
+  }
+  return locales;
+}
+
+/**
+ * Picks the initial interface language for a visitor who hasn't chosen one.
+ *
+ * Accept-Language wins, because it's a stated preference ("what I want to
+ * read") while the IP country is only a fact about the network ("where this
+ * request came from"). Those disagree in exactly the cases that matter: a
+ * Chinese student in the US, an American on holiday in Paris, anyone on a
+ * corporate VPN that exits in Frankfurt.
+ *
+ * The country is the fallback for the case Accept-Language can't cover -
+ * no header at all, or one that asks only for languages we don't publish.
+ *
+ * Known limitation, not solvable here: a device whose language settings
+ * were never touched still sends its shipped default (usually en-US), and
+ * that is indistinguishable from someone who genuinely wants English. Such
+ * a visitor gets English even in, say, Mexico. The language switcher
+ * remains the fix for them, and their choice is respected permanently.
+ */
+export function detectLocale(
+  acceptLanguage: string | null | undefined,
+  country: string | null | undefined,
+): Locale {
+  return parseAcceptLanguage(acceptLanguage)[0] ?? detectLocaleFromCountry(country);
+}
