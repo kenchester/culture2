@@ -50,20 +50,52 @@ export function toAzureSourceCode(isoCode: string): string {
 
 export const RTL_LOCALES: ReadonlySet<Locale> = new Set(["ar"]);
 
+export const DEFAULT_LOCALE: Locale = "en";
+
 /**
- * ISO 3166-1 alpha-2 country code -> best-match supported locale, based on
- * each country's official/primary language. Countries whose official
- * language isn't one of SUPPORTED_LOCALES are intentionally absent here and
- * fall back to "en" via detectLocaleFromCountry, per product requirements.
- * Countries with more than one official language pick whichever is both
- * primary/most-used AND on our list (e.g. Switzerland -> German, its
- * largest-plurality national language, even though French/Italian are also
- * official there).
+ * The cookie the switcher writes. It means exactly one thing - "this person
+ * chose this language" - and detection must never write it, or that meaning
+ * is lost. See lib/supabase/proxy.ts.
+ */
+export const CHOSEN_LOCALE_COOKIE = "NEXT_LOCALE";
+
+/**
+ * Request-scoped carrier for a detected (guessed) locale. The proxy sets it
+ * on the inbound request so the first render is already correct; it is
+ * never sent to the browser, and never outlives the request. Anything a
+ * client sends under this name is cleared before use.
+ */
+export const DETECTED_LOCALE_COOKIE = "x-detected-locale";
+
+/**
+ * ISO 3166-1 alpha-2 country code -> the locale we ship that the country's
+ * MAJORITY actually reads. Absent means "no signal" - localeFromCountry
+ * returns null and the caller falls through, rather than us asserting a
+ * language for a country we can't serve.
+ *
+ * Two rules govern what's in here:
+ *
+ * 1. Majority, not merely official. Macau has Portuguese as a co-official
+ *    language but under 1% of residents speak it; it read MO -> "pt" here
+ *    until this rule was applied, which would have served Portuguese to a
+ *    Cantonese-speaking population. Removed.
+ *
+ * 2. Script matters, so the Traditional/Simplified split applies here just
+ *    as it does to Accept-Language. We publish Simplified only, so TW, HK
+ *    and MO are all absent - Simplified is a visibly wrong answer for a
+ *    Traditional reader, not a partial one.
+ *
+ * Genuinely mixed countries (BE, CH, CA) are handled by REGION_TO_LOCALE
+ * below instead of guessing nationally.
+ *
+ * Note that every "en" entry is behaviourally redundant with DEFAULT_LOCALE
+ * - they're kept because they record a deliberate judgement ("English is
+ * genuinely the working language here") rather than an oversight.
  */
 export const COUNTRY_TO_LOCALE: Record<string, Locale> = {
   // English
   US: "en", GB: "en", IE: "en", AU: "en", NZ: "en", CA: "en", ZA: "en",
-  IN: "en", PK: "en", PH: "en", SG: "en", HK: "en",
+  IN: "en", PK: "en", PH: "en", SG: "en",
   NG: "en", KE: "en", UG: "en", TZ: "en", ZM: "en", ZW: "en", GH: "en",
   SL: "en", LR: "en", GM: "en", MW: "en", BW: "en", NA: "en", SS: "en",
   MU: "en", SC: "en", SZ: "en", LS: "en",
@@ -79,7 +111,7 @@ export const COUNTRY_TO_LOCALE: Record<string, Locale> = {
   BO: "es", PY: "es", CL: "es", AR: "es", UY: "es", GQ: "es", PR: "es",
 
   // French
-  FR: "fr", BE: "fr", LU: "fr", MC: "fr",
+  FR: "fr", LU: "fr", MC: "fr",
   SN: "fr", ML: "fr", BF: "fr", NE: "fr", CI: "fr", GN: "fr", TG: "fr",
   BJ: "fr", CF: "fr", TD: "fr", CG: "fr", CD: "fr", GA: "fr", CM: "fr",
   MG: "fr", BI: "fr", HT: "fr", PF: "fr", NC: "fr",
@@ -110,12 +142,51 @@ export const COUNTRY_TO_LOCALE: Record<string, Locale> = {
 
   // Portuguese
   PT: "pt", BR: "pt", AO: "pt", MZ: "pt", CV: "pt", GW: "pt", ST: "pt",
-  TL: "pt", MO: "pt",
+  TL: "pt",
 };
 
-export function detectLocaleFromCountry(country: string | null | undefined): Locale {
-  if (!country) return "en";
-  return COUNTRY_TO_LOCALE[country.toUpperCase()] ?? "en";
+/**
+ * Sub-national overrides for countries where a single national answer would
+ * be confidently wrong for a large minority. Keyed by ISO 3166-2 subdivision
+ * code, which is what x-vercel-ip-country-region carries.
+ *
+ * - CA: English is the national majority (~75%), so CA stays "en" above;
+ *   Quebec is the one subdivision where that's clearly wrong.
+ * - CH: German is a ~62% plurality nationally, but the Romandy cantons and
+ *   Italian-speaking Ticino are not German-reading. Carving those out leaves
+ *   a remainder that is overwhelmingly German, so CH -> "de" is safe once
+ *   they're excluded. (CH-FR is Fribourg, a French-majority canton - the
+ *   code collides with France's country code but is unambiguous here.)
+ * - BE: Dutch is the national majority and we don't publish Dutch, so BE is
+ *   absent from COUNTRY_TO_LOCALE entirely. Only Wallonia and Brussels,
+ *   both French-reading, get an answer; Flanders correctly gets none.
+ */
+const REGION_TO_LOCALE: Record<string, Record<string, Locale>> = {
+  CA: { QC: "fr" },
+  CH: { GE: "fr", VD: "fr", NE: "fr", JU: "fr", VS: "fr", FR: "fr", TI: "it" },
+  BE: { WAL: "fr", BRU: "fr" },
+};
+
+/**
+ * Geolocation signal. Returns null for "no signal" - a missing header, an
+ * unmapped country, or a country we deliberately refuse to guess at - so
+ * the caller falls through to the next signal instead of stopping at the
+ * default here.
+ */
+export function localeFromCountry(
+  country: string | null | undefined,
+  region?: string | null | undefined,
+): Locale | null {
+  if (!country) return null;
+  const code = country.toUpperCase();
+
+  const subdivision = region?.trim().toUpperCase();
+  if (subdivision) {
+    const override = REGION_TO_LOCALE[code]?.[subdivision];
+    if (override) return override;
+  }
+
+  return COUNTRY_TO_LOCALE[code] ?? null;
 }
 
 // The Chinese we ship is Simplified (LOCALE_LABELS.zh is 简体中文), so only
@@ -182,26 +253,47 @@ export function parseAcceptLanguage(header: string | null | undefined): Locale[]
 }
 
 /**
- * Picks the initial interface language for a visitor who hasn't chosen one.
- *
- * Accept-Language wins, because it's a stated preference ("what I want to
- * read") while the IP country is only a fact about the network ("where this
- * request came from"). Those disagree in exactly the cases that matter: a
- * Chinese student in the US, an American on holiday in Paris, anyone on a
- * corporate VPN that exits in Frankfurt.
- *
- * The country is the fallback for the case Accept-Language can't cover -
- * no header at all, or one that asks only for languages we don't publish.
- *
- * Known limitation, not solvable here: a device whose language settings
- * were never touched still sends its shipped default (usually en-US), and
- * that is indistinguishable from someone who genuinely wants English. Such
- * a visitor gets English even in, say, Mexico. The language switcher
- * remains the fix for them, and their choice is respected permanently.
+ * Stated-preference signal. Null when the header is absent or names only
+ * languages we don't publish, so the caller can fall through to geography.
  */
-export function detectLocale(
+export function localeFromAcceptLanguage(header: string | null | undefined): Locale | null {
+  return parseAcceptLanguage(header)[0] ?? null;
+}
+
+/**
+ * Picks the interface language for a visitor who has NOT made an explicit
+ * choice. The caller is responsible for checking the stored preference
+ * first - that always wins and never reaches this function.
+ *
+ * Order is Accept-Language, then geography, then the default.
+ *
+ * Accept-Language outranks geography because the two answer different
+ * questions. The header is a stated preference - what this person wants to
+ * read. The IP country is a fact about the network - where the request
+ * happened to leave from. They agree most of the time and diverge in
+ * exactly the cases that matter: a Chinese student in the US, an American
+ * on holiday in Paris, anyone whose corporate VPN exits in Frankfurt. In
+ * all three the header is right and the location is wrong.
+ *
+ * The cost of that ordering, stated plainly: a browser left on its factory
+ * default reports the language the device shipped with, and nothing in the
+ * request distinguishes that from a deliberate choice. So someone abroad
+ * with a default-English laptop gets English where geography would have
+ * given them the local language. The trade cuts both ways - we're choosing
+ * to believe a stated preference that is sometimes only an unexamined
+ * default, over a location that is sometimes only where the VPN exits. It
+ * favours the person who has expressed themselves at the expense of the
+ * person who hasn't, and the language switcher is the remedy for whoever
+ * lands on the wrong side of it.
+ */
+export function resolveLocale(
   acceptLanguage: string | null | undefined,
   country: string | null | undefined,
+  region?: string | null | undefined,
 ): Locale {
-  return parseAcceptLanguage(acceptLanguage)[0] ?? detectLocaleFromCountry(country);
+  return (
+    localeFromAcceptLanguage(acceptLanguage) ??
+    localeFromCountry(country, region) ??
+    DEFAULT_LOCALE
+  );
 }
