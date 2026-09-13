@@ -51,10 +51,12 @@ export function ReplySection({
    * a reply out in the network feed. Without it, arriving here would
    * silently drop the thing they had just chosen to do.
    */
-  initialReplyTo?: { id: string; name: string } | null;
+  initialReplyTo?: { id: string; name: string; replyId?: number } | null;
 }) {
   const t = useTranslations("postDetail");
-  const [replyTo, setReplyTo] = useState(initialReplyTo ?? null);
+  const [replyTo, setReplyTo] = useState<{ id: string; name: string; replyId?: number } | null>(
+    initialReplyTo ?? null,
+  );
   const formRef = useRef<HTMLFormElement>(null);
 
   // Clear the target once the reply actually sends. React resets the form
@@ -77,6 +79,9 @@ export function ReplySection({
           <input type="hidden" name="networkId" value={networkId} />
           {isEmbedded && <input type="hidden" name="embed" value="1" />}
           {replyTo && <input type="hidden" name="replyToUserId" value={replyTo.id} />}
+          {replyTo?.replyId != null && (
+            <input type="hidden" name="replyToReplyId" value={replyTo.replyId} />
+          )}
           {error && <FormError>{error}</FormError>}
 
           {replyTo && (

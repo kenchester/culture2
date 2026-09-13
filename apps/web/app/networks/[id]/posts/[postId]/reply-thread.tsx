@@ -22,6 +22,8 @@ export type ReplyView = {
   permalink: string;
   /** Set when this reply answers another reply rather than the post. */
   replyTo: { id: string; name: string } | null;
+  /** The top-level reply this sits beneath, or null if top-level itself. */
+  parentReplyId: number | null;
 };
 
 /** How many replies show before the rest are folded away. */
@@ -43,11 +45,13 @@ export function ReplyRow({
 }: {
   reply: ReplyView;
   someoneLabel: string;
-  onReply?: (target: { id: string; name: string }) => void;
+  onReply?: (target: { id: string; name: string; replyId: number }) => void;
   replyHref?: string;
 }) {
   const t = useTranslations("postDetail");
-  const target = reply.author ? { id: reply.author.id, name: reply.author.name } : null;
+  const target = reply.author
+    ? { id: reply.author.id, name: reply.author.name, replyId: reply.id }
+    : null;
 
   return (
     <div className="flex gap-3">
@@ -107,11 +111,14 @@ export function ReplyRow({
 /**
  * A post's replies: the most recent few, with the rest folded away.
  *
- * A post with forty replies otherwise buries the post someone followed a
- * link to read. The thread still reads in chronological order, so expanding
- * inserts the older replies above rather than appending below - and it
- * collapses again, because an expand with no way back is a one-way door on
- * a page you may only have wanted to glance at.
+ * Newest first, like the post feed - the last thing said is the thing worth
+ * seeing first. The one exception is a reply that answers another reply:
+ * those sit directly beneath the reply they answer rather than jumping to
+ * the top, because read from the top they would quote someone who hasn't
+ * appeared yet. Within that batch it is newest-first again.
+ *
+ * Collapsing is undoable; an expand with no way back is a one-way door on a
+ * page you may only have wanted to glance at.
  */
 export function ReplyThread({
   replies,
@@ -121,17 +128,57 @@ export function ReplyThread({
 }: {
   replies: ReplyView[];
   someoneLabel: string;
-  onReply?: (target: { id: string; name: string }) => void;
+  onReply?: (target: { id: string; name: string; replyId: number }) => void;
   replyHrefFor?: (reply: ReplyView) => string;
 }) {
   const t = useTranslations("postDetail");
   const [expanded, setExpanded] = useState(false);
 
-  const hiddenCount = Math.max(0, replies.length - VISIBLE_REPLIES);
-  const shown = expanded ? replies : replies.slice(-VISIBLE_REPLIES);
+  // `replies` arrives newest-first. Top-level replies keep that order, and
+  // each one's batch sits directly beneath it, also newest-first - so the
+  // newest answer to a given reply is the first under it, and the oldest
+  // furthest down. A reply can only ever be one level deep
+  // (00000000000080), so this is a grouping rather than a recursion.
+  const roots = replies.filter((r) => r.parentReplyId === null);
+  const childrenByRoot = new Map<number, ReplyView[]>();
+  for (const reply of replies) {
+    if (reply.parentReplyId === null) continue;
+    const batch = childrenByRoot.get(reply.parentReplyId) ?? [];
+    batch.push(reply);
+    childrenByRoot.set(reply.parentReplyId, batch);
+  }
+
+  // Counted in top-level replies: collapsing a group away from the reply it
+  // answers would leave an orphan quoting someone who isn't on screen.
+  const hiddenCount = Math.max(0, roots.length - VISIBLE_REPLIES);
+  const shownRoots = expanded ? roots : roots.slice(0, VISIBLE_REPLIES);
 
   return (
     <div className="flex flex-col gap-4">
+      {shownRoots.map((root) => (
+        <div key={root.id} className="flex flex-col gap-4">
+          <ReplyRow
+            reply={root}
+            someoneLabel={someoneLabel}
+            onReply={onReply}
+            replyHref={replyHrefFor?.(root)}
+          />
+          {(childrenByRoot.get(root.id) ?? []).length > 0 && (
+            <div className="flex flex-col gap-4 border-l border-border pl-4">
+              {(childrenByRoot.get(root.id) ?? []).map((child) => (
+                <ReplyRow
+                  key={child.id}
+                  reply={child}
+                  someoneLabel={someoneLabel}
+                  onReply={onReply}
+                  replyHref={replyHrefFor?.(child)}
+                />
+              ))}
+            </div>
+          )}
+        </div>
+      ))}
+
       {hiddenCount > 0 && (
         <button
           type="button"
@@ -141,16 +188,6 @@ export function ReplyThread({
           {expanded ? t("showLessReplies") : t("loadMoreReplies")}
         </button>
       )}
-
-      {shown.map((reply) => (
-        <ReplyRow
-          key={reply.id}
-          reply={reply}
-          someoneLabel={someoneLabel}
-          onReply={onReply}
-          replyHref={replyHrefFor?.(reply)}
-        />
-      ))}
 
       {replies.length === 0 && <p className="text-sm text-muted">{t("noRepliesYet")}</p>}
     </div>

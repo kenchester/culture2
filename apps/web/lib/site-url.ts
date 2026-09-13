@@ -12,6 +12,42 @@ export async function getSiteUrl() {
   return `${protocol}://${host}`;
 }
 
+// The canonical public origin, used when the request's own host is not
+// something a recipient could ever visit.
+const CANONICAL_SITE_URL = "https://www.culturemesh.com";
+
+function isUnreachableHost(host: string): boolean {
+  return (
+    host.startsWith("localhost") ||
+    host.startsWith("127.0.0.1") ||
+    host.startsWith("0.0.0.0") ||
+    host.endsWith(".local")
+  );
+}
+
+/**
+ * The site URL to put in an EMAIL, which is not the same problem as the
+ * site URL to render on a page.
+ *
+ * getSiteUrl() reflects whatever host the request arrived on, which is
+ * right for a link inside the page and wrong for a link inside an email.
+ * A notification triggered from a developer's machine was sending real
+ * recipients "http://localhost:3000/networks/60" - a link that resolves,
+ * for them, to nothing at all.
+ *
+ * A subdomain is preserved when there is one, since a learn. post belongs
+ * on learn.; only an unreachable host is swapped for the canonical origin.
+ */
+export async function getEmailSiteUrl() {
+  const headersList = await headers();
+  const host = headersList.get("host") ?? "";
+
+  if (!host || isUnreachableHost(host)) {
+    return CANONICAL_SITE_URL;
+  }
+  return `https://${host}`;
+}
+
 export async function isLearnHost() {
   const headersList = await headers();
   const host = headersList.get("host") ?? "";

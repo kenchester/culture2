@@ -2,7 +2,7 @@ import { type NextRequest, NextResponse } from "next/server";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { sendEmail } from "@/lib/email";
 import { renderSignupReminderEmail } from "@/lib/branded-email";
-import { getSiteUrl } from "@/lib/site-url";
+import { getEmailSiteUrl } from "@/lib/site-url";
 import { env } from "@/lib/env";
 
 // Vercel Cron hits this once a day (vercel.json) - Hobby-plan projects
@@ -46,7 +46,7 @@ export async function GET(request: NextRequest) {
   }
 
   const admin = createAdminClient();
-  const siteUrl = await getSiteUrl();
+  const siteUrl = await getEmailSiteUrl();
 
   // perPage caps at 1000 - fine at this app's current scale (under 100
   // total accounts as of this writing), but whoever revisits this once

@@ -47,7 +47,7 @@ export default async function ReplyPage({
   const { data: reply } = await supabase
     .from("post_replies")
     .select(
-      "id, post_id, body, media_type, media_path, created_at, reply_to_user_id, transcript, transcript_language, transcript_segments, summary_text, summary_language:languages!summary_language_id(iso_code), author:user_id(id, username, first_name, last_name, img_path), likes(count)",
+      "id, post_id, body, media_type, media_path, created_at, reply_to_user_id, parent_reply_id, transcript, transcript_language, transcript_segments, summary_text, summary_language:languages!summary_language_id(iso_code), author:user_id(id, username, first_name, last_name, img_path), likes(count)",
     )
     .eq("id", replyId)
     .single();
@@ -147,6 +147,7 @@ export default async function ReplyPage({
     replyTo: mentioned
       ? { id: mentioned.id as string, name: getDisplayName(mentioned as unknown as Author) }
       : null,
+    parentReplyId: (reply.parent_reply_id as number | null) ?? null,
   };
 
   return (
@@ -239,7 +240,9 @@ export default async function ReplyPage({
         bodyPlaceholder={t("replyPlaceholder")}
         submitLabel={t("replySubmit")}
         isSignedLanguage={false}
-        initialReplyTo={replyView.author}
+        initialReplyTo={
+          replyView.author ? { ...replyView.author, replyId: replyView.id } : null
+        }
       />
     </div>
   );

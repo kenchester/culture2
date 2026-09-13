@@ -8,7 +8,7 @@ import { createClient } from "@/lib/supabase/server";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { sendEmail, sendBulkEmails } from "@/lib/email";
 import { getOptedInRecipients } from "@/lib/notifications";
-import { getSiteUrl } from "@/lib/site-url";
+import { getEmailSiteUrl } from "@/lib/site-url";
 import { getDisplayName } from "@/lib/profiles";
 import { translateText } from "@/lib/azure-translator";
 import { toAzureCode, toAzureSourceCode, type Locale } from "@/lib/locale";
@@ -226,7 +226,7 @@ export async function createPost(formData: FormData) {
   //
   // siteUrl is resolved out here, not inside the callback: it reads the
   // request headers, which are no longer available after the response.
-  const siteUrl = await getSiteUrl();
+  const siteUrl = await getEmailSiteUrl();
   const posterId = user.id;
   after(async () => {
     try {
@@ -435,7 +435,7 @@ async function notifyLike(authorId: string, path: string) {
   if (recipients.length === 0) {
     return;
   }
-  const siteUrl = await getSiteUrl();
+  const siteUrl = await getEmailSiteUrl();
   await sendEmail({
     to: recipients[0].email,
     subject: "Someone liked your CultureMesh post",
@@ -512,7 +512,7 @@ export async function sendNetworkInvites(formData: FormData) {
 
   const inviterName = inviterProfile ? getDisplayName(inviterProfile) : "Someone";
   const networkTitle = network?.title ?? "a network";
-  const siteUrl = await getSiteUrl();
+  const siteUrl = await getEmailSiteUrl();
 
   // Unlike the other notification triggers, sending IS the whole point of
   // this action - there's no other successful side effect to fall back on,

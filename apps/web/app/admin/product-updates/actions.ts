@@ -5,7 +5,7 @@ import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import { sendBulkEmails } from "@/lib/email";
 import { getOptedInRecipients } from "@/lib/notifications";
-import { getSiteUrl } from "@/lib/site-url";
+import { getEmailSiteUrl } from "@/lib/site-url";
 import { renderOutreachEmail, renderSiteUpdateEmail } from "@/lib/branded-email";
 
 export async function postProductUpdate(formData: FormData) {
@@ -47,7 +47,7 @@ export async function postProductUpdate(formData: FormData) {
     const recipients = await getOptedInRecipients(candidateIds, "product_updates");
 
     if (recipients.length > 0) {
-      const siteUrl = await getSiteUrl();
+      const siteUrl = await getEmailSiteUrl();
       const { text, html } = renderSiteUpdateEmail(`${body}\n\n[Visit CultureMesh](${siteUrl})`);
       await sendBulkEmails(
         recipients.map((r) => ({

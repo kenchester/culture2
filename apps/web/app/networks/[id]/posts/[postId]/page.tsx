@@ -55,10 +55,12 @@ export default async function PostPage({
     supabase
       .from("post_replies")
       .select(
-        "id, body, media_type, media_path, created_at, reply_to_user_id, transcript, transcript_language, transcript_segments, summary_text, summary_language:languages!summary_language_id(iso_code), author:user_id(id, username, first_name, last_name, img_path), likes(count)",
+        "id, body, media_type, media_path, created_at, reply_to_user_id, parent_reply_id, transcript, transcript_language, transcript_segments, summary_text, summary_language:languages!summary_language_id(iso_code), author:user_id(id, username, first_name, last_name, img_path), likes(count)",
       )
       .eq("post_id", postId)
-      .order("created_at", { ascending: true }),
+      // Newest first, matching the post feed. ReplyThread regroups these
+      // into top-level replies plus their batches.
+      .order("created_at", { ascending: false }),
     user
       ? supabase.from("likes").select("post_id, reply_id").eq("user_id", user.id)
       : Promise.resolve({ data: null }),
@@ -176,6 +178,7 @@ export default async function PostPage({
         : null,
       permalink: `/networks/${id}/posts/${postId}/replies/${reply.id}`,
       replyTo: replyMentions.get(reply.id) ?? null,
+      parentReplyId: (reply.parent_reply_id as number | null) ?? null,
     };
   });
 

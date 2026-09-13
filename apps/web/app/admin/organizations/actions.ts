@@ -5,7 +5,7 @@ import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { sendEmail } from "@/lib/email";
-import { getSiteUrl, buildSubdomainUrl } from "@/lib/site-url";
+import { getEmailSiteUrl, buildSubdomainUrl } from "@/lib/site-url";
 import { RESERVED_LEARN_SLUGS } from "@/lib/supabase/proxy";
 
 function slugify(text: string): string {
@@ -215,7 +215,7 @@ export async function inviteFirstAdmin(formData: FormData) {
     redirect(`/admin/organizations?error=${encodeURIComponent(error?.message ?? "Could not create invite.")}`);
   }
 
-  const siteUrl = await getSiteUrl();
+  const siteUrl = await getEmailSiteUrl();
   const inviteUrl = buildSubdomainUrl(siteUrl, org.subdomain, `/invite/${invite.token}`);
 
   try {
@@ -430,7 +430,7 @@ export async function approveOrganizationRequest(formData: FormData) {
     .eq("id", requestId);
 
   try {
-    const siteUrl = await getSiteUrl();
+    const siteUrl = await getEmailSiteUrl();
     const adminUrl = buildSubdomainUrl(siteUrl, "learn", `/learn/${org.slug}/admin`);
     await sendEmail({
       to: request.institutional_email,
