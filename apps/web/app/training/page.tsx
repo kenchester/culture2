@@ -3,10 +3,6 @@ import { getTranslations } from "next-intl/server";
 import { createClient } from "@/lib/supabase/server";
 import { TrainingSearchForm, type LocationOption } from "@/app/training/training-search-form";
 
-function Bold({ chunks }: { chunks: React.ReactNode }) {
-  return <span className="font-medium text-ink">{chunks}</span>;
-}
-
 function Underline({ chunks }: { chunks: React.ReactNode }) {
   return <span className="underline">{chunks}</span>;
 }
@@ -71,12 +67,7 @@ export default async function TrainingPage() {
         <h1 className="font-display text-[1.75rem] leading-tight text-balance text-ink">
           {t("title")}
         </h1>
-        {/* The requirement sentence is emphasised because it is the one
-            thing that decides whether a contribution counts at all: text
-            posts don't qualify. */}
-        <p className="text-body">
-          {t.rich("intro", { b: (chunks) => <Bold chunks={chunks} /> })}
-        </p>
+        <p className="text-body">{t("intro")}</p>
         <p className="text-body">
           {t.rich("intro2", {
             rules: (chunks) => (

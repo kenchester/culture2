@@ -536,13 +536,13 @@
     "rulesTitle": "Regole di base",
     "rules": {
       "language": "Pubblica nella lingua della rete in cui ti trovi. Se una rete è per parlanti tagalog in Nevada, pubblica in tagalog.",
-      "onTopic": "Quando rispondi a qualcuno, rispondi a ciò che ha effettivamente detto. Le risposte che ignorano il post sotto cui si trovano non sono utili.",
       "respect": "Tratta gli altri partecipanti come faresti di persona. Qualsiasi cosa tu pubblichi potrebbe essere letta da persone al di fuori della tua comunità.",
       "authentic": "Registra come te stesso. I post devono essere parole tue, non copiate da nessun'altra parte e non generate da uno strumento di IA.",
       "media": "<u>Devi creare post audio o video per poter accedere a un potenziale risarcimento.</u> Puoi pubblicare in testo per scopi sociali, ma questi post non possono essere idonei al programma di formazione.",
       "geography": "I post dovrebbero essere legati alla geografia della rete, ad esempio suggerendo punti di interesse per i visitatori di quell'area.",
       "properNouns": "L'inglese può essere usato per i nomi dei luoghi e altri nomi propri, ma la maggior parte della registrazione dovrebbe essere nella lingua di destinazione.",
-      "duration": "<u>Ogni registrazione deve durare tra i 30 e i 60 secondi per essere idonea.</u> Lo strumento di registrazione si fermerà automaticamente a 60 secondi, quindi non devi preoccuparti di superare il tempo massimo."
+      "duration": "<u>Ogni registrazione deve durare tra i 30 e i 60 secondi per essere idonea.</u> Lo strumento di registrazione si fermerà automaticamente a 60 secondi, quindi non devi preoccuparti di superare il tempo massimo.",
+      "onTopic": "<u>Puoi creare post completamente nuovi o rispondere ai post degli altri.</u> Se rispondi a qualcuno, rispondi a ciò che ha effettivamente detto. Le risposte che ignorano il post sotto cui si trovano non sono utili."
     },
     "consentBanner": "Solo i partecipanti al programma di formazione che hanno acconsentito alla registrazione dei dati vedranno i loro post inclusi nei dati di addestramento. Si prega di non includere alcuna informazione identificabile o privata nei vostri post o risposte; potete anche utilizzare uno pseudonimo per il nome del vostro account, se desiderato.",
     "title": "Formazione multilingue con IA tramite post live sui social network",
@@ -555,7 +555,7 @@
       "network": "Lingua spagnola in Michigan",
       "topic": "Il relatore ha deciso di scrivere un post in spagnolo sulla sua mensa preferita del dormitorio alla Michigan State University e sul motivo per cui consiglia ad altri di visitarla se sono nel campus."
     },
-    "intro": "Cerca reti che corrispondano al tuo background linguistico e a una posizione attuale o precedente negli Stati Uniti. <b>Devi creare post audio o video per poter accedere a un potenziale risarcimento.</b>",
-    "intro2": "Si prega di leggere le <rules>Regole</rules> di base qui sotto prima di procedere a pubblicare in una rete."
+    "intro2": "Si prega di leggere le <rules>Regole</rules> di base qui sotto prima di procedere a pubblicare in una rete.",
+    "intro": "Cerca reti che corrispondano al tuo background linguistico e a una posizione attuale o precedente negli Stati Uniti."
   }
 }

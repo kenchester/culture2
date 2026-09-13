@@ -536,13 +536,13 @@
     "rulesTitle": "Règles de base",
     "rules": {
       "language": "Publiez dans la langue du réseau auquel vous êtes. Si un réseau est pour les locuteurs tagalog au Nevada, publiez en tagalog.",
-      "onTopic": "Quand tu réponds à quelqu’un, réponds à ce qu’il a réellement dit. Les réponses qui ignorent le post sous lequel ils sont n’ont pas d’utilité.",
       "respect": "Traitez les autres participants comme vous le feriez en personne. Tout ce que vous publiez peut être lu par des personnes extérieures à votre propre communauté.",
       "authentic": "Enregistrez en tant que vous-même. Les publications doivent être vos propres mots, pas copiés d’ailleurs et non générés par un outil d’IA.",
       "media": "<u>Vous devez créer des publications audio ou vidéo pour être éligible à une éventuelle rémunération.</u> Vous pouvez publier en texte à des fins sociales, mais ces publications ne peuvent pas être éligibles au programme de formation.",
       "geography": "Les publications doivent être liées à la géographie du réseau, par exemple suggérer des points d’intérêt pour les visiteurs de cette zone.",
       "properNouns": "L’anglais peut être utilisé pour les noms de lieux et autres noms propres, mais la majorité de l’enregistrement doit être utilisée dans la langue de destination.",
-      "duration": "<u>Chaque enregistrement doit durer entre 30 et 60 secondes pour être éligible.</u> L’outil d’enregistrement s’arrête automatiquement à 60 secondes, donc vous n’avez pas à vous soucier de dépasser le temps maximal."
+      "duration": "<u>Chaque enregistrement doit durer entre 30 et 60 secondes pour être éligible.</u> L’outil d’enregistrement s’arrête automatiquement à 60 secondes, donc vous n’avez pas à vous soucier de dépasser le temps maximal.",
+      "onTopic": "<u>Vous pouvez créer de nouveaux posts entièrement ou répondre aux posts des autres.</u> Si vous répondez à quelqu’un, répondez à ce qu’il a réellement dit. Les réponses qui ignorent le post sous lequel ils sont ne sont pas utiles."
     },
     "consentBanner": "Seuls les participants au programme de formation ayant consenti à l’enregistrement des données verront leurs publications incluses dans les données de formation. Veuillez ne pas inclure d’informations identifiables ou privées dans vos publications ou réponses ; vous pouvez également utiliser un pseudonyme pour votre nom de compte, si désiré.",
     "title": "Formation multilingue IA via des publications en direct sur les réseaux sociaux",
@@ -555,7 +555,7 @@
       "network": "La langue espagnole dans le Michigan",
       "topic": "L’intervenant a décidé de faire un post en espagnol à propos de sa cafétéria préférée de dortoir à l’Université d’État du Michigan et pourquoi il recommande à d’autres personnes de la visiter s’ils sont sur le campus."
     },
-    "intro": "Veuillez rechercher des réseaux correspondant à votre parcours linguistique et à un lieu actuel ou ancien aux États-Unis. <b>Vous devez créer des publications audio ou vidéo afin de pouvoir bénéficier d’une éventuelle rémunération.</b>",
-    "intro2": "Veuillez lire les <rules>règles</rules> ci-dessous avant de poster dans un réseau."
+    "intro2": "Veuillez lire les <rules>règles</rules> ci-dessous avant de poster dans un réseau.",
+    "intro": "Veuillez rechercher des réseaux correspondant à votre bagage linguistique et à une localisation actuelle ou ancienne aux États-Unis."
   }
 }

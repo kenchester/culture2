@@ -524,7 +524,7 @@
   },
   "training": {
     "title": "AI multilingual training via live social network posts",
-    "intro": "Please search for networks which match your linguistic background and a current or former location in the United States. <b>You must create audio or video posts in order to qualify for potential compensation.</b>",
+    "intro": "Please search for networks which match your linguistic background and a current or former location in the United States.",
     "intro2": "Please read the <rules>Ground Rules</rules> below before you proceed to post in a network.",
     "findTitle": "Find your network",
     "findBody": "Pick the language you'll be posting in and a state you live in or used to. If a network already exists you can join it; if not, you can start it. It opens in a new tab so these guidelines stay open here.",
@@ -539,7 +539,7 @@
       "language": "Post in the language of the network you're in. If a network is for Tagalog speakers in Nevada, post in Tagalog.",
       "geography": "Posts should be related to the geography of the network, such as suggesting points of interest for visitors to that area.",
       "properNouns": "English may be used for place names and other proper nouns, but the majority of the recording should be in the target language.",
-      "onTopic": "When you reply to someone, respond to what they actually said. Replies that ignore the post they're under aren't useful.",
+      "onTopic": "<u>You may create entirely new posts or reply to others' posts.</u> If you reply to someone, respond to what they actually said. Replies that ignore the post they're under aren't useful.",
       "respect": "Treat other participants the way you would in person. Anything you post may be read by people outside your own community.",
       "duration": "<u>Each recording must be between 30 and 60 seconds to qualify.</u> The recording tool will automatically stop at 60 seconds, so you don't need to worry about going over the maximum time."
     },
