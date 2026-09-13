@@ -7,6 +7,14 @@ function Bold({ chunks }: { chunks: React.ReactNode }) {
   return <span className="font-medium text-ink">{chunks}</span>;
 }
 
+function Underline({ chunks }: { chunks: React.ReactNode }) {
+  return <span className="underline">{chunks}</span>;
+}
+
+// The rules are the operative part of this page, so the intro points at
+// them by anchor rather than trusting the reader to scroll.
+const RULES_ANCHOR = "ground-rules";
+
 export const metadata: Metadata = {
   title: "AI multilingual training — CultureMesh",
 };
@@ -69,7 +77,15 @@ export default async function TrainingPage() {
         <p className="text-body">
           {t.rich("intro", { b: (chunks) => <Bold chunks={chunks} /> })}
         </p>
-        <p className="text-body">{t("intro2")}</p>
+        <p className="text-body">
+          {t.rich("intro2", {
+            rules: (chunks) => (
+              <a href={`#${RULES_ANCHOR}`} className="font-medium text-ink underline">
+                {chunks}
+              </a>
+            ),
+          })}
+        </p>
       </header>
 
       <section className="flex flex-col gap-3 rounded-lg border border-border bg-surface p-5">
@@ -78,14 +94,25 @@ export default async function TrainingPage() {
         <TrainingSearchForm locations={locations} />
       </section>
 
-      <section className="flex flex-col gap-3">
+      <section id={RULES_ANCHOR} className="flex scroll-mt-6 flex-col gap-3">
         <h2 className="text-lg font-medium text-ink">{t("rulesTitle")}</h2>
         <ul className="flex list-disc flex-col gap-2 pl-5 text-body">
-          <li>{t("rules.authentic")}</li>
-          <li>{t("rules.language")}</li>
-          <li>{t("rules.onTopic")}</li>
-          <li>{t("rules.respect")}</li>
-          <li>{t("rules.duration")}</li>
+          {(
+            [
+              "authentic",
+              "media",
+              "language",
+              "geography",
+              "properNouns",
+              "onTopic",
+              "respect",
+              "duration",
+            ] as const
+          ).map((rule) => (
+            <li key={rule}>
+              {t.rich(`rules.${rule}`, { u: (chunks) => <Underline chunks={chunks} /> })}
+            </li>
+          ))}
         </ul>
       </section>
 

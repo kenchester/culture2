@@ -535,16 +535,17 @@
     "submit": "Encuentra o inicia una red",
     "rulesTitle": "Reglas básicas",
     "rules": {
-      "authentic": "Escribe y graba como tú mismo. Las publicaciones deben ser tus propias palabras, no copiadas de ningún otro sitio ni generadas por una herramienta de IA.",
       "language": "Publica en el idioma de la red en la que estás. Si una red es para hablantes de tagalo en Nevada, publica en tagalo.",
       "onTopic": "Cuando respondas a alguien, responde a lo que realmente ha dicho. Las respuestas que ignoran la publicación en la que están no sirven.",
       "respect": "Trata a los demás participantes como lo harías en persona. Cualquier cosa que publiques puede ser leída por personas fuera de tu propia comunidad.",
-      "duration": "Cada grabación debe durar entre 30 y 60 segundos para poder calificar. La herramienta de grabación se detendrá automáticamente en 60 segundos, así que no tienes que preocuparte por excederte del tiempo máximo."
+      "authentic": "Registra como tú mismo. Las publicaciones deben ser tus propias palabras, no copiadas de ningún otro sitio ni generadas por una herramienta de IA.",
+      "media": "<u>Debes crear publicaciones de audio o vídeo para poder optar a una posible compensación.</u> Puedes publicar en texto con fines sociales, pero estas publicaciones no pueden optar al programa de formación.",
+      "geography": "Las publicaciones deben estar relacionadas con la geografía de la red, como sugirir puntos de interés para los visitantes de esa zona.",
+      "properNouns": "El inglés puede usarse para nombres de lugares y otros nombres propios, pero la mayor parte del registro debe estar en el idioma de destino.",
+      "duration": "<u>Cada grabación debe durar entre 30 y 60 segundos para poder calificar.</u> La herramienta de grabación se detendrá automáticamente en 60 segundos, así que no tienes que preocuparte por excederte del tiempo máximo."
     },
     "consentBanner": "Solo los participantes en el programa de formación que hayan consentido que se registren datos podrán incluir sus publicaciones en los datos de entrenamiento. Por favor, no incluyas ninguna información identificable o privada en tus publicaciones o respuestas; también puedes usar un seudónimo para el nombre de tu cuenta, si así lo deseas.",
     "title": "Entrenamiento multilingüe con IA a través de publicaciones en directo en redes sociales",
-    "intro": "Por favor, busca redes que coincidan con tu formación lingüística y una ubicación actual o anterior en Estados Unidos. <b>Debes crear publicaciones de audio o vídeo para poder optar a una posible compensación (no texto), y las publicaciones deben 1) estar en el idioma correspondiente y 2) estar relacionadas con la geografía de la red.</b>",
-    "intro2": "Puedes elegir responder a una publicación existente o empezar un nuevo tema. El inglés puede usarse para nombres de lugares y otros nombres propios, pero la mayor parte de la grabación debe estar en el idioma objetivo. Eres libre de usar las redes para conversar una vez terminadas tus tareas.",
     "findBody": "Elige el idioma en el que vas a publicar y el estado en el que vives o en el que vives antes. Si ya existe una red, puedes unirte; si no, puedes empezarla. Se abre en una pestaña nueva, así que estas directrices permanecen abiertas aquí.",
     "locationLabel": "Estado (actual o antiguo)",
     "examplesTitle": "Ejemplos",
@@ -553,6 +554,8 @@
     "example": {
       "network": "Lengua española en Michigan",
       "topic": "El ponente decidió hacer una publicación en español sobre su cafetería favorita de la residencia universitaria de Michigan State University y por qué recomienda a otros visitarla si están en el campus."
-    }
+    },
+    "intro": "Por favor, busca redes que coincidan con tu formación lingüística y una ubicación actual o anterior en Estados Unidos. <b>Debes crear publicaciones de audio o vídeo para poder optar a una posible compensación.</b>",
+    "intro2": "Por favor, lee las <rules>Reglas Básicas</rules> a continuación antes de proceder a publicar en una red."
   }
 }
