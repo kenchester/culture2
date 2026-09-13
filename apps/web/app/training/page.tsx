@@ -3,6 +3,10 @@ import { getTranslations } from "next-intl/server";
 import { createClient } from "@/lib/supabase/server";
 import { TrainingSearchForm, type LocationOption } from "@/app/training/training-search-form";
 
+function Bold({ chunks }: { chunks: React.ReactNode }) {
+  return <span className="font-medium text-ink">{chunks}</span>;
+}
+
 export const metadata: Metadata = {
   title: "AI multilingual training — CultureMesh",
 };
@@ -59,7 +63,13 @@ export default async function TrainingPage() {
         <h1 className="font-display text-[1.75rem] leading-tight text-balance text-ink">
           {t("title")}
         </h1>
-        <p className="text-body">{t("intro")}</p>
+        {/* The requirement sentence is emphasised because it is the one
+            thing that decides whether a contribution counts at all: text
+            posts don't qualify. */}
+        <p className="text-body">
+          {t.rich("intro", { b: (chunks) => <Bold chunks={chunks} /> })}
+        </p>
+        <p className="text-body">{t("intro2")}</p>
       </header>
 
       <section className="flex flex-col gap-3 rounded-lg border border-border bg-surface p-5">

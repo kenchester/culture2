@@ -530,9 +530,7 @@
   },
   "training": {
     "findTitle": "Encontre sua rede de contatos",
-    "findBody": "Escolha o idioma em que você vai postar e o estado em que está. Se já existe uma rede, você pode entrar; se não, pode iniciá-la. Ela abre em uma nova aba, então essas diretrizes permanecem abertas aqui.",
     "languageLabel": "Linguagem em que você vai postar",
-    "locationLabel": "Onde você está",
     "locationPlaceholder": "Selecione um estado...",
     "submit": "Encontre ou comece uma rede",
     "rulesTitle": "Regras básicas",
@@ -545,6 +543,9 @@
     "rulesFootnote": "Mais detalhes sobre o programa, incluindo como as contribuições são usadas e remuneradas, serão adicionados aqui.",
     "consentBanner": "Somente participantes do programa de treinamento que consentiram em ter dados registrados terão suas postagens incluídas nos dados de treinamento. Por favor, não inclua nenhuma informação identificável ou privada em suas postagens ou respostas; você também pode usar um pseudônimo para o nome da sua conta, se desejado.",
     "title": "Treinamento multilíngue com IA por meio de postagens ao vivo em redes sociais",
-    "intro": "Por favor, procure uma rede social ao vivo que corresponda ao seu histórico e localização atual. Em seguida, você participará de conversas relevantes em seu idioma nativo, que será gravado, com consentimento, e usado para ajudar os sistemas de IA a entendê-las. Participe de uma para um idioma que você realmente fale, no estado onde mora."
+    "intro": "Por favor, pesquise por redes que correspondam à sua origem linguística e a uma localização atual ou antiga nos Estados Unidos. <b>Você deve criar postagens em áudio ou vídeo para se qualificar para uma possível compensação (não texto), e as postagens devem 1) estar no idioma relevante e 2) estar relacionadas à geografia da rede.</b>",
+    "intro2": "Você pode optar por responder a uma postagem existente ou começar um novo tema. O inglês pode ser usado para nomes de lugares e outros nomes próprios, mas a maior parte da gravação deve ser no idioma de destino. Você é livre para usar as redes para conversar após suas tarefas serem concluídas.",
+    "findBody": "Escolha o idioma onde vai postar e o estado onde você mora ou costumava morar. Se já existe uma rede, você pode entrar; se não, pode iniciá-la. Ela abre em uma nova aba, então essas diretrizes permanecem abertas aqui.",
+    "locationLabel": "Estado (atual ou antigo)"
   }
 }

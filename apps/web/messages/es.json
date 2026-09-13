@@ -530,9 +530,7 @@
   },
   "training": {
     "findTitle": "Encuentra tu red",
-    "findBody": "Elige el idioma en el que vas a publicar y el estado en el que te encuentras. Si ya existe una red, puedes unirte; si no, puedes empezarla. Se abre en una pestaña nueva, así que estas directrices permanecen abiertas aquí.",
     "languageLabel": "Lenguaje en el que publicarás",
-    "locationLabel": "Dónde estás",
     "locationPlaceholder": "Selecciona un estado...",
     "submit": "Encuentra o inicia una red",
     "rulesTitle": "Reglas básicas",
@@ -545,6 +543,9 @@
     "rulesFootnote": "Aquí se añadirán más detalles sobre el programa, incluyendo cómo se utilizan y compensan las contribuciones.",
     "consentBanner": "Solo los participantes en el programa de formación que hayan consentido que se registren datos podrán incluir sus publicaciones en los datos de entrenamiento. Por favor, no incluyas ninguna información identificable o privada en tus publicaciones o respuestas; también puedes usar un seudónimo para el nombre de tu cuenta, si así lo deseas.",
     "title": "Entrenamiento multilingüe con IA a través de publicaciones en directo en redes sociales",
-    "intro": "Por favor, busca una red social en directo que coincida con tu origen y ubicación actual. Luego mantendrás conversaciones relevantes en tu idioma nativo, que serán grabadas, con consentimiento, y usadas para ayudar a los sistemas de IA a entenderla. Únete a una para un idioma que realmente hables, en el estado donde vives."
+    "intro": "Por favor, busca redes que coincidan con tu formación lingüística y una ubicación actual o anterior en Estados Unidos. <b>Debes crear publicaciones de audio o vídeo para poder optar a una posible compensación (no texto), y las publicaciones deben 1) estar en el idioma correspondiente y 2) estar relacionadas con la geografía de la red.</b>",
+    "intro2": "Puedes elegir responder a una publicación existente o empezar un nuevo tema. El inglés puede usarse para nombres de lugares y otros nombres propios, pero la mayor parte de la grabación debe estar en el idioma objetivo. Eres libre de usar las redes para conversar una vez terminadas tus tareas.",
+    "findBody": "Elige el idioma en el que vas a publicar y el estado en el que vives o en el que vives antes. Si ya existe una red, puedes unirte; si no, puedes empezarla. Se abre en una pestaña nueva, así que estas directrices permanecen abiertas aquí.",
+    "locationLabel": "Estado (actual o antiguo)"
   }
 }

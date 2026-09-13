@@ -530,9 +530,7 @@
   },
   "training": {
     "findTitle": "Finde dein Netzwerk",
-    "findBody": "Wähle die Sprache, in der du posten wirst, und den Bundesstaat, in dem du dich befindest. Wenn bereits ein Netzwerk existiert, kannst du ihm beitreten; wenn nicht, kannst du es starten. Es öffnet sich in einem neuen Tab, daher bleiben diese Richtlinien hier offen.",
     "languageLabel": "Sprache, in der du posten wirst",
-    "locationLabel": "Wo du bist",
     "locationPlaceholder": "Wähle einen Bundesstaat...",
     "submit": "Finde oder starte ein Netzwerk",
     "rulesTitle": "Grundregeln",
@@ -545,6 +543,9 @@
     "rulesFootnote": "Weitere Details zum Programm, einschließlich der Verwendung und Vergütung der Beiträge, werden hier ergänzt.",
     "consentBanner": "Nur Teilnehmer des Trainingsprogramms, die der Datenerfassung zugestimmt haben, werden in die Trainingsdaten aufgenommen. Bitte fügen Sie keine identifizierbaren oder privaten Informationen in Ihre Beiträge oder Antworten ein; Sie können auch ein Pseudonym für Ihren Kontonamen verwenden, wenn Sie möchten.",
     "title": "KI-Mehrsprachiges Training über Live-Beiträge in sozialen Netzwerken",
-    "intro": "Bitte suchen Sie nach einem Live-Sozialnetzwerk, das zu Ihrem Hintergrund und aktuellen Standort passt. Anschließend führen Sie relevante Gespräche in Ihrer Muttersprache, die mit Zustimmung aufgezeichnet und genutzt werden, um KI-Systemen beim Verständnis zu helfen. Treten Sie einem Gespräch bei, um eine Sprache zu bekommen, die Sie tatsächlich sprechen, in dem Bundesstaat, in dem Sie leben."
+    "intro": "Bitte suchen Sie nach Netzwerken, die Ihrem sprachlichen Hintergrund und einem aktuellen oder ehemaligen Standort in den Vereinigten Staaten entsprechen. <b>Sie müssen Audio- oder Videobeiträge erstellen, um sich für eine mögliche Vergütung zu qualifizieren (nicht Text), und die Beiträge müssen 1) in der entsprechenden Sprache sein und 2) mit der Geografie des Netzwerks zusammenhängen.</b>",
+    "intro2": "Du kannst wählen, auf einen bestehenden Beitrag zu antworten oder ein neues Thema zu beginnen. Englisch kann für Ortsnamen und andere Eigennamen verwendet werden, aber der Großteil der Aufnahme sollte in der Zielsprache erfolgen. Du kannst die Netzwerke nutzen, um nach Abschluss deiner Aufgaben zu kommunizieren.",
+    "findBody": "Wähle die Sprache, in der du posten wirst, und einen Bundesstaat, in dem du lebst oder früher lebt. Wenn es bereits ein Netzwerk gibt, kannst du ihm beitreten; wenn nicht, kannst du es starten. Es öffnet sich in einem neuen Tab, daher bleiben diese Richtlinien hier offen.",
+    "locationLabel": "Bundesstaat (aktuell oder ehemalig)"
   }
 }

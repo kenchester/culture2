@@ -530,9 +530,7 @@
   },
   "training": {
     "findTitle": "Trouvez votre réseau",
-    "findBody": "Choisissez la langue dans laquelle vous allez poster et l’État dans lequel vous vous trouvez. Si un réseau existe déjà, vous pouvez le rejoindre ; sinon, vous pouvez le lancer. Il s’ouvre dans un nouvel onglet donc ces directives restent ouvertes ici.",
     "languageLabel": "Langage dans lequel vous posterez",
-    "locationLabel": "Où tu es",
     "locationPlaceholder": "Sélectionnez un État...",
     "submit": "Trouvez ou créez un réseau",
     "rulesTitle": "Règles de base",
@@ -545,6 +543,9 @@
     "rulesFootnote": "Plus de détails sur le programme, y compris la manière dont les contributions sont utilisées et rémunérées, seront ajoutés ici.",
     "consentBanner": "Seuls les participants au programme de formation ayant consenti à l’enregistrement des données verront leurs publications incluses dans les données de formation. Veuillez ne pas inclure d’informations identifiables ou privées dans vos publications ou réponses ; vous pouvez également utiliser un pseudonyme pour votre nom de compte, si désiré.",
     "title": "Formation multilingue IA via des publications en direct sur les réseaux sociaux",
-    "intro": "Veuillez rechercher un réseau social en direct qui correspond à votre parcours et à votre localisation actuelle. Vous engagerez ensuite une conversation pertinente dans votre langue maternelle, qui sera enregistrée, avec consentement, et utilisée pour aider les systèmes d’IA à la comprendre. Rejoignez-en un pour une langue que vous parlez réellement, dans l’État où vous vivez."
+    "intro": "Veuillez rechercher des réseaux correspondant à votre parcours linguistique et à une localisation actuelle ou ancienne aux États-Unis. <b>Vous devez créer des publications audio ou vidéo afin de bénéficier d’une éventuelle rémunération (et non de texte), et les publications doivent 1) être dans la langue concernée et 2) être liées à la géographie du réseau.</b>",
+    "intro2": "Vous pouvez choisir de répondre à un post existant ou de commencer un nouveau sujet. L’anglais peut être utilisé pour les noms de lieux et autres noms propres, mais la majorité de l’enregistrement doit être dans la langue de destination. Vous êtes libre d’utiliser les réseaux pour converser une fois vos tâches terminées.",
+    "findBody": "Choisissez la langue dans laquelle vous allez poster et un État où vous vivez ou où vous vivez auparavant. Si un réseau existe déjà, vous pouvez y rejoindre ; sinon, vous pouvez le lancer. Il s’ouvre dans un nouvel onglet donc ces directives restent ouvertes ici.",
+    "locationLabel": "État (actuel ou ancien)"
   }
 }
