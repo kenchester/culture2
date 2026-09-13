@@ -538,14 +538,21 @@
       "authentic": "Schreibe und nimm als du selbst auf. Beiträge müssen deine eigenen Worte sein, nicht von irgendwo anders kopiert und nicht von einem KI-Tool generiert.",
       "language": "Poste in der Sprache des Netzwerks, in dem du dich befindest. Wenn ein Netzwerk für Tagalog-Sprecher in Nevada ist, poste auf Tagalog.",
       "onTopic": "Wenn du jemandem antwortest, antworte auf das, was er tatsächlich gesagt hat. Antworten, die den Beitrag ignorieren, unter dem er steht, sind nicht hilfreich.",
-      "respect": "Behandle andere Teilnehmer so, wie du es persönlich tun würdest. Alles, was du postest, kann von Leuten außerhalb deiner eigenen Community gelesen werden."
+      "respect": "Behandle andere Teilnehmer so, wie du es persönlich tun würdest. Alles, was du postest, kann von Leuten außerhalb deiner eigenen Community gelesen werden.",
+      "duration": "Jede Aufnahme muss zwischen 30 und 60 Sekunden dauern, um sich zu qualifizieren. Das Aufnahme-Tool stoppt automatisch nach 60 Sekunden, sodass Sie sich keine Sorgen machen müssen, die maximale Zeit zu überschreiten."
     },
-    "rulesFootnote": "Weitere Details zum Programm, einschließlich der Verwendung und Vergütung der Beiträge, werden hier ergänzt.",
     "consentBanner": "Nur Teilnehmer des Trainingsprogramms, die der Datenerfassung zugestimmt haben, werden in die Trainingsdaten aufgenommen. Bitte fügen Sie keine identifizierbaren oder privaten Informationen in Ihre Beiträge oder Antworten ein; Sie können auch ein Pseudonym für Ihren Kontonamen verwenden, wenn Sie möchten.",
     "title": "KI-Mehrsprachiges Training über Live-Beiträge in sozialen Netzwerken",
     "intro": "Bitte suchen Sie nach Netzwerken, die Ihrem sprachlichen Hintergrund und einem aktuellen oder ehemaligen Standort in den Vereinigten Staaten entsprechen. <b>Sie müssen Audio- oder Videobeiträge erstellen, um sich für eine mögliche Vergütung zu qualifizieren (nicht Text), und die Beiträge müssen 1) in der entsprechenden Sprache sein und 2) mit der Geografie des Netzwerks zusammenhängen.</b>",
     "intro2": "Du kannst wählen, auf einen bestehenden Beitrag zu antworten oder ein neues Thema zu beginnen. Englisch kann für Ortsnamen und andere Eigennamen verwendet werden, aber der Großteil der Aufnahme sollte in der Zielsprache erfolgen. Du kannst die Netzwerke nutzen, um nach Abschluss deiner Aufgaben zu kommunizieren.",
     "findBody": "Wähle die Sprache, in der du posten wirst, und einen Bundesstaat, in dem du lebst oder früher lebt. Wenn es bereits ein Netzwerk gibt, kannst du ihm beitreten; wenn nicht, kannst du es starten. Es öffnet sich in einem neuen Tab, daher bleiben diese Richtlinien hier offen.",
-    "locationLabel": "Bundesstaat (aktuell oder ehemalig)"
+    "locationLabel": "Bundesstaat (aktuell oder ehemalig)",
+    "examplesTitle": "Beispiele",
+    "exampleNetworkLabel": "Netzwerk",
+    "exampleTopicLabel": "Thema",
+    "example": {
+      "network": "Spanische Sprache in Michigan",
+      "topic": "Der Redner entschied sich, einen Beitrag auf Spanisch über seine Lieblings-Wohnheimcafeteria an der Michigan State University zu machen und warum sie anderen empfehlen, sie zu besuchen, wenn sie auf dem Campus sind."
+    }
   }
 }

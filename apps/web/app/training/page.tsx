@@ -85,8 +85,22 @@ export default async function TrainingPage() {
           <li>{t("rules.language")}</li>
           <li>{t("rules.onTopic")}</li>
           <li>{t("rules.respect")}</li>
+          <li>{t("rules.duration")}</li>
         </ul>
-        <p className="text-sm text-muted">{t("rulesFootnote")}</p>
+      </section>
+
+      <section className="flex flex-col gap-3">
+        <h2 className="text-lg font-medium text-ink">{t("examplesTitle")}</h2>
+        <div className="flex flex-col gap-2 rounded-lg border border-border bg-surface p-4">
+          <p className="text-body">
+            <span className="font-medium text-ink">{t("exampleNetworkLabel")}:</span>{" "}
+            {t("example.network")}
+          </p>
+          <p className="text-body">
+            <span className="font-medium text-ink">{t("exampleTopicLabel")}:</span>{" "}
+            {t("example.topic")}
+          </p>
+        </div>
       </section>
 
       {/* Scope of the program, stated where someone deciding whether to

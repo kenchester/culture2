@@ -538,14 +538,21 @@
       "authentic": "Escreva e registre como você mesmo. Os posts devem ser suas próprias palavras, não copiados de nenhum outro lugar e não gerados por uma ferramenta de IA.",
       "language": "Poste no idioma da rede em que você está. Se uma rede for para falantes de tagalo em Nevada, poste em tagalo.",
       "onTopic": "Quando você responde a alguém, responda ao que essa pessoa realmente disse. Respostas que ignoram o post em que estão não são úteis.",
-      "respect": "Trate os outros participantes como você trataria pessoalmente. Qualquer coisa que você postar pode ser lida por pessoas fora da sua própria comunidade."
+      "respect": "Trate os outros participantes como você trataria pessoalmente. Qualquer coisa que você postar pode ser lida por pessoas fora da sua própria comunidade.",
+      "duration": "Cada gravação deve durar entre 30 e 60 segundos para ser qualificada. A ferramenta de gravação para automaticamente em 60 segundos, então você não precisa se preocupar em ultrapassar o tempo máximo."
     },
-    "rulesFootnote": "Mais detalhes sobre o programa, incluindo como as contribuições são usadas e remuneradas, serão adicionados aqui.",
     "consentBanner": "Somente participantes do programa de treinamento que consentiram em ter dados registrados terão suas postagens incluídas nos dados de treinamento. Por favor, não inclua nenhuma informação identificável ou privada em suas postagens ou respostas; você também pode usar um pseudônimo para o nome da sua conta, se desejado.",
     "title": "Treinamento multilíngue com IA por meio de postagens ao vivo em redes sociais",
     "intro": "Por favor, pesquise por redes que correspondam à sua origem linguística e a uma localização atual ou antiga nos Estados Unidos. <b>Você deve criar postagens em áudio ou vídeo para se qualificar para uma possível compensação (não texto), e as postagens devem 1) estar no idioma relevante e 2) estar relacionadas à geografia da rede.</b>",
     "intro2": "Você pode optar por responder a uma postagem existente ou começar um novo tema. O inglês pode ser usado para nomes de lugares e outros nomes próprios, mas a maior parte da gravação deve ser no idioma de destino. Você é livre para usar as redes para conversar após suas tarefas serem concluídas.",
     "findBody": "Escolha o idioma onde vai postar e o estado onde você mora ou costumava morar. Se já existe uma rede, você pode entrar; se não, pode iniciá-la. Ela abre em uma nova aba, então essas diretrizes permanecem abertas aqui.",
-    "locationLabel": "Estado (atual ou antigo)"
+    "locationLabel": "Estado (atual ou antigo)",
+    "examplesTitle": "Exemplos",
+    "exampleNetworkLabel": "Rede",
+    "exampleTopicLabel": "Tema",
+    "example": {
+      "network": "Língua espanhola em Michigan",
+      "topic": "O palestrante decidiu fazer um post em espanhol sobre sua cafeteria favorita do dormitório na Michigan State University e por que recomenda que outros o visitem se estiverem no campus."
+    }
   }
 }

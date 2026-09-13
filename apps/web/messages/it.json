@@ -538,14 +538,21 @@
       "authentic": "Scrivi e registra come te stesso. I post devono essere parole tue, non copiate da nessun'altra parte e non generate da uno strumento di IA.",
       "language": "Pubblica nella lingua della rete in cui ti trovi. Se una rete è per parlanti tagalog in Nevada, pubblica in tagalog.",
       "onTopic": "Quando rispondi a qualcuno, rispondi a ciò che ha effettivamente detto. Le risposte che ignorano il post sotto cui si trovano non sono utili.",
-      "respect": "Tratta gli altri partecipanti come faresti di persona. Qualsiasi cosa tu pubblichi potrebbe essere letta da persone al di fuori della tua comunità."
+      "respect": "Tratta gli altri partecipanti come faresti di persona. Qualsiasi cosa tu pubblichi potrebbe essere letta da persone al di fuori della tua comunità.",
+      "duration": "Ogni registrazione deve durare tra i 30 e i 60 secondi per essere idonea. Lo strumento di registrazione si fermerà automaticamente a 60 secondi, quindi non devi preoccuparti di superare il tempo massimo."
     },
-    "rulesFootnote": "Ulteriori dettagli sul programma, inclusi i modi in cui i contributi vengono utilizzati e compensati, saranno aggiunti qui.",
     "consentBanner": "Solo i partecipanti al programma di formazione che hanno acconsentito alla registrazione dei dati vedranno i loro post inclusi nei dati di addestramento. Si prega di non includere alcuna informazione identificabile o privata nei vostri post o risposte; potete anche utilizzare uno pseudonimo per il nome del vostro account, se desiderato.",
     "title": "Formazione multilingue con IA tramite post live sui social network",
     "intro": "Cerca reti che corrispondano al tuo background linguistico e a una posizione attuale o precedente negli Stati Uniti. <b>Devi creare post audio o video per poter accedere a un potenziale risarcimento (non testo), e i post devono 1) essere nella lingua rilevante e 2) essere collegati alla geografia della rete.</b>",
     "intro2": "Puoi scegliere di rispondere a un post esistente o di iniziare un nuovo argomento. L'inglese può essere usato per i nomi dei luoghi e altri nomi propri, ma la maggior parte della registrazione dovrebbe essere nella lingua di destinazione. Sei libero di usare le reti per conversare dopo aver completato i tuoi compiti.",
     "findBody": "Scegli la lingua in cui pubblicherai e uno stato in cui vivi o in cui vivi prima. Se esiste già una rete puoi unirti; altrimenti puoi iniziarla. Si apre in una nuova scheda quindi queste linee guida restano aperte qui.",
-    "locationLabel": "Stato (attuale o precedente)"
+    "locationLabel": "Stato (attuale o precedente)",
+    "examplesTitle": "Esempi",
+    "exampleNetworkLabel": "Rete",
+    "exampleTopicLabel": "Argomento",
+    "example": {
+      "network": "Lingua spagnola in Michigan",
+      "topic": "Il relatore ha deciso di scrivere un post in spagnolo sulla sua mensa preferita del dormitorio alla Michigan State University e sul motivo per cui consiglia ad altri di visitarla se sono nel campus."
+    }
   }
 }
