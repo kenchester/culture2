@@ -65,6 +65,14 @@ export default async function TrainingPage() {
         </ul>
         <p className="text-sm text-muted">{t("rulesFootnote")}</p>
       </section>
+
+      {/* Scope of the program, stated where someone deciding whether to
+          take part will actually read it. Kept as a distinct banner rather
+          than another bullet, because it is a commitment about everyone
+          else's content too, not a rule for participants. */}
+      <aside className="rounded-lg border border-border bg-primary-light/40 p-5">
+        <p className="text-sm text-ink">{t("consentBanner")}</p>
+      </aside>
     </div>
   );
 }

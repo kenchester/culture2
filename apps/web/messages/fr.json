@@ -544,6 +544,7 @@
       "onTopic": "Quand tu réponds à quelqu’un, réponds à ce qu’il a réellement dit. Les réponses qui ignorent le post sous lequel ils sont n’ont pas d’utilité.",
       "respect": "Traitez les autres participants comme vous le feriez en personne. Tout ce que vous publiez peut être lu par des personnes extérieures à votre propre communauté."
     },
-    "rulesFootnote": "Plus de détails sur le programme, y compris la manière dont les contributions sont utilisées et rémunérées, seront ajoutés ici."
+    "rulesFootnote": "Plus de détails sur le programme, y compris la manière dont les contributions sont utilisées et rémunérées, seront ajoutés ici.",
+    "consentBanner": "Seuls les participants au programme de formation ayant consenti à ce que des données soient enregistrées à des fins de rémunération verront leurs publications incluses dans les données de formation. Aucun autre contenu utilisateur ne sera consulté ou utilisé à des fins de formation."
   }
 }

@@ -538,6 +538,7 @@
       "onTopic": "When you reply to someone, respond to what they actually said. Replies that ignore the post they're under aren't useful.",
       "respect": "Treat other participants the way you would in person. Anything you post may be read by people outside your own community."
     },
-    "rulesFootnote": "More detail about the program, including how contributions are used and compensated, will be added here."
+    "rulesFootnote": "More detail about the program, including how contributions are used and compensated, will be added here.",
+    "consentBanner": "Only participants in the training program who have consented to having data recorded for compensation will have their posts included in training data. No other user content will be viewed or used for training purposes."
   }
 }

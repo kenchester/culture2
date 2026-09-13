@@ -544,6 +544,7 @@
       "onTopic": "Quando você responde a alguém, responda ao que essa pessoa realmente disse. Respostas que ignoram o post em que estão não são úteis.",
       "respect": "Trate os outros participantes como você trataria pessoalmente. Qualquer coisa que você postar pode ser lida por pessoas fora da sua própria comunidade."
     },
-    "rulesFootnote": "Mais detalhes sobre o programa, incluindo como as contribuições são usadas e remuneradas, serão adicionados aqui."
+    "rulesFootnote": "Mais detalhes sobre o programa, incluindo como as contribuições são usadas e remuneradas, serão adicionados aqui.",
+    "consentBanner": "Somente os participantes do programa de treinamento que consentiram em registrar dados para compensação terão suas publicações incluídas nos dados de treinamento. Nenhum outro conteúdo de usuário será visualizado ou usado para fins de treinamento."
   }
 }
