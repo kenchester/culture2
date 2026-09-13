@@ -5,26 +5,10 @@ import Image from "next/image";
 import Link from "next/link";
 import { useTranslations } from "next-intl";
 import { EditableEntry } from "@/app/networks/editable-entry";
+import type { ReplyView } from "@/lib/post-views";
 
-export type ReplyView = {
-  id: number;
-  body: string;
-  createdAt: string;
-  author: { id: string; name: string; avatarUrl: string | null } | null;
-  isMine: boolean;
-  media: { type: "audio" | "video"; url: string } | null;
-  likeCount: number;
-  liked: boolean;
-  transcript: string | null;
-  transcriptLanguage: string | null;
-  hasCaptions: boolean;
-  summary: { text: string; language: string | null } | null;
-  permalink: string;
-  /** Set when this reply answers another reply rather than the post. */
-  replyTo: { id: string; name: string } | null;
-  /** The top-level reply this sits beneath, or null if top-level itself. */
-  parentReplyId: number | null;
-};
+export type { ReplyView };
+
 
 /** How many replies show before the rest are folded away. */
 export const VISIBLE_REPLIES = 3;

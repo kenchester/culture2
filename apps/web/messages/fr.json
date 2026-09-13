@@ -524,5 +524,23 @@
     "body": "Ceci est dans un réseau pour {school}. Connectez-vous avec votre adresse e-mail scolaire pour le lire.",
     "signIn": "Connexion",
     "notAMember": "Pas dans cette école ? Retournez sur la <home>page d’accueil</home> pour trouver un réseau ouvert à tous."
+  },
+  "training": {
+    "title": "Réseaux d’entraînement IA",
+    "intro": "Ces réseaux existent pour que les conversations quotidiennes dans votre langue puissent être enregistrées, avec consentement, et utilisées pour aider les systèmes d’IA à la comprendre. Rejoignez-en un pour une langue que vous parlez réellement, dans l’État où vous vivez.",
+    "findTitle": "Trouvez votre réseau",
+    "findBody": "Choisissez la langue dans laquelle vous allez poster et l’État dans lequel vous vous trouvez. Si un réseau existe déjà, vous pouvez le rejoindre ; sinon, vous pouvez le lancer. Il s’ouvre dans un nouvel onglet donc ces directives restent ouvertes ici.",
+    "languageLabel": "Langage dans lequel vous posterez",
+    "locationLabel": "Où tu es",
+    "locationPlaceholder": "Sélectionnez un État...",
+    "submit": "Trouvez ou créez un réseau",
+    "rulesTitle": "Règles de base",
+    "rules": {
+      "authentic": "Écrivez et enregistrez en tant que vous-même. Les publications doivent être vos propres mots, pas copiés d’ailleurs et non générés par un outil d’IA.",
+      "language": "Publiez dans la langue du réseau auquel vous êtes. Si un réseau est pour les locuteurs tagalog au Nevada, publiez en tagalog.",
+      "onTopic": "Quand tu réponds à quelqu’un, réponds à ce qu’il a réellement dit. Les réponses qui ignorent le post sous lequel ils sont n’ont pas d’utilité.",
+      "respect": "Traitez les autres participants comme vous le feriez en personne. Tout ce que vous publiez peut être lu par des personnes extérieures à votre propre communauté."
+    },
+    "rulesFootnote": "Plus de détails sur le programme, y compris la manière dont les contributions sont utilisées et rémunérées, seront ajoutés ici."
   }
 }

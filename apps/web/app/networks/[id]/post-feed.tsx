@@ -5,6 +5,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useTranslations } from "next-intl";
 import { EditableEntry } from "@/app/networks/editable-entry";
+import { ReplyRow } from "@/app/networks/[id]/posts/[postId]/reply-thread";
 import { loadMorePosts } from "@/app/networks/actions";
 import type { PostCursor, PostView } from "@/lib/post-views";
 
@@ -169,6 +170,25 @@ export function PostFeed({
                     ? t("replyLabel.one")
                     : t("replyLabel.other", { count: post.replyCount })}
               </Link>
+
+              {/* The newest few replies, inline. There is no composer out
+                  here, so Reply is a link that opens the post already
+                  staged as an answer to that particular reply - see the
+                  ?replyTo= handling in the post page. */}
+              {post.replies.length > 0 && (
+                <div className="mt-2 flex flex-col gap-4 border-l border-border pl-4">
+                  {post.replies.map((reply) => (
+                    <ReplyRow
+                      key={reply.id}
+                      reply={reply}
+                      someoneLabel={t("someone")}
+                      replyHref={`/networks/${networkId}/posts/${post.id}?replyTo=${reply.id}${
+                        embedSuffix ? "&embed=1" : ""
+                      }`}
+                    />
+                  ))}
+                </div>
+              )}
             </div>
           </div>
         </div>

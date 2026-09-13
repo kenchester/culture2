@@ -524,5 +524,23 @@
     "body": "Esto está en una red para {school}. Inicia sesión con el correo electrónico de tu colegio para leerlo.",
     "signIn": "Iniciar sesión",
     "notAMember": "¿No en este colegio? Vuelve a la <home>página principal</home> para encontrar una red abierta a todo el mundo."
+  },
+  "training": {
+    "title": "Redes de entrenamiento de IA",
+    "intro": "Estas redes existen para que la conversación cotidiana en tu idioma pueda grabarse, con consentimiento, y usarla para ayudar a los sistemas de IA a entenderla. Únete a una para un idioma que realmente hables, en el estado donde vives.",
+    "findTitle": "Encuentra tu red",
+    "findBody": "Elige el idioma en el que vas a publicar y el estado en el que te encuentras. Si ya existe una red, puedes unirte; si no, puedes empezarla. Se abre en una pestaña nueva, así que estas directrices permanecen abiertas aquí.",
+    "languageLabel": "Lenguaje en el que publicarás",
+    "locationLabel": "Dónde estás",
+    "locationPlaceholder": "Selecciona un estado...",
+    "submit": "Encuentra o inicia una red",
+    "rulesTitle": "Reglas básicas",
+    "rules": {
+      "authentic": "Escribe y graba como tú mismo. Las publicaciones deben ser tus propias palabras, no copiadas de ningún otro sitio ni generadas por una herramienta de IA.",
+      "language": "Publica en el idioma de la red en la que estás. Si una red es para hablantes de tagalo en Nevada, publica en tagalo.",
+      "onTopic": "Cuando respondas a alguien, responde a lo que realmente ha dicho. Las respuestas que ignoran la publicación en la que están no sirven.",
+      "respect": "Trata a los demás participantes como lo harías en persona. Cualquier cosa que publiques puede ser leída por personas fuera de tu propia comunidad."
+    },
+    "rulesFootnote": "Aquí se añadirán más detalles sobre el programa, incluyendo cómo se utilizan y compensan las contribuciones."
   }
 }

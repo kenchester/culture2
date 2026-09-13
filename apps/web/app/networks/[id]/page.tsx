@@ -7,6 +7,7 @@ import { getGeoName } from "@/lib/geo-translation";
 import { getPostMediaUrl } from "@/lib/post-media";
 import {
   cursorOf,
+  fetchRepliesForPosts,
   POSTS_PAGE_SIZE,
   POSTS_PREFETCH_MARGIN,
   toPostViews,
@@ -286,10 +287,18 @@ export default async function NetworkPage({
   // above; PostFeed appends later pages through the loadMorePosts action.
   // Both go through the same mapper so the two halves of the list can't
   // drift apart.
+  const feedReplies = await fetchRepliesForPosts(
+    supabase,
+    network.id,
+    (posts ?? []).map((p) => p.id),
+    user?.id ?? null,
+  );
+
   const postViews = toPostViews(supabase, (posts ?? []) as unknown as Record<string, unknown>[], {
     viewerId: user?.id ?? null,
     likedPostIds: myLikedPostIds,
     mediaUrls: postMediaUrls,
+    repliesByPost: feedReplies,
   });
 
 

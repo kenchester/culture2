@@ -120,9 +120,16 @@ export default async function PostPage({
     ? (replies ?? []).find((r) => String(r.id) === String(replyTo))
     : undefined;
   const replyTargetAuthor = replyTarget?.author as unknown as Author | null;
-  const initialReplyTo = replyTargetAuthor
-    ? { id: replyTargetAuthor.id, name: getDisplayName(replyTargetAuthor) }
-    : null;
+  const initialReplyTo =
+    replyTargetAuthor && replyTarget
+      ? {
+          id: replyTargetAuthor.id,
+          name: getDisplayName(replyTargetAuthor),
+          // Carried so the new reply attaches beneath the right reply, not
+          // merely to the right person (00000000000080).
+          replyId: replyTarget.id as number,
+        }
+      : null;
 
   // One lookup for the whole thread rather than a join per reply: the
   // people being answered are almost always already in it.

@@ -2,6 +2,9 @@ import "server-only";
 import type { SupabaseClient } from "@supabase/supabase-js";
 import { getAvatarUrl, getDisplayName } from "@/lib/profiles";
 import { getPostMediaUrl } from "@/lib/post-media";
+import { feedReplySlice } from "@/lib/feed-replies";
+
+export { feedReplySlice, FEED_REPLIES, FEED_REPLIES_WHEN_MEDIA } from "@/lib/feed-replies";
 
 // How many posts a network's feed loads at a time. The feed used to select
 // every post in the network with no limit at all, so a network with a few
@@ -15,6 +18,7 @@ export const POSTS_PAGE_SIZE = 30;
 // next page has already arrived and never sees a spinner. Scrolling fast
 // outruns it, which is when the spinner appears - the same behaviour as X.
 export const POSTS_PREFETCH_MARGIN = 10;
+
 
 const POST_COLUMNS =
   "id, body, video_url, media_type, media_path, created_at, transcript, transcript_language, transcript_segments, summary_text, summary_language:languages!summary_language_id(iso_code), author:user_id(id, username, first_name, last_name, img_path), post_replies(count), likes(count)";
@@ -37,6 +41,29 @@ type Author = {
  * needs a Supabase client and getPostMediaUrl needs the service-role client
  * to sign a private-bucket URL, neither of which can cross into the browser.
  */
+/**
+ * A reply, resolved and serializable, on the same terms as PostView.
+ * Defined here rather than in the client component so the feed can build
+ * one on the server.
+ */
+export type ReplyView = {
+  id: number;
+  body: string;
+  createdAt: string;
+  author: { id: string; name: string; avatarUrl: string | null } | null;
+  isMine: boolean;
+  media: { type: "audio" | "video"; url: string } | null;
+  likeCount: number;
+  liked: boolean;
+  transcript: string | null;
+  transcriptLanguage: string | null;
+  hasCaptions: boolean;
+  summary: { text: string; language: string | null } | null;
+  permalink: string;
+  replyTo: { id: string; name: string } | null;
+  parentReplyId: number | null;
+};
+
 export type PostView = {
   id: number;
   body: string;
@@ -52,6 +79,8 @@ export type PostView = {
   transcriptLanguage: string | null;
   hasCaptions: boolean;
   summary: { text: string; language: string | null } | null;
+  /** The newest few replies, for display inline in the feed. */
+  replies: ReplyView[];
 };
 
 /** Position in the feed, for keyset pagination. */
@@ -60,6 +89,114 @@ export type PostCursor = { createdAt: string; id: number };
 function countOf(value: unknown): number {
   const raw = (value as { count: number } | { count: number }[] | null) ?? { count: 0 };
   return Array.isArray(raw) ? (raw[0]?.count ?? 0) : raw.count;
+}
+
+const REPLY_COLUMNS =
+  "id, post_id, body, media_type, media_path, created_at, reply_to_user_id, parent_reply_id, transcript, transcript_language, transcript_segments, summary_text, summary_language:languages!summary_language_id(iso_code), author:user_id(id, username, first_name, last_name, img_path), likes(count)";
+
+
+/**
+ * The newest replies for a page of posts, keyed by post.
+ *
+ * One query for the whole page rather than one per post. It fetches every
+ * reply on those posts and slices in memory, which is fine at present
+ * volumes (the busiest thread on the site has four) but is the thing to
+ * revisit first if threads grow: PostgREST can't express "newest three per
+ * post", so a real per-post limit would need an RPC.
+ */
+export async function fetchRepliesForPosts(
+  supabase: SupabaseClient,
+  networkId: number,
+  postIds: number[],
+  viewerId: string | null,
+): Promise<Map<number, ReplyView[]>> {
+  const byPost = new Map<number, ReplyView[]>();
+  if (postIds.length === 0) return byPost;
+
+  const { data: replies, error } = await supabase
+    .from("post_replies")
+    .select(REPLY_COLUMNS)
+    .in("post_id", postIds)
+    .order("created_at", { ascending: false });
+
+  if (error) {
+    console.error(`fetchRepliesForPosts(network ${networkId}):`, error.message);
+    return byPost;
+  }
+  if (!replies?.length) return byPost;
+
+  const mentionIds = [
+    ...new Set(replies.map((r) => r.reply_to_user_id).filter(Boolean)),
+  ] as string[];
+
+  const [{ data: mentioned }, { data: likes }, mediaEntries] = await Promise.all([
+    mentionIds.length
+      ? supabase.from("profiles").select("id, username, first_name, last_name").in("id", mentionIds)
+      : Promise.resolve({ data: [] as Record<string, unknown>[] }),
+    viewerId
+      ? supabase
+          .from("likes")
+          .select("reply_id")
+          .eq("user_id", viewerId)
+          .in(
+            "reply_id",
+            replies.map((r) => r.id),
+          )
+      : Promise.resolve({ data: null }),
+    Promise.all(
+      replies.map(async (r) => [r.id as number, await getPostMediaUrl(r.media_path)] as const),
+    ),
+  ]);
+
+  const nameById = new Map(
+    (mentioned ?? []).map((p) => [p.id as string, getDisplayName(p as unknown as Author)]),
+  );
+  const likedIds = new Set((likes ?? []).map((l) => l.reply_id as number));
+  const mediaUrls = new Map(mediaEntries);
+
+  for (const reply of replies) {
+    const author = reply.author as unknown as Author | null;
+    const id = reply.id as number;
+    const mediaUrl = mediaUrls.get(id);
+    const mentionId = reply.reply_to_user_id as string | null;
+    const view: ReplyView = {
+      id,
+      body: reply.body as string,
+      createdAt: reply.created_at as string,
+      author: author
+        ? { id: author.id, name: getDisplayName(author), avatarUrl: getAvatarUrl(supabase, author.img_path) }
+        : null,
+      isMine: Boolean(viewerId && author?.id === viewerId),
+      media:
+        reply.media_type && mediaUrl
+          ? { type: reply.media_type as "audio" | "video", url: mediaUrl }
+          : null,
+      likeCount: countOf(reply.likes),
+      liked: likedIds.has(id),
+      transcript: (reply.transcript as string | null) ?? null,
+      transcriptLanguage: (reply.transcript_language as string | null) ?? null,
+      hasCaptions: Boolean(reply.transcript_segments),
+      summary: reply.summary_text
+        ? {
+            text: reply.summary_text as string,
+            language:
+              (reply.summary_language as unknown as { iso_code: string | null } | null)?.iso_code ??
+              null,
+          }
+        : null,
+      permalink: `/networks/${networkId}/posts/${reply.post_id}/replies/${id}`,
+      replyTo:
+        mentionId && nameById.has(mentionId)
+          ? { id: mentionId, name: nameById.get(mentionId)! }
+          : null,
+      parentReplyId: (reply.parent_reply_id as number | null) ?? null,
+    };
+    const list = byPost.get(reply.post_id as number) ?? [];
+    list.push(view);
+    byPost.set(reply.post_id as number, list);
+  }
+
+  return byPost;
 }
 
 export function cursorOf(posts: PostView[]): PostCursor | null {
@@ -135,7 +272,19 @@ export async function fetchPostViews(
     ),
   );
 
-  return toPostViews(supabase, posts, { viewerId, likedPostIds: likedIds, mediaUrls });
+  const repliesByPost = await fetchRepliesForPosts(
+    supabase,
+    networkId,
+    posts.map((p) => p.id),
+    viewerId,
+  );
+
+  return toPostViews(supabase, posts, {
+    viewerId,
+    likedPostIds: likedIds,
+    mediaUrls,
+    repliesByPost,
+  });
 }
 
 /**
@@ -155,10 +304,12 @@ export function toPostViews(
     viewerId,
     likedPostIds,
     mediaUrls,
+    repliesByPost,
   }: {
     viewerId: string | null;
     likedPostIds: Set<number>;
     mediaUrls: Map<number, string | null>;
+    repliesByPost: Map<number, ReplyView[]>;
   },
 ): PostView[] {
   return posts.map((post) => {
@@ -196,6 +347,7 @@ export function toPostViews(
               null,
           }
         : null,
+      replies: feedReplySlice(repliesByPost.get(id) ?? []),
     };
   });
 }
