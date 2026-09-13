@@ -174,7 +174,9 @@
     "replyLabel": "답글",
     "replyPlaceholder": "답장을 써...",
     "replySubmit": "답글",
-    "signInToReply": "답글을 작성하려면 로그인하세요"
+    "signInToReply": "답글을 작성하려면 로그인하세요",
+    "backToPost": "게시글로 돌아가기",
+    "loadMoreReplies": "더 많은 답변 불러오기"
   },
   "network": {
     "events": "행사",
@@ -247,7 +249,12 @@
     "posting": "게시...",
     "addSummary": "선택 요약 텍스트 추가",
     "addSummaryHelp": "수화는 자동으로 전사할 수 없습니다. 원한다면 시각장애인이나 수화를 하지 않는 사람들이 따라올 수 있도록 짧은 요약을 추가하세요.",
-    "summaryLanguagePlaceholder": "비수화 언어를 입력하기 시작하세요..."
+    "summaryLanguagePlaceholder": "비수화 언어를 입력하기 시작하세요...",
+    "copyLink": {
+      "post": "이 게시물 링크 복사",
+      "reply": "이 답변 링크 복사"
+    },
+    "linkCopied": "링크 복사됨"
   },
   "suggestNetwork": {
     "heading": "네트워크 제안",

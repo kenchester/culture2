@@ -174,7 +174,9 @@
     "replyLabel": "Resposta",
     "replyPlaceholder": "Escreva uma resposta...",
     "replySubmit": "Resposta",
-    "signInToReply": "Faça login para responder"
+    "signInToReply": "Faça login para responder",
+    "backToPost": "Voltar ao post",
+    "loadMoreReplies": "Carregar mais respostas"
   },
   "network": {
     "events": "Eventos",
@@ -247,7 +249,12 @@
     "posting": "Postando...",
     "addSummary": "Adicionar texto resumo opcional",
     "addSummaryHelp": "Línguas de sinais não podem ser transcritas automaticamente. Se quiser, adicione um resumo escrito curto para que pessoas com deficiência visual ou que não sabem linguagem de sinais possam acompanhar.",
-    "summaryLanguagePlaceholder": "Comece a digitar qualquer língua que não seja de sinais..."
+    "summaryLanguagePlaceholder": "Comece a digitar qualquer língua que não seja de sinais...",
+    "copyLink": {
+      "post": "Copie o link deste post",
+      "reply": "Copie o link desta resposta"
+    },
+    "linkCopied": "Link copiado"
   },
   "suggestNetwork": {
     "heading": "Sugira uma rede",

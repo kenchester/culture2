@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { useLocale, useTranslations } from "next-intl";
 import { deletePost, reportContent, toggleLike, translateEntry, updatePost } from "@/app/networks/actions";
 import { deleteReply, updateReply } from "@/app/networks/[id]/posts/[postId]/actions";
+import { CopyLinkButton } from "@/components/copy-link-button";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/input";
 import { LocalDateTime } from "@/components/local-datetime";
@@ -53,6 +54,7 @@ export function EditableEntry({
   transcriptLanguage,
   hasCaptions,
   summary,
+  permalink,
 }: {
   kind: "post" | "reply";
   itemId: number;
@@ -69,6 +71,13 @@ export function EditableEntry({
   hasCaptions?: boolean;
   /** Signed-language posts only: an author-written summary and its language. */
   summary?: { text: string; language: string | null } | null;
+  /**
+   * Path to this item's own page, e.g. /networks/4/posts/12 or
+   * .../posts/12/replies/34. When set, a copy-link control renders at the
+   * head of the action row. Omitted where a permalink is meaningless -
+   * the Acme demo's ephemeral posts, which vanish on refresh.
+   */
+  permalink?: string;
 }) {
   const t = useTranslations("editableEntry");
   const locale = useLocale() as Locale;
@@ -233,6 +242,7 @@ export function EditableEntry({
           </p>
         )}
         <div className="flex shrink-0 items-center gap-3 text-sm text-muted">
+          {permalink && <CopyLinkButton path={permalink} kind={kind} />}
           {!media && (
             <button
               type="button"

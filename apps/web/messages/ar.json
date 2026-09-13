@@ -174,7 +174,9 @@
     "replyLabel": "رد",
     "replyPlaceholder": "اكتب ردا...",
     "replySubmit": "رد",
-    "signInToReply": "سجل الدخول للرد"
+    "signInToReply": "سجل الدخول للرد",
+    "backToPost": "العودة إلى المنشور",
+    "loadMoreReplies": "تحميل المزيد من الردود"
   },
   "network": {
     "events": "الفعاليات",
@@ -247,7 +249,12 @@
     "posting": "النشر...",
     "addSummary": "إضافة نص ملخص اختياري",
     "addSummaryHelp": "لا يمكن نسخ لغات الإشارة تلقائيا. إذا رغبت، أضف ملخصا مكتوبا قصيرا حتى يتمكن الأشخاص ضعاف البصر أو لا يمارسون الإشارة من متابعة الكتابة.",
-    "summaryLanguagePlaceholder": "ابدأ بكتابة أي لغة غير إشارة..."
+    "summaryLanguagePlaceholder": "ابدأ بكتابة أي لغة غير إشارة...",
+    "copyLink": {
+      "post": "انسخ رابط هذا المنشور",
+      "reply": "انسخ رابط هذا الرد"
+    },
+    "linkCopied": "تم نسخ الرابط"
   },
   "suggestNetwork": {
     "heading": "اقترح شبكة",

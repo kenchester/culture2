@@ -174,7 +174,9 @@
     "replyLabel": "回复",
     "replyPlaceholder": "写个回复......",
     "replySubmit": "回复",
-    "signInToReply": "登录以回复"
+    "signInToReply": "登录以回复",
+    "backToPost": "返回帖子",
+    "loadMoreReplies": "加载更多回复"
   },
   "network": {
     "events": "活动",
@@ -247,7 +249,12 @@
     "posting": "发布......",
     "addSummary": "添加可选摘要文本",
     "addSummaryHelp": "手语不能自动转录。如果你愿意，可以加上简短的书面摘要，方便视障或不会手语的人跟上。",
-    "summaryLanguagePlaceholder": "开始输入任何非手语......"
+    "summaryLanguagePlaceholder": "开始输入任何非手语......",
+    "copyLink": {
+      "post": "复制本帖链接",
+      "reply": "复制此回复链接"
+    },
+    "linkCopied": "链接已复制"
   },
   "suggestNetwork": {
     "heading": "建议一个网络",

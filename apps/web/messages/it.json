@@ -174,7 +174,9 @@
     "replyLabel": "Risposta",
     "replyPlaceholder": "Scrivi una risposta...",
     "replySubmit": "Risposta",
-    "signInToReply": "Accedi per rispondere"
+    "signInToReply": "Accedi per rispondere",
+    "backToPost": "Torna al post",
+    "loadMoreReplies": "Carica altre risposte"
   },
   "network": {
     "events": "Eventi",
@@ -247,7 +249,12 @@
     "posting": "Postando...",
     "addSummary": "Aggiungi testo riassuntivo opzionale",
     "addSummaryHelp": "Le lingue dei segni non possono essere trascritte automaticamente. Se vuoi, aggiungi un breve riassunto scritto così che le persone ipovedenti o non sanno lingua dei segni possano seguirle.",
-    "summaryLanguagePlaceholder": "Inizia a digitare qualsiasi lingua non dei segni..."
+    "summaryLanguagePlaceholder": "Inizia a digitare qualsiasi lingua non dei segni...",
+    "copyLink": {
+      "post": "Copia il link di questo post",
+      "reply": "Copia il link a questa risposta"
+    },
+    "linkCopied": "Link copiato"
   },
   "suggestNetwork": {
     "heading": "Suggerisci una rete",

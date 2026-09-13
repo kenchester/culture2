@@ -174,7 +174,9 @@
     "replyLabel": "Antwort",
     "replyPlaceholder": "Schreib eine Antwort...",
     "replySubmit": "Antwort",
-    "signInToReply": "Melden Sie sich an, um zu antworten"
+    "signInToReply": "Melden Sie sich an, um zu antworten",
+    "backToPost": "Zurück zum Beitrag",
+    "loadMoreReplies": "Weitere Antworten laden"
   },
   "network": {
     "events": "Veranstaltungen",
@@ -247,7 +249,12 @@
     "posting": "Posten...",
     "addSummary": "Optionaler Zusammenfassungstext hinzufügen",
     "addSummaryHelp": "Gebärdensprachen können nicht automatisch transkribiert werden. Wenn Sie möchten, fügen Sie eine kurze schriftliche Zusammenfassung hinzu, damit Menschen mit Sehbehinderung oder Nicht-Gebärdensprache mitverfolgen können.",
-    "summaryLanguagePlaceholder": "Fang an, jede nicht-gebärdensprachige Sprache zu tippen..."
+    "summaryLanguagePlaceholder": "Fang an, jede nicht-gebärdensprachige Sprache zu tippen...",
+    "copyLink": {
+      "post": "Link zu diesem Beitrag kopieren",
+      "reply": "Link zu dieser Antwort kopieren"
+    },
+    "linkCopied": "Link kopiert"
   },
   "suggestNetwork": {
     "heading": "Schlage ein Netzwerk vor.",

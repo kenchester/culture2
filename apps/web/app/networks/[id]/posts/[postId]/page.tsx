@@ -10,6 +10,7 @@ import { createReply } from "./actions";
 import { EditableEntry } from "@/app/networks/editable-entry";
 import { DemoReplyThread, type RealDemoReply } from "@/app/networks/[id]/posts/[postId]/demo-reply-thread";
 import { PostComposer } from "@/app/networks/[id]/post-composer";
+import { ReplyThread, type ReplyView } from "@/app/networks/[id]/posts/[postId]/reply-thread";
 import { PostingIndicator } from "@/components/posting-indicator";
 import { FormError } from "@/components/ui/form-error";
 
@@ -56,7 +57,7 @@ export default async function PostPage({
       : Promise.resolve({ data: null }),
     supabase
       .from("networks")
-      .select("location_place_id, language:languages(is_signed)")
+      .select("title, location_place_id, language:languages(is_signed)")
       .eq("id", post.network_id)
       .single(),
   ]);
@@ -102,6 +103,42 @@ export default async function PostPage({
     ).then((entries) => new Map(entries)),
   ]);
 
+  const replyViews: ReplyView[] = (replies ?? []).map((reply) => {
+    const replyAuthor = reply.author as unknown as Author | null;
+    const replyMediaUrl = replyMediaUrls.get(reply.id);
+    return {
+      id: reply.id,
+      body: reply.body,
+      createdAt: reply.created_at,
+      author: replyAuthor
+        ? {
+            id: replyAuthor.id,
+            name: getDisplayName(replyAuthor),
+            avatarUrl: getAvatarUrl(supabase, replyAuthor.img_path),
+          }
+        : null,
+      isMine: user?.id === replyAuthor?.id,
+      media:
+        reply.media_type && replyMediaUrl
+          ? { type: reply.media_type as "audio" | "video", url: replyMediaUrl }
+          : null,
+      likeCount: extractCount(reply.likes),
+      liked: myLikedReplyIds.has(reply.id),
+      transcript: reply.transcript,
+      transcriptLanguage: reply.transcript_language,
+      hasCaptions: Boolean(reply.transcript_segments),
+      summary: reply.summary_text
+        ? {
+            text: reply.summary_text,
+            language:
+              (reply.summary_language as unknown as { iso_code: string | null } | null)?.iso_code ??
+              null,
+          }
+        : null,
+      permalink: `/networks/${id}/posts/${postId}/replies/${reply.id}`,
+    };
+  });
+
   const isSignedLanguage = Boolean(
     (network?.language as unknown as { is_signed?: boolean } | null)?.is_signed,
   );
@@ -133,9 +170,20 @@ export default async function PostPage({
 
   return (
     <div className="mx-auto flex w-full max-w-lg flex-1 flex-col gap-6 px-4 py-12">
-      <Link href={`/networks/${id}${embedSuffix}`} className="text-sm text-muted underline">
-        {t("backToNetwork")}
-      </Link>
+      {/* Someone arriving on a shared link has no other way to tell what
+          they are looking at, so the network is named here and the arrow
+          leads out to it. */}
+      <div className="flex flex-col gap-1">
+        <Link
+          href={`/networks/${id}${embedSuffix}`}
+          className="text-sm text-muted underline hover:text-primary"
+        >
+          ← {t("backToNetwork")}
+        </Link>
+        {network?.title && (
+          <h1 className="text-lg font-medium text-ink">{network.title}</h1>
+        )}
+      </div>
 
       <div className="flex gap-3 border-b border-border pb-4">
         {avatarUrl ? (
@@ -168,6 +216,7 @@ export default async function PostPage({
             likeCount={extractCount(post.likes)}
             liked={myLikedPostIds.has(post.id)}
             redirectAfterDelete={`/networks/${id}${embedSuffix}`}
+            permalink={`/networks/${id}/posts/${postId}`}
             transcript={post.transcript}
             transcriptLanguage={post.transcript_language}
             hasCaptions={Boolean(post.transcript_segments)}
@@ -199,66 +248,7 @@ export default async function PostPage({
         <DemoReplyThread networkId={post.network_id} realReplies={realDemoReplies} />
       ) : (
         <>
-          <div className="flex flex-col gap-4 pl-8">
-            {replies?.map((reply) => {
-              const replyAuthor = reply.author as unknown as Author | null;
-              const replyAvatarUrl = replyAuthor
-                ? getAvatarUrl(supabase, replyAuthor.img_path)
-                : null;
-
-              return (
-                <div key={reply.id} className="flex gap-3">
-                  {replyAvatarUrl ? (
-                    <Image
-                      src={replyAvatarUrl}
-                      alt=""
-                      width={24}
-                      height={24}
-                      className="h-6 w-6 shrink-0 rounded-full object-cover"
-                    />
-                  ) : (
-                    <div className="h-6 w-6 shrink-0 rounded-full bg-border" />
-                  )}
-                  <div className="flex flex-1 flex-col gap-1">
-                    <Link
-                      href={replyAuthor ? `/profile/${replyAuthor.id}` : "#"}
-                      className="text-sm font-medium text-ink underline hover:text-primary"
-                    >
-                      {replyAuthor ? getDisplayName(replyAuthor) : t("someone")}
-                    </Link>
-                    <EditableEntry
-                      kind="reply"
-                      itemId={reply.id}
-                      body={reply.body}
-                      media={
-                        reply.media_type && replyMediaUrls.get(reply.id)
-                          ? { type: reply.media_type as "audio" | "video", url: replyMediaUrls.get(reply.id)! }
-                          : null
-                      }
-                      createdAt={reply.created_at}
-                      canModify={user?.id === replyAuthor?.id}
-                      likeCount={extractCount(reply.likes)}
-                      liked={myLikedReplyIds.has(reply.id)}
-                      transcript={reply.transcript}
-                      transcriptLanguage={reply.transcript_language}
-                      hasCaptions={Boolean(reply.transcript_segments)}
-                      summary={
-                        reply.summary_text
-                          ? {
-                              text: reply.summary_text,
-                              language:
-                                (reply.summary_language as unknown as { iso_code: string | null } | null)?.iso_code ??
-                                null,
-                            }
-                          : null
-                      }
-                    />
-                  </div>
-                </div>
-              );
-            })}
-            {replies?.length === 0 && <p className="text-sm text-muted">{t("noRepliesYet")}</p>}
-          </div>
+          <ReplyThread replies={replyViews} someoneLabel={t("someone")} />
 
           {user ? (
             <form action={createReply} className="flex flex-col gap-2 border-t border-border pt-6">

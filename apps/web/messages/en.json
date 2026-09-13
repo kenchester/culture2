@@ -231,7 +231,9 @@
     "replyLabel": "Reply",
     "replyPlaceholder": "Write a reply...",
     "replySubmit": "Reply",
-    "signInToReply": "Sign in to reply"
+    "signInToReply": "Sign in to reply",
+    "backToPost": "Back to post",
+    "loadMoreReplies": "Load more replies"
   },
   "network": {
     "originIn": "{origin} in {location}",
@@ -321,7 +323,12 @@
     "addSummary": "Add optional summary text",
     "addSummaryHelp": "Sign languages can't be transcribed automatically. If you'd like, add a short written summary so people who are visually impaired or don't sign can follow along.",
     "summaryLanguageLabel": "Language of your summary",
-    "summaryLanguagePlaceholder": "Start typing any non-signed language…"
+    "summaryLanguagePlaceholder": "Start typing any non-signed language…",
+    "copyLink": {
+      "post": "Copy link to this post",
+      "reply": "Copy link to this reply"
+    },
+    "linkCopied": "Link copied"
   },
   "suggestNetwork": {
     "heading": "Suggest a network",

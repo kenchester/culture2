@@ -120,6 +120,7 @@ export function PostFeed({
                 transcriptLanguage={post.transcriptLanguage}
                 hasCaptions={post.hasCaptions}
                 summary={post.summary}
+                permalink={`/networks/${networkId}/posts/${post.id}`}
               />
               {post.videoUrl && (
                 <a

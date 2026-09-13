@@ -174,7 +174,9 @@
     "replyLabel": "返信",
     "replyPlaceholder": "返信を書いて...",
     "replySubmit": "返信",
-    "signInToReply": "返信するにはサインインしてください"
+    "signInToReply": "返信するにはサインインしてください",
+    "backToPost": "投稿に戻る",
+    "loadMoreReplies": "もっと返信を読み込む"
   },
   "network": {
     "events": "イベント",
@@ -247,7 +249,12 @@
     "posting": "投稿中...",
     "addSummary": "任意の要約テキストの追加",
     "addSummaryHelp": "手話は自動的に書き起こしられるわけではありません。もしよければ、視覚障害者や手話ができない人も理解できるように短い文章の要約を追加してください。",
-    "summaryLanguagePlaceholder": "手話以外の言語を入力し始めてください..."
+    "summaryLanguagePlaceholder": "手話以外の言語を入力し始めてください...",
+    "copyLink": {
+      "post": "この投稿へのリンクをコピーしてください",
+      "reply": "この返信へのリンクをコピーします"
+    },
+    "linkCopied": "リンクをコピーしました"
   },
   "suggestNetwork": {
     "heading": "ネットワークを提案してください",
