@@ -199,7 +199,9 @@
     "weeklyPromptSave": "Prompt di salvataggio",
     "connectWithSpeakersHeading": "Connettiti con altri {language} parlanti",
     "connectWithSpeakersIntro": "C'è una rete attiva vicino {location} al sito principale di CultureMesh.",
-    "originInLinked": "{origin} in <loc>{location}</loc>"
+    "originInLinked": "{origin} in <loc>{location}</loc>",
+    "loadingMorePosts": "Sto caricando altri post...",
+    "loadMorePosts": "Carica altri post"
   },
   "editableEntry": {
     "save": "Salva",

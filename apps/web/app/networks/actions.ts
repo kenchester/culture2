@@ -14,6 +14,13 @@ import { translateText } from "@/lib/azure-translator";
 import { toAzureCode, toAzureSourceCode, type Locale } from "@/lib/locale";
 import { checkLanguagePurity } from "@/lib/language-purity-check";
 import { getNetworkLanguage, transcribeStoredMedia } from "@/lib/transcription";
+import {
+  cursorOf,
+  fetchPostViews,
+  POSTS_PAGE_SIZE,
+  type PostCursor,
+  type PostView,
+} from "@/lib/post-views";
 
 const MAX_INVITES = 20;
 const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -60,6 +67,39 @@ export async function leaveNetwork(formData: FormData) {
     .eq("user_id", user.id);
 
   revalidatePath(`/networks/${networkId}`);
+}
+
+/**
+ * Serves page two onward of a network's feed to app/networks/[id]/post-feed.tsx.
+ *
+ * Deliberately does no authorization of its own: it reads through the
+ * caller's own RLS-scoped client, so an org-gated network returns nothing
+ * to a non-member exactly as the page itself would (the restrictive
+ * policies in 00000000000078). Passing a network id you can't read gets
+ * you an empty page, not someone else's posts.
+ */
+export async function loadMorePosts(
+  networkId: number,
+  cursor: PostCursor,
+): Promise<{ posts: PostView[]; cursor: PostCursor | null; hasMore: boolean }> {
+  const supabase = await createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
+  const posts = await fetchPostViews(supabase, networkId, {
+    viewerId: user?.id ?? null,
+    cursor,
+  });
+
+  return {
+    posts,
+    cursor: cursorOf(posts),
+    // A short page means the end; a full one means there may be more, which
+    // costs one extra empty request at the exact end of a feed whose length
+    // is a multiple of the page size. Cheaper than a count(*) per page.
+    hasMore: posts.length === POSTS_PAGE_SIZE,
+  };
 }
 
 export async function createPost(formData: FormData) {

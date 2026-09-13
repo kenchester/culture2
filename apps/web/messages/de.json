@@ -199,7 +199,9 @@
     "weeklyPromptSave": "Speicher-Eingabeaufforderung",
     "connectWithSpeakersHeading": "Verbinden Sie sich mit mehr Sprechern {language}",
     "connectWithSpeakersIntro": "In der Nähe {location} der Hauptseite von CultureMesh gibt es ein aktives Netzwerk.",
-    "originInLinked": "{origin} in <loc>{location}</loc>"
+    "originInLinked": "{origin} in <loc>{location}</loc>",
+    "loadingMorePosts": "Laden weitere Posts...",
+    "loadMorePosts": "Weitere Beiträge laden"
   },
   "editableEntry": {
     "save": "Speichern",

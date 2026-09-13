@@ -246,6 +246,8 @@
     "postSubmit": "Post",
     "someone": "Someone",
     "noPostsYet": "No posts yet.",
+    "loadingMorePosts": "Loading more posts…",
+    "loadMorePosts": "Load more posts",
     "replyLabel": {
       "zero": "Reply",
       "one": "1 Reply",

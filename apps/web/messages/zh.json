@@ -199,7 +199,9 @@
     "weeklyPromptSave": "保存提示",
     "connectWithSpeakersHeading": "与更多{language}演讲者联系",
     "connectWithSpeakersIntro": "主CultureMesh站点附近{location}有一个活跃的网络。",
-    "originInLinked": "{origin}在<loc>{location}</loc>"
+    "originInLinked": "{origin}在<loc>{location}</loc>",
+    "loadingMorePosts": "正在加载更多帖子......",
+    "loadMorePosts": "加载更多帖子"
   },
   "editableEntry": {
     "save": "保存",

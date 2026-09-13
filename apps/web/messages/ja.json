@@ -199,7 +199,9 @@
     "weeklyPromptSave": "セーブプロンプト",
     "connectWithSpeakersHeading": "より多くの{language}スピーカーとつながる",
     "connectWithSpeakersIntro": "メインのCultureMeshサイトの近く{location}にはアクティブなネットワークがあります。",
-    "originInLinked": "{origin}において<loc>{location}</loc>"
+    "originInLinked": "{origin}において<loc>{location}</loc>",
+    "loadingMorePosts": "投稿を読み込みます...",
+    "loadMorePosts": "投稿を読み込む"
   },
   "editableEntry": {
     "save": "セーブ",

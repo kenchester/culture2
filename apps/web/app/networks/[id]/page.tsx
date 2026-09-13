@@ -1,4 +1,3 @@
-import Image from "next/image";
 import Link from "next/link";
 import { notFound, redirect } from "next/navigation";
 import { getLocale, getTranslations } from "next-intl/server";
@@ -6,14 +5,20 @@ import { createClient } from "@/lib/supabase/server";
 import { type Author, getAvatarUrl, getDisplayName } from "@/lib/profiles";
 import { getGeoName } from "@/lib/geo-translation";
 import { getPostMediaUrl } from "@/lib/post-media";
+import {
+  cursorOf,
+  POSTS_PAGE_SIZE,
+  POSTS_PREFETCH_MARGIN,
+  toPostViews,
+} from "@/lib/post-views";
 import { buildSubdomainUrl, getMainSiteUrl, isLearnHost } from "@/lib/site-url";
 import { demoPostTimestamp, isExampleNetwork } from "@/lib/demo-network";
 import type { Locale } from "@/lib/locale";
 import { createPost, joinNetwork, leaveNetwork, setNetworkPrompt } from "@/app/networks/actions";
-import { EditableEntry } from "@/app/networks/editable-entry";
 import { DemoNetworkFeed, type RealDemoPost } from "@/app/networks/[id]/demo-network-feed";
 import { InviteFriendsBox } from "@/app/networks/[id]/invite-friends-box";
 import { PostComposer } from "@/app/networks/[id]/post-composer";
+import { PostFeed } from "@/app/networks/[id]/post-feed";
 import { PostingIndicator } from "@/components/posting-indicator";
 import { Field, Label, Textarea } from "@/components/ui/input";
 import { FormError } from "@/components/ui/form-error";
@@ -199,7 +204,9 @@ export default async function NetworkPage({
         "id, body, video_url, media_type, media_path, created_at, transcript, transcript_language, transcript_segments, summary_text, summary_language:languages!summary_language_id(iso_code), author:user_id(id, username, first_name, last_name, img_path), post_replies(count), likes(count)",
       )
       .eq("network_id", network.id)
-      .order("created_at", { ascending: false }),
+      .order("created_at", { ascending: false })
+      .order("id", { ascending: false })
+      .limit(POSTS_PAGE_SIZE),
     user
       ? supabase.from("likes").select("post_id").eq("user_id", user.id).not("post_id", "is", null)
       : Promise.resolve({ data: null }),
@@ -258,6 +265,16 @@ export default async function NetworkPage({
       (posts ?? []).map(async (post) => [post.id, await getPostMediaUrl(post.media_path)] as const),
     ),
   );
+
+  // The first page is rendered on the server from the rows already fetched
+  // above; PostFeed appends later pages through the loadMorePosts action.
+  // Both go through the same mapper so the two halves of the list can't
+  // drift apart.
+  const postViews = toPostViews(supabase, (posts ?? []) as unknown as Record<string, unknown>[], {
+    viewerId: user?.id ?? null,
+    likedPostIds: myLikedPostIds,
+    mediaUrls: postMediaUrls,
+  });
 
 
   // Drives both hiding the Audio tab and offering the written-summary
@@ -419,99 +436,14 @@ export default async function NetworkPage({
                 </form>
               )}
 
-              <div className="flex flex-col gap-4">
-                {posts?.map((post) => {
-                  const author = post.author as unknown as Author | null;
-                  const avatarUrl = author ? getAvatarUrl(supabase, author.img_path) : null;
-                  const replyCount =
-                    (post.post_replies as unknown as
-                      | { count: number }
-                      | { count: number }[]
-                      | null) ?? { count: 0 };
-                  const replyCountValue = Array.isArray(replyCount)
-                    ? (replyCount[0]?.count ?? 0)
-                    : replyCount.count;
-                  const likeCount =
-                    (post.likes as unknown as { count: number } | { count: number }[] | null) ?? {
-                      count: 0,
-                    };
-                  const likeCountValue = Array.isArray(likeCount)
-                    ? (likeCount[0]?.count ?? 0)
-                    : likeCount.count;
-
-                  return (
-                    <div key={post.id} className="flex gap-3 border-b border-border pb-4">
-                      {avatarUrl ? (
-                        <Image
-                          src={avatarUrl}
-                          alt=""
-                          width={32}
-                          height={32}
-                          className="h-8 w-8 shrink-0 rounded-full object-cover"
-                        />
-                      ) : (
-                        <div className="h-8 w-8 shrink-0 rounded-full bg-border" />
-                      )}
-                      <div className="flex flex-1 flex-col gap-1">
-                        <Link
-                          href={author ? `/profile/${author.id}` : "#"}
-                          className="text-sm font-medium text-ink underline hover:text-primary"
-                        >
-                          {author ? getDisplayName(author) : t("someone")}
-                        </Link>
-                        <EditableEntry
-                          kind="post"
-                          itemId={post.id}
-                          body={post.body}
-                          media={
-                            post.media_type && postMediaUrls.get(post.id)
-                              ? { type: post.media_type as "audio" | "video", url: postMediaUrls.get(post.id)! }
-                              : null
-                          }
-                          createdAt={post.created_at}
-                          canModify={user?.id === author?.id}
-                          likeCount={likeCountValue}
-                          liked={myLikedPostIds.has(post.id)}
-                          transcript={post.transcript}
-                          transcriptLanguage={post.transcript_language}
-                          hasCaptions={Boolean(post.transcript_segments)}
-                          summary={
-                            post.summary_text
-                              ? {
-                                  text: post.summary_text,
-                                  language:
-                                    (post.summary_language as unknown as { iso_code: string | null } | null)
-                                      ?.iso_code ?? null,
-                                }
-                              : null
-                          }
-                        />
-                        {post.video_url && (
-                          <a
-                            href={post.video_url}
-                            className="text-sm text-primary underline"
-                            target="_blank"
-                            rel="noreferrer"
-                          >
-                            {post.video_url}
-                          </a>
-                        )}
-                        <Link
-                          href={`/networks/${network.id}/posts/${post.id}${isEmbedded ? "?embed=1" : ""}`}
-                          className="text-sm text-muted underline hover:text-primary"
-                        >
-                          {replyCountValue === 0
-                            ? t("replyLabel.zero")
-                            : replyCountValue === 1
-                              ? t("replyLabel.one")
-                              : t("replyLabel.other", { count: replyCountValue })}
-                        </Link>
-                      </div>
-                    </div>
-                  );
-                })}
-                {posts?.length === 0 && <p className="text-sm text-muted">{t("noPostsYet")}</p>}
-              </div>
+              <PostFeed
+                networkId={network.id}
+                initialPosts={postViews}
+                initialCursor={cursorOf(postViews)}
+                hasMore={postViews.length === POSTS_PAGE_SIZE}
+                prefetchMargin={POSTS_PREFETCH_MARGIN}
+                embedSuffix={isEmbedded ? "?embed=1" : ""}
+              />
             </div>
           </>
         )}

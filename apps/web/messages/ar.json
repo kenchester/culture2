@@ -199,7 +199,9 @@
     "weeklyPromptSave": "طلب الحفظ",
     "connectWithSpeakersHeading": "تواصل مع المزيد {language} من المتحدثين",
     "connectWithSpeakersIntro": "هناك شبكة نشطة بالقرب {location} من الموقع الرئيسي ل CultureMesh الإلكتروني.",
-    "originInLinked": "{origin} في <loc>{location}</loc>"
+    "originInLinked": "{origin} في <loc>{location}</loc>",
+    "loadingMorePosts": "يتم تحميل المزيد من المنشورات...",
+    "loadMorePosts": "تحميل المزيد من المشاركات"
   },
   "editableEntry": {
     "save": "حفظ",
