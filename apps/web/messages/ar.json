@@ -181,7 +181,8 @@
     "showLessReplies": "عرض ردود أقل",
     "showAllReplies": "عرض جميع الردود",
     "replyingTo": "الرد على {name}",
-    "clearReplyTarget": "إلغاء الرد على هذا الشخص"
+    "clearReplyTarget": "إلغاء الرد على هذا الشخص",
+    "postDeleted": "تم حذف المنشور الأصلي من قبل مؤلفه. تم الاحتفاظ بهذا الرد لأن شخصا ما شارك رابطه."
   },
   "network": {
     "events": "الفعاليات",

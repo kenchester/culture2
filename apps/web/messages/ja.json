@@ -181,7 +181,8 @@
     "showLessReplies": "返信数を減らす",
     "showAllReplies": "すべての返信を表示",
     "replyingTo": "返信{name}",
-    "clearReplyTarget": "この人への返信をキャンセルしてください"
+    "clearReplyTarget": "この人への返信をキャンセルしてください",
+    "postDeleted": "元の投稿は作者によって削除されました。この返信は誰かがリンクを共有していたため残されました。"
   },
   "network": {
     "events": "イベント",

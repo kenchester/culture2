@@ -33,7 +33,10 @@ export default async function PostPage({
       "id, body, video_url, media_type, media_path, created_at, network_id, transcript, transcript_language, transcript_segments, summary_text, summary_language:languages!summary_language_id(iso_code), author:user_id(id, username, first_name, last_name, img_path), likes(count)",
     )
     .eq("id", postId)
-    .single();
+    // A soft-deleted post has no page of its own - only the replies that
+    // survived it are still reachable, each by its own permalink.
+    .is("deleted_at", null)
+    .maybeSingle();
 
   // A miss here is ambiguous: the post may not exist, or RLS may be hiding
   // a school post from someone who isn't in that network

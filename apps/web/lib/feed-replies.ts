@@ -2,23 +2,34 @@
 // data access, and keeping it importable means it can be unit-tested.
 // lib/post-views.ts re-exports it so callers have one place to look.
 
-// How many of a post's replies show inline in the network feed.
-//
-// Three for text. One when the newest reply is a recording, because an
-// audio or video player takes several times the vertical space of a line
-// of text - three in a row pushes the next post off the screen entirely
-// and turns the feed into a list of players rather than a conversation.
+// The most replies shown inline under a post in the network feed.
 export const FEED_REPLIES = 3;
-export const FEED_REPLIES_WHEN_MEDIA = 1;
 
 /**
  * The slice of a thread that shows inline in the feed.
  *
- * `replies` must be newest-first, which is how the feed orders them, so
- * the deciding reply is the one at the front.
+ * `replies` must be newest-first, which is how the feed orders them.
+ *
+ * An audio or video player is several times the height of a line of text,
+ * so a recording is only ever shown out here when it is the newest reply -
+ * the one thing worth surfacing. Anywhere further down it is cut, along
+ * with everything below it, and the text above it is shown instead:
+ *
+ *   newest is a recording   -> just that one
+ *   2nd is a recording      -> just the 1st
+ *   3rd is a recording      -> the 1st and 2nd
+ *   no recordings           -> three
+ *
+ * Cutting at the recording rather than skipping past it keeps the feed
+ * chronological. Showing replies 1 and 3 while silently dropping 2 would
+ * read as a conversation with a hole in it, and the full thread is one
+ * click away regardless.
  */
 export function feedReplySlice<T extends { media: unknown | null }>(replies: T[]): T[] {
   if (replies.length === 0) return [];
-  const limit = replies[0].media ? FEED_REPLIES_WHEN_MEDIA : FEED_REPLIES;
-  return replies.slice(0, limit);
+  if (replies[0].media) return replies.slice(0, 1);
+
+  const window = replies.slice(0, FEED_REPLIES);
+  const firstMedia = window.findIndex((reply) => reply.media);
+  return firstMedia === -1 ? window : window.slice(0, firstMedia);
 }

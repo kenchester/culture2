@@ -4,7 +4,7 @@ import { getAvatarUrl, getDisplayName } from "@/lib/profiles";
 import { getPostMediaUrl } from "@/lib/post-media";
 import { feedReplySlice } from "@/lib/feed-replies";
 
-export { feedReplySlice, FEED_REPLIES, FEED_REPLIES_WHEN_MEDIA } from "@/lib/feed-replies";
+export { feedReplySlice, FEED_REPLIES } from "@/lib/feed-replies";
 
 // How many posts a network's feed loads at a time. The feed used to select
 // every post in the network with no limit at all, so a network with a few
@@ -231,6 +231,9 @@ export async function fetchPostViews(
     .from("posts")
     .select(POST_COLUMNS)
     .eq("network_id", networkId)
+    // Soft-deleted posts are retained only so permalinked replies beneath
+    // them still resolve (00000000000081); they are not part of the feed.
+    .is("deleted_at", null)
     .order("created_at", { ascending: false })
     .order("id", { ascending: false })
     .limit(limit);

@@ -181,7 +181,8 @@
     "showLessReplies": "显示更少的回复",
     "showAllReplies": "显示所有回复",
     "replyingTo": "回复{name}",
-    "clearReplyTarget": "取消回复这个人"
+    "clearReplyTarget": "取消回复这个人",
+    "postDeleted": "原帖已被作者删除。此回复保留是因为有人分享了链接。"
   },
   "network": {
     "events": "活动",

@@ -181,7 +181,8 @@
     "showLessReplies": "Mostrar menos respuestas",
     "showAllReplies": "Mostrar todas las respuestas",
     "replyingTo": "Respondiendo a {name}",
-    "clearReplyTarget": "Cancela responder a esta persona"
+    "clearReplyTarget": "Cancela responder a esta persona",
+    "postDeleted": "La publicación original fue eliminada por su autor. Esta respuesta se mantuvo porque alguien compartió un enlace."
   },
   "network": {
     "events": "Eventos",

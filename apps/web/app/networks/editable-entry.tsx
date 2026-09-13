@@ -260,7 +260,7 @@ export function EditableEntry({
           </p>
         )}
         <div className="flex shrink-0 items-center gap-3 text-sm text-muted">
-          {permalink && <CopyLinkButton path={permalink} kind={kind} />}
+          {permalink && <CopyLinkButton path={permalink} kind={kind} itemId={itemId} />}
           {!media && (
             <button
               type="button"

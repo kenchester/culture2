@@ -1,7 +1,7 @@
 // Run with: npm run test
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import { FEED_REPLIES, FEED_REPLIES_WHEN_MEDIA, feedReplySlice } from "./feed-replies";
+import { FEED_REPLIES, feedReplySlice } from "./feed-replies";
 
 const text = (id: number) => ({ id, media: null });
 const audio = (id: number) => ({ id, media: { type: "audio", url: "u" } });
@@ -41,17 +41,35 @@ test("newest reply is video: shows only that one", () => {
   );
 });
 
-test("media further down does NOT shrink the slice - only the newest decides", () => {
-  // The rule is about what lands at the top of the feed, so a recording
-  // buried third still shows alongside two lines of text.
-  const replies = [text(5), text(4), video(3), text(2)];
+test("second reply is a recording: shows only the first", () => {
   assert.deepEqual(
-    feedReplySlice(replies).map((r) => r.id),
+    feedReplySlice([text(5), audio(4), text(3), text(2)]).map((r) => r.id),
+    [5],
+  );
+});
+
+test("third reply is a recording: shows the first two", () => {
+  assert.deepEqual(
+    feedReplySlice([text(5), text(4), video(3), text(2)]).map((r) => r.id),
+    [5, 4],
+  );
+});
+
+test("a recording below the window is irrelevant", () => {
+  // Position four is never shown anyway, so it must not affect the slice.
+  assert.deepEqual(
+    feedReplySlice([text(5), text(4), text(3), video(2)]).map((r) => r.id),
     [5, 4, 3],
   );
 });
 
-test("limits are the documented ones", () => {
+test("the cut is chronological - no holes", () => {
+  // Replies 1 and 3 with 2 omitted would read as a conversation with a
+  // gap in it, so everything below the recording goes too.
+  const out = feedReplySlice([text(5), audio(4), text(3)]).map((r) => r.id);
+  assert.ok(!out.includes(3), "must not skip past the recording");
+});
+
+test("limit is the documented one", () => {
   assert.equal(FEED_REPLIES, 3);
-  assert.equal(FEED_REPLIES_WHEN_MEDIA, 1);
 });

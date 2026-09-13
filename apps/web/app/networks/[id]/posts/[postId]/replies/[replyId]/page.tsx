@@ -77,14 +77,20 @@ export default async function ReplyPage({
   const { data: post } = await supabase
     .from("posts")
     .select(
-      "id, body, video_url, media_type, media_path, created_at, network_id, transcript, transcript_language, transcript_segments, summary_text, summary_language:languages!summary_language_id(iso_code), author:user_id(id, username, first_name, last_name, img_path), likes(count)",
+      "id, body, video_url, media_type, media_path, created_at, network_id, deleted_at, transcript, transcript_language, transcript_segments, summary_text, summary_language:languages!summary_language_id(iso_code), author:user_id(id, username, first_name, last_name, img_path), likes(count)",
     )
     .eq("id", postId)
-    .single();
+    // NOT filtered on deleted_at: this page is the one place a soft-deleted
+    // post still matters, because the reply below it survived precisely so
+    // this URL would keep working (00000000000081).
+    .eq("network_id", id)
+    .maybeSingle();
 
-  if (!post || String(post.network_id) !== String(id)) {
+  if (!post) {
     notFound();
   }
+
+  const postWasDeleted = Boolean(post.deleted_at);
 
   const {
     data: { user },
@@ -154,15 +160,26 @@ export default async function ReplyPage({
     <div className="mx-auto flex w-full max-w-lg flex-1 flex-col gap-6 px-4 py-12">
       <div className="flex flex-col gap-1">
         <Link
-          href={`/networks/${id}/posts/${postId}${embedSuffix}`}
+          href={
+            postWasDeleted
+              ? `/networks/${id}${embedSuffix}`
+              : `/networks/${id}/posts/${postId}${embedSuffix}`
+          }
           className="text-sm text-muted underline hover:text-primary"
         >
-          ← {t("backToPost")}
+          ← {postWasDeleted ? t("backToNetwork") : t("backToPost")}
         </Link>
         {network?.title && <h1 className="text-lg font-medium text-ink">{network.title}</h1>}
       </div>
 
-      {/* The post being replied to, for context. */}
+      {/* The post being replied to, for context - or a note in its place
+          when the author has since deleted it. The reply is still worth
+          reading, and saying so is better than a broken-looking page. */}
+      {postWasDeleted ? (
+        <p className="rounded-md border border-border bg-surface p-4 text-sm text-muted">
+          {t("postDeleted")}
+        </p>
+      ) : (
       <div className="flex gap-3 border-b border-border pb-4">
         {postAvatarUrl ? (
           <Image
@@ -212,22 +229,28 @@ export default async function ReplyPage({
           />
         </div>
       </div>
+      )}
 
       <div className="flex flex-col gap-4 pl-8">
         <ReplyRow reply={replyView} someoneLabel={t("someone")} />
 
         {/* Only this one reply is shown, so the way to the rest of the
-            conversation has to be explicit. */}
-        <Link
-          href={`/networks/${id}/posts/${postId}${embedSuffix}`}
-          className="self-start text-sm text-primary underline"
-        >
-          {t("showAllReplies")}
-        </Link>
+            conversation has to be explicit - but there is no thread to go
+            back to once the post itself has been deleted. */}
+        {!postWasDeleted && (
+          <Link
+            href={`/networks/${id}/posts/${postId}${embedSuffix}`}
+            className="self-start text-sm text-primary underline"
+          >
+            {t("showAllReplies")}
+          </Link>
+        )}
       </div>
 
       {/* Replying from here answers the reply you followed the link to,
-          which is the only thing on the page. */}
+          which is the only thing on the page. Not offered once the post is
+          gone: createReply still needs a live post to hang the reply on. */}
+      {!postWasDeleted && (
       <ReplySection
         networkId={id}
         postId={postId}
@@ -244,6 +267,7 @@ export default async function ReplyPage({
           replyView.author ? { ...replyView.author, replyId: replyView.id } : null
         }
       />
+      )}
     </div>
   );
 }

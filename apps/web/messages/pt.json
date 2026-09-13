@@ -181,7 +181,8 @@
     "showLessReplies": "Mostrar menos respostas",
     "showAllReplies": "Mostrar todas as respostas",
     "replyingTo": "Respondendo a {name}",
-    "clearReplyTarget": "Cancelar a resposta para essa pessoa"
+    "clearReplyTarget": "Cancelar a resposta para essa pessoa",
+    "postDeleted": "A postagem original foi deletada pelo autor. Esta resposta foi mantida porque alguém compartilhou um link para ela."
   },
   "network": {
     "events": "Eventos",

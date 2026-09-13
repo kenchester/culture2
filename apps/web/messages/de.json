@@ -181,7 +181,8 @@
     "showLessReplies": "Zeigen Sie weniger Antworten",
     "showAllReplies": "Alle Antworten anzeigen",
     "replyingTo": "Antwort auf {name}",
-    "clearReplyTarget": "Widerrufe die Antwort auf diese Person"
+    "clearReplyTarget": "Widerrufe die Antwort auf diese Person",
+    "postDeleted": "Der ursprüngliche Beitrag wurde vom Autor gelöscht. Diese Antwort wurde behalten, weil jemand einen Link dazu geteilt hatte."
   },
   "network": {
     "events": "Veranstaltungen",

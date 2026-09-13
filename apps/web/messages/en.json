@@ -238,7 +238,8 @@
     "showLessReplies": "Show fewer replies",
     "showAllReplies": "Show all replies",
     "replyingTo": "Replying to {name}",
-    "clearReplyTarget": "Cancel replying to this person"
+    "clearReplyTarget": "Cancel replying to this person",
+    "postDeleted": "The original post was deleted by its author. This reply was kept because someone had shared a link to it."
   },
   "network": {
     "originIn": "{origin} in {location}",

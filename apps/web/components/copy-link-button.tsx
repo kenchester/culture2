@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { useTranslations } from "next-intl";
+import { markReplyPermalinkCopied } from "@/app/networks/actions";
 
 function LinkIcon() {
   return (
@@ -31,7 +32,15 @@ function LinkIcon() {
  * host too. Copying a learn. link and handing someone a www. one would send
  * them to a page that redirects, or that they can't read at all.
  */
-export function CopyLinkButton({ path, kind }: { path: string; kind: "post" | "reply" }) {
+export function CopyLinkButton({
+  path,
+  kind,
+  itemId,
+}: {
+  path: string;
+  kind: "post" | "reply";
+  itemId: number;
+}) {
   const t = useTranslations("editableEntry");
   const [copied, setCopied] = useState(false);
   const timer = useRef<ReturnType<typeof setTimeout> | null>(null);
@@ -71,6 +80,14 @@ export function CopyLinkButton({ path, kind }: { path: string; kind: "post" | "r
         return;
       }
       document.body.removeChild(scratch);
+    }
+
+    // Recorded only for replies, and only after the copy actually
+    // succeeded: this is what keeps the reply alive if its post is later
+    // deleted (00000000000081). Not awaited - the confirmation below should
+    // not wait on a round trip.
+    if (kind === "reply") {
+      void markReplyPermalinkCopied(itemId);
     }
 
     setCopied(true);

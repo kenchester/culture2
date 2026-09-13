@@ -205,6 +205,7 @@ export default async function NetworkPage({
         "id, body, video_url, media_type, media_path, created_at, transcript, transcript_language, transcript_segments, summary_text, summary_language:languages!summary_language_id(iso_code), author:user_id(id, username, first_name, last_name, img_path), post_replies(count), likes(count)",
       )
       .eq("network_id", network.id)
+      .is("deleted_at", null)
       .order("created_at", { ascending: false })
       .order("id", { ascending: false })
       .limit(POSTS_PAGE_SIZE),

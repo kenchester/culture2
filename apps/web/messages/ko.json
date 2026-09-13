@@ -181,7 +181,8 @@
     "showLessReplies": "답글 수를 줄여 보세요",
     "showAllReplies": "모든 답변 보기",
     "replyingTo": "답변 {name}",
-    "clearReplyTarget": "이 사람에게 답장하는 것을 취소하세요"
+    "clearReplyTarget": "이 사람에게 답장하는 것을 취소하세요",
+    "postDeleted": "원본 게시물은 작성자에 의해 삭제되었습니다. 이 답변은 누군가가 링크를 공유해 남겨두었습니다."
   },
   "network": {
     "events": "행사",

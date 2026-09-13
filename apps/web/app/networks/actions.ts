@@ -102,6 +102,23 @@ export async function loadMorePosts(
   };
 }
 
+/**
+ * Records that a reply's permalink has been copied, which is what makes it
+ * survive deletion of its post (00000000000081).
+ *
+ * Fire-and-forget from the copy button: the copy must never wait on this,
+ * and a failure to record simply means the reply is treated as unshared.
+ * Deliberately callable while signed out, because anyone can copy a link.
+ */
+export async function markReplyPermalinkCopied(replyId: number): Promise<void> {
+  try {
+    const supabase = await createClient();
+    await supabase.rpc("mark_reply_permalink_copied", { p_reply_id: replyId });
+  } catch {
+    // non-fatal
+  }
+}
+
 export async function createPost(formData: FormData) {
   const networkId = formData.get("networkId") as string;
   const body = (formData.get("body") as string) ?? "";
@@ -330,34 +347,41 @@ export async function deletePost(postId: number): Promise<ActionResult> {
     return { error: "Not signed in." };
   }
 
-  const { data: existing } = await supabase.from("posts").select("media_path").eq("id", postId).single();
-
-  const { error } = await supabase
+  const { data: existing } = await supabase
     .from("posts")
-    .delete()
+    .select("media_path, network_id")
     .eq("id", postId)
-    .eq("user_id", user.id);
+    .single();
+
+  // delete_post (00000000000081) decides between removing the row and
+  // soft-deleting it: a reply whose permalink someone copied survives, and
+  // the post has to stay addressable for that reply's URL to resolve. It
+  // also removes the never-linked replies, which the author has no direct
+  // right to delete - hence SECURITY DEFINER, with the author check inside.
+  const { data: outcome, error } = await supabase.rpc("delete_post", { p_post_id: postId });
 
   if (error) {
     return { error: error.message };
   }
 
-  // Best-effort - the row is already gone either way, and a stranded
-  // storage object is a cheaper failure mode than blocking a delete on it.
-  if (existing?.media_path) {
+  // Only safe once the row is genuinely gone. A soft-deleted post keeps its
+  // recording, because the surviving replies are answers to it and the
+  // author may yet need it for a takedown or appeal.
+  if (outcome === "deleted" && existing?.media_path) {
     try {
       await supabase.storage.from("post-media").remove([existing.media_path]);
     } catch {
-      // ignore
+      // best-effort, same as every other side effect here
     }
+  }
+
+  if (existing?.network_id) {
+    revalidatePath(`/networks/${existing.network_id}`);
   }
 
   return { ok: true };
 }
 
-// Shared by both posts and replies - the likes table has a post_id and a
-// reply_id column, exactly one of which is set, so a single function
-// covers both instead of duplicating this per kind.
 export async function toggleLike(kind: "post" | "reply", itemId: number): Promise<ActionResult> {
   const supabase = await createClient();
   const {
