@@ -523,8 +523,8 @@
     "notAMember": "Not at this school? Head back to the <home>homepage</home> to find a network that's open to everyone."
   },
   "training": {
-    "title": "AI training networks",
-    "intro": "These networks exist so that everyday conversation in your language can be recorded, with consent, and used to help AI systems understand it. Join one for a language you actually speak, in the state where you live.",
+    "title": "AI multilingual training via live social network posts",
+    "intro": "Please search for a live social network which matches your background and current location. You will then engage in relevant conversation in your native language, which will be recorded, with consent, and used to help AI systems understand it. Join one for a language you actually speak, in the state where you live.",
     "findTitle": "Find your network",
     "findBody": "Pick the language you'll be posting in and the state you're in. If a network already exists you can join it; if not, you can start it. It opens in a new tab so these guidelines stay open here.",
     "languageLabel": "Language you'll post in",

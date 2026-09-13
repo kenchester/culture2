@@ -4,7 +4,7 @@ import { createClient } from "@/lib/supabase/server";
 import { TrainingSearchForm, type LocationOption } from "@/app/training/training-search-form";
 
 export const metadata: Metadata = {
-  title: "AI training networks — CultureMesh",
+  title: "AI multilingual training — CultureMesh",
 };
 
 // Washington D.C. is a city in this data, not a region: the 50 states are
@@ -17,11 +17,15 @@ const UNITED_STATES_PLACE_ID = 233;
 /**
  * The entry point for people joining the AI training program.
  *
- * The deliberate narrowing here is the whole point: origin can only be a
- * LANGUAGE, and location only a US state or D.C. Networks for this program
- * need to be findable by other participants, and the main site's full
- * origin/location freedom produces networks so specific that nobody else
- * ever lands in the same one.
+ * It searches the live network directory - these are real CultureMesh
+ * networks with real conversations in them, not a separate set created for
+ * the program. That is the point: the speech worth learning from is the
+ * speech people were going to produce anyway.
+ *
+ * The deliberate narrowing is origin = LANGUAGE and location = a US state
+ * or D.C. Participants need to land in the same networks as each other,
+ * and the main site's full origin/location freedom produces combinations
+ * so specific that nobody else ever does.
  */
 export default async function TrainingPage() {
   const t = await getTranslations("training");

@@ -529,8 +529,6 @@
     "notAMember": "Pas dans cette école ? Retournez sur la <home>page d’accueil</home> pour trouver un réseau ouvert à tous."
   },
   "training": {
-    "title": "Réseaux d’entraînement IA",
-    "intro": "Ces réseaux existent pour que les conversations quotidiennes dans votre langue puissent être enregistrées, avec consentement, et utilisées pour aider les systèmes d’IA à la comprendre. Rejoignez-en un pour une langue que vous parlez réellement, dans l’État où vous vivez.",
     "findTitle": "Trouvez votre réseau",
     "findBody": "Choisissez la langue dans laquelle vous allez poster et l’État dans lequel vous vous trouvez. Si un réseau existe déjà, vous pouvez le rejoindre ; sinon, vous pouvez le lancer. Il s’ouvre dans un nouvel onglet donc ces directives restent ouvertes ici.",
     "languageLabel": "Langage dans lequel vous posterez",
@@ -545,6 +543,8 @@
       "respect": "Traitez les autres participants comme vous le feriez en personne. Tout ce que vous publiez peut être lu par des personnes extérieures à votre propre communauté."
     },
     "rulesFootnote": "Plus de détails sur le programme, y compris la manière dont les contributions sont utilisées et rémunérées, seront ajoutés ici.",
-    "consentBanner": "Seuls les participants au programme de formation ayant consenti à l’enregistrement des données verront leurs publications incluses dans les données de formation. Veuillez ne pas inclure d’informations identifiables ou privées dans vos publications ou réponses ; vous pouvez également utiliser un pseudonyme pour votre nom de compte, si désiré."
+    "consentBanner": "Seuls les participants au programme de formation ayant consenti à l’enregistrement des données verront leurs publications incluses dans les données de formation. Veuillez ne pas inclure d’informations identifiables ou privées dans vos publications ou réponses ; vous pouvez également utiliser un pseudonyme pour votre nom de compte, si désiré.",
+    "title": "Formation multilingue IA via des publications en direct sur les réseaux sociaux",
+    "intro": "Veuillez rechercher un réseau social en direct qui correspond à votre parcours et à votre localisation actuelle. Vous engagerez ensuite une conversation pertinente dans votre langue maternelle, qui sera enregistrée, avec consentement, et utilisée pour aider les systèmes d’IA à la comprendre. Rejoignez-en un pour une langue que vous parlez réellement, dans l’État où vous vivez."
   }
 }

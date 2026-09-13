@@ -529,8 +529,6 @@
     "notAMember": "Non in questa scuola? Torna alla <home>homepage</home> per trovare una rete aperta a tutti."
   },
   "training": {
-    "title": "Reti di addestramento IA",
-    "intro": "Queste reti esistono affinché la conversazione quotidiana nella tua lingua possa essere registrata, con il consenso, e usata per aiutare i sistemi di IA a comprenderla. Unisciti a una per una lingua che parli davvero, nello stato in cui vivi.",
     "findTitle": "Trova la tua rete",
     "findBody": "Scegli la lingua in cui pubblicherai e lo stato in cui ti trovi. Se esiste già una rete puoi unirti; altrimenti puoi avviarla. Si apre in una nuova scheda quindi queste linee guida restano aperte qui.",
     "languageLabel": "Linguaggio in cui pubblicherai",
@@ -545,6 +543,8 @@
       "respect": "Tratta gli altri partecipanti come faresti di persona. Qualsiasi cosa tu pubblichi potrebbe essere letta da persone al di fuori della tua comunità."
     },
     "rulesFootnote": "Ulteriori dettagli sul programma, inclusi i modi in cui i contributi vengono utilizzati e compensati, saranno aggiunti qui.",
-    "consentBanner": "Solo i partecipanti al programma di formazione che hanno acconsentito alla registrazione dei dati vedranno i loro post inclusi nei dati di addestramento. Si prega di non includere alcuna informazione identificabile o privata nei vostri post o risposte; potete anche utilizzare uno pseudonimo per il nome del vostro account, se desiderato."
+    "consentBanner": "Solo i partecipanti al programma di formazione che hanno acconsentito alla registrazione dei dati vedranno i loro post inclusi nei dati di addestramento. Si prega di non includere alcuna informazione identificabile o privata nei vostri post o risposte; potete anche utilizzare uno pseudonimo per il nome del vostro account, se desiderato.",
+    "title": "Formazione multilingue con IA tramite post live sui social network",
+    "intro": "Cerca un social network live che corrisponda al tuo background e alla tua posizione attuale. Successivamente parteciperai a conversazioni rilevanti nella tua lingua madre, che saranno registrate, con il consenso, e utilizzate per aiutare i sistemi di IA a comprenderla. Iscriviti a una per una lingua che parli realmente, nello stato in cui vivi."
   }
 }

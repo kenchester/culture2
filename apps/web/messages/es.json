@@ -529,8 +529,6 @@
     "notAMember": "¿No en este colegio? Vuelve a la <home>página principal</home> para encontrar una red abierta a todo el mundo."
   },
   "training": {
-    "title": "Redes de entrenamiento de IA",
-    "intro": "Estas redes existen para que la conversación cotidiana en tu idioma pueda grabarse, con consentimiento, y usarla para ayudar a los sistemas de IA a entenderla. Únete a una para un idioma que realmente hables, en el estado donde vives.",
     "findTitle": "Encuentra tu red",
     "findBody": "Elige el idioma en el que vas a publicar y el estado en el que te encuentras. Si ya existe una red, puedes unirte; si no, puedes empezarla. Se abre en una pestaña nueva, así que estas directrices permanecen abiertas aquí.",
     "languageLabel": "Lenguaje en el que publicarás",
@@ -545,6 +543,8 @@
       "respect": "Trata a los demás participantes como lo harías en persona. Cualquier cosa que publiques puede ser leída por personas fuera de tu propia comunidad."
     },
     "rulesFootnote": "Aquí se añadirán más detalles sobre el programa, incluyendo cómo se utilizan y compensan las contribuciones.",
-    "consentBanner": "Solo los participantes en el programa de formación que hayan consentido que se registren datos podrán incluir sus publicaciones en los datos de entrenamiento. Por favor, no incluyas ninguna información identificable o privada en tus publicaciones o respuestas; también puedes usar un seudónimo para el nombre de tu cuenta, si así lo deseas."
+    "consentBanner": "Solo los participantes en el programa de formación que hayan consentido que se registren datos podrán incluir sus publicaciones en los datos de entrenamiento. Por favor, no incluyas ninguna información identificable o privada en tus publicaciones o respuestas; también puedes usar un seudónimo para el nombre de tu cuenta, si así lo deseas.",
+    "title": "Entrenamiento multilingüe con IA a través de publicaciones en directo en redes sociales",
+    "intro": "Por favor, busca una red social en directo que coincida con tu origen y ubicación actual. Luego mantendrás conversaciones relevantes en tu idioma nativo, que serán grabadas, con consentimiento, y usadas para ayudar a los sistemas de IA a entenderla. Únete a una para un idioma que realmente hables, en el estado donde vives."
   }
 }

@@ -529,8 +529,6 @@
     "notAMember": "Nicht an dieser Schule? Geh zurück auf die <home>Homepage</home>, um ein Netzwerk zu finden, das für alle offen ist."
   },
   "training": {
-    "title": "KI-Trainingsnetzwerke",
-    "intro": "Diese Netzwerke existieren, damit alltägliche Gespräche in Ihrer Sprache mit Zustimmung aufgezeichnet und genutzt werden können, um KI-Systemen beim Verständnis zu helfen. Treten Sie einem bei, um eine Sprache zu bekommen, die Sie tatsächlich sprechen, in dem Bundesstaat, in dem Sie leben.",
     "findTitle": "Finde dein Netzwerk",
     "findBody": "Wähle die Sprache, in der du posten wirst, und den Bundesstaat, in dem du dich befindest. Wenn bereits ein Netzwerk existiert, kannst du ihm beitreten; wenn nicht, kannst du es starten. Es öffnet sich in einem neuen Tab, daher bleiben diese Richtlinien hier offen.",
     "languageLabel": "Sprache, in der du posten wirst",
@@ -545,6 +543,8 @@
       "respect": "Behandle andere Teilnehmer so, wie du es persönlich tun würdest. Alles, was du postest, kann von Leuten außerhalb deiner eigenen Community gelesen werden."
     },
     "rulesFootnote": "Weitere Details zum Programm, einschließlich der Verwendung und Vergütung der Beiträge, werden hier ergänzt.",
-    "consentBanner": "Nur Teilnehmer des Trainingsprogramms, die der Datenerfassung zugestimmt haben, werden in die Trainingsdaten aufgenommen. Bitte fügen Sie keine identifizierbaren oder privaten Informationen in Ihre Beiträge oder Antworten ein; Sie können auch ein Pseudonym für Ihren Kontonamen verwenden, wenn Sie möchten."
+    "consentBanner": "Nur Teilnehmer des Trainingsprogramms, die der Datenerfassung zugestimmt haben, werden in die Trainingsdaten aufgenommen. Bitte fügen Sie keine identifizierbaren oder privaten Informationen in Ihre Beiträge oder Antworten ein; Sie können auch ein Pseudonym für Ihren Kontonamen verwenden, wenn Sie möchten.",
+    "title": "KI-Mehrsprachiges Training über Live-Beiträge in sozialen Netzwerken",
+    "intro": "Bitte suchen Sie nach einem Live-Sozialnetzwerk, das zu Ihrem Hintergrund und aktuellen Standort passt. Anschließend führen Sie relevante Gespräche in Ihrer Muttersprache, die mit Zustimmung aufgezeichnet und genutzt werden, um KI-Systemen beim Verständnis zu helfen. Treten Sie einem Gespräch bei, um eine Sprache zu bekommen, die Sie tatsächlich sprechen, in dem Bundesstaat, in dem Sie leben."
   }
 }
