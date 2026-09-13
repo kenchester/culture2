@@ -98,6 +98,7 @@ export default async function TrainingPage() {
               "onTopic",
               "respect",
               "duration",
+              "geographySpread",
             ] as const
           ).map((rule) => (
             <li key={rule}>

@@ -542,7 +542,8 @@
       "geography": "I post dovrebbero essere legati alla geografia della rete, ad esempio suggerendo punti di interesse per i visitatori di quell'area.",
       "properNouns": "L'inglese può essere usato per i nomi dei luoghi e altri nomi propri, ma la maggior parte della registrazione dovrebbe essere nella lingua di destinazione.",
       "duration": "<u>Ogni registrazione deve durare tra i 30 e i 60 secondi per essere idonea.</u> Lo strumento di registrazione si fermerà automaticamente a 60 secondi, quindi non devi preoccuparti di superare il tempo massimo.",
-      "onTopic": "<u>Puoi creare post completamente nuovi o rispondere ai post degli altri.</u> Se rispondi a qualcuno, rispondi a ciò che ha effettivamente detto. Le risposte che ignorano il post sotto cui si trovano non sono utili."
+      "onTopic": "<u>Puoi creare post completamente nuovi o rispondere ai post degli altri.</u> Se rispondi a qualcuno, rispondi a ciò che ha effettivamente detto. Le risposte che ignorano il post sotto cui si trovano non sono utili.",
+      "geographySpread": "Per favore, usa la stessa lingua ma pubblica in reti per 3 diverse aree geografiche. Ad esempio: \"Parlanti tamil in Ohio\", \"Parlanti tamil a New York\" e \"Parlanti tamil a Washington D.C.\""
     },
     "consentBanner": "Solo i partecipanti al programma di formazione che hanno acconsentito alla registrazione dei dati vedranno i loro post inclusi nei dati di addestramento. Si prega di non includere alcuna informazione identificabile o privata nei vostri post o risposte; potete anche utilizzare uno pseudonimo per il nome del vostro account, se desiderato.",
     "title": "Formazione multilingue con IA tramite post live sui social network",

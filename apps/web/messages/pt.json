@@ -542,7 +542,8 @@
       "geography": "As postagens devem estar relacionadas à geografia da rede, como sugerir pontos de interesse para visitantes daquela área.",
       "properNouns": "O inglês pode ser usado para nomes de lugares e outros nomes próprios, mas a maior parte da gravação deve ser no idioma de destino.",
       "duration": "<u>Cada gravação deve durar entre 30 e 60 segundos para ser qualificada.</u> A ferramenta de gravação para automaticamente em 60 segundos, então você não precisa se preocupar em ultrapassar o tempo máximo.",
-      "onTopic": "<u>Você pode criar posts totalmente novos ou responder aos posts de outros.</u> Se você responder a alguém, responda ao que essa pessoa realmente disse. Respostas que ignoram o post em que estão não são úteis."
+      "onTopic": "<u>Você pode criar posts totalmente novos ou responder aos posts de outros.</u> Se você responder a alguém, responda ao que essa pessoa realmente disse. Respostas que ignoram o post em que estão não são úteis.",
+      "geographySpread": "Por favor, use o mesmo idioma, mas poste em redes para 3 geografias diferentes. Por exemplo, \"Falantes de tâmil em Ohio\", \"Falantes de tâmil em Nova York\" e \"Falantes de tâmil em Washington D.C.\""
     },
     "consentBanner": "Somente participantes do programa de treinamento que consentiram em ter dados registrados terão suas postagens incluídas nos dados de treinamento. Por favor, não inclua nenhuma informação identificável ou privada em suas postagens ou respostas; você também pode usar um pseudônimo para o nome da sua conta, se desejado.",
     "title": "Treinamento multilíngue com IA por meio de postagens ao vivo em redes sociais",

@@ -541,7 +541,8 @@
       "properNouns": "English may be used for place names and other proper nouns, but the majority of the recording should be in the target language.",
       "onTopic": "<u>You may create entirely new posts or reply to others' posts.</u> If you reply to someone, respond to what they actually said. Replies that ignore the post they're under aren't useful.",
       "respect": "Treat other participants the way you would in person. Anything you post may be read by people outside your own community.",
-      "duration": "<u>Each recording must be between 30 and 60 seconds to qualify.</u> The recording tool will automatically stop at 60 seconds, so you don't need to worry about going over the maximum time."
+      "duration": "<u>Each recording must be between 30 and 60 seconds to qualify.</u> The recording tool will automatically stop at 60 seconds, so you don't need to worry about going over the maximum time.",
+      "geographySpread": "Please use the same language but post in networks for 3 different geographies. E.g. \"Tamil speakers in Ohio\", \"Tamil speakers in New York\", and \"Tamil speakers in Washington D.C.\""
     },
     "consentBanner": "Only participants in the training program who have consented to having data recorded will have their posts included in training data. Please do not include any identifiable or private information in your posts or replies; you may also use a pseudonym for your account name, if desired.",
     "examplesTitle": "Examples",

@@ -542,7 +542,8 @@
       "geography": "Les publications doivent être liées à la géographie du réseau, par exemple suggérer des points d’intérêt pour les visiteurs de cette zone.",
       "properNouns": "L’anglais peut être utilisé pour les noms de lieux et autres noms propres, mais la majorité de l’enregistrement doit être utilisée dans la langue de destination.",
       "duration": "<u>Chaque enregistrement doit durer entre 30 et 60 secondes pour être éligible.</u> L’outil d’enregistrement s’arrête automatiquement à 60 secondes, donc vous n’avez pas à vous soucier de dépasser le temps maximal.",
-      "onTopic": "<u>Vous pouvez créer de nouveaux posts entièrement ou répondre aux posts des autres.</u> Si vous répondez à quelqu’un, répondez à ce qu’il a réellement dit. Les réponses qui ignorent le post sous lequel ils sont ne sont pas utiles."
+      "onTopic": "<u>Vous pouvez créer de nouveaux posts entièrement ou répondre aux posts des autres.</u> Si vous répondez à quelqu’un, répondez à ce qu’il a réellement dit. Les réponses qui ignorent le post sous lequel ils sont ne sont pas utiles.",
+      "geographySpread": "Veuillez utiliser la même langue mais publier dans des réseaux pour 3 régions géographiques différentes. Par exemple « locuteurs tamouls dans l’Ohio », « locuteurs tamouls à New York » et « locuteurs tamouls à Washington D.C. »"
     },
     "consentBanner": "Seuls les participants au programme de formation ayant consenti à l’enregistrement des données verront leurs publications incluses dans les données de formation. Veuillez ne pas inclure d’informations identifiables ou privées dans vos publications ou réponses ; vous pouvez également utiliser un pseudonyme pour votre nom de compte, si désiré.",
     "title": "Formation multilingue IA via des publications en direct sur les réseaux sociaux",

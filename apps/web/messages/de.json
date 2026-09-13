@@ -542,7 +542,8 @@
       "geography": "Beiträge sollten mit der Geografie des Netzwerks zusammenhängen, zum Beispiel indem sie Sehenswürdigkeiten für Besucher dieses Gebiets vorschlagen.",
       "properNouns": "Englisch kann für Ortsnamen und andere Eigennamen verwendet werden, aber der Großteil der Aufnahme sollte in der Zielsprache erfolgen.",
       "duration": "<u>Jede Aufnahme muss zwischen 30 und 60 Sekunden dauern, um sich zu qualifizieren.</u> Das Aufnahme-Tool stoppt automatisch nach 60 Sekunden, sodass Sie sich keine Sorgen machen müssen, die maximale Zeit zu überschreiten.",
-      "onTopic": "<u>Du kannst komplett neue Beiträge erstellen oder auf Beiträge anderer antworten.</u> Wenn du jemandem antwortest, antworte auf das, was er tatsächlich gesagt hat. Antworten, die den Beitrag ignorieren, unter dem sie stehen, sind nicht nützlich."
+      "onTopic": "<u>Du kannst komplett neue Beiträge erstellen oder auf Beiträge anderer antworten.</u> Wenn du jemandem antwortest, antworte auf das, was er tatsächlich gesagt hat. Antworten, die den Beitrag ignorieren, unter dem sie stehen, sind nicht nützlich.",
+      "geographySpread": "Bitte verwenden Sie dieselbe Sprache, aber posten Sie in Netzwerken für drei verschiedene Geografien. Zum Beispiel \"Tamil-Sprecher in Ohio\", \"Tamil-Sprecher in New York\" und \"Tamil-Sprecher in Washington D.C.\""
     },
     "consentBanner": "Nur Teilnehmer des Trainingsprogramms, die der Datenerfassung zugestimmt haben, werden in die Trainingsdaten aufgenommen. Bitte fügen Sie keine identifizierbaren oder privaten Informationen in Ihre Beiträge oder Antworten ein; Sie können auch ein Pseudonym für Ihren Kontonamen verwenden, wenn Sie möchten.",
     "title": "KI-Mehrsprachiges Training über Live-Beiträge in sozialen Netzwerken",
