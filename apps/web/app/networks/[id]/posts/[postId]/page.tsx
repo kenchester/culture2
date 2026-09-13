@@ -3,6 +3,8 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { getTranslations } from "next-intl/server";
 import { createClient } from "@/lib/supabase/server";
+import { gatedContextForPost } from "@/lib/gated-access";
+import { SignInToView } from "@/components/sign-in-to-view";
 import { type Author, getAvatarUrl, getDisplayName } from "@/lib/profiles";
 import { getPostMediaUrl } from "@/lib/post-media";
 import { demoPostTimestamp, isExampleNetwork } from "@/lib/demo-network";
@@ -36,7 +38,15 @@ export default async function PostPage({
     .eq("id", postId)
     .single();
 
+  // A miss here is ambiguous: the post may not exist, or RLS may be hiding
+  // a school post from someone who isn't in that network
+  // (00000000000078). Only the second case is recoverable, and the reader
+  // can't tell the difference without being told.
   if (!post) {
+    const gated = await gatedContextForPost(postId);
+    if (gated) {
+      return <SignInToView gated={gated} returnTo={`/networks/${id}/posts/${postId}`} />;
+    }
     notFound();
   }
 

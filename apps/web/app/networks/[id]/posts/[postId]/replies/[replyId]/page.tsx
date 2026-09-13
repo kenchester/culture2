@@ -3,6 +3,8 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { getTranslations } from "next-intl/server";
 import { createClient } from "@/lib/supabase/server";
+import { gatedContextForPost } from "@/lib/gated-access";
+import { SignInToView } from "@/components/sign-in-to-view";
 import { type Author, getAvatarUrl, getDisplayName } from "@/lib/profiles";
 import { getPostMediaUrl } from "@/lib/post-media";
 import { EditableEntry } from "@/app/networks/editable-entry";
@@ -49,9 +51,25 @@ export default async function ReplyPage({
     .eq("id", replyId)
     .single();
 
+  // Same ambiguity as the post page: an invisible reply may be gated rather
+  // than absent. Checked before the mismatch guard below, since a gated
+  // reply reads as missing and would otherwise fall through to a 404.
+  if (!reply) {
+    const gated = await gatedContextForPost(postId);
+    if (gated) {
+      return (
+        <SignInToView
+          gated={gated}
+          returnTo={`/networks/${id}/posts/${postId}/replies/${replyId}`}
+        />
+      );
+    }
+    notFound();
+  }
+
   // Guard against a reply id that exists but belongs to a different post:
   // the URL would otherwise render a reply under an unrelated post.
-  if (!reply || String(reply.post_id) !== String(postId)) {
+  if (String(reply.post_id) !== String(postId)) {
     notFound();
   }
 

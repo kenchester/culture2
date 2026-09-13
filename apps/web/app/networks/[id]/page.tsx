@@ -254,6 +254,22 @@ export default async function NetworkPage({
 
   const originName = translatedLanguageName ?? translatedOriginName ?? religion?.name ?? "?";
   const isMember = Boolean(membership);
+
+  // An org-gated network still renders its shell to a non-member - they
+  // need somewhere to land and a way in - but the feed underneath is empty
+  // because 00000000000078 filters every post out, not because nothing has
+  // been posted. Saying "No posts yet" to a student who simply isn't signed
+  // in is false, and the post count printed directly above it contradicts
+  // it on the same screen.
+  const { data: gatingOrg } = await supabase
+    .from("organization_languages")
+    .select("organization:organizations(is_example)")
+    .eq("network_id", network.id)
+    .maybeSingle();
+  const isOrgGated = Boolean(
+    gatingOrg && !(gatingOrg.organization as unknown as { is_example: boolean } | null)?.is_example,
+  );
+  const feedEmptyMessage = isOrgGated && !isMember ? t("signInToSeePosts") : undefined;
   const myLikedPostIds = new Set((myLikes ?? []).map((l) => l.post_id as number));
 
   // Signed URLs (post-media is a private bucket, 00000000000065) are
@@ -443,6 +459,7 @@ export default async function NetworkPage({
                 hasMore={postViews.length === POSTS_PAGE_SIZE}
                 prefetchMargin={POSTS_PREFETCH_MARGIN}
                 embedSuffix={isEmbedded ? "?embed=1" : ""}
+                emptyMessage={feedEmptyMessage}
               />
             </div>
           </>

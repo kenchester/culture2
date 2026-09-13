@@ -260,7 +260,8 @@
     "weeklyPromptPlaceholder": "e.g. Describe your favorite meal from home.",
     "weeklyPromptSave": "Save prompt",
     "connectWithSpeakersHeading": "Connect with more {language} speakers",
-    "connectWithSpeakersIntro": "There's an active network near {location} on the main CultureMesh site."
+    "connectWithSpeakersIntro": "There's an active network near {location} on the main CultureMesh site.",
+    "signInToSeePosts": "Sign in with your school email to see posts in this network."
   },
   "demoNetwork": {
     "studentView": "Student view",
@@ -501,5 +502,16 @@
   },
   "schools": {
     "heading": "Your schools"
+  },
+  "notFound": {
+    "title": "This page doesn't appear to exist",
+    "body": "You can return to our <home>homepage</home> and search again, or <contact>contact us</contact> if you think there's been an error."
+  },
+  "gatedContent": {
+    "title": "Sign in to view this",
+    "bodyWithNetwork": "This is in {network}, a network for {school}. Sign in with your school email to read it.",
+    "body": "This is in a network for {school}. Sign in with your school email to read it.",
+    "signIn": "Sign in",
+    "notAMember": "Not at this school? Head back to the <home>homepage</home> to find a network that's open to everyone."
   }
 }

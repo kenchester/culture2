@@ -203,7 +203,8 @@
     "connectWithSpeakersIntro": "主CultureMesh站点附近{location}有一个活跃的网络。",
     "originInLinked": "{origin}在<loc>{location}</loc>",
     "loadingMorePosts": "正在加载更多帖子......",
-    "loadMorePosts": "加载更多帖子"
+    "loadMorePosts": "加载更多帖子",
+    "signInToSeePosts": "请使用您的学校邮箱登录，查看本网络中的帖子。"
   },
   "editableEntry": {
     "save": "保存",
@@ -507,5 +508,16 @@
     "setPromptLink": "设定本周的提示",
     "posting": "发布......",
     "you": "你"
+  },
+  "notFound": {
+    "title": "这个页面似乎不存在",
+    "body": "您可以返回我们的<home>主页</home>再次搜索，或者如果您认为存在错误，<contact>请联系我们</contact>。"
+  },
+  "gatedContent": {
+    "title": "登录查看此事",
+    "bodyWithNetwork": "这是在 {network}，一个网络。{school}用你的学校邮箱登录以阅读。",
+    "body": "这是在网络中{school}。用你的学校邮箱登录以阅读。",
+    "signIn": "登录",
+    "notAMember": "这所学校没有？回到<home>主页</home>，找一个对所有人开放的网络。"
   }
 }

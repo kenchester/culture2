@@ -203,7 +203,8 @@
     "connectWithSpeakersIntro": "メインのCultureMeshサイトの近く{location}にはアクティブなネットワークがあります。",
     "originInLinked": "{origin}において<loc>{location}</loc>",
     "loadingMorePosts": "投稿を読み込みます...",
-    "loadMorePosts": "投稿を読み込む"
+    "loadMorePosts": "投稿を読み込む",
+    "signInToSeePosts": "このネットワークの投稿を見るには、学校のメールアドレスでサインインしてください。"
   },
   "editableEntry": {
     "save": "セーブ",
@@ -507,5 +508,16 @@
     "setPromptLink": "今週のプロンプトを設定しましょう",
     "posting": "投稿中...",
     "you": "お前だ"
+  },
+  "notFound": {
+    "title": "このページは存在しないようです",
+    "body": "再度ホームページ<home>に戻って検索</home>するか、エラーが疑われた場合は<contact>ご連絡</contact>ください。"
+  },
+  "gatedContent": {
+    "title": "サインインしてこれを閲覧してください",
+    "bodyWithNetwork": "これはネットワークの{network}中の{school}ものです。学校のメールアドレスでサインインして読むことができます。",
+    "body": "これはネットワーク内の{school}ものです。学校のメールアドレスでサインインして読むことができます。",
+    "signIn": "サインイン",
+    "notAMember": "この学校では?<home>ホームページ</home>に戻って、誰でも利用できるネットワークを探してください。"
   }
 }

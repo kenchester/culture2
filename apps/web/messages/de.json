@@ -203,7 +203,8 @@
     "connectWithSpeakersIntro": "In der Nähe {location} der Hauptseite von CultureMesh gibt es ein aktives Netzwerk.",
     "originInLinked": "{origin} in <loc>{location}</loc>",
     "loadingMorePosts": "Laden weitere Posts...",
-    "loadMorePosts": "Weitere Beiträge laden"
+    "loadMorePosts": "Weitere Beiträge laden",
+    "signInToSeePosts": "Melden Sie sich mit Ihrer Schul-E-Mail an, um Beiträge in diesem Netzwerk zu sehen."
   },
   "editableEntry": {
     "save": "Speichern",
@@ -507,5 +508,16 @@
     "setPromptLink": "Setze das Prompt dieser Woche",
     "posting": "Posten...",
     "you": "Du"
+  },
+  "notFound": {
+    "title": "Diese Seite scheint nicht zu existieren",
+    "body": "Sie können auf unserer <home>Startseite</home> zurückkehren und erneut suchen oder <contact>uns kontaktieren</contact>, wenn Sie einen Fehler vorliegen."
+  },
+  "gatedContent": {
+    "title": "Melden Sie sich an, um dies zu sehen",
+    "bodyWithNetwork": "Dies ist in {network}, einem Netzwerk für {school}. Melden Sie sich mit Ihrer Schul-E-Mail an, um es zu lesen.",
+    "body": "Dies ist in einem Netzwerk für {school}. Melde dich mit deiner Schul-E-Mail an, um es zu lesen.",
+    "signIn": "Anmelden",
+    "notAMember": "Nicht an dieser Schule? Geh zurück auf die <home>Homepage</home>, um ein Netzwerk zu finden, das für alle offen ist."
   }
 }

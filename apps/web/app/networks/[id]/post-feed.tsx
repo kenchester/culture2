@@ -17,6 +17,7 @@ export function PostFeed({
   hasMore: initialHasMore,
   prefetchMargin,
   embedSuffix,
+  emptyMessage,
 }: {
   networkId: number;
   initialPosts: PostView[];
@@ -24,6 +25,9 @@ export function PostFeed({
   hasMore: boolean;
   prefetchMargin: number;
   embedSuffix: string;
+  /** Replaces "No posts yet" when the feed is empty only because the
+   *  viewer can't see it - an org-gated network they aren't in. */
+  emptyMessage?: string;
 }) {
   const t = useTranslations("network");
   const [posts, setPosts] = useState(initialPosts);
@@ -147,7 +151,9 @@ export function PostFeed({
         </div>
       ))}
 
-      {posts.length === 0 && <p className="text-sm text-muted">{t("noPostsYet")}</p>}
+      {posts.length === 0 && (
+        <p className="text-sm text-muted">{emptyMessage ?? t("noPostsYet")}</p>
+      )}
 
       {/* The spinner only appears while a fetch is actually outstanding.
           Scrolling at a readable pace trips the sentinel early enough that

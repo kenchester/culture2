@@ -203,7 +203,8 @@
     "connectWithSpeakersIntro": "메인 CultureMesh 사이트 근처에 {location} 활발한 네트워크가 있습니다.",
     "originInLinked": "{origin} <loc>{location}</loc>",
     "loadingMorePosts": "게시물 더 로드 중...",
-    "loadMorePosts": "더 많은 게시물 불러오기"
+    "loadMorePosts": "더 많은 게시물 불러오기",
+    "signInToSeePosts": "이 네트워크의 게시물을 보시려면 학교 이메일로 로그인하세요."
   },
   "editableEntry": {
     "save": "저장",
@@ -507,5 +508,16 @@
     "setPromptLink": "이번 주 프롬프트를 설정하세요",
     "posting": "게시...",
     "you": "너"
+  },
+  "notFound": {
+    "title": "이 페이지는 존재하지 않는 것 같습니다",
+    "body": "홈<home>페이지</home>로 돌아가 다시 검색하시거나, 오류가 있다고 생각되면 <contact>연락</contact>해 주세요."
+  },
+  "gatedContent": {
+    "title": "이 글을 보려면 로그인하세요",
+    "bodyWithNetwork": "이것은 네트워크에 있습니다{network}{school}. 학교 이메일로 로그인하여 읽으세요.",
+    "body": "이 네트워크는 {school}. 학교 이메일로 로그인해서 읽으세요.",
+    "signIn": "로그인",
+    "notAMember": "이 학교에서는 그렇지 않나요? <home>홈페이지</home>로 돌아가 모두에게 개방된 네트워크를 찾아보세요."
   }
 }
