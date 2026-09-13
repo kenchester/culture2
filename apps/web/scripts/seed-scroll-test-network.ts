@@ -12,8 +12,14 @@
 process.loadEnvFile(".env.local");
 import { createClient } from "@supabase/supabase-js";
 
-const ACME_CAMPUS_PLACE_ID = 27497;
-const TITLE = "Scroll test (Acme University)";
+// Springfield, the city Acme University sits in - NOT the campus place.
+// A network located on a campus belonging to a demo organization inherits
+// the whole demo treatment (lib/demo-network.ts): ephemeral simulated
+// posts, invented "just now" timestamps, and the demo feed instead of the
+// real one. That makes it useless as a scroll fixture, since nothing it
+// shows goes through the paginated feed at all.
+const SPRINGFIELD_PLACE_ID = 24257;
+const TITLE = "Scroll test";
 const TARGET_POSTS = 100;
 
 async function main() {
@@ -29,12 +35,12 @@ async function main() {
 
   let { data: network } = await admin
     .from("networks").select("id, title, post_count")
-    .eq("location_place_id", ACME_CAMPUS_PLACE_ID).eq("language_id", lang.id).maybeSingle();
+    .eq("location_place_id", SPRINGFIELD_PLACE_ID).eq("language_id", lang.id).maybeSingle();
 
   if (!network) {
     const { data: created, error } = await admin.from("networks").insert({
       language_id: lang.id,
-      location_place_id: ACME_CAMPUS_PLACE_ID,
+      location_place_id: SPRINGFIELD_PLACE_ID,
       title: TITLE,
       launched_by: owner.id,
     }).select("id, title, post_count").single();
@@ -79,6 +85,6 @@ async function main() {
   const { count: total } = await admin
     .from("posts").select("id", { count: "exact", head: true }).eq("network_id", network.id);
   console.log(`\nnetwork ${network.id} now has ${total} posts`);
-  console.log(`  https://learn.culturemesh.com/networks/${network.id}`);
+  console.log(`  https://www.culturemesh.com/networks/${network.id}`);
 }
 main().catch((e) => { console.error(e.message); process.exit(1); });

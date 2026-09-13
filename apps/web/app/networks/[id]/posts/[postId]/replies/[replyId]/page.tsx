@@ -9,6 +9,7 @@ import { type Author, getAvatarUrl, getDisplayName } from "@/lib/profiles";
 import { getPostMediaUrl } from "@/lib/post-media";
 import { EditableEntry } from "@/app/networks/editable-entry";
 import { ReplyRow, type ReplyView } from "@/app/networks/[id]/posts/[postId]/reply-thread";
+import { ReplySection } from "@/app/networks/[id]/posts/[postId]/reply-section";
 
 function extractCount(value: unknown): number {
   const count = (value as { count: number } | { count: number }[] | null) ?? { count: 0 };
@@ -46,7 +47,7 @@ export default async function ReplyPage({
   const { data: reply } = await supabase
     .from("post_replies")
     .select(
-      "id, post_id, body, media_type, media_path, created_at, transcript, transcript_language, transcript_segments, summary_text, summary_language:languages!summary_language_id(iso_code), author:user_id(id, username, first_name, last_name, img_path), likes(count)",
+      "id, post_id, body, media_type, media_path, created_at, reply_to_user_id, transcript, transcript_language, transcript_segments, summary_text, summary_language:languages!summary_language_id(iso_code), author:user_id(id, username, first_name, last_name, img_path), likes(count)",
     )
     .eq("id", replyId)
     .single();
@@ -105,6 +106,14 @@ export default async function ReplyPage({
   const postAvatarUrl = postAuthor ? getAvatarUrl(supabase, postAuthor.img_path) : null;
   const replyAuthor = reply.author as unknown as Author | null;
 
+  const { data: mentioned } = reply.reply_to_user_id
+    ? await supabase
+        .from("profiles")
+        .select("id, username, first_name, last_name")
+        .eq("id", reply.reply_to_user_id)
+        .maybeSingle()
+    : { data: null };
+
   const replyView: ReplyView = {
     id: reply.id,
     body: reply.body,
@@ -135,6 +144,9 @@ export default async function ReplyPage({
         }
       : null,
     permalink: `/networks/${id}/posts/${postId}/replies/${replyId}`,
+    replyTo: mentioned
+      ? { id: mentioned.id as string, name: getDisplayName(mentioned as unknown as Author) }
+      : null,
   };
 
   return (
@@ -200,9 +212,35 @@ export default async function ReplyPage({
         </div>
       </div>
 
-      <div className="pl-8">
+      <div className="flex flex-col gap-4 pl-8">
         <ReplyRow reply={replyView} someoneLabel={t("someone")} />
+
+        {/* Only this one reply is shown, so the way to the rest of the
+            conversation has to be explicit. */}
+        <Link
+          href={`/networks/${id}/posts/${postId}${embedSuffix}`}
+          className="self-start text-sm text-primary underline"
+        >
+          {t("showAllReplies")}
+        </Link>
       </div>
+
+      {/* Replying from here answers the reply you followed the link to,
+          which is the only thing on the page. */}
+      <ReplySection
+        networkId={id}
+        postId={postId}
+        replies={[]}
+        someoneLabel={t("someone")}
+        isEmbedded={embed === "1"}
+        canReply={Boolean(user)}
+        signInHref={`/sign-in?returnTo=${encodeURIComponent(`/networks/${id}/posts/${postId}/replies/${replyId}`)}`}
+        bodyLabel={t("replyLabel")}
+        bodyPlaceholder={t("replyPlaceholder")}
+        submitLabel={t("replySubmit")}
+        isSignedLanguage={false}
+        initialReplyTo={replyView.author}
+      />
     </div>
   );
 }

@@ -176,7 +176,12 @@
     "replySubmit": "Resposta",
     "signInToReply": "Faça login para responder",
     "backToPost": "Voltar ao post",
-    "loadMoreReplies": "Carregar mais respostas"
+    "loadMoreReplies": "Carregar mais respostas",
+    "reply": "Resposta",
+    "showLessReplies": "Mostrar menos respostas",
+    "showAllReplies": "Mostrar todas as respostas",
+    "replyingTo": "Respondendo a {name}",
+    "clearReplyTarget": "Cancelar a resposta para essa pessoa"
   },
   "network": {
     "events": "Eventos",

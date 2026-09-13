@@ -176,7 +176,12 @@
     "replySubmit": "رد",
     "signInToReply": "سجل الدخول للرد",
     "backToPost": "العودة إلى المنشور",
-    "loadMoreReplies": "تحميل المزيد من الردود"
+    "loadMoreReplies": "تحميل المزيد من الردود",
+    "reply": "رد",
+    "showLessReplies": "عرض ردود أقل",
+    "showAllReplies": "عرض جميع الردود",
+    "replyingTo": "الرد على {name}",
+    "clearReplyTarget": "إلغاء الرد على هذا الشخص"
   },
   "network": {
     "events": "الفعاليات",

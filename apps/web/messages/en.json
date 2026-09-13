@@ -233,7 +233,12 @@
     "replySubmit": "Reply",
     "signInToReply": "Sign in to reply",
     "backToPost": "Back to post",
-    "loadMoreReplies": "Load more replies"
+    "loadMoreReplies": "Load more replies",
+    "reply": "Reply",
+    "showLessReplies": "Show fewer replies",
+    "showAllReplies": "Show all replies",
+    "replyingTo": "Replying to {name}",
+    "clearReplyTarget": "Cancel replying to this person"
   },
   "network": {
     "originIn": "{origin} in {location}",

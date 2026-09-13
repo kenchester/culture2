@@ -176,7 +176,12 @@
     "replySubmit": "回复",
     "signInToReply": "登录以回复",
     "backToPost": "返回帖子",
-    "loadMoreReplies": "加载更多回复"
+    "loadMoreReplies": "加载更多回复",
+    "reply": "回复",
+    "showLessReplies": "显示更少的回复",
+    "showAllReplies": "显示所有回复",
+    "replyingTo": "回复{name}",
+    "clearReplyTarget": "取消回复这个人"
   },
   "network": {
     "events": "活动",

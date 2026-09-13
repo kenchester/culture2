@@ -176,7 +176,12 @@
     "replySubmit": "Ответить",
     "signInToReply": "Войти, чтобы ответить",
     "backToPost": "Вернуться к публикации",
-    "loadMoreReplies": "Загрузить больше ответов"
+    "loadMoreReplies": "Загрузить больше ответов",
+    "reply": "Ответить",
+    "showLessReplies": "Показать меньше ответов",
+    "showAllReplies": "Показать все ответы",
+    "replyingTo": "Ответ на {name}",
+    "clearReplyTarget": "Отменить ответ этому человеку"
   },
   "network": {
     "events": "Мероприятия",

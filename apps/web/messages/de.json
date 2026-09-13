@@ -176,7 +176,12 @@
     "replySubmit": "Antwort",
     "signInToReply": "Melden Sie sich an, um zu antworten",
     "backToPost": "Zurück zum Beitrag",
-    "loadMoreReplies": "Weitere Antworten laden"
+    "loadMoreReplies": "Weitere Antworten laden",
+    "reply": "Antwort",
+    "showLessReplies": "Zeigen Sie weniger Antworten",
+    "showAllReplies": "Alle Antworten anzeigen",
+    "replyingTo": "Antwort auf {name}",
+    "clearReplyTarget": "Widerrufe die Antwort auf diese Person"
   },
   "network": {
     "events": "Veranstaltungen",

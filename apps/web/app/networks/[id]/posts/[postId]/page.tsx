@@ -8,23 +8,20 @@ import { SignInToView } from "@/components/sign-in-to-view";
 import { type Author, getAvatarUrl, getDisplayName } from "@/lib/profiles";
 import { getPostMediaUrl } from "@/lib/post-media";
 import { demoPostTimestamp, isExampleNetwork } from "@/lib/demo-network";
-import { createReply } from "./actions";
 import { EditableEntry } from "@/app/networks/editable-entry";
 import { DemoReplyThread, type RealDemoReply } from "@/app/networks/[id]/posts/[postId]/demo-reply-thread";
-import { PostComposer } from "@/app/networks/[id]/post-composer";
-import { ReplyThread, type ReplyView } from "@/app/networks/[id]/posts/[postId]/reply-thread";
-import { PostingIndicator } from "@/components/posting-indicator";
-import { FormError } from "@/components/ui/form-error";
+import { type ReplyView } from "@/app/networks/[id]/posts/[postId]/reply-thread";
+import { ReplySection } from "@/app/networks/[id]/posts/[postId]/reply-section";
 
 export default async function PostPage({
   params,
   searchParams,
 }: {
   params: Promise<{ id: string; postId: string }>;
-  searchParams: Promise<{ error?: string; embed?: string }>;
+  searchParams: Promise<{ error?: string; embed?: string; replyTo?: string }>;
 }) {
   const { id, postId } = await params;
-  const { error, embed } = await searchParams;
+  const { error, embed, replyTo } = await searchParams;
   const isEmbedded = embed === "1";
   const embedSuffix = isEmbedded ? "?embed=1" : "";
   const supabase = await createClient();
@@ -58,7 +55,7 @@ export default async function PostPage({
     supabase
       .from("post_replies")
       .select(
-        "id, body, media_type, media_path, created_at, transcript, transcript_language, transcript_segments, summary_text, summary_language:languages!summary_language_id(iso_code), author:user_id(id, username, first_name, last_name, img_path), likes(count)",
+        "id, body, media_type, media_path, created_at, reply_to_user_id, transcript, transcript_language, transcript_segments, summary_text, summary_language:languages!summary_language_id(iso_code), author:user_id(id, username, first_name, last_name, img_path), likes(count)",
       )
       .eq("post_id", postId)
       .order("created_at", { ascending: true }),
@@ -113,6 +110,38 @@ export default async function PostPage({
     ).then((entries) => new Map(entries)),
   ]);
 
+  // ?replyTo=<replyId> is set when someone pressed Reply on a reply out in
+  // the network feed, where there is no composer to focus. Resolved here to
+  // the person being answered, so arriving on this page keeps the intent
+  // they already expressed instead of quietly dropping it.
+  const replyTarget = replyTo
+    ? (replies ?? []).find((r) => String(r.id) === String(replyTo))
+    : undefined;
+  const replyTargetAuthor = replyTarget?.author as unknown as Author | null;
+  const initialReplyTo = replyTargetAuthor
+    ? { id: replyTargetAuthor.id, name: getDisplayName(replyTargetAuthor) }
+    : null;
+
+  // One lookup for the whole thread rather than a join per reply: the
+  // people being answered are almost always already in it.
+  const mentionIds = [
+    ...new Set((replies ?? []).map((r) => r.reply_to_user_id).filter(Boolean)),
+  ] as string[];
+  const { data: mentionedProfiles } = mentionIds.length
+    ? await supabase.from("profiles").select("id, username, first_name, last_name").in("id", mentionIds)
+    : { data: [] };
+  const mentionNameById = new Map(
+    (mentionedProfiles ?? []).map((p) => [p.id as string, getDisplayName(p as unknown as Author)]),
+  );
+  const replyMentions = new Map(
+    (replies ?? [])
+      .filter((r) => r.reply_to_user_id && mentionNameById.has(r.reply_to_user_id))
+      .map((r) => [
+        r.id as number,
+        { id: r.reply_to_user_id as string, name: mentionNameById.get(r.reply_to_user_id)! },
+      ]),
+  );
+
   const replyViews: ReplyView[] = (replies ?? []).map((reply) => {
     const replyAuthor = reply.author as unknown as Author | null;
     const replyMediaUrl = replyMediaUrls.get(reply.id);
@@ -146,6 +175,7 @@ export default async function PostPage({
           }
         : null,
       permalink: `/networks/${id}/posts/${postId}/replies/${reply.id}`,
+      replyTo: replyMentions.get(reply.id) ?? null,
     };
   });
 
@@ -258,30 +288,21 @@ export default async function PostPage({
         <DemoReplyThread networkId={post.network_id} realReplies={realDemoReplies} />
       ) : (
         <>
-          <ReplyThread replies={replyViews} someoneLabel={t("someone")} />
-
-          {user ? (
-            <form action={createReply} className="flex flex-col gap-2 border-t border-border pt-6">
-              <input type="hidden" name="postId" value={post.id} />
-              <input type="hidden" name="networkId" value={id} />
-              {isEmbedded && <input type="hidden" name="embed" value="1" />}
-              {error && (
-                <FormError>{error}</FormError>
-              )}
-              <PostComposer
-                idPrefix="reply"
-                bodyLabel={t("replyLabel")}
-                bodyPlaceholder={t("replyPlaceholder")}
-                submitLabel={t("replySubmit")}
-                isSignedLanguage={isSignedLanguage}
-              />
-              <PostingIndicator />
-            </form>
-          ) : (
-            <Link href={signInHref} className="text-sm font-medium text-primary hover:underline">
-              {t("signInToReply")}
-            </Link>
-          )}
+          <ReplySection
+            networkId={id}
+            postId={postId}
+            replies={replyViews}
+            someoneLabel={t("someone")}
+            isEmbedded={isEmbedded}
+            canReply={Boolean(user)}
+            signInHref={signInHref}
+            bodyLabel={t("replyLabel")}
+            bodyPlaceholder={t("replyPlaceholder")}
+            submitLabel={t("replySubmit")}
+            isSignedLanguage={isSignedLanguage}
+            error={error}
+            initialReplyTo={initialReplyTo}
+          />
         </>
       )}
     </div>

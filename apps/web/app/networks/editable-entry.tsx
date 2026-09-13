@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useLocale, useTranslations } from "next-intl";
 import { deletePost, reportContent, toggleLike, translateEntry, updatePost } from "@/app/networks/actions";
@@ -55,6 +56,7 @@ export function EditableEntry({
   hasCaptions,
   summary,
   permalink,
+  mention,
 }: {
   kind: "post" | "reply";
   itemId: number;
@@ -78,6 +80,12 @@ export function EditableEntry({
    * the Acme demo's ephemeral posts, which vanish on refresh.
    */
   permalink?: string;
+  /**
+   * When this entry answers a specific person, their name renders as a
+   * link at the head of the body - the flat alternative to nesting
+   * (00000000000079).
+   */
+  mention?: { id: string; name: string } | null;
 }) {
   const t = useTranslations("editableEntry");
   const locale = useLocale() as Locale;
@@ -238,6 +246,16 @@ export function EditableEntry({
           // on its own, so an unbroken run of characters would otherwise
           // push this narrower than the viewport on mobile.
           <p className="min-w-0 break-words text-body">
+            {mention && (
+              <>
+                <Link
+                  href={`/profile/${mention.id}`}
+                  className="font-medium text-primary hover:underline"
+                >
+                  {mention.name}
+                </Link>{" "}
+              </>
+            )}
             <Linkify text={showTranslated && translated ? translated : body} />
           </p>
         )}

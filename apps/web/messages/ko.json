@@ -176,7 +176,12 @@
     "replySubmit": "답글",
     "signInToReply": "답글을 작성하려면 로그인하세요",
     "backToPost": "게시글로 돌아가기",
-    "loadMoreReplies": "더 많은 답변 불러오기"
+    "loadMoreReplies": "더 많은 답변 불러오기",
+    "reply": "답글",
+    "showLessReplies": "답글 수를 줄여 보세요",
+    "showAllReplies": "모든 답변 보기",
+    "replyingTo": "답변 {name}",
+    "clearReplyTarget": "이 사람에게 답장하는 것을 취소하세요"
   },
   "network": {
     "events": "행사",

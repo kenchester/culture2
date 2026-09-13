@@ -20,17 +20,35 @@ export type ReplyView = {
   hasCaptions: boolean;
   summary: { text: string; language: string | null } | null;
   permalink: string;
+  /** Set when this reply answers another reply rather than the post. */
+  replyTo: { id: string; name: string } | null;
 };
 
 /** How many replies show before the rest are folded away. */
-const VISIBLE_REPLIES = 3;
+export const VISIBLE_REPLIES = 3;
 
 /**
- * One reply. Shared by the collapsing thread below and by the single-reply
- * permalink page, so a reply looks identical whether it's in context or on
- * its own.
+ * One reply. Shared by the thread below, the network feed, and the
+ * single-reply permalink page, so a reply looks the same wherever it is.
+ *
+ * The Reply control is either a callback (on a page that has a composer to
+ * focus) or a link (in the network feed, where replying means going to the
+ * post first) - never both.
  */
-export function ReplyRow({ reply, someoneLabel }: { reply: ReplyView; someoneLabel: string }) {
+export function ReplyRow({
+  reply,
+  someoneLabel,
+  onReply,
+  replyHref,
+}: {
+  reply: ReplyView;
+  someoneLabel: string;
+  onReply?: (target: { id: string; name: string }) => void;
+  replyHref?: string;
+}) {
+  const t = useTranslations("postDetail");
+  const target = reply.author ? { id: reply.author.id, name: reply.author.name } : null;
+
   return (
     <div className="flex gap-3">
       {reply.author?.avatarUrl ? (
@@ -44,7 +62,7 @@ export function ReplyRow({ reply, someoneLabel }: { reply: ReplyView; someoneLab
       ) : (
         <div className="h-6 w-6 shrink-0 rounded-full bg-border" />
       )}
-      <div className="flex flex-1 flex-col gap-1">
+      <div className="flex min-w-0 flex-1 flex-col gap-1">
         <Link
           href={reply.author ? `/profile/${reply.author.id}` : "#"}
           className="text-sm font-medium text-ink underline hover:text-primary"
@@ -65,30 +83,46 @@ export function ReplyRow({ reply, someoneLabel }: { reply: ReplyView; someoneLab
           hasCaptions={reply.hasCaptions}
           summary={reply.summary}
           permalink={reply.permalink}
+          mention={reply.replyTo}
         />
+        {target && onReply && (
+          <button
+            type="button"
+            onClick={() => onReply(target)}
+            className="self-start text-sm text-muted underline hover:text-primary"
+          >
+            {t("reply")}
+          </button>
+        )}
+        {target && !onReply && replyHref && (
+          <Link href={replyHref} className="self-start text-sm text-muted underline hover:text-primary">
+            {t("reply")}
+          </Link>
+        )}
       </div>
     </div>
   );
 }
 
 /**
- * A post's replies, newest few first-class and the rest folded behind a
- * control - the shape Facebook uses, and the reason is the same: a post
- * with forty replies is otherwise a wall that buries the post someone
- * followed a link to read.
+ * A post's replies: the most recent few, with the rest folded away.
  *
- * The three shown are the three most RECENT, but the thread still reads in
- * chronological order, so expanding inserts the older replies above rather
- * than appending below. Every reply is already loaded; this only controls
- * what's drawn. Threads here are small, and paying one round trip to hide
- * three rows would be a worse trade than the markup.
+ * A post with forty replies otherwise buries the post someone followed a
+ * link to read. The thread still reads in chronological order, so expanding
+ * inserts the older replies above rather than appending below - and it
+ * collapses again, because an expand with no way back is a one-way door on
+ * a page you may only have wanted to glance at.
  */
 export function ReplyThread({
   replies,
   someoneLabel,
+  onReply,
+  replyHrefFor,
 }: {
   replies: ReplyView[];
   someoneLabel: string;
+  onReply?: (target: { id: string; name: string }) => void;
+  replyHrefFor?: (reply: ReplyView) => string;
 }) {
   const t = useTranslations("postDetail");
   const [expanded, setExpanded] = useState(false);
@@ -97,19 +131,25 @@ export function ReplyThread({
   const shown = expanded ? replies : replies.slice(-VISIBLE_REPLIES);
 
   return (
-    <div className="flex flex-col gap-4 pl-8">
-      {hiddenCount > 0 && !expanded && (
+    <div className="flex flex-col gap-4">
+      {hiddenCount > 0 && (
         <button
           type="button"
-          onClick={() => setExpanded(true)}
-          className="self-start text-sm text-primary underline hover:text-primary"
+          onClick={() => setExpanded((v) => !v)}
+          className="self-start text-sm text-primary underline"
         >
-          {t("loadMoreReplies")}
+          {expanded ? t("showLessReplies") : t("loadMoreReplies")}
         </button>
       )}
 
       {shown.map((reply) => (
-        <ReplyRow key={reply.id} reply={reply} someoneLabel={someoneLabel} />
+        <ReplyRow
+          key={reply.id}
+          reply={reply}
+          someoneLabel={someoneLabel}
+          onReply={onReply}
+          replyHref={replyHrefFor?.(reply)}
+        />
       ))}
 
       {replies.length === 0 && <p className="text-sm text-muted">{t("noRepliesYet")}</p>}

@@ -12,6 +12,9 @@ export async function createReply(formData: FormData) {
   const postId = formData.get("postId") as string;
   const networkId = formData.get("networkId") as string;
   const body = (formData.get("body") as string) ?? "";
+  // Set when replying to another reply rather than to the post itself
+  // (00000000000079). Stored as an id, never parsed back out of the text.
+  const replyToUserIdRaw = (formData.get("replyToUserId") as string) || null;
   const embedSuffix = formData.get("embed") === "1" ? "&embed=1" : "";
 
   // Same media fields as createPost (app/networks/actions.ts) - either a
@@ -52,6 +55,7 @@ export async function createReply(formData: FormData) {
       media_duration_seconds: mediaDurationSeconds,
       summary_text: summaryText,
       summary_language_id: summaryLanguageId,
+      reply_to_user_id: replyToUserIdRaw,
     })
     .select("id")
     .single();
@@ -87,14 +91,25 @@ export async function createReply(formData: FormData) {
       .eq("id", postId)
       .single();
 
-    if (post && post.user_id !== user.id) {
-      const recipients = await getOptedInRecipients([post.user_id], "replies_to_your_posts");
+    // Answering a particular person notifies that person and NOT the post
+    // author - the point of naming someone is that the conversation has
+    // moved on to them, and the original poster doesn't need telling every
+    // time two other people go back and forth under their post.
+    const notifyUserId = replyToUserIdRaw ?? post?.user_id ?? null;
+
+    if (notifyUserId && notifyUserId !== user.id) {
+      const recipients = await getOptedInRecipients([notifyUserId], "replies_to_your_posts");
       if (recipients.length > 0) {
         const siteUrl = await getSiteUrl();
+        const link = `${siteUrl}/networks/${networkId}/posts/${postId}`;
         await sendEmail({
           to: recipients[0].email,
-          subject: "New reply on your CultureMesh post",
-          text: `Someone replied to your post on CultureMesh.\n\n${siteUrl}/networks/${networkId}/posts/${postId}`,
+          subject: replyToUserIdRaw
+            ? "Someone replied to you on CultureMesh"
+            : "New reply on your CultureMesh post",
+          text: replyToUserIdRaw
+            ? `Someone replied to your comment on CultureMesh.\n\n${link}`
+            : `Someone replied to your post on CultureMesh.\n\n${link}`,
         });
       }
     }
@@ -103,6 +118,7 @@ export async function createReply(formData: FormData) {
   }
 
   revalidatePath(`/networks/${networkId}/posts/${postId}`);
+  revalidatePath(`/networks/${networkId}`);
 }
 
 type ActionResult = { ok: true } | { error: string };

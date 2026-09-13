@@ -34,6 +34,29 @@ export function PostFeed({
   const [cursor, setCursor] = useState(initialCursor);
   const [hasMore, setHasMore] = useState(initialHasMore);
   const [loading, setLoading] = useState(false);
+
+  // Re-seed from the server whenever it sends a different first page.
+  //
+  // useState only reads its argument on the first render, so once this
+  // component mounted it ignored every later `initialPosts`. createPost
+  // revalidates and the server duly re-renders with the new post included -
+  // and the feed kept showing the old list until a hard refresh. Posting
+  // and seeing nothing happen is exactly the behaviour this had to avoid.
+  //
+  // Compared by id rather than by array identity, which is new on every
+  // server render and would reset the feed constantly. Deletions are
+  // covered too, since the signature changes either way.
+  const signature = initialPosts.map((p) => p.id).join(",");
+  const [seededSignature, setSeededSignature] = useState(signature);
+  if (signature !== seededSignature) {
+    // Adjusting state during render is the documented way to react to a
+    // prop change; React re-runs this component immediately and skips
+    // committing the stale tree, so no extra paint and no effect flash.
+    setSeededSignature(signature);
+    setPosts(initialPosts);
+    setCursor(initialCursor);
+    setHasMore(initialHasMore);
+  }
   const sentinelRef = useRef<HTMLDivElement>(null);
   // Guards against a second request firing while one is in flight. State
   // alone can't: the observer callback closes over the render it was
