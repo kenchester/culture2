@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { redirect } from "next/navigation";
 import { getLocale, getTranslations } from "next-intl/server";
 import { createClient } from "@/lib/supabase/server";
 import { launchNetwork } from "@/app/search/actions";
@@ -201,6 +202,17 @@ export default async function SearchResultsPage({
 
     const results = (matches ?? []) as NetworkMatch[];
     const exact = results.find((m) => m.match_kind === "exact");
+
+    // Both criteria matched a real network, so there is no choice to
+    // present: go there. Offering the exact match alongside "related
+    // (narrower)" alternatives made the reader pick between the thing they
+    // asked for and a list of things they didn't - and on an org-gated
+    // campus network, those alternatives were dead ends they could not
+    // join anyway. The related lists still render when nothing matched
+    // exactly, which is the case they exist for.
+    if (exact) {
+      redirect(`/networks/${exact.network_id}`);
+    }
     const broader = results.filter((m) => m.match_kind === "related_broader");
     const narrower = results.filter((m) => m.match_kind === "related_narrower");
 
@@ -214,30 +226,20 @@ export default async function SearchResultsPage({
       <div className="mx-auto flex w-full max-w-lg flex-1 flex-col gap-8 px-4 py-12">
         <h1 className="font-display text-3xl text-ink">{title}</h1>
 
-        {exact ? (
-          <section className="flex flex-col gap-2 rounded-lg border border-border bg-surface p-4">
-            <Link
-              href={`/networks/${exact.network_id}`}
-              className="text-lg font-medium text-ink underline hover:text-primary"
-            >
-              {exact.network_title}
-            </Link>
-            <p className="text-sm text-muted">
-              {t("memberPostCounts", { members: exact.member_count, posts: exact.post_count })}
-            </p>
-          </section>
-        ) : (
-          <section className="flex flex-col gap-3 rounded-lg border border-border bg-surface p-4">
-            <p className="text-body">{t("noNetworkYet")}</p>
-            <form action={launchNetwork}>
-              <input type="hidden" name="originKind" value={originKind} />
-              <input type="hidden" name="originId" value={originId} />
-              <input type="hidden" name="locationId" value={locationId} />
-              <input type="hidden" name="title" value={title} />
-              <SubmitButton>{t("launchNetwork")}</SubmitButton>
-            </form>
-          </section>
-        )}
+        {/* Reaching here means there was no exact match - one would have
+            redirected above - so this page is now only ever the "nothing
+            matched exactly" case: launch it, or take one of the related
+            networks below. */}
+        <section className="flex flex-col gap-3 rounded-lg border border-border bg-surface p-4">
+          <p className="text-body">{t("noNetworkYet")}</p>
+          <form action={launchNetwork}>
+            <input type="hidden" name="originKind" value={originKind} />
+            <input type="hidden" name="originId" value={originId} />
+            <input type="hidden" name="locationId" value={locationId} />
+            <input type="hidden" name="title" value={title} />
+            <SubmitButton>{t("launchNetwork")}</SubmitButton>
+          </form>
+        </section>
 
         {broader.length > 0 && (
           <section className="flex flex-col gap-2">
