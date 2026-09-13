@@ -49,7 +49,16 @@ export default async function TrainingPage() {
   return (
     <div className="mx-auto flex w-full max-w-2xl flex-1 flex-col gap-8 px-4 py-12">
       <header className="flex flex-col gap-3">
-        <h1 className="font-display text-3xl text-ink">{t("title")}</h1>
+        {/* 1.75rem rather than text-3xl: at 30px this title needs 661px
+            and the column gives it 640, so "posts" fell to a line of its
+            own. 28px needs 617px and fits, and staying in rem keeps it
+            scaling with the reader's text size.
+            text-balance is for the translated titles, several of which are
+            far longer than the English and will wrap regardless - balanced
+            lines beat a single orphaned word. */}
+        <h1 className="font-display text-[1.75rem] leading-tight text-balance text-ink">
+          {t("title")}
+        </h1>
         <p className="text-body">{t("intro")}</p>
       </header>
 
