@@ -177,7 +177,7 @@
     "signInToReply": "Accedi per rispondere",
     "backToPost": "Torna al post",
     "loadMoreReplies": "Carica altre risposte",
-    "reply": "Risposta",
+    "reply": "Rispondi",
     "showLessReplies": "Mostra meno risposte",
     "showAllReplies": "Mostra tutte le risposte",
     "replyingTo": "Rispondere a {name}",
@@ -210,7 +210,9 @@
     "originInLinked": "{origin} in <loc>{location}</loc>",
     "loadingMorePosts": "Sto caricando altri post...",
     "loadMorePosts": "Carica altri post",
-    "signInToSeePosts": "Accedi con la tua email scolastica per vedere i post in questa rete."
+    "signInToSeePosts": "Accedi con la tua email scolastica per vedere i post in questa rete.",
+    "reply": "Rispondi",
+    "viewAllReplies": "Visualizza tutte {count} le risposte"
   },
   "editableEntry": {
     "save": "Salva",

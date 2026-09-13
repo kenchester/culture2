@@ -210,7 +210,9 @@
     "originInLinked": "{origin} في <loc>{location}</loc>",
     "loadingMorePosts": "يتم تحميل المزيد من المنشورات...",
     "loadMorePosts": "تحميل المزيد من المشاركات",
-    "signInToSeePosts": "سجل الدخول عبر بريدك الإلكتروني في المدرسة لرؤية المنشورات في هذه الشبكة."
+    "signInToSeePosts": "سجل الدخول عبر بريدك الإلكتروني في المدرسة لرؤية المنشورات في هذه الشبكة.",
+    "reply": "رد",
+    "viewAllReplies": "عرض جميع {count} الردود"
   },
   "editableEntry": {
     "save": "حفظ",

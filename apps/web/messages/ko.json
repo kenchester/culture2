@@ -210,7 +210,9 @@
     "originInLinked": "{origin} <loc>{location}</loc>",
     "loadingMorePosts": "게시물 더 로드 중...",
     "loadMorePosts": "더 많은 게시물 불러오기",
-    "signInToSeePosts": "이 네트워크의 게시물을 보시려면 학교 이메일로 로그인하세요."
+    "signInToSeePosts": "이 네트워크의 게시물을 보시려면 학교 이메일로 로그인하세요.",
+    "reply": "답글",
+    "viewAllReplies": "모든 {count} 답변 보기"
   },
   "editableEntry": {
     "save": "저장",

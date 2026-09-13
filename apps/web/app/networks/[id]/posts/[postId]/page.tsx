@@ -18,10 +18,10 @@ export default async function PostPage({
   searchParams,
 }: {
   params: Promise<{ id: string; postId: string }>;
-  searchParams: Promise<{ error?: string; embed?: string; replyTo?: string }>;
+  searchParams: Promise<{ error?: string; embed?: string; replyTo?: string; replies?: string }>;
 }) {
   const { id, postId } = await params;
-  const { error, embed, replyTo } = await searchParams;
+  const { error, embed, replyTo, replies: repliesParam } = await searchParams;
   const isEmbedded = embed === "1";
   const embedSuffix = isEmbedded ? "?embed=1" : "";
   const supabase = await createClient();
@@ -315,6 +315,7 @@ export default async function PostPage({
             isSignedLanguage={isSignedLanguage}
             error={error}
             initialReplyTo={initialReplyTo}
+          expandReplies={repliesParam === "all"}
           />
         </>
       )}

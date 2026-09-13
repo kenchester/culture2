@@ -177,7 +177,7 @@
     "signInToReply": "Melden Sie sich an, um zu antworten",
     "backToPost": "Zurück zum Beitrag",
     "loadMoreReplies": "Weitere Antworten laden",
-    "reply": "Antwort",
+    "reply": "Antworten",
     "showLessReplies": "Zeigen Sie weniger Antworten",
     "showAllReplies": "Alle Antworten anzeigen",
     "replyingTo": "Antwort auf {name}",
@@ -210,7 +210,9 @@
     "originInLinked": "{origin} in <loc>{location}</loc>",
     "loadingMorePosts": "Laden weitere Posts...",
     "loadMorePosts": "Weitere Beiträge laden",
-    "signInToSeePosts": "Melden Sie sich mit Ihrer Schul-E-Mail an, um Beiträge in diesem Netzwerk zu sehen."
+    "signInToSeePosts": "Melden Sie sich mit Ihrer Schul-E-Mail an, um Beiträge in diesem Netzwerk zu sehen.",
+    "reply": "Antworten",
+    "viewAllReplies": "Alle {count} Antworten anzeigen"
   },
   "editableEntry": {
     "save": "Speichern",

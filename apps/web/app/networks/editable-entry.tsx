@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { type ReactNode, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useLocale, useTranslations } from "next-intl";
@@ -57,6 +57,7 @@ export function EditableEntry({
   summary,
   permalink,
   mention,
+  replyControl,
 }: {
   kind: "post" | "reply";
   itemId: number;
@@ -86,6 +87,16 @@ export function EditableEntry({
    * (00000000000079).
    */
   mention?: { id: string; name: string } | null;
+  /**
+   * A Reply affordance, rendered beside the timestamp.
+   *
+   * It sits there rather than below because below is where the reply
+   * COUNT goes, and the two were quietly the same element: with no
+   * replies the count rendered as the word "Reply", which looked like a
+   * button, and the moment someone answered it became "1 Reply" and the
+   * only way to reply to the original post disappeared.
+   */
+  replyControl?: ReactNode;
 }) {
   const t = useTranslations("editableEntry");
   const locale = useLocale() as Locale;
@@ -340,8 +351,9 @@ export function EditableEntry({
           label={{ show: t("summaryLabel"), hide: t("hideTranscript") }}
         />
       )}
-      <p className="text-xs text-muted">
+      <p className="flex flex-wrap items-center gap-3 text-xs text-muted">
         <LocalDateTime iso={createdAt} />
+        {replyControl}
       </p>
       {mode === "confirmDelete" && (
         <div className="flex items-center gap-2 text-sm text-body">

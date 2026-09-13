@@ -33,6 +33,7 @@ export function ReplySection({
   isSignedLanguage,
   error,
   initialReplyTo,
+  expandReplies,
 }: {
   networkId: string;
   postId: string;
@@ -52,6 +53,8 @@ export function ReplySection({
    * silently drop the thing they had just chosen to do.
    */
   initialReplyTo?: { id: string; name: string; replyId?: number } | null;
+  /** Arrived from "View all N replies", so open the thread on landing. */
+  expandReplies?: boolean;
 }) {
   const t = useTranslations("postDetail");
   const [replyTo, setReplyTo] = useState<{ id: string; name: string; replyId?: number } | null>(
@@ -116,7 +119,12 @@ export function ReplySection({
       )}
 
       <div className="pl-8">
-        <ReplyThread replies={replies} someoneLabel={someoneLabel} onReply={setReplyTo} />
+        <ReplyThread
+          replies={replies}
+          someoneLabel={someoneLabel}
+          onReply={setReplyTo}
+          defaultExpanded={expandReplies}
+        />
       </div>
     </>
   );

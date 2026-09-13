@@ -210,7 +210,9 @@
     "originInLinked": "{origin}在<loc>{location}</loc>",
     "loadingMorePosts": "正在加载更多帖子......",
     "loadMorePosts": "加载更多帖子",
-    "signInToSeePosts": "请使用您的学校邮箱登录，查看本网络中的帖子。"
+    "signInToSeePosts": "请使用您的学校邮箱登录，查看本网络中的帖子。",
+    "reply": "回复",
+    "viewAllReplies": "查看所有{count}回复"
   },
   "editableEntry": {
     "save": "保存",

@@ -149,6 +149,14 @@ export function PostFeed({
                 hasCaptions={post.hasCaptions}
                 summary={post.summary}
                 permalink={`/networks/${networkId}/posts/${post.id}`}
+                replyControl={
+                  <Link
+                    href={`/networks/${networkId}/posts/${post.id}${embedSuffix}`}
+                    className="underline hover:text-primary"
+                  >
+                    {t("reply")}
+                  </Link>
+                }
               />
               {post.videoUrl && (
                 <a
@@ -160,16 +168,31 @@ export function PostFeed({
                   {post.videoUrl}
                 </a>
               )}
-              <Link
-                href={`/networks/${networkId}/posts/${post.id}${embedSuffix}`}
-                className="text-sm text-muted underline hover:text-primary"
-              >
-                {post.replyCount === 0
-                  ? t("replyLabel.zero")
-                  : post.replyCount === 1
-                    ? t("replyLabel.one")
-                    : t("replyLabel.other", { count: post.replyCount })}
-              </Link>
+              {/* Only when there is something to count. A post with no
+                  replies used to render this as the word "Reply", which is
+                  what made it look like - and stand in for - a missing
+                  reply button. */}
+              {post.replyCount > 0 && (
+                <Link
+                  href={
+                    post.replyCount > post.replies.length
+                      ? // More exist than fit here, so land on the post
+                        // with the thread already open rather than making
+                        // the reader press "load more" on arrival.
+                        `/networks/${networkId}/posts/${post.id}?replies=all${
+                          embedSuffix ? "&embed=1" : ""
+                        }`
+                      : `/networks/${networkId}/posts/${post.id}${embedSuffix}`
+                  }
+                  className="text-sm text-muted underline hover:text-primary"
+                >
+                  {post.replyCount > post.replies.length
+                    ? t("viewAllReplies", { count: post.replyCount })
+                    : post.replyCount === 1
+                      ? t("replyLabel.one")
+                      : t("replyLabel.other", { count: post.replyCount })}
+                </Link>
+              )}
 
               {/* The newest few replies, inline. There is no composer out
                   here, so Reply is a link that opens the post already

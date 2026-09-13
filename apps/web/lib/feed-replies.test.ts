@@ -26,11 +26,14 @@ test("text replies: fewer than three shows all of them", () => {
   );
 });
 
-test("newest reply is audio: shows only that one", () => {
-  const replies = [audio(5), text(4), text(3), text(2)];
+test("audio is exempt: an audio player is about a line tall", () => {
   assert.deepEqual(
-    feedReplySlice(replies).map((r) => r.id),
-    [5],
+    feedReplySlice([audio(5), text(4), text(3), text(2)]).map((r) => r.id),
+    [5, 4, 3],
+  );
+  assert.deepEqual(
+    feedReplySlice([text(5), audio(4), text(3), text(2)]).map((r) => r.id),
+    [5, 4, 3],
   );
 });
 
@@ -41,21 +44,21 @@ test("newest reply is video: shows only that one", () => {
   );
 });
 
-test("second reply is a recording: shows only the first", () => {
+test("second reply is a video: shows only the first", () => {
   assert.deepEqual(
-    feedReplySlice([text(5), audio(4), text(3), text(2)]).map((r) => r.id),
+    feedReplySlice([text(5), video(4), text(3), text(2)]).map((r) => r.id),
     [5],
   );
 });
 
-test("third reply is a recording: shows the first two", () => {
+test("third reply is a video: shows the first two", () => {
   assert.deepEqual(
     feedReplySlice([text(5), text(4), video(3), text(2)]).map((r) => r.id),
     [5, 4],
   );
 });
 
-test("a recording below the window is irrelevant", () => {
+test("a video below the window is irrelevant", () => {
   // Position four is never shown anyway, so it must not affect the slice.
   assert.deepEqual(
     feedReplySlice([text(5), text(4), text(3), video(2)]).map((r) => r.id),
@@ -65,9 +68,9 @@ test("a recording below the window is irrelevant", () => {
 
 test("the cut is chronological - no holes", () => {
   // Replies 1 and 3 with 2 omitted would read as a conversation with a
-  // gap in it, so everything below the recording goes too.
-  const out = feedReplySlice([text(5), audio(4), text(3)]).map((r) => r.id);
-  assert.ok(!out.includes(3), "must not skip past the recording");
+  // gap in it, so everything below the video goes too.
+  const out = feedReplySlice([text(5), video(4), text(3)]).map((r) => r.id);
+  assert.ok(!out.includes(3), "must not skip past the video");
 });
 
 test("limit is the documented one", () => {

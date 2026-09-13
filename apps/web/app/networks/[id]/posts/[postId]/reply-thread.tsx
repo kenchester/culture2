@@ -109,14 +109,16 @@ export function ReplyThread({
   someoneLabel,
   onReply,
   replyHrefFor,
+  defaultExpanded = false,
 }: {
   replies: ReplyView[];
   someoneLabel: string;
   onReply?: (target: { id: string; name: string; replyId: number }) => void;
   replyHrefFor?: (reply: ReplyView) => string;
+  defaultExpanded?: boolean;
 }) {
   const t = useTranslations("postDetail");
-  const [expanded, setExpanded] = useState(false);
+  const [expanded, setExpanded] = useState(defaultExpanded);
 
   // `replies` arrives newest-first. Top-level replies keep that order, and
   // each one's batch sits directly beneath it, also newest-first - so the

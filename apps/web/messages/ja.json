@@ -210,7 +210,9 @@
     "originInLinked": "{origin}において<loc>{location}</loc>",
     "loadingMorePosts": "投稿を読み込みます...",
     "loadMorePosts": "投稿を読み込む",
-    "signInToSeePosts": "このネットワークの投稿を見るには、学校のメールアドレスでサインインしてください。"
+    "signInToSeePosts": "このネットワークの投稿を見るには、学校のメールアドレスでサインインしてください。",
+    "reply": "返信",
+    "viewAllReplies": "すべての{count}返信を見る"
   },
   "editableEntry": {
     "save": "セーブ",

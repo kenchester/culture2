@@ -267,7 +267,9 @@
     "weeklyPromptSave": "Save prompt",
     "connectWithSpeakersHeading": "Connect with more {language} speakers",
     "connectWithSpeakersIntro": "There's an active network near {location} on the main CultureMesh site.",
-    "signInToSeePosts": "Sign in with your school email to see posts in this network."
+    "signInToSeePosts": "Sign in with your school email to see posts in this network.",
+    "reply": "Reply",
+    "viewAllReplies": "View all {count} replies"
   },
   "demoNetwork": {
     "studentView": "Student view",
