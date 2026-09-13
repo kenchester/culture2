@@ -1,8 +1,8 @@
 import {
+  type ComponentPropsWithRef,
   type InputHTMLAttributes,
   type LabelHTMLAttributes,
   type ReactNode,
-  type TextareaHTMLAttributes,
 } from "react";
 
 // focus:outline-none was deliberately dropped here: it suppressed the
@@ -21,10 +21,13 @@ export function Input({
   return <input className={`${fieldClass} ${className}`} {...props} />;
 }
 
+// ComponentPropsWithRef rather than TextareaHTMLAttributes so callers can
+// pass a ref - PostComposer needs one to find the enclosing <form> and
+// listen for the reset React fires after a successful server action.
 export function Textarea({
   className = "",
   ...props
-}: TextareaHTMLAttributes<HTMLTextAreaElement>) {
+}: ComponentPropsWithRef<"textarea">) {
   return <textarea className={`${fieldClass} ${className}`} {...props} />;
 }
 

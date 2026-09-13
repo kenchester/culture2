@@ -2,6 +2,7 @@
 
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
+import { after } from "next/server";
 import { getTranslations } from "next-intl/server";
 import { createClient } from "@/lib/supabase/server";
 import { createAdminClient } from "@/lib/supabase/admin";
@@ -87,9 +88,27 @@ export async function createPost(formData: FormData) {
   const summaryLanguageId = summaryText ? Number(summaryLanguageRaw) : null;
 
   const supabase = await createClient();
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
+
+  // Issued together rather than one after the other. Neither depends on the
+  // other's result, and each is a full round trip to Supabase - measured at
+  // roughly 0.7s and 0.5s respectively from a dev machine, so serialising
+  // them was costing over a second of the wait before the post even existed.
+  //
+  // The org lookup is what gates the language-purity check, and is a miss
+  // for every network outside a school, which pays nothing for it either way.
+  const [
+    {
+      data: { user },
+    },
+    { data: orgNetwork },
+  ] = await Promise.all([
+    supabase.auth.getUser(),
+    supabase
+      .from("organization_languages")
+      .select("language:languages(name, iso_code)")
+      .eq("network_id", Number(networkId))
+      .maybeSingle(),
+  ]);
 
   if (!user) {
     redirect(
@@ -97,14 +116,6 @@ export async function createPost(formData: FormData) {
     );
   }
 
-  // Only organization-gated networks (Acme University's language networks)
-  // enforce this - a cheap lookup that's a miss for every other post on
-  // the site, which pays zero cost for the dictionary-backed check below.
-  const { data: orgNetwork } = await supabase
-    .from("organization_languages")
-    .select("language:languages(name, iso_code)")
-    .eq("network_id", Number(networkId))
-    .maybeSingle();
   const orgLanguage = orgNetwork?.language as unknown as { name: string; iso_code: string | null } | null;
 
   // Text-purity checking is unchanged. A media post skips it here - video
@@ -163,35 +174,50 @@ export async function createPost(formData: FormData) {
     }
   }
 
-  // Best-effort - a failed notification must never turn a successful post
-  // into an error page for the person posting it.
-  try {
-    const admin = createAdminClient();
-    const [{ data: network }, { data: members }] = await Promise.all([
-      supabase.from("networks").select("title").eq("id", Number(networkId)).single(),
-      admin
-        .from("network_members")
-        .select("user_id")
-        .eq("network_id", Number(networkId))
-        .neq("user_id", user.id),
-    ]);
+  // Notifying everyone else is not something the person who just hit Post
+  // should have to wait for. It was previously awaited inline: two member
+  // queries, a preferences lookup, then a Resend API call, all before the
+  // action returned and the feed refreshed. On a network with opted-in
+  // members that was seconds of staring at a full text box.
+  //
+  // after() runs it once the response has been sent, so the cost is now
+  // entirely off the critical path. It stays best-effort either way - a
+  // failed notification must never turn a successful post into an error.
+  //
+  // siteUrl is resolved out here, not inside the callback: it reads the
+  // request headers, which are no longer available after the response.
+  const siteUrl = await getSiteUrl();
+  const posterId = user.id;
+  after(async () => {
+    try {
+      // Service role throughout. The cookie-backed client belongs to a
+      // request that has already finished by this point.
+      const admin = createAdminClient();
+      const [{ data: network }, { data: members }] = await Promise.all([
+        admin.from("networks").select("title").eq("id", Number(networkId)).single(),
+        admin
+          .from("network_members")
+          .select("user_id")
+          .eq("network_id", Number(networkId))
+          .neq("user_id", posterId),
+      ]);
 
-    const memberIds = (members ?? []).map((m) => m.user_id as string);
-    const recipients = await getOptedInRecipients(memberIds, "network_activity");
+      const memberIds = (members ?? []).map((m) => m.user_id as string);
+      const recipients = await getOptedInRecipients(memberIds, "network_activity");
 
-    if (recipients.length > 0 && network) {
-      const siteUrl = await getSiteUrl();
-      await sendBulkEmails(
-        recipients.map((r) => ({
-          to: r.email,
-          subject: `New post in ${network.title}`,
-          text: `There's a new post in ${network.title} on CultureMesh.\n\n${siteUrl}/networks/${networkId}`,
-        })),
-      );
+      if (recipients.length > 0 && network) {
+        await sendBulkEmails(
+          recipients.map((r) => ({
+            to: r.email,
+            subject: `New post in ${network.title}`,
+            text: `There's a new post in ${network.title} on CultureMesh.\n\n${siteUrl}/networks/${networkId}`,
+          })),
+        );
+      }
+    } catch {
+      // notification failure is non-fatal
     }
-  } catch {
-    // notification failure is non-fatal
-  }
+  });
 
   revalidatePath(`/networks/${networkId}`);
 }

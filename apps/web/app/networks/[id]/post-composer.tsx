@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useTranslations } from "next-intl";
 import { RecordMedia } from "@/app/networks/[id]/record-media";
 import { Field, Label, Textarea } from "@/components/ui/input";
@@ -39,11 +39,39 @@ export function PostComposer({
 }) {
   const t = useTranslations("editableEntry");
   const [mode, setMode] = useState<Mode>("text");
-  const [bodyValue, setBodyValue] = useState("");
+  // The textarea is deliberately UNCONTROLLED. When it held its value in
+  // React state, a successful post left the text sitting in the box: the
+  // server action revalidates and the feed re-renders, but this client
+  // component is never unmounted, so its state survived and the post you
+  // just made was still there to send again. React clears an uncontrolled
+  // field itself after a server action succeeds.
+  //
+  // Only the emptiness is tracked here, to disable the button - and it has
+  // to be resynced on reset, or the button stays enabled over a box React
+  // has just emptied.
+  const [hasBody, setHasBody] = useState(false);
+  const bodyRef = useRef<HTMLTextAreaElement>(null);
+  // Bumped on reset to remount RecordMedia, which otherwise keeps the
+  // just-posted recording in its own state for the same reason.
+  const [generation, setGeneration] = useState(0);
+
   // Owned here rather than inside either child: the checkbox lives among
   // RecordMedia's pre-record options, but the panel it opens renders above
   // RecordMedia, so neither component can hold the state on its own.
   const [showSummary, setShowSummary] = useState(false);
+
+  useEffect(() => {
+    const form = bodyRef.current?.form;
+    if (!form) return;
+    const onReset = () => {
+      setHasBody(false);
+      setGeneration((n) => n + 1);
+    };
+    // React only resets on success; a failed action redirects instead, so
+    // a rejected post keeps its text for the author to fix.
+    form.addEventListener("reset", onReset);
+    return () => form.removeEventListener("reset", onReset);
+  }, [mode]);
 
   // A signed language has no spoken form, so an audio post in one of these
   // networks is either a mistake or off-language - hiding the tab is
@@ -76,12 +104,12 @@ export function PostComposer({
             <Textarea
               id={`${idPrefix}-body`}
               name="body"
+              ref={bodyRef}
               placeholder={bodyPlaceholder}
-              value={bodyValue}
-              onChange={(e) => setBodyValue(e.target.value)}
+              onChange={(e) => setHasBody(e.target.value.trim().length > 0)}
             />
           </Field>
-          <SubmitButton disabled={bodyValue.trim().length === 0} className="self-start">
+          <SubmitButton disabled={!hasBody} className="self-start">
             {submitLabel}
           </SubmitButton>
         </>
@@ -96,7 +124,7 @@ export function PostComposer({
             <SignedSummaryFields idPrefix={idPrefix} />
           )}
           <RecordMedia
-            key={mode}
+            key={`${mode}-${generation}`}
             kind={mode}
             extraControls={
               isSignedLanguage && mode === "video" ? (
