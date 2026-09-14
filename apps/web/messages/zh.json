@@ -314,10 +314,22 @@
       "embassy": "大使馆或合作伙伴调查",
       "privacy": "隐私或数据请求",
       "other": "其他",
-      "learn": "CultureMesh 学习兴趣"
+      "learn": "CultureMesh 学习兴趣",
+      "request": "语言或地理请求"
     },
     "messageLabel": "信息",
-    "submit": "发送消息"
+    "submit": "发送消息",
+    "requestKindLabel": "你想让我们补充什么？",
+    "requestKindPlaceholder": "选择一种类型......",
+    "requestKinds": {
+      "language": "语言",
+      "country": "国家层面的地理",
+      "region": "区域层面的地理",
+      "city": "城市级地理"
+    },
+    "requestCountryLabel": "乡村",
+    "requestRegionLabel": "地区或州（可选）",
+    "requestMessageLabel": "分享你想要的语言或地理"
   },
   "footer": {
     "about": "关于我们",
@@ -557,6 +569,7 @@
       "topic": "一位参与者用西班牙语发布了一段音频，讲述了他们最喜欢的密歇根州立大学宿舍食堂，以及为什么他们推荐在校园内参观的人。"
     },
     "intro": "请搜索与您语言背景及美国现址或前居地相匹配的网络。",
-    "intro2": "在你开始在网络发帖前，请先阅读以下的<rules>基本规则</rules>。如果你还没有账户，将被要求注册并登录，作为流程的一部分。"
+    "intro2": "在你开始在网络发帖前，请先阅读以下的<rules>基本规则</rules>。如果你还没有账户，将被要求注册并登录，作为流程的一部分。",
+    "missingLanguage": "如果您找不到您的语言，请联系<contact>我们</contact>，要求添加您的语言。"
   }
 }

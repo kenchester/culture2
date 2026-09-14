@@ -1,7 +1,7 @@
 import { getTranslations } from "next-intl/server";
 import { sendContactMessage } from "@/app/(marketing)/contact/actions";
 import { SubjectField } from "@/app/(marketing)/contact/subject-field";
-import { Field, Input, Label, Textarea } from "@/components/ui/input";
+import { Field, Input, Label } from "@/components/ui/input";
 import { FormError, FormSuccess } from "@/components/ui/form-error";
 import { SubmitButton } from "@/components/ui/submit-button";
 
@@ -20,11 +20,12 @@ export default async function ContactPage({
     error?: string;
     sent?: string;
     subject?: string;
+    requestKind?: string;
     message?: string;
     institution?: string;
   }>;
 }) {
-  const { error, sent, subject, message, institution } = await searchParams;
+  const { error, sent, subject, requestKind, message, institution } = await searchParams;
   const t = await getTranslations("contact");
 
   return (
@@ -69,11 +70,14 @@ export default async function ContactPage({
           <Label htmlFor="email">{t("emailLabel")}</Label>
           <Input id="email" name="email" type="email" required />
         </Field>
-        <SubjectField initialSubject={subject} initialInstitution={institution} />
-        <Field>
-          <Label htmlFor="message">{t("messageLabel")}</Label>
-          <Textarea id="message" name="message" required rows={6} defaultValue={message ?? ""} />
-        </Field>
+        {/* Includes the message box: its label changes with the subject,
+            so it has to live inside the reactive component. */}
+        <SubjectField
+          initialSubject={subject}
+          initialInstitution={institution}
+          initialMessage={message}
+          initialRequestKind={requestKind}
+        />
         <SubmitButton className="self-start">
           {t("submit")}
         </SubmitButton>

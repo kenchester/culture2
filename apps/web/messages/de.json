@@ -314,10 +314,22 @@
       "embassy": "Botschafts- oder Partneranfrage",
       "privacy": "Datenschutz oder Datenanfrage",
       "other": "Sonstiges",
-      "learn": "CultureMesh Lerninteresse"
+      "learn": "CultureMesh Lerninteresse",
+      "request": "Sprach- oder Geografieanfrage"
     },
     "messageLabel": "Botschaft",
-    "submit": "Nachricht senden"
+    "submit": "Nachricht senden",
+    "requestKindLabel": "Was möchten Sie, dass wir hinzufügen?",
+    "requestKindPlaceholder": "Wähle einen Typ aus...",
+    "requestKinds": {
+      "language": "Sprache",
+      "country": "Geografie auf Landesebene",
+      "region": "Geografie auf Regionsebene",
+      "city": "Stadtgeographie"
+    },
+    "requestCountryLabel": "Land",
+    "requestRegionLabel": "Region oder Bundesstaat (optional)",
+    "requestMessageLabel": "Teile deine gewünschte Sprache oder Geografie"
   },
   "footer": {
     "about": "Über uns",
@@ -557,6 +569,7 @@
       "topic": "Ein Teilnehmer veröffentlichte eine Tonaufnahme auf Spanisch über seine Lieblings-Wohnheimcafeteria an der Michigan State University und warum er anderen empfiehlt, sie zu besuchen, wenn sie auf dem Campus sind."
     },
     "intro": "Bitte suchen Sie nach Netzwerken, die Ihrem sprachlichen Hintergrund und einem aktuellen oder ehemaligen Standort in den Vereinigten Staaten entsprechen.",
-    "intro2": "Bitte lesen Sie die untenstehenden <rules>Grundregeln</rules>, bevor Sie in einem Netzwerk posten. Wenn Sie noch kein Konto haben, werden Sie gebeten, sich im Rahmen des Prozesses zu registrieren und anzumelden."
+    "intro2": "Bitte lesen Sie die untenstehenden <rules>Grundregeln</rules>, bevor Sie in einem Netzwerk posten. Wenn Sie noch kein Konto haben, werden Sie gebeten, sich im Rahmen des Prozesses zu registrieren und anzumelden.",
+    "missingLanguage": "Wenn Sie Ihre Sprache nicht finden, <contact>kontaktieren Sie uns</contact> bitte und bitten Sie, Ihre Sprache hinzuzufügen."
   }
 }

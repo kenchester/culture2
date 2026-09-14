@@ -388,10 +388,22 @@
       "embassy": "Embassy or partner inquiry",
       "privacy": "Privacy or data request",
       "other": "Other",
-      "learn": "CultureMesh Learn Interest"
+      "learn": "CultureMesh Learn Interest",
+      "request": "Language or geography request"
     },
     "messageLabel": "Message",
-    "submit": "Send message"
+    "submit": "Send message",
+    "requestKindLabel": "What would you like us to add?",
+    "requestKindPlaceholder": "Select a type...",
+    "requestKinds": {
+      "language": "Language",
+      "country": "Country-level geography",
+      "region": "Region-level geography",
+      "city": "City-level geography"
+    },
+    "requestCountryLabel": "Country",
+    "requestRegionLabel": "Region or state (optional)",
+    "requestMessageLabel": "Share your desired language or geography"
   },
   "footer": {
     "copyright": "© {year} CultureMesh LLC. All rights reserved.",
@@ -551,6 +563,7 @@
     "example": {
       "network": "Spanish language in Michigan",
       "topic": "A participant posted an audio recording in Spanish about their favorite dormitory cafeteria at Michigan State University and why they recommend others visit it if they're on campus."
-    }
+    },
+    "missingLanguage": "If you cannot find your language, please <contact>contact us</contact> to request that we add your language."
   }
 }

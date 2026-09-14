@@ -314,10 +314,22 @@
       "embassy": "大使館またはパートナーへの問い合わせ",
       "privacy": "プライバシーまたはデータ請求",
       "other": "その他",
-      "learn": "CultureMesh Learn Interest(興味を学ぶ)"
+      "learn": "CultureMesh Learn Interest(興味を学ぶ)",
+      "request": "言語または地理のリクエスト"
     },
     "messageLabel": "メッセージ",
-    "submit": "メッセージを送信"
+    "submit": "メッセージを送信",
+    "requestKindLabel": "何か付け加えてほしいことはありますか?",
+    "requestKindPlaceholder": "種類を選び...",
+    "requestKinds": {
+      "language": "言語",
+      "country": "国レベルの地理",
+      "region": "地域レベルの地理",
+      "city": "都市レベルの地理"
+    },
+    "requestCountryLabel": "国",
+    "requestRegionLabel": "地域または州(任意)",
+    "requestMessageLabel": "希望する言語や地理を教えてください"
   },
   "footer": {
     "about": "私たちについて",
@@ -557,6 +569,7 @@
       "topic": "参加者はスペイン語で、ミシガン州立大学のお気に入りの寮食堂についての音声録音を投稿し、キャンパスにいる人にそこを訪れるよう勧める理由を述べました。"
     },
     "intro": "あなたの言語的背景や現在または過去のアメリカ国内の居住地に合致するネットワークを検索してください。",
-    "intro2": "ネットワークに投稿する前に、以下の<rules>ルール</rules>をお読みください。まだアカウントをお持ちでない場合は、登録とサインインの手続きの一環として求められます。"
+    "intro2": "ネットワークに投稿する前に、以下の<rules>ルール</rules>をお読みください。まだアカウントをお持ちでない場合は、登録とサインインの手続きの一環として求められます。",
+    "missingLanguage": "お使いの言語が見つからない場合は、言語の追加をお願いするよう<contact>ご連絡</contact>ください。"
   }
 }

@@ -31,13 +31,37 @@ export async function sendContactMessage(formData: FormData) {
   // Only present when subject is "CultureMesh Learn Interest" - see
   // app/(marketing)/contact/subject-field.tsx.
   const institution = formData.get("institution") as string | null;
+  // Only present for "Language or geography request". The country is
+  // required for a region or city request, and the visible autocomplete
+  // input can only force the reader to TYPE something - picking a real
+  // place is what produces the id, so that is checked here.
+  const requestKind = formData.get("requestKind") as string | null;
+  const requestCountry = formData.get("requestCountry") as string | null;
+  const requestCountryId = formData.get("requestCountryId") as string | null;
+  const requestRegion = formData.get("requestRegion") as string | null;
+
+  if ((requestKind === "Region" || requestKind === "City") && !requestCountryId) {
+    redirect(
+      `/contact?error=${encodeURIComponent(
+        "Please choose a country from the list for a region or city request.",
+      )}&subject=${encodeURIComponent(subject)}&requestKind=${encodeURIComponent(
+        requestKind ?? "",
+      )}&message=${encodeURIComponent(message ?? "")}`,
+    );
+  }
+
+  const requestDetail = requestKind
+    ? `\nRequest type: ${requestKind}` +
+      (requestCountry ? `\nCountry: ${requestCountry}` : "") +
+      (requestRegion ? `\nRegion: ${requestRegion}` : "")
+    : "";
 
   const { error } = await resend.emails.send({
     from: "CultureMesh Contact Form <noreply@culturemesh.com>",
     to: "kenchester2@gmail.com",
     replyTo: email,
     subject: `[Contact form] ${subject}: ${name}`,
-    text: `From: ${name} <${email}>\nSubject: ${subject}${institution ? `\nInstitution: ${institution}` : ""}\n\n${message}`,
+    text: `From: ${name} <${email}>\nSubject: ${subject}${institution ? `\nInstitution: ${institution}` : ""}${requestDetail}\n\n${message}`,
   });
 
   if (error) {

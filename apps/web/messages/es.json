@@ -314,10 +314,22 @@
       "embassy": "Consulta de embajada o socios",
       "privacy": "Privacidad o solicitud de datos",
       "other": "Otros",
-      "learn": "CultureMesh Aprender interés"
+      "learn": "CultureMesh Aprender interés",
+      "request": "Solicitud de idioma o geografía"
     },
     "messageLabel": "Mensaje",
-    "submit": "Enviar mensaje"
+    "submit": "Enviar mensaje",
+    "requestKindLabel": "¿Qué queréis que añadiéramos?",
+    "requestKindPlaceholder": "Selecciona un tipo...",
+    "requestKinds": {
+      "language": "Idioma",
+      "country": "Geografía a nivel nacional",
+      "region": "Geografía a nivel regional",
+      "city": "Geografía a nivel de ciudad"
+    },
+    "requestCountryLabel": "País",
+    "requestRegionLabel": "Región o estado (opcional)",
+    "requestMessageLabel": "Comparte el idioma o la geografía que prefieras"
   },
   "footer": {
     "about": "Sobre nosotros",
@@ -557,6 +569,7 @@
       "topic": "Un participante publicó una grabación de audio en español sobre su cafetería favorita de la residencia universitaria en la Universidad Estatal de Michigan y por qué recomienda que otros la visiten si están en el campus."
     },
     "intro": "Por favor, busca redes que coincidan con tu formación lingüística y una ubicación actual o anterior en Estados Unidos.",
-    "intro2": "Por favor, lee las <rules>Normas Básicas</rules> a continuación antes de proceder a publicar en una red. Si aún no tienes cuenta, se te pedirá que te registres e inicies sesión como parte del proceso."
+    "intro2": "Por favor, lee las <rules>Normas Básicas</rules> a continuación antes de proceder a publicar en una red. Si aún no tienes cuenta, se te pedirá que te registres e inicies sesión como parte del proceso.",
+    "missingLanguage": "Si no encuentras tu idioma, <contact>por favor contáctanos</contact> para solicitar que añadamos tu lenguaje."
   }
 }

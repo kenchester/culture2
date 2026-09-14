@@ -314,10 +314,22 @@
       "embassy": "Enquête sur l’ambassade ou le partenaire",
       "privacy": "Confidentialité ou demande de données",
       "other": "Autres",
-      "learn": "CultureMesh Apprendre l’intérêt"
+      "learn": "CultureMesh Apprendre l’intérêt",
+      "request": "Demande de langue ou de géographie"
     },
     "messageLabel": "Message",
-    "submit": "Envoyer le message"
+    "submit": "Envoyer le message",
+    "requestKindLabel": "Que souhaitez-vous que nous ajoutions ?",
+    "requestKindPlaceholder": "Sélectionnez un type...",
+    "requestKinds": {
+      "language": "Langue",
+      "country": "Géographie au niveau du pays",
+      "region": "Géographie régionale",
+      "city": "Géographie au niveau de la ville"
+    },
+    "requestCountryLabel": "Pays",
+    "requestRegionLabel": "Région ou État (optionnel)",
+    "requestMessageLabel": "Partagez la langue ou la géographie de votre choix"
   },
   "footer": {
     "about": "À propos de nous",
@@ -557,6 +569,7 @@
       "topic": "Un participant a publié un enregistrement audio en espagnol à propos de sa cafétéria préférée de dortoir à l’Université d’État du Michigan et pourquoi il recommande à d’autres de la visiter s’ils sont sur le campus."
     },
     "intro": "Veuillez rechercher des réseaux correspondant à votre bagage linguistique et à une localisation actuelle ou ancienne aux États-Unis.",
-    "intro2": "Veuillez lire les <rules>règles de base</rules> ci-dessous avant de procéder à la publication dans un réseau. Si vous n’avez pas encore de compte, il vous sera demandé de vous inscrire et de vous connecter dans le cadre du processus."
+    "intro2": "Veuillez lire les <rules>règles de base</rules> ci-dessous avant de procéder à la publication dans un réseau. Si vous n’avez pas encore de compte, il vous sera demandé de vous inscrire et de vous connecter dans le cadre du processus.",
+    "missingLanguage": "Si vous ne trouvez pas votre langue, veuillez <contact>nous contacter</contact> pour nous demander que nous ajoutons votre langue."
   }
 }

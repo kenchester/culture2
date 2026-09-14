@@ -314,10 +314,22 @@
       "embassy": "대사관 또는 파트너 문의",
       "privacy": "개인정보 보호 또는 데이터 요청",
       "other": "기타",
-      "learn": "CultureMesh 학습 관심"
+      "learn": "CultureMesh 학습 관심",
+      "request": "언어 또는 지리 요청"
     },
     "messageLabel": "메시지",
-    "submit": "메시지 전송"
+    "submit": "메시지 전송",
+    "requestKindLabel": "무엇을 추가하길 원하십니까?",
+    "requestKindPlaceholder": "종류를 선택하세요...",
+    "requestKinds": {
+      "language": "언어",
+      "country": "국가별 지리",
+      "region": "지역 지리",
+      "city": "도시 수준의 지리"
+    },
+    "requestCountryLabel": "국가",
+    "requestRegionLabel": "지역 또는 주 (선택 사항)",
+    "requestMessageLabel": "원하는 언어나 지리를 공유하세요"
   },
   "footer": {
     "about": "저희 소개",
@@ -557,6 +569,7 @@
       "topic": "한 참가자는 미시간 주립대학교에서 가장 좋아하는 기숙사 구내식당에 대해 스페인어로 오디오 녹음을 올렸으며, 캠퍼스에 있을 때 방문을 추천하는 이유를 설명했습니다."
     },
     "intro": "당신의 언어학적 배경과 현재 또는 과거 미국 내 거주지에 맞는 네트워크를 검색해 주세요.",
-    "intro2": "네트워크에 게시하기 전에 아래의 <rules>기본 규칙</rules>을 꼭 읽어주세요. 아직 계정이 없으시면 등록 및 등록 절차의 일부로 로그인하라는 요청을 받게 됩니다."
+    "intro2": "네트워크에 게시하기 전에 아래의 <rules>기본 규칙</rules>을 꼭 읽어주세요. 아직 계정이 없으시면 등록 및 등록 절차의 일부로 로그인하라는 요청을 받게 됩니다.",
+    "missingLanguage": "언어를 찾지 못하신 경우, 저희<contact>에게 연락</contact>하여 언어 추가를 요청해 주세요."
   }
 }

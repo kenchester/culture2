@@ -58,6 +58,7 @@ export function AutocompleteField({
   disabled = false,
   defaultValue,
   placeType,
+  required = false,
   initialOption = null,
   excludeSigned = false,
 }: {
@@ -75,6 +76,12 @@ export function AutocompleteField({
   disabled?: boolean;
   defaultValue?: string;
   placeType?: "country" | "region" | "city" | ("country" | "region" | "city")[];
+  /**
+   * Marks the visible input required. That only forces the reader to type
+   * something, not to pick a real option, so anything that genuinely
+   * depends on the id must still check it server-side.
+   */
+  required?: boolean;
   initialOption?: AutocompleteOption | null;
   // Language pickers only: drops signed languages from the results. For
   // fields asking which *written* language some text is in, where a signed
@@ -155,6 +162,7 @@ export function AutocompleteField({
           type="text"
           name={queryName}
           disabled={disabled}
+          required={required}
           value={disabled ? (defaultValue ?? "") : selected ? optionLabel(selected) : query}
           onChange={(e) => {
             setSelected(null);

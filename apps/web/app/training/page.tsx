@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import { getTranslations } from "next-intl/server";
 import { createClient } from "@/lib/supabase/server";
 import { TrainingSearchForm, type LocationOption } from "@/app/training/training-search-form";
@@ -90,6 +91,18 @@ export default async function TrainingPage() {
         <p className="text-sm text-body">{t("findBody")}</p>
         <TrainingSearchForm locations={locations} />
       </section>
+
+      {/* Sits under the search box because that is where someone discovers
+          their language is missing - by failing to find it. */}
+      <p className="-mt-4 text-sm text-muted">
+        {t.rich("missingLanguage", {
+          contact: (chunks) => (
+            <Link href="/contact?subject=Language+or+geography+request" className="underline hover:text-primary">
+              {chunks}
+            </Link>
+          ),
+        })}
+      </p>
 
       <section id={RULES_ANCHOR} className="flex scroll-mt-6 flex-col gap-3">
         <h2 className="text-lg font-medium text-ink">{t("rulesTitle")}</h2>
