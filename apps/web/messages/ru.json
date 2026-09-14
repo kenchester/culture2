@@ -329,7 +329,8 @@
     },
     "requestCountryLabel": "Кантри",
     "requestRegionLabel": "Регион или штат (по выбору)",
-    "requestMessageLabel": "Поделитесь желаемым языком или географией"
+    "requestMessageLabel": "Поделитесь желаемым языком или географией",
+    "requestRegionDisabled": "Сначала выберите страну"
   },
   "footer": {
     "about": "О нас",

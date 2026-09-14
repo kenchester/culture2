@@ -58,6 +58,7 @@ export function AutocompleteField({
   disabled = false,
   defaultValue,
   placeType,
+  parentId = null,
   required = false,
   initialOption = null,
   excludeSigned = false,
@@ -76,6 +77,12 @@ export function AutocompleteField({
   disabled?: boolean;
   defaultValue?: string;
   placeType?: "country" | "region" | "city" | ("country" | "region" | "city")[];
+  /**
+   * Restricts results to children of this place. Changing it clears any
+   * existing selection, since a value chosen under the old parent is
+   * almost certainly wrong under the new one.
+   */
+  parentId?: number | null;
   /**
    * Marks the visible input required. That only forces the reader to type
    * something, not to pick a real option, so anything that genuinely
@@ -132,13 +139,14 @@ export function AutocompleteField({
     const controller = new AbortController();
     const timeout = setTimeout(() => {
       const typeParam = placeTypeParam ? `&type=${placeTypeParam}` : "";
+      const parentParam = parentId ? `&parentId=${parentId}` : "";
       // Lets a search for e.g. "Estados Unidos" find "United States" -
       // the API resolves this against whatever's already cached for this
       // locale (see 00000000000042_locale_aware_search.sql) and returns
       // the translated name in place of the English one, so results
       // already render localized with no further change needed here.
       fetch(
-        `${searchUrl}?q=${encodeURIComponent(query)}&kind=${kind}${typeParam}&locale=${locale}${excludeSigned ? "&excludeSigned=1" : ""}`,
+        `${searchUrl}?q=${encodeURIComponent(query)}&kind=${kind}${typeParam}${parentParam}&locale=${locale}${excludeSigned ? "&excludeSigned=1" : ""}`,
         { signal: controller.signal },
       )
         .then((r) => r.json())
@@ -149,7 +157,7 @@ export function AutocompleteField({
       clearTimeout(timeout);
       controller.abort();
     };
-  }, [query, kind, selected, searchUrl, disabled, placeTypeParam, locale, excludeSigned]);
+  }, [query, kind, selected, searchUrl, disabled, placeTypeParam, parentId, locale, excludeSigned]);
 
   const visibleOptions = disabled || selected ? [] : options;
 

@@ -329,7 +329,8 @@
     },
     "requestCountryLabel": "كانتري",
     "requestRegionLabel": "المنطقة أو الولاية (اختياري)",
-    "requestMessageLabel": "شارك لغتك أو جغرافيتك التي ترغب بها"
+    "requestMessageLabel": "شارك لغتك أو جغرافيتك التي ترغب بها",
+    "requestRegionDisabled": "اختر بلدا أولا"
   },
   "footer": {
     "about": "من نحن",

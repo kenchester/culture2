@@ -403,7 +403,8 @@
     },
     "requestCountryLabel": "Country",
     "requestRegionLabel": "Region or state (optional)",
-    "requestMessageLabel": "Share your desired language or geography"
+    "requestMessageLabel": "Share your desired language or geography",
+    "requestRegionDisabled": "Choose a country first"
   },
   "footer": {
     "copyright": "© {year} CultureMesh LLC. All rights reserved.",

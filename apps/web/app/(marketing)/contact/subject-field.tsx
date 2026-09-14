@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { useTranslations } from "next-intl";
-import { AutocompleteField } from "@/components/autocomplete-field";
+import { AutocompleteField, type PlaceOption } from "@/components/autocomplete-field";
 import { Field, fieldClass, Input, Label, Textarea } from "@/components/ui/input";
 
 // "CultureMesh Learn Interest" and "Embassy or partner inquiry" each need
@@ -41,6 +41,7 @@ export function SubjectField({
 }) {
   const t = useTranslations("contact");
   const [subject, setSubject] = useState(initialSubject ?? "");
+  const [country, setCountry] = useState<PlaceOption | null>(null);
   const [requestKind, setRequestKind] = useState<RequestKind | "">(
     (REQUEST_KINDS as readonly string[]).includes(initialRequestKind ?? "")
       ? (initialRequestKind as RequestKind)
@@ -123,16 +124,25 @@ export function SubjectField({
           placeType="country"
           hiddenName="requestCountryId"
           queryName="requestCountry"
+          onSelect={(option) => setCountry(option as PlaceOption | null)}
           required
         />
       )}
 
       {needsRegion && (
+        // Scoped to the chosen country, and inert until there is one -
+        // an unfiltered list would happily accept Bavaria under Mexico.
+        // Re-keyed on the country so a region picked under a previous one
+        // is cleared rather than silently kept.
         <AutocompleteField
-          key="region"
+          key={`region-${country?.id ?? "none"}`}
           label={t("requestRegionLabel")}
           kind="place"
           placeType="region"
+          parentId={country?.id ?? null}
+          disabled={!country}
+          defaultValue=""
+          placeholder={country ? undefined : t("requestRegionDisabled")}
           hiddenName="requestRegionId"
           queryName="requestRegion"
         />

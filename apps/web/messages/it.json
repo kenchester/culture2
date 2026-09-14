@@ -329,7 +329,8 @@
     },
     "requestCountryLabel": "Paese",
     "requestRegionLabel": "Regione o stato (opzionale)",
-    "requestMessageLabel": "Condividi la lingua o la geografia che desideri"
+    "requestMessageLabel": "Condividi la lingua o la geografia che desideri",
+    "requestRegionDisabled": "Scegli prima un paese"
   },
   "footer": {
     "about": "Chi Siamo",

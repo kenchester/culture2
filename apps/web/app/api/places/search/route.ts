@@ -19,6 +19,10 @@ export async function GET(request: NextRequest) {
   // unfiltered and gets filtered here instead.
   const requestedTypes = (typeParam?.split(",") ?? []).map((t) => t.trim()).filter((t) => PLACE_TYPES.includes(t));
   const type = requestedTypes.length === 1 ? requestedTypes[0] : null;
+  // Scopes the search to one parent (00000000000083) - a region under a
+  // chosen country, for instance. Ignored when absent or not a number.
+  const parentIdParam = Number(searchParams.get("parentId"));
+  const parentId = Number.isFinite(parentIdParam) && parentIdParam > 0 ? parentIdParam : null;
   const localeParam = searchParams.get("locale");
   const locale = isLocale(localeParam) ? localeParam : "en";
 
@@ -87,6 +91,7 @@ export async function GET(request: NextRequest) {
     p_type: type,
     p_limit: 10,
     p_locale: locale,
+    p_parent_id: parentId,
   });
   if (error) {
     return NextResponse.json({ error: error.message }, { status: 500 });

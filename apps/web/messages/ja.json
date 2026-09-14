@@ -329,7 +329,8 @@
     },
     "requestCountryLabel": "国",
     "requestRegionLabel": "地域または州(任意)",
-    "requestMessageLabel": "希望する言語や地理を教えてください"
+    "requestMessageLabel": "希望する言語や地理を教えてください",
+    "requestRegionDisabled": "まず国を選びましょう"
   },
   "footer": {
     "about": "私たちについて",

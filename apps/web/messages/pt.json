@@ -329,7 +329,8 @@
     },
     "requestCountryLabel": "País",
     "requestRegionLabel": "Região ou estado (opcional)",
-    "requestMessageLabel": "Compartilhe o idioma ou a geografia que deseja"
+    "requestMessageLabel": "Compartilhe o idioma ou a geografia que deseja",
+    "requestRegionDisabled": "Escolha um país primeiro"
   },
   "footer": {
     "about": "Sobre Nós",

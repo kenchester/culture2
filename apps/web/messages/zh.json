@@ -329,7 +329,8 @@
     },
     "requestCountryLabel": "乡村",
     "requestRegionLabel": "地区或州（可选）",
-    "requestMessageLabel": "分享你想要的语言或地理"
+    "requestMessageLabel": "分享你想要的语言或地理",
+    "requestRegionDisabled": "先选择一个国家"
   },
   "footer": {
     "about": "关于我们",

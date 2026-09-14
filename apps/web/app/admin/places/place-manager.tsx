@@ -28,6 +28,16 @@ function CityParentPicker({
   onParentTypeChange: (type: "region" | "country") => void;
   initialOption?: PlaceOption | null;
 }) {
+  // Narrows the state/province list to one country (00000000000083).
+  // Without it every region on earth is offered, and "Springfield" can be
+  // filed under a state in the wrong country with nothing to catch it.
+  //
+  // This picker is scaffolding only - it is never submitted. The form still
+  // posts parentId, the region's own id, exactly as before. Editing an
+  // existing city therefore starts unfiltered rather than trying to
+  // back-derive the country from the stored region.
+  const [country, setCountry] = useState<PlaceOption | null>(null);
+
   return (
     <div className="flex flex-col gap-2">
       <div className="flex gap-4 text-sm text-body">
@@ -48,11 +58,21 @@ function CityParentPicker({
           Country only (no state/province)
         </label>
       </div>
+      {parentType === "region" && (
+        <AutocompleteField
+          label="Country (narrows the list below)"
+          kind="place"
+          placeType="country"
+          onSelect={(option) => setCountry(option as PlaceOption | null)}
+          placeholder="e.g. United States"
+        />
+      )}
       <AutocompleteField
-        key={parentType}
+        key={parentType === "region" ? `region-${country?.id ?? "any"}` : "country"}
         label={TYPE_LABEL[parentType]}
         kind="place"
         placeType={parentType}
+        parentId={parentType === "region" ? (country?.id ?? null) : null}
         hiddenName="parentId"
         initialOption={parentType === initialOption?.type ? initialOption : null}
         placeholder={parentType === "country" ? "e.g. United States" : "e.g. Ohio"}
