@@ -525,7 +525,7 @@
   "training": {
     "title": "AI multilingual training via live social network posts",
     "intro": "Please search for networks which match your linguistic background and a current or former location in the United States.",
-    "intro2": "Please read the <rules>Ground Rules</rules> below before you proceed to post in a network.",
+    "intro2": "Please read the <rules>Ground Rules</rules> below before you proceed to post in a network. If you do not yet have an account, you will be asked to register and sign in as part of the process.",
     "findTitle": "Find your network",
     "findBody": "Pick the language you'll be posting in and a state you live in or used to. If a network already exists you can join it; if not, you can start it. It opens in a new tab so these guidelines stay open here.",
     "languageLabel": "Language you'll post in",
@@ -542,7 +542,7 @@
       "onTopic": "<u>You may create entirely new posts or reply to others' posts.</u> If you reply to someone, respond to what they actually said. Replies that ignore the post they're under aren't useful.",
       "respect": "Treat other participants the way you would in person. Anything you post may be read by people outside your own community.",
       "duration": "<u>Each recording must be between 30 and 60 seconds to qualify.</u> The recording tool will automatically stop at 60 seconds, so you don't need to worry about going over the maximum time.",
-      "geographySpread": "Please use the same language but post in networks for 3 different geographies. E.g. \"Tamil speakers in Ohio\", \"Tamil speakers in New York\", and \"Tamil speakers in Washington D.C.\""
+      "geographySpread": "Please use the same language but post in networks for 3 different geographies. <eg>E.g. \"Tamil speakers in Ohio\", \"Tamil speakers in New York\", and \"Tamil speakers in Washington D.C.\"</eg>"
     },
     "consentBanner": "Only participants in the training program who have consented to having data recorded will have their posts included in training data. Please do not include any identifiable or private information in your posts or replies; you may also use a pseudonym for your account name, if desired.",
     "examplesTitle": "Examples",

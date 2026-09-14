@@ -7,6 +7,12 @@ function Underline({ chunks }: { chunks: React.ReactNode }) {
   return <span className="underline">{chunks}</span>;
 }
 
+// Worked examples sit on their own line, in italics, so they read as an
+// illustration of the rule above rather than as part of it.
+function Example({ chunks }: { chunks: React.ReactNode }) {
+  return <span className="mt-1 block italic">{chunks}</span>;
+}
+
 // The rules are the operative part of this page, so the intro points at
 // them by anchor rather than trusting the reader to scroll.
 const RULES_ANCHOR = "ground-rules";
@@ -102,7 +108,10 @@ export default async function TrainingPage() {
             ] as const
           ).map((rule) => (
             <li key={rule}>
-              {t.rich(`rules.${rule}`, { u: (chunks) => <Underline chunks={chunks} /> })}
+              {t.rich(`rules.${rule}`, {
+                u: (chunks) => <Underline chunks={chunks} />,
+                eg: (chunks) => <Example chunks={chunks} />,
+              })}
             </li>
           ))}
         </ul>

@@ -543,7 +543,7 @@
       "properNouns": "El inglés puede usarse para nombres de lugares y otros nombres propios, pero la mayor parte del registro debe estar en el idioma de destino.",
       "duration": "<u>Cada grabación debe durar entre 30 y 60 segundos para poder calificar.</u> La herramienta de grabación se detendrá automáticamente en 60 segundos, así que no tienes que preocuparte por excederte del tiempo máximo.",
       "onTopic": "<u>Puedes crear publicaciones completamente nuevas o responder a las de otros.</u> Si respondes a alguien, responde a lo que realmente ha dicho. Las respuestas que ignoran la publicación en la que están no sirven.",
-      "geographySpread": "Por favor, utiliza el mismo idioma pero publica en redes de 3 geografías diferentes. Por ejemplo, \"hablantes de tamil en Ohio\", \"hablantes de tamil en Nueva York\" y \"hablantes de tamil en Washington D.C.\""
+      "geographySpread": "Por favor, utiliza el mismo idioma pero publica en redes de 3 geografías diferentes. <eg>Por ejemplo, \"hablantes de tamil en Ohio\", \"hablantes de tamil en Nueva York\" y \"hablantes de tamil en Washington D.C.\"</eg>"
     },
     "consentBanner": "Solo los participantes en el programa de formación que hayan consentido que se registren datos podrán incluir sus publicaciones en los datos de entrenamiento. Por favor, no incluyas ninguna información identificable o privada en tus publicaciones o respuestas; también puedes usar un seudónimo para el nombre de tu cuenta, si así lo deseas.",
     "title": "Entrenamiento multilingüe con IA a través de publicaciones en directo en redes sociales",
@@ -556,7 +556,7 @@
       "network": "Lengua española en Michigan",
       "topic": "Un participante publicó una grabación de audio en español sobre su cafetería favorita de la residencia universitaria en la Universidad Estatal de Michigan y por qué recomienda que otros la visiten si están en el campus."
     },
-    "intro2": "Por favor, lee las <rules>Reglas Básicas</rules> a continuación antes de proceder a publicar en una red.",
-    "intro": "Por favor, busca redes que coincidan con tu formación lingüística y una ubicación actual o anterior en Estados Unidos."
+    "intro": "Por favor, busca redes que coincidan con tu formación lingüística y una ubicación actual o anterior en Estados Unidos.",
+    "intro2": "Por favor, lee las <rules>Normas Básicas</rules> a continuación antes de proceder a publicar en una red. Si aún no tienes cuenta, se te pedirá que te registres e inicies sesión como parte del proceso."
   }
 }
