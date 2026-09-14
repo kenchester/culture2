@@ -97,7 +97,16 @@ export default async function TrainingPage() {
       <p className="-mt-4 text-sm text-muted">
         {t.rich("missingLanguage", {
           contact: (chunks) => (
-            <Link href="/contact?subject=Language+or+geography+request" className="underline hover:text-primary">
+            // New tab, like the search form above it: this page is
+            // reference material someone is working from, and sending them
+            // away from the ground rules to file a request would lose their
+            // place.
+            <Link
+              href="/contact?subject=Language+or+geography+request"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="underline hover:text-primary"
+            >
               {chunks}
             </Link>
           ),
