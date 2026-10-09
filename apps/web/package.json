@@ -8,6 +8,7 @@
     "start": "next start",
     "lint": "eslint",
     "translate-messages": "tsx scripts/translate-messages.ts",
+    "check-translations": "tsx scripts/translate-messages.ts --stale",
     "backfill-iso-codes": "tsx scripts/backfill-iso-codes.ts",
     "backfill-geo-cldr": "tsx scripts/backfill-geo-cldr.ts",
     "fix-mojibake-names": "tsx scripts/fix-mojibake-names.ts",

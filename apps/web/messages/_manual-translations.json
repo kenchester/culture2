@@ -1,0 +1,12 @@
+{
+  "_comment": "Translations corrected by hand. --fix-stale reports these but will not overwrite them; only --force will. Every entry here exists because machine translation chose the wrong sense of an ambiguous English word, so re-running it would reintroduce the same error.",
+  "de": ["nav.homeLogoAlt", "postDetail.reply", "network.reply"],
+  "ru": ["nav.homeLogoAlt", "training.rules.geographySpread"],
+  "it": ["nav.homeLogoAlt", "postDetail.reply", "network.reply", "training.intro2"],
+  "es": ["postDetail.reply", "network.reply"],
+  "fr": ["postDetail.reply", "network.reply", "training.intro2"],
+  "pt": ["postDetail.reply", "network.reply"],
+  "ar": ["training.locationLabel"],
+  "zh": ["training.locationLabel", "training.intro2"],
+  "ja": ["training.locationLabel"]
+}

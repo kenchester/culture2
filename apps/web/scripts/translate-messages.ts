@@ -6,14 +6,28 @@
 //
 // Run via: npm run translate-messages [-- --force]
 //
-// Pass --check to test the Azure credentials/endpoint and exit without
-// translating anything: npm run translate-messages -- --check
+//   (no flags)     fill in missing keys, and REPORT any whose English has
+//                  changed since they were translated
+//   --stale        report those and exit non-zero, changing nothing (CI)
+//   --fix-stale    retranslate them
+//   --force        retranslate everything
+//   --check        test the Azure credentials/endpoint and exit
+//
+// Staleness is tracked in messages/_source-hashes.json: a hash of the
+// English string each translation was produced from. Without it, editing
+// an English string leaves every other locale silently showing the OLD
+// meaning - this script only ever filled in keys that were MISSING, and a
+// changed key is present. That failure is invisible in review and has
+// shipped real errors: "signed video" read as legally signed in ten
+// languages, a Reply button labelled with the noun rather than the verb,
+// and a US state rendered as a status.
 //
 // Deliberately does NOT import lib/env.ts or lib/azure-translator.ts -
 // both pull in the "server-only" package, which throws unconditionally
 // when resolved outside a webpack server bundle (i.e. in this plain
 // Node/tsx script).
 
+import crypto from "node:crypto";
 import fs from "node:fs";
 import { resolveTranslatorEndpoint } from "../lib/azure-endpoint";
 import path from "node:path";
@@ -39,6 +53,72 @@ function sleep(ms: number) {
 }
 
 const MESSAGES_DIR = path.resolve(process.cwd(), "messages");
+
+// Sits beside the locale files it describes. Underscore-prefixed so it
+// can't be mistaken for a locale by a glob or by this script's own
+// SUPPORTED_LOCALES walk.
+const HASH_FILE = path.join(MESSAGES_DIR, "_source-hashes.json");
+
+// Keys a human has corrected, per locale. --fix-stale reports them but
+// refuses to overwrite them; only --force will.
+//
+// This guard exists because the first version of this script didn't have
+// it, and a test run promptly replaced hand-fixed imperatives with machine
+// output - German "Antworten" became "Antworten Sie", Russian "Ответить"
+// became "Ответь". Every entry below was corrected precisely because the
+// translator picked the wrong sense of an ambiguous English word, so
+// retranslating would reintroduce the error it was fixing.
+const MANUAL_FILE = path.join(MESSAGES_DIR, "_manual-translations.json");
+
+function readManual(): Record<string, string[]> {
+  if (!fs.existsSync(MANUAL_FILE)) return {};
+  const raw = JSON.parse(fs.readFileSync(MANUAL_FILE, "utf8")) as Record<string, unknown>;
+  const out: Record<string, string[]> = {};
+  for (const [locale, keys] of Object.entries(raw)) {
+    if (Array.isArray(keys)) out[locale] = keys as string[];
+  }
+  return out;
+}
+
+type HashIndex = Record<string, Record<string, string>>;
+
+// Truncated: this detects change, it isn't a security boundary, and 12 hex
+// characters keeps the file readable in a diff.
+function sourceHash(text: string): string {
+  return crypto.createHash("sha256").update(text).digest("hex").slice(0, 12);
+}
+
+function readHashes(): HashIndex {
+  if (!fs.existsSync(HASH_FILE)) return {};
+  return JSON.parse(fs.readFileSync(HASH_FILE, "utf8"));
+}
+
+function writeHashes(index: HashIndex) {
+  const sorted: HashIndex = {};
+  for (const locale of Object.keys(index).sort()) {
+    sorted[locale] = Object.fromEntries(Object.entries(index[locale]).sort(([a], [b]) => a.localeCompare(b)));
+  }
+  fs.writeFileSync(HASH_FILE, `${JSON.stringify(sorted, null, 2)}\n`, "utf8");
+}
+
+/**
+ * Keys whose English has changed since this locale was translated.
+ *
+ * A key with no recorded hash is NOT stale - it is unknown. That is the
+ * state every existing translation starts in, and guessing either way
+ * would be wrong: claiming staleness would demand retranslating the whole
+ * catalogue including hand-corrections, and claiming freshness is what the
+ * caller is told explicitly so they know the baseline's limits.
+ */
+function staleKeys(
+  flatEn: Record<string, string>,
+  existing: Record<string, string>,
+  hashes: Record<string, string>,
+): string[] {
+  return Object.keys(flatEn).filter(
+    (key) => key in existing && key in hashes && hashes[key] !== sourceHash(flatEn[key]),
+  );
+}
 
 type MessageTree = { [key: string]: string | MessageTree };
 
@@ -261,6 +341,8 @@ async function main() {
   }
 
   const force = process.argv.includes("--force");
+  const fixStale = process.argv.includes("--fix-stale");
+  const reportOnly = process.argv.includes("--stale");
 
   const flatEn = flatten(readMessages("en"));
   const allKeys = Object.keys(flatEn);
@@ -270,13 +352,77 @@ async function main() {
   }
 
   const targetLocales = SUPPORTED_LOCALES.filter((locale) => locale !== "en");
+  const hashes = readHashes();
+  const manual = readManual();
+
+  // --stale touches nothing. It exists so CI can fail a pull request that
+  // edits an English string without retranslating, which is the moment the
+  // problem is cheap to fix.
+  if (reportOnly) {
+    let total = 0;
+    for (const locale of targetLocales) {
+      const existing = flatten(readMessages(locale));
+      const protectedKeys = new Set(manual[locale] ?? []);
+      const stale = staleKeys(flatEn, existing, hashes[locale] ?? {});
+      total += stale.length;
+      if (stale.length > 0) {
+        console.log(`${locale}: ${stale.length} stale`);
+        for (const key of stale) {
+          console.log(`    ${key}${protectedKeys.has(key) ? "  (hand-corrected - review, do not auto-translate)" : ""}`);
+        }
+      }
+    }
+    if (total === 0) {
+      console.log("No stale translations.");
+      return;
+    }
+    console.log(
+      `\n${total} translation(s) were produced from English that has since changed.` +
+        `\nRun: npm run translate-messages -- --fix-stale`,
+    );
+    process.exit(1);
+  }
+
+  let staleSeen = 0;
 
   for (const locale of targetLocales) {
     const flatExisting = flatten(readMessages(locale));
-    const keysToTranslate = force ? allKeys : allKeys.filter((key) => !(key in flatExisting));
+    const localeHashes = hashes[locale] ?? {};
+    const protectedKeys = new Set(manual[locale] ?? []);
+    const stale = staleKeys(flatEn, flatExisting, localeHashes);
+    staleSeen += stale.length;
+
+    const missing = allKeys.filter((key) => !(key in flatExisting));
+    // --force is the deliberate escape hatch and overwrites everything;
+    // --fix-stale leaves hand-corrected keys alone and names them instead.
+    const staleToFix = fixStale ? stale.filter((key) => !protectedKeys.has(key)) : [];
+    const skipped = fixStale ? stale.filter((key) => protectedKeys.has(key)) : [];
+    const keysToTranslate = force
+      ? allKeys
+      : [...new Set([...missing, ...staleToFix])];
+
+    if (skipped.length > 0) {
+      console.log(
+        `${locale}: skipping ${skipped.length} hand-corrected key(s) - review these yourself:`,
+      );
+      for (const key of skipped) console.log(`    ${key}`);
+    }
+
+    // Even when nothing is translated, every key still gets a recorded
+    // hash. That is what baselines the existing catalogue on first run and
+    // what registers hand-edits made directly in a locale file - without
+    // it, a manual correction would be reported stale forever.
+    const nextHashes: Record<string, string> = { ...localeHashes };
+    for (const key of allKeys) {
+      if (key in flatExisting && !(key in nextHashes) && !keysToTranslate.includes(key)) {
+        nextHashes[key] = sourceHash(flatEn[key]);
+      }
+    }
 
     if (keysToTranslate.length === 0) {
-      console.log(`${locale}: up to date (${allKeys.length} keys)`);
+      const note = stale.length > 0 && !fixStale ? `, ${stale.length} STALE` : "";
+      console.log(`${locale}: up to date (${allKeys.length} keys)${note}`);
+      hashes[locale] = nextHashes;
       continue;
     }
 
@@ -291,12 +437,30 @@ async function main() {
       const translated = await translateBatch(batchTexts, azureCode);
       batchKeys.forEach((key, idx) => {
         merged[key] = translated[idx];
+        nextHashes[key] = sourceHash(flatEn[key]);
       });
     }
 
     const filePath = path.join(MESSAGES_DIR, `${locale}.json`);
     fs.writeFileSync(filePath, `${JSON.stringify(unflatten(merged), null, 2)}\n`, "utf8");
-    console.log(`${locale}: translated ${keysToTranslate.length} new key(s)`);
+    hashes[locale] = nextHashes;
+
+    const retranslated = keysToTranslate.filter((key) => stale.includes(key)).length;
+    const added = keysToTranslate.length - retranslated;
+    console.log(
+      `${locale}: translated ${added} new key(s)` +
+        (retranslated > 0 ? `, retranslated ${retranslated} stale` : ""),
+    );
+  }
+
+  writeHashes(hashes);
+
+  if (staleSeen > 0 && !fixStale && !force) {
+    console.log(
+      `\n${staleSeen} translation(s) are stale - their English has changed since they were` +
+        `\ntranslated, so those locales are showing the previous meaning.` +
+        `\nRun: npm run translate-messages -- --fix-stale`,
+    );
   }
 }
 
