@@ -1,0 +1,216 @@
+import Link from "next/link";
+import { notFound } from "next/navigation";
+import { getTranslations } from "next-intl/server";
+import { createClient } from "@/lib/supabase/server";
+import { castVote, nominate } from "@/app/outposts/elections/actions";
+import { getDisplayName, type Author } from "@/lib/profiles";
+import { LocalDateTime } from "@/components/local-datetime";
+import { FormError } from "@/components/ui/form-error";
+import { Field, Input, Label, Textarea } from "@/components/ui/input";
+import { SubmitButton } from "@/components/ui/submit-button";
+
+type Phase = "nominating" | "pending" | "voting" | "closed";
+
+function phaseOf(e: {
+  nominations_close_at: string;
+  voting_opens_at: string;
+  voting_closes_at: string;
+}): Phase {
+  const now = Date.now();
+  if (now < new Date(e.nominations_close_at).getTime()) return "nominating";
+  if (now < new Date(e.voting_opens_at).getTime()) return "pending";
+  if (now < new Date(e.voting_closes_at).getTime()) return "voting";
+  return "closed";
+}
+
+export default async function ElectionPage({
+  params,
+  searchParams,
+}: {
+  params: Promise<{ id: string }>;
+  searchParams: Promise<{ error?: string }>;
+}) {
+  const { id } = await params;
+  const { error } = await searchParams;
+  const t = await getTranslations("elections");
+  const supabase = await createClient();
+
+  const { data: election } = await supabase
+    .from("elections")
+    .select(
+      "id, network_id, roll_cutoff, nominations_close_at, voting_opens_at, voting_closes_at, term_months",
+    )
+    .eq("id", id)
+    .is("cancelled_at", null)
+    .maybeSingle();
+  if (!election) notFound();
+
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
+  const [{ data: network }, { data: candidates }, { data: tally }, { data: roll }] =
+    await Promise.all([
+      supabase.from("networks").select("id, title").eq("id", election.network_id).maybeSingle(),
+      supabase
+        .from("election_candidates")
+        .select("id, user_id, statement, ties, profile:user_id(first_name, last_name, username)")
+        .eq("election_id", election.id)
+        .is("withdrawn_at", null)
+        .order("created_at"),
+      // Counts come from a function so ballots stay unreadable while
+      // totals are public (00000000000086).
+      supabase.rpc("election_tally", { p_election_id: election.id }),
+      supabase.rpc("election_roll", { p_election_id: election.id }),
+    ]);
+
+  const phase = phaseOf(election);
+  const tallyFor = new Map(
+    ((tally ?? []) as { candidate_id: number; votes_for: number; votes_against: number }[]).map(
+      (row) => [row.candidate_id, row],
+    ),
+  );
+  const rollRow = ((roll ?? []) as { roll_size: number; turnout: number }[])[0] ?? {
+    roll_size: 0,
+    turnout: 0,
+  };
+
+  // "On the roll" is not the same as "a member now": joining after
+  // nominations opened lets you watch, not vote.
+  const { data: membership } = user
+    ? await supabase
+        .from("network_members")
+        .select("joined_at")
+        .eq("network_id", election.network_id)
+        .eq("user_id", user.id)
+        .maybeSingle()
+    : { data: null };
+  const onRoll = Boolean(
+    membership && new Date(membership.joined_at as string) <= new Date(election.roll_cutoff),
+  );
+
+  const { data: myVote } = user
+    ? await supabase
+        .from("election_votes")
+        .select("candidate_id")
+        .eq("election_id", election.id)
+        .eq("voter_id", user.id)
+        .maybeSingle()
+    : { data: null };
+
+  const alreadyStanding = Boolean(
+    user && (candidates ?? []).some((c) => c.user_id === user.id),
+  );
+  const singleCandidate = (candidates ?? []).length === 1;
+
+  return (
+    <div className="mx-auto flex w-full max-w-2xl flex-1 flex-col gap-8 px-4 py-12">
+      <div className="flex flex-col gap-1">
+        <Link href="/outposts/elections" className="text-sm text-muted underline hover:text-primary">
+          ← {t("backToElections")}
+        </Link>
+        <h1 className="font-display text-[1.75rem] leading-tight text-balance text-ink">
+          {network?.title ?? `#${election.network_id}`}
+        </h1>
+        <p className="text-body">{t("roleFull")}</p>
+      </div>
+
+      {error && <FormError>{error}</FormError>}
+
+      <section className="flex flex-col gap-2 rounded-lg border border-border bg-surface p-4 text-sm">
+        <p className="font-medium text-ink">{t(`phase.${phase}`)}</p>
+        <p className="text-muted">
+          {t("nominationsClose")} <LocalDateTime iso={election.nominations_close_at} />
+        </p>
+        <p className="text-muted">
+          {t("votingWindow")} <LocalDateTime iso={election.voting_opens_at} /> –{" "}
+          <LocalDateTime iso={election.voting_closes_at} />
+        </p>
+        {/* Published on every election, not just the flattering ones: a
+            mandate from 3 of 400 should read as thin rather than as
+            authority. */}
+        <p className="text-muted">
+          {t("rollLine", { roll: rollRow.roll_size, turnout: rollRow.turnout })}
+        </p>
+      </section>
+
+      <section className="flex flex-col gap-4">
+        <h2 className="text-lg font-medium text-ink">{t("candidates")}</h2>
+        {(candidates ?? []).length === 0 && <p className="text-sm text-muted">{t("noCandidates")}</p>}
+
+        {(candidates ?? []).map((candidate) => {
+          const profile = candidate.profile as unknown as Author | null;
+          const counts = tallyFor.get(candidate.id as number);
+          const isMine = myVote?.candidate_id === candidate.id;
+          return (
+            <div key={candidate.id} className="flex flex-col gap-2 rounded-lg border border-border bg-surface p-4">
+              <p className="font-medium text-ink">
+                {profile ? getDisplayName(profile) : t("someone")}
+              </p>
+              <p className="text-sm text-body">{candidate.statement}</p>
+              {candidate.ties && (
+                <p className="text-sm text-muted">
+                  {t("tiesLabel")} {candidate.ties}
+                </p>
+              )}
+
+              {(phase === "voting" || phase === "closed") && counts && (
+                <p className="text-sm text-muted tabular-nums">
+                  {singleCandidate
+                    ? t("confirmTally", { yes: counts.votes_for, no: counts.votes_against })
+                    : t("tally", { votes: counts.votes_for })}
+                </p>
+              )}
+
+              {phase === "voting" && user && onRoll && !myVote && (
+                <form action={castVote} className="flex gap-2">
+                  <input type="hidden" name="electionId" value={election.id} />
+                  <input type="hidden" name="candidateId" value={candidate.id} />
+                  {singleCandidate ? (
+                    <>
+                      <SubmitButton name="support" value="yes">{t("voteYes")}</SubmitButton>
+                      <SubmitButton name="support" value="no">{t("voteNo")}</SubmitButton>
+                    </>
+                  ) : (
+                    <SubmitButton>{t("voteFor")}</SubmitButton>
+                  )}
+                </form>
+              )}
+              {isMine && <p className="text-sm text-primary">{t("yourVote")}</p>}
+            </div>
+          );
+        })}
+      </section>
+
+      {phase === "nominating" && (
+        <section className="flex flex-col gap-3 rounded-lg border border-border bg-surface p-5">
+          <h2 className="text-lg font-medium text-ink">{t("standTitle")}</h2>
+          {!user ? (
+            <Link href={`/sign-in?returnTo=/outposts/elections/${election.id}`} className="text-sm text-primary underline">
+              {t("signInToStand")}
+            </Link>
+          ) : alreadyStanding ? (
+            <p className="text-sm text-muted">{t("alreadyStanding")}</p>
+          ) : !onRoll ? (
+            <p className="text-sm text-muted">{t("notOnRoll")}</p>
+          ) : (
+            <form action={nominate} className="flex flex-col gap-3">
+              <input type="hidden" name="electionId" value={election.id} />
+              <Field>
+                <Label htmlFor="statement">{t("statementLabel")}</Label>
+                <Textarea id="statement" name="statement" required rows={4} />
+              </Field>
+              <Field>
+                <Label htmlFor="ties">{t("tiesFieldLabel")}</Label>
+                <Input id="ties" name="ties" />
+              </Field>
+              <SubmitButton className="self-start">{t("standSubmit")}</SubmitButton>
+            </form>
+          )}
+        </section>
+      )}
+
+      <p className="text-sm text-muted">{t("scopeNote")}</p>
+    </div>
+  );
+}

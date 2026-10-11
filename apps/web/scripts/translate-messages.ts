@@ -70,6 +70,19 @@ const HASH_FILE = path.join(MESSAGES_DIR, "_source-hashes.json");
 // retranslating would reintroduce the error it was fixing.
 const MANUAL_FILE = path.join(MESSAGES_DIR, "_manual-translations.json");
 
+// ICU plural/select constructs cannot be machine-translated. The keywords
+// "one" and "other" are grammar, not prose, and the translator renders
+// them as words: {roll, plural, one {...} other {...}} came back from
+// Spanish as "otros" and from Chinese as "其他", both of which are invalid
+// ICU that throws at render time rather than merely reading badly.
+//
+// protectPlaceholders cannot save these either - it matches {no-braces},
+// so a nested construct leaks its outer structure to the translator.
+//
+// Such keys are therefore skipped and reported, to be written by hand per
+// locale. Better a missing translation than a page that crashes.
+const ICU_CONSTRUCT = /\{\s*\w+\s*,\s*(plural|select|selectordinal)\b/;
+
 function readManual(): Record<string, string[]> {
   if (!fs.existsSync(MANUAL_FILE)) return {};
   const raw = JSON.parse(fs.readFileSync(MANUAL_FILE, "utf8")) as Record<string, unknown>;
@@ -392,7 +405,16 @@ async function main() {
     const stale = staleKeys(flatEn, flatExisting, localeHashes);
     staleSeen += stale.length;
 
-    const missing = allKeys.filter((key) => !(key in flatExisting));
+    const icuKeys = allKeys.filter((key) => ICU_CONSTRUCT.test(flatEn[key]));
+    const missing = allKeys.filter(
+      (key) => !(key in flatExisting) && !ICU_CONSTRUCT.test(flatEn[key]),
+    );
+    if (icuKeys.length > 0 && locale === targetLocales[0]) {
+      console.log(
+        `skipping ${icuKeys.length} key(s) containing ICU plural/select - these must be ` +
+          `translated by hand:\n    ${icuKeys.join("\n    ")}`,
+      );
+    }
     // --force is the deliberate escape hatch and overwrites everything;
     // --fix-stale leaves hand-corrected keys alone and names them instead.
     const staleToFix = fixStale ? stale.filter((key) => !protectedKeys.has(key)) : [];
