@@ -572,5 +572,33 @@
     "intro": "Cerca reti che corrispondano al tuo background linguistico e a una posizione attuale o precedente negli Stati Uniti.",
     "intro2": "Leggi le <rules>Regole di base</rules> qui sotto prima di procedere a pubblicare in una rete. Se non hai ancora un account, ti verrà chiesto di registrarti e accedere come parte del processo.",
     "missingLanguage": "Se non riesci a trovare la tua lingua, <contact>ti preghiamo di contattarci</contact> per richiedere che aggiungiamo la tua lingua."
+  },
+  "outposts": {
+    "title": "Elenco degli avamposti",
+    "intro": "Un consolato rappresenta un luogo all'altro. Questo elenca dove vivono persone provenienti da qualche altra parte e chi — se qualcuno — è lì a rappresentarle. La maggior parte delle volte la risposta è nessuno, perché una missione fisica costa milioni all'anno e quindi ce ne sono solo poche centinaia nel mondo.",
+    "stats": {
+      "districts": "Distretti",
+      "represented": "Rappresentati",
+      "unrepresented": "Nessuna presenza"
+    },
+    "tableTitle": "Dove sono le persone e chi c'è",
+    "tableNote": "Ogni riga è una community su CultureMesh. La più grande per prima.",
+    "col": {
+      "from": "Da",
+      "in": "Vivere a",
+      "people": "Persone",
+      "presence": "Presenza"
+    },
+    "presence": {
+      "none": "Nessuna",
+      "listed": "Elencati, non reclamati",
+      "claimed": "Dichiarato, non verificato",
+      "accredited": "Accreditato",
+      "historical": "Chiuso"
+    },
+    "historicalTitle": "Missioni chiuse",
+    "historicalNote": "Pali che esistevano una volta. Ognuno è un edificio che è ancora in piedi da qualche parte.",
+    "empty": "Nessun distretto ancora.",
+    "footnote": "Elencare un distretto qui non significa che qualcuno lo rappresenti. Un avamposto conta come rappresentanza solo una volta accreditato."
   }
 }

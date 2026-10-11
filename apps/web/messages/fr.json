@@ -572,5 +572,33 @@
     "intro": "Veuillez rechercher des réseaux correspondant à votre bagage linguistique et à une localisation actuelle ou ancienne aux États-Unis.",
     "intro2": "Veuillez lire les <rules>règles de base</rules> ci-dessous avant de procéder à la publication dans un réseau. Si vous n’avez pas encore de compte, il vous sera demandé de vous inscrire et de vous connecter dans le cadre du processus.",
     "missingLanguage": "Si vous ne trouvez pas votre langue, veuillez <contact>nous contacter</contact> pour nous demander que nous ajoutons votre langue."
+  },
+  "outposts": {
+    "title": "Annuaire de l’avant-poste",
+    "intro": "Un consulat représente un lieu à un autre. Il y liste où vivent des personnes venant d’ailleurs, et qui — s’il y en a quelqu’un — qui est là pour les représenter. La plupart du temps, la réponse est personne, car une mission physique coûte des millions par an et il n’y en a donc que quelques centaines dans le monde.",
+    "stats": {
+      "districts": "Districts",
+      "represented": "Représentés",
+      "unrepresented": "Aucune présence"
+    },
+    "tableTitle": "Où sont les gens, et qui est là",
+    "tableNote": "Chaque rangée est une communauté sur CultureMesh. La plus grande d’abord.",
+    "col": {
+      "from": "De",
+      "in": "Vivre à",
+      "people": "Personnalités",
+      "presence": "Présence"
+    },
+    "presence": {
+      "none": "Aucun",
+      "listed": "Listé, non réclamé",
+      "claimed": "Affirmé, non vérifié",
+      "accredited": "Accrédité",
+      "historical": "Fermé"
+    },
+    "historicalTitle": "Missions fermées",
+    "historicalNote": "Des poteaux qui ont existé autrefois. Chacun est un bâtiment qui tient encore quelque part.",
+    "empty": "Pas encore de circonscriptions.",
+    "footnote": "Lister un district ici ne signifie pas que quelqu’un le représente. Un avant-poste ne compte comme représentation qu’une fois qu’il est accrédité."
   }
 }

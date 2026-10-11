@@ -572,5 +572,33 @@
     "intro": "Bitte suchen Sie nach Netzwerken, die Ihrem sprachlichen Hintergrund und einem aktuellen oder ehemaligen Standort in den Vereinigten Staaten entsprechen.",
     "intro2": "Bitte lesen Sie die untenstehenden <rules>Grundregeln</rules>, bevor Sie in einem Netzwerk posten. Wenn Sie noch kein Konto haben, werden Sie gebeten, sich im Rahmen des Prozesses zu registrieren und anzumelden.",
     "missingLanguage": "Wenn Sie Ihre Sprache nicht finden, <contact>kontaktieren Sie uns</contact> bitte und bitten Sie, Ihre Sprache hinzuzufügen."
+  },
+  "outposts": {
+    "title": "Außenpostenverzeichnis",
+    "intro": "Ein Konsulat repräsentiert einen Ort zum anderen. Hier wird aufgeführt, wo Menschen von irgendwo anders wohnen und wer – wenn überhaupt jemand – dort ist, um sie zu vertreten. Meistens lautet die Antwort: Niemand, weil eine physische Mission Millionen pro Jahr kostet und es so nur wenige Hundert auf der Welt gibt.",
+    "stats": {
+      "districts": "Bezirke",
+      "represented": "Vertreten",
+      "unrepresented": "Keine Anwesenheit"
+    },
+    "tableTitle": "Wo Menschen sind und wer dort ist",
+    "tableNote": "Jede Zeile ist eine Community auf CultureMesh. Die größte zuerst.",
+    "col": {
+      "from": "Von",
+      "in": "Leben in",
+      "people": "Personen",
+      "presence": "Präsenz"
+    },
+    "presence": {
+      "none": "Keine",
+      "listed": "Gelistet, unbeansprucht",
+      "claimed": "Behauptet, unbestätigt",
+      "accredited": "Akkreditiert",
+      "historical": "Geschlossen"
+    },
+    "historicalTitle": "Geschlossene Missionen",
+    "historicalNote": "Beiträge, die einst existierten. Jedes ist ein Gebäude, das irgendwo noch steht.",
+    "empty": "Noch keine Bezirke.",
+    "footnote": "Die Auflistung eines Bezirks hier ist keine Behauptung, dass ihn jemand repräsentiert. Ein Außenposten zählt erst als Vertretung, wenn er akkreditiert ist."
   }
 }

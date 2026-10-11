@@ -572,5 +572,33 @@
     "intro": "Por favor, pesquise por redes que correspondam à sua origem linguística e a uma localização atual ou antiga nos Estados Unidos.",
     "intro2": "Por favor, leia as <rules>Regras Básicas</rules> abaixo antes de prosseguir para postar em uma rede. Se você ainda não tiver uma conta, será solicitado que se registre e faça login como parte do processo.",
     "missingLanguage": "Se você não conseguir encontrar seu idioma, <contact>por favor, entre em contato conosco</contact> para solicitar que adicionemos seu idioma."
+  },
+  "outposts": {
+    "title": "Diretório de Posto Avançado",
+    "intro": "Um consulado representa de um lugar para outro. Ele lista onde pessoas de algum lugar vivem em outro lugar, e quem — se é que alguém — está lá para representá-las. Na maioria das vezes, a resposta é ninguém, porque uma missão física custa milhões por ano e, portanto, há apenas algumas centenas no mundo.",
+    "stats": {
+      "districts": "Distritos",
+      "represented": "Representados",
+      "unrepresented": "Sem presença"
+    },
+    "tableTitle": "Onde as pessoas estão e quem está lá",
+    "tableNote": "Cada linha é uma comunidade no CultureMesh. A maior primeiro.",
+    "col": {
+      "from": "De",
+      "in": "Morando em",
+      "people": "Pessoas",
+      "presence": "Presença"
+    },
+    "presence": {
+      "none": "Nenhum",
+      "listed": "Listado, não reivindicado",
+      "claimed": "Reivindicado, não verificado",
+      "accredited": "Credenciado",
+      "historical": "Fechado"
+    },
+    "historicalTitle": "Missões encerradas",
+    "historicalNote": "Postos que existiram um dia. Cada um é um prédio que ainda está de pé em algum lugar.",
+    "empty": "Ainda não há distritos.",
+    "footnote": "Listar um distrito aqui não é uma alegação de que alguém o represente. Um posto avançado só conta como representação depois de ser credenciado."
   }
 }

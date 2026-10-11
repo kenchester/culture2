@@ -566,5 +566,33 @@
       "topic": "A participant posted an audio recording in Spanish about their favorite dormitory cafeteria at Michigan State University and why they recommend others visit it if they're on campus."
     },
     "missingLanguage": "If you cannot find your language, please <contact>contact us</contact> to request that we add your language."
+  },
+  "outposts": {
+    "title": "Outpost directory",
+    "intro": "A consulate represents one place to another place. This lists where people from somewhere live somewhere else, and who — if anyone — is there to represent them. Most of the time the answer is nobody, because a physical mission costs millions a year and so there are only a few hundred in the world.",
+    "stats": {
+      "districts": "Districts",
+      "represented": "Represented",
+      "unrepresented": "No presence"
+    },
+    "tableTitle": "Where people are, and who is there",
+    "tableNote": "Each row is a community on CultureMesh. Largest first.",
+    "col": {
+      "from": "From",
+      "in": "Living in",
+      "people": "People",
+      "presence": "Presence"
+    },
+    "presence": {
+      "none": "None",
+      "listed": "Listed, unclaimed",
+      "claimed": "Claimed, unverified",
+      "accredited": "Accredited",
+      "historical": "Closed"
+    },
+    "historicalTitle": "Closed missions",
+    "historicalNote": "Posts that existed once. Each is a building that is still standing somewhere.",
+    "empty": "No districts yet.",
+    "footnote": "Listing a district here is not a claim that anyone represents it. An outpost counts as representation only once it is accredited."
   }
 }
