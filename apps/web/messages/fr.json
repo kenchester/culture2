@@ -574,34 +574,29 @@
     "missingLanguage": "Si vous ne trouvez pas votre langue, veuillez <contact>nous contacter</contact> pour nous demander que nous ajoutons votre langue."
   },
   "outposts": {
-    "title": "Annuaire de l’avant-poste",
-    "intro": "Un consulat représente un lieu à un autre. Il y liste où vivent des personnes venant d’ailleurs, et qui — s’il y en a quelqu’un — qui est là pour les représenter. La plupart du temps, la réponse est personne, car une mission physique coûte des millions par an et il n’y en a donc que quelques centaines dans le monde.",
-    "stats": {
-      "districts": "Districts",
-      "represented": "Représentés",
-      "unrepresented": "Aucune présence"
-    },
-    "tableTitle": "Où sont les gens, et qui est là",
-    "tableNote": "Chaque rangée est une communauté sur CultureMesh. La plus grande d’abord.",
+    "empty": "Pas encore de circonscriptions.",
+    "reopenedLink": "Visitez le réseau",
+    "title": "Avant-postes",
+    "intro": "Un consulat représente un lieu à un autre. Il n’y en a que quelques centaines dans le monde, et des gens venant de quelque part vivent dans des milliers d’autres endroits. Un avant-poste est ce qui se trouve dans ce fossé.",
     "col": {
-      "from": "De",
-      "in": "Vivre à",
+      "district": "Circonscription",
       "people": "Personnalités",
       "presence": "Présence"
     },
     "presence": {
-      "none": "Aucun",
-      "listed": "Listé, non réclamé",
-      "claimed": "Affirmé, non vérifié",
-      "accredited": "Accrédité",
-      "historical": "Fermé"
+      "none": "Aucune présence",
+      "nominating": "Candidatures ouvertes",
+      "voting": "Vote ouvert"
     },
-    "empty": "Pas encore de circonscriptions.",
-    "footnote": "Lister un district ici ne signifie pas que quelqu’un le représente. Un avant-poste ne compte comme représentation qu’une fois qu’il est accrédité.",
-    "historicalTitle": "Missions fermées, rouvertes sur CultureMesh",
-    "historicalNote": "Des consulats qui ont fermé leurs portes. Les bâtiments sont toujours debout ; les quartiers qu’ils servaient ont encore des gens en leur intérieur. Chacun d’en bas a reçu un lieu où exister à nouveau.",
-    "reopenedLabel": "Consulat rouvert sur CultureMesh",
-    "reopenedLink": "Visitez le réseau"
+    "historicalTitle": "Mission fermée, rouverte",
+    "footnote": "Lister un district ne signifie pas que quelqu’un le représente. Un consul non officiel est élu par les membres de la communauté et n’est nommé par aucun gouvernement.",
+    "reopenedLabel": "Réouvert sur CultureMesh",
+    "electTitle": "Élire un consul officieux",
+    "electBody": "Une communauté peut choisir quelqu’un pour la représenter, pour un mandat de deux ans, sans attendre l’autorisation de quiconque. C’est la forme plus ancienne de la fonction : le consul commercial était initialement élu par la communauté commerciale à l’étranger, avant que les États ne prennent en charge la nomination.",
+    "electCta": "Voir élections",
+    "districtsTitle": "La carte jusqu’à présent",
+    "districtsNote": "Circonscriptions : {districts} · Consuls élus : {consuls} · Élections en cours : {elections}",
+    "districtsEarly": "Les débuts — la plupart ont été créés récemment et comptent quelques personnes."
   },
   "elections": {
     "title": "Élections non officielles de consul",

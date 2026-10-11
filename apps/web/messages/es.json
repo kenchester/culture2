@@ -574,34 +574,29 @@
     "missingLanguage": "Si no encuentras tu idioma, <contact>por favor contáctanos</contact> para solicitar que añadamos tu lenguaje."
   },
   "outposts": {
-    "title": "Directorio de puestos avanzados",
-    "intro": "Un consulado representa de un lugar a otro. En este lugar se enumera dónde viven personas de algún lugar y quiénes — si es que hay alguien — están allí para representarlas. La mayoría de las veces la respuesta es nadie, porque una misión física cuesta millones al año y por eso solo hay unos pocos cientos en el mundo.",
-    "stats": {
-      "districts": "Distritos",
-      "represented": "Representados",
-      "unrepresented": "Sin presencia"
-    },
-    "tableTitle": "Dónde está la gente y quién está ahí",
-    "tableNote": "Cada fila es una comunidad en CultureMesh. La más grande primero.",
+    "empty": "Todavía no hay distritos.",
+    "reopenedLink": "Visita la red",
+    "title": "Puestos avanzados",
+    "intro": "Un consulado representa de un lugar a otro. Solo hay unos pocos cientos en el mundo, y la gente de algún lugar vive en miles de otros lugares. Un puesto avanzado es lo que está en ese hueco.",
     "col": {
-      "from": "De",
-      "in": "Vivir en",
+      "district": "Distrito",
       "people": "Personas",
       "presence": "Presencia"
     },
     "presence": {
-      "none": "Ninguno",
-      "listed": "Listados, no reclamados",
-      "claimed": "Afirmado, no verificado",
-      "accredited": "Acreditado",
-      "historical": "Cerrado"
+      "none": "Sin presencia",
+      "nominating": "Están abiertas las nominaciones",
+      "voting": "Votación abierta"
     },
-    "empty": "Todavía no hay distritos.",
-    "footnote": "Listar un distrito aquí no es una afirmación de que alguien lo represente. Un puesto avanzado solo cuenta como representación una vez que está acreditado.",
-    "historicalTitle": "Misiones cerradas, reabiertas en CultureMesh",
-    "historicalNote": "Consulados que cerraron sus puertas. Los edificios siguen en pie; los distritos a los que servían aún tienen gente. Cada uno de abajo ha recibido un lugar para existir de nuevo.",
-    "reopenedLabel": "Consulado reabierto en CultureMesh",
-    "reopenedLink": "Visita la red"
+    "historicalTitle": "Misión cerrada, reabierta",
+    "footnote": "Listar un distrito no es una afirmación de que alguien lo represente. Un cónsul no oficial es elegido por los miembros de la comunidad y no es nombrado por ningún gobierno.",
+    "reopenedLabel": "Reabierto en CultureMesh",
+    "electTitle": "Elegir un cónsul no oficial",
+    "electBody": "Una comunidad puede elegir a alguien para que la represente, por un mandato de dos años, sin esperar el permiso de nadie. Esta es la forma más antigua del cargo: el cónsul comercial era elegido originalmente por la comunidad comercial en el extranjero, antes de que los estados asumieran el nombramiento.",
+    "electCta": "Ver elecciones",
+    "districtsTitle": "El mapa hasta ahora",
+    "districtsNote": "Distritos: {districts} · Cónsules elegidos: {consuls} · Elecciones en curso: {elections}",
+    "districtsEarly": "Primeros días — la mayoría de estos se crearon recientemente y tienen un puñado de personas en ellos."
   },
   "elections": {
     "title": "Elecciones no oficiales de cónsul",

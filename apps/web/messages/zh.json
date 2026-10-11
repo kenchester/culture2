@@ -574,34 +574,29 @@
     "missingLanguage": "如果您找不到您的语言，请联系<contact>我们</contact>，要求添加您的语言。"
   },
   "outposts": {
-    "title": "前哨目录",
-    "intro": "领事馆代表一个地方到另一个地方。这列出了来自某地的人居住在哪里，以及谁——如果有的话——代表他们。大多数情况下答案是没有人，因为一个实体使馆每年花费数百万，世界上只有几百个。",
-    "stats": {
-      "districts": "区划",
-      "represented": "代表",
-      "unrepresented": "没有存在感"
-    },
-    "tableTitle": "人们在哪里，谁在那里",
-    "tableNote": "每一行都是CultureMesh上的社区。最大的第一行。",
+    "empty": "还没有分区。",
+    "reopenedLink": "访问该网络",
+    "title": "前哨站",
+    "intro": "领事馆代表着一个地方到另一个地方。世界上只有几百个领事馆，而来自某地的人却住在成千上万个地方。前哨站就是那个空隙中矗立的东西。",
     "col": {
-      "from": "来自",
-      "in": "生活",
+      "district": "区",
       "people": "人物",
       "presence": "存在"
     },
     "presence": {
-      "none": "没有",
-      "listed": "列入名单，未认领",
-      "claimed": "声称，未证实",
-      "accredited": "认证",
-      "historical": "关闭"
+      "none": "没有存在感",
+      "nominating": "提名开放",
+      "voting": "投票开放"
     },
-    "empty": "还没有分区。",
-    "footnote": "这里列出一个选区并不意味着有人代表该区。前哨站只有在获得认证后才算作代表。",
-    "historicalTitle": "关闭任务，在CultureMesh上重新开放",
-    "historicalNote": "关门的领事馆。建筑依然屹立;他们服务的区里仍有人居住。下面的每个区都重新获得了存在的空间。",
-    "reopenedLabel": "领事馆在CultureMesh重新开放",
-    "reopenedLink": "访问该网络"
+    "historicalTitle": "关闭的传教站，重新开放",
+    "footnote": "列出一个选区并不意味着有人代表该区。非官方领事由社区成员选举产生，不由任何政府任命。",
+    "reopenedLabel": "在CultureMesh上重新开放",
+    "electTitle": "选举非正式领事",
+    "electBody": "一个社区可以选择代表，任期两年，无需等待任何人许可。这是较早的职位形式：商业领事最初由海外贸易共同体选举产生，随后由各州接管任命。",
+    "electCta": "参见选举",
+    "districtsTitle": "目前的地图",
+    "districtsNote": "区划： {districts} ·当选执政官： {consuls} ·正在进行的选举： {elections}",
+    "districtsEarly": "早期阶段——这些大多是最近创建的，里面有少数几个人。"
   },
   "elections": {
     "title": "非官方执政官选举",

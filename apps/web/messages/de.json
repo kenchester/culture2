@@ -574,34 +574,29 @@
     "missingLanguage": "Wenn Sie Ihre Sprache nicht finden, <contact>kontaktieren Sie uns</contact> bitte und bitten Sie, Ihre Sprache hinzuzufügen."
   },
   "outposts": {
-    "title": "Außenpostenverzeichnis",
-    "intro": "Ein Konsulat repräsentiert einen Ort zum anderen. Hier wird aufgeführt, wo Menschen von irgendwo anders wohnen und wer – wenn überhaupt jemand – dort ist, um sie zu vertreten. Meistens lautet die Antwort: Niemand, weil eine physische Mission Millionen pro Jahr kostet und es so nur wenige Hundert auf der Welt gibt.",
-    "stats": {
-      "districts": "Bezirke",
-      "represented": "Vertreten",
-      "unrepresented": "Keine Anwesenheit"
-    },
-    "tableTitle": "Wo Menschen sind und wer dort ist",
-    "tableNote": "Jede Zeile ist eine Community auf CultureMesh. Die größte zuerst.",
+    "empty": "Noch keine Bezirke.",
+    "reopenedLink": "Besuchen Sie das Netzwerk",
+    "title": "Außenposten",
+    "intro": "Ein Konsulat repräsentiert einen Ort zum anderen. Es gibt nur wenige Hundert auf der Welt, und Menschen von irgendwo leben in Tausenden von anderen Orten. Ein Außenposten steht in der Lücke.",
     "col": {
-      "from": "Von",
-      "in": "Leben in",
+      "district": "Bezirk",
       "people": "Personen",
       "presence": "Präsenz"
     },
     "presence": {
-      "none": "Keine",
-      "listed": "Gelistet, unbeansprucht",
-      "claimed": "Behauptet, unbestätigt",
-      "accredited": "Akkreditiert",
-      "historical": "Geschlossen"
+      "none": "Keine Anwesenheit",
+      "nominating": "Nominierungen sind offen",
+      "voting": "Offene Abstimmung"
     },
-    "empty": "Noch keine Bezirke.",
-    "footnote": "Die Auflistung eines Bezirks hier ist keine Behauptung, dass ihn jemand repräsentiert. Ein Außenposten zählt erst als Vertretung, wenn er akkreditiert ist.",
-    "historicalTitle": "Geschlossene Missionen, wieder auf CultureMesh eröffnet",
-    "historicalNote": "Konsulate, die ihre Türen schließen. Die Gebäude stehen noch; die Bezirke, denen sie dienten, beherbergen immer noch Menschen. Jedes davon unten hat einen Platz bekommen, um wieder zu existieren.",
-    "reopenedLabel": "Das Konsulat wurde auf CultureMesh wiedereröffnet",
-    "reopenedLink": "Besuchen Sie das Netzwerk"
+    "historicalTitle": "Geschlossene Mission, wiedereröffnet",
+    "footnote": "Die Auflistung eines Bezirks ist kein Anspruch darauf, dass ihn jemand vertreten würde. Ein inoffizieller Konsul wird von den Gemeindemitgliedern gewählt und von keiner Regierung ernannt.",
+    "reopenedLabel": "Wiedereröffnet auf CultureMesh",
+    "electTitle": "Wählen Sie einen inoffiziellen Konsul",
+    "electBody": "Eine Gemeinschaft kann jemanden wählen, der sie für eine zweijährige Amtszeit vertritt, ohne auf die Erlaubnis von jemandem zu warten. Dies ist die ältere Form des Amtes: Der Handelskonsul wurde ursprünglich von der Handelsgemeinschaft im Ausland gewählt, bevor die Bundesstaaten die Ernennung übernahmen.",
+    "electCta": "Siehe Wahlen",
+    "districtsTitle": "Die Karte bisher",
+    "districtsNote": "Wahlkreise: {districts} · Gewählte Konsuln: {consuls} · Laufende Wahlen: {elections}",
+    "districtsEarly": "Frühe Tage – die meisten davon wurden erst kürzlich entwickelt und enthalten nur wenige Personen."
   },
   "elections": {
     "title": "Inoffizielle Konsulwahlen",

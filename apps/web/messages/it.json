@@ -574,34 +574,29 @@
     "missingLanguage": "Se non riesci a trovare la tua lingua, <contact>ti preghiamo di contattarci</contact> per richiedere che aggiungiamo la tua lingua."
   },
   "outposts": {
-    "title": "Elenco degli avamposti",
-    "intro": "Un consolato rappresenta un luogo all'altro. Questo elenca dove vivono persone provenienti da qualche altra parte e chi — se qualcuno — è lì a rappresentarle. La maggior parte delle volte la risposta è nessuno, perché una missione fisica costa milioni all'anno e quindi ce ne sono solo poche centinaia nel mondo.",
-    "stats": {
-      "districts": "Distretti",
-      "represented": "Rappresentati",
-      "unrepresented": "Nessuna presenza"
-    },
-    "tableTitle": "Dove sono le persone e chi c'è",
-    "tableNote": "Ogni riga è una community su CultureMesh. La più grande per prima.",
+    "empty": "Nessun distretto ancora.",
+    "reopenedLink": "Visita la rete",
+    "title": "Avamposti",
+    "intro": "Un consolato rappresenta un luogo all'altro. Ci sono solo poche centinaia al mondo, e persone da qualche parte vivono in migliaia di altre zone. Un avamposto è ciò che si trova nel vuoto.",
     "col": {
-      "from": "Da",
-      "in": "Vivere a",
+      "district": "Distretto",
       "people": "Persone",
       "presence": "Presenza"
     },
     "presence": {
-      "none": "Nessuna",
-      "listed": "Elencati, non reclamati",
-      "claimed": "Dichiarato, non verificato",
-      "accredited": "Accreditato",
-      "historical": "Chiuso"
+      "none": "Nessuna presenza",
+      "nominating": "Aperte le candidature",
+      "voting": "Voto aperto"
     },
-    "empty": "Nessun distretto ancora.",
-    "footnote": "Elencare un distretto qui non significa che qualcuno lo rappresenti. Un avamposto conta come rappresentanza solo una volta accreditato.",
-    "historicalTitle": "Missioni chiuse, riaperte su CultureMesh",
-    "historicalNote": "Consolati che hanno chiuso le porte. Gli edifici sono ancora in piedi; i distretti che servivano hanno ancora persone. Ognuno di sotto ha ricevuto un posto dove esistere di nuovo.",
-    "reopenedLabel": "Consolato riaperto su CultureMesh",
-    "reopenedLink": "Visita la rete"
+    "historicalTitle": "Missione chiusa, riaperto",
+    "footnote": "Elencare un distretto non significa che qualcuno lo rappresenti. Un Console Non Ufficiale è eletto dai membri della comunità e non viene nominato da alcun governo.",
+    "reopenedLabel": "Riaperto su CultureMesh",
+    "electTitle": "Eleggere un console non ufficiale",
+    "electBody": "Una comunità può scegliere qualcuno che la rappresenti, per un mandato di due anni, senza attendere il permesso di nessuno. Questa è la forma più antica dell'ufficio: il console commerciale era originariamente eletto dalla comunità commerciale all'estero, prima che gli stati assumessero la nomina.",
+    "electCta": "Vedi elezioni",
+    "districtsTitle": "La mappa finora",
+    "districtsNote": "Distretti: {districts} · Consoli eletti: {consuls} · Elezioni in corso: {elections}",
+    "districtsEarly": "I primi tempi — la maggior parte di questi è stata creata di recente e conta solo poche persone."
   },
   "elections": {
     "title": "Elezioni non ufficiali per il console",
