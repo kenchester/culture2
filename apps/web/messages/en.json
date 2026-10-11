@@ -590,9 +590,11 @@
       "accredited": "Accredited",
       "historical": "Closed"
     },
-    "historicalTitle": "Closed missions",
-    "historicalNote": "Posts that existed once. Each is a building that is still standing somewhere.",
+    "historicalTitle": "Closed missions, reopened on CultureMesh",
+    "historicalNote": "Consulates that shut their doors. The buildings are still standing; the districts they served still have people in them. Each one below has been given a place to exist again.",
     "empty": "No districts yet.",
-    "footnote": "Listing a district here is not a claim that anyone represents it. An outpost counts as representation only once it is accredited."
+    "footnote": "Listing a district here is not a claim that anyone represents it. An outpost counts as representation only once it is accredited.",
+    "reopenedLabel": "Consulate reopened on CultureMesh",
+    "reopenedLink": "Visit the network"
   }
 }

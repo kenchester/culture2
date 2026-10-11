@@ -596,9 +596,11 @@
       "accredited": "认证",
       "historical": "关闭"
     },
-    "historicalTitle": "封闭传教站",
-    "historicalNote": "曾经存在过的帖子。每一个都是仍然矗立在某处的建筑。",
     "empty": "还没有分区。",
-    "footnote": "这里列出一个选区并不意味着有人代表该区。前哨站只有在获得认证后才算作代表。"
+    "footnote": "这里列出一个选区并不意味着有人代表该区。前哨站只有在获得认证后才算作代表。",
+    "historicalTitle": "关闭任务，在CultureMesh上重新开放",
+    "historicalNote": "关门的领事馆。建筑依然屹立;他们服务的区里仍有人居住。下面的每个区都重新获得了存在的空间。",
+    "reopenedLabel": "领事馆在CultureMesh重新开放",
+    "reopenedLink": "访问该网络"
   }
 }

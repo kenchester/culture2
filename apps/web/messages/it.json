@@ -596,9 +596,11 @@
       "accredited": "Accreditato",
       "historical": "Chiuso"
     },
-    "historicalTitle": "Missioni chiuse",
-    "historicalNote": "Pali che esistevano una volta. Ognuno è un edificio che è ancora in piedi da qualche parte.",
     "empty": "Nessun distretto ancora.",
-    "footnote": "Elencare un distretto qui non significa che qualcuno lo rappresenti. Un avamposto conta come rappresentanza solo una volta accreditato."
+    "footnote": "Elencare un distretto qui non significa che qualcuno lo rappresenti. Un avamposto conta come rappresentanza solo una volta accreditato.",
+    "historicalTitle": "Missioni chiuse, riaperte su CultureMesh",
+    "historicalNote": "Consolati che hanno chiuso le porte. Gli edifici sono ancora in piedi; i distretti che servivano hanno ancora persone. Ognuno di sotto ha ricevuto un posto dove esistere di nuovo.",
+    "reopenedLabel": "Consolato riaperto su CultureMesh",
+    "reopenedLink": "Visita la rete"
   }
 }

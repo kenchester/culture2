@@ -103,6 +103,8 @@ export async function GET(request: NextRequest) {
     parent_id: number | null;
     parent_name: string | null;
     parent_type: "country" | "region" | "city" | null;
+    grandparent_name: string | null;
+    grandparent_type: "country" | "region" | "city" | null;
   };
   const shaped = ((data ?? []) as SearchPlaceRow[])
     .filter((row) => requestedTypes.length <= 1 || requestedTypes.includes(row.type))
@@ -112,6 +114,9 @@ export async function GET(request: NextRequest) {
       type: row.type,
       parent_id: row.parent_id,
       parent: row.parent_name ? { name: row.parent_name, type: row.parent_type } : null,
+      grandparent: row.grandparent_name
+        ? { name: row.grandparent_name, type: row.grandparent_type }
+        : null,
     }));
   return NextResponse.json(shaped);
 }

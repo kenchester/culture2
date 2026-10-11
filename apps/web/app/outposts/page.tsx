@@ -45,8 +45,11 @@ export default async function OutpostsPage() {
   ]);
 
   const hostIds = [...new Set((networks ?? []).map((n) => n.location_place_id as number))];
+  // hidden_from_search already marks places that shouldn't surface anywhere
+  // - organisation anchors, and test geographies. Reusing it here keeps one
+  // switch for "don't show this place" instead of a second list to forget.
   const { data: hostPlaces } = hostIds.length
-    ? await supabase.from("places").select("id, name").in("id", hostIds)
+    ? await supabase.from("places").select("id, name").in("id", hostIds).eq("hidden_from_search", false)
     : { data: [] };
 
   // Officers are shown by name where an outpost has one, since "who is the
@@ -111,6 +114,19 @@ export default async function OutpostsPage() {
         .in("id", historical.map((o) => o.host_place_id as number))
     : { data: [] };
   const historicalHostById = new Map((historicalHosts ?? []).map((p) => [p.id as number, p.name as string]));
+
+  // An outpost's network is derivable: principal place -> host place is
+  // exactly a network's origin -> location. No stored link to drift.
+  const principalPlaceById = new Map(
+    (principals ?? []).map((p) => [p.id as number, p.place_id as number | null]),
+  );
+  const networkFor = new Map(
+    (networks ?? []).map((n) => [`${n.origin_place_id}:${n.location_place_id}`, n.id as number]),
+  );
+  const reopenedNetwork = (outpostPrincipalId: number, hostPlaceId: number) => {
+    const originPlace = principalPlaceById.get(outpostPrincipalId);
+    return originPlace ? (networkFor.get(`${originPlace}:${hostPlaceId}`) ?? null) : null;
+  };
 
   return (
     <div className="mx-auto flex w-full max-w-3xl flex-1 flex-col gap-8 px-4 py-12">
@@ -182,17 +198,36 @@ export default async function OutpostsPage() {
         <section className="flex flex-col gap-3">
           <h2 className="text-lg font-medium text-ink">{t("historicalTitle")}</h2>
           <p className="text-sm text-muted">{t("historicalNote")}</p>
-          {historical.map((outpost) => (
-            <div key={outpost.id} className="rounded-lg border border-border bg-surface p-4">
-              <p className="font-medium text-ink">
-                {historicalPrincipal.get(outpost.principal_id as number)} —{" "}
-                {historicalHostById.get(outpost.host_place_id as number)}
-              </p>
-              {outpost.heritage_note && (
-                <p className="mt-1 text-sm text-body">{outpost.heritage_note}</p>
-              )}
-            </div>
-          ))}
+          {historical.map((outpost) => {
+            const networkId = reopenedNetwork(
+              outpost.principal_id as number,
+              outpost.host_place_id as number,
+            );
+            return (
+              <div key={outpost.id} className="flex flex-col gap-3 rounded-lg border border-border bg-surface p-4">
+                <div>
+                  <p className="font-medium text-ink">
+                    {historicalPrincipal.get(outpost.principal_id as number)} —{" "}
+                    {historicalHostById.get(outpost.host_place_id as number)}
+                  </p>
+                  {outpost.heritage_note && (
+                    <p className="mt-1 text-sm text-body">{outpost.heritage_note}</p>
+                  )}
+                </div>
+                {networkId && (
+                  <div className="border-t border-border pt-3">
+                    <p className="text-sm font-medium text-ink">{t("reopenedLabel")}</p>
+                    <Link
+                      href={`/networks/${networkId}`}
+                      className="text-sm text-primary underline hover:text-primary"
+                    >
+                      {t("reopenedLink")}
+                    </Link>
+                  </div>
+                )}
+              </div>
+            );
+          })}
         </section>
       )}
 

@@ -596,9 +596,11 @@
       "accredited": "Akkreditiert",
       "historical": "Geschlossen"
     },
-    "historicalTitle": "Geschlossene Missionen",
-    "historicalNote": "Beiträge, die einst existierten. Jedes ist ein Gebäude, das irgendwo noch steht.",
     "empty": "Noch keine Bezirke.",
-    "footnote": "Die Auflistung eines Bezirks hier ist keine Behauptung, dass ihn jemand repräsentiert. Ein Außenposten zählt erst als Vertretung, wenn er akkreditiert ist."
+    "footnote": "Die Auflistung eines Bezirks hier ist keine Behauptung, dass ihn jemand repräsentiert. Ein Außenposten zählt erst als Vertretung, wenn er akkreditiert ist.",
+    "historicalTitle": "Geschlossene Missionen, wieder auf CultureMesh eröffnet",
+    "historicalNote": "Konsulate, die ihre Türen schließen. Die Gebäude stehen noch; die Bezirke, denen sie dienten, beherbergen immer noch Menschen. Jedes davon unten hat einen Platz bekommen, um wieder zu existieren.",
+    "reopenedLabel": "Das Konsulat wurde auf CultureMesh wiedereröffnet",
+    "reopenedLink": "Besuchen Sie das Netzwerk"
   }
 }

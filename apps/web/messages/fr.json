@@ -596,9 +596,11 @@
       "accredited": "Accrédité",
       "historical": "Fermé"
     },
-    "historicalTitle": "Missions fermées",
-    "historicalNote": "Des poteaux qui ont existé autrefois. Chacun est un bâtiment qui tient encore quelque part.",
     "empty": "Pas encore de circonscriptions.",
-    "footnote": "Lister un district ici ne signifie pas que quelqu’un le représente. Un avant-poste ne compte comme représentation qu’une fois qu’il est accrédité."
+    "footnote": "Lister un district ici ne signifie pas que quelqu’un le représente. Un avant-poste ne compte comme représentation qu’une fois qu’il est accrédité.",
+    "historicalTitle": "Missions fermées, rouvertes sur CultureMesh",
+    "historicalNote": "Des consulats qui ont fermé leurs portes. Les bâtiments sont toujours debout ; les quartiers qu’ils servaient ont encore des gens en leur intérieur. Chacun d’en bas a reçu un lieu où exister à nouveau.",
+    "reopenedLabel": "Consulat rouvert sur CultureMesh",
+    "reopenedLink": "Visitez le réseau"
   }
 }

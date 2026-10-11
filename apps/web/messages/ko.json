@@ -596,9 +596,11 @@
       "accredited": "인증",
       "historical": "폐쇄"
     },
-    "historicalTitle": "폐쇄 임무",
-    "historicalNote": "한때 존재했던 기둥들. 각각은 어딘가에 아직 서 있는 건물이다.",
     "empty": "아직 구역은 없습니다.",
-    "footnote": "여기에 구역을 나열하는 것은 누군가가 대표한다는 주장이 아닙니다. 전초기지는 인증받아야만 대표로 인정됩니다."
+    "footnote": "여기에 구역을 나열하는 것은 누군가가 대표한다는 주장이 아닙니다. 전초기지는 인증받아야만 대표로 인정됩니다.",
+    "historicalTitle": "CultureMesh에서 종료된 미션이 다시 열렸습니다",
+    "historicalNote": "문을 닫는 영사관들. 건물들은 여전히 서 있고; 그들이 섬겼던 구역들에는 여전히 사람들이 있다. 아래 각 구역은 다시 존재할 공간을 얻었다.",
+    "reopenedLabel": "영사관이 CultureMesh에 재개설되었습니다",
+    "reopenedLink": "네트워크 방문"
   }
 }

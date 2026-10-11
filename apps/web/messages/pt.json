@@ -596,9 +596,11 @@
       "accredited": "Credenciado",
       "historical": "Fechado"
     },
-    "historicalTitle": "Missões encerradas",
-    "historicalNote": "Postos que existiram um dia. Cada um é um prédio que ainda está de pé em algum lugar.",
     "empty": "Ainda não há distritos.",
-    "footnote": "Listar um distrito aqui não é uma alegação de que alguém o represente. Um posto avançado só conta como representação depois de ser credenciado."
+    "footnote": "Listar um distrito aqui não é uma alegação de que alguém o represente. Um posto avançado só conta como representação depois de ser credenciado.",
+    "historicalTitle": "Missões fechadas, reabertas no CultureMesh",
+    "historicalNote": "Consulados que fecharam suas portas. Os prédios ainda estão de pé; os distritos que serviram ainda têm pessoas neles. Cada um abaixo recebeu um lugar para existir novamente.",
+    "reopenedLabel": "Consulado reaberto no CultureMesh",
+    "reopenedLink": "Visite a rede"
   }
 }

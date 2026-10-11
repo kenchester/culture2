@@ -11,6 +11,7 @@ export type PlaceOption = {
   type: "country" | "region" | "city";
   parent_id?: number | null;
   parent?: { name: string; type?: "country" | "region" | "city" } | null;
+  grandparent?: { name: string; type?: "country" | "region" | "city" } | null;
 };
 
 export type LanguageOption = { id: number; name: string };
@@ -40,9 +41,18 @@ const SUPPRESS_COUNTRY_LABEL_PLACE_IDS = new Set([
   149, // Northern Mariana Islands
 ]);
 
+/**
+ * "Xiamen, Fujian, China" rather than "Xiamen, Fujian".
+ *
+ * One level up isn't enough to disambiguate: there is a San Jose in
+ * California, in Costa Rica and in the Philippines, and "San Jose, San
+ * Jose" tells the reader nothing. The chain is at most three deep because
+ * a city's parent may be a region OR a country (00000000000001), so the
+ * blanks are simply dropped.
+ */
 export function optionLabel(option: AutocompleteOption) {
   if ("type" in option) {
-    return option.parent ? `${option.name}, ${option.parent.name}` : option.name;
+    return [option.name, option.parent?.name, option.grandparent?.name].filter(Boolean).join(", ");
   }
   return option.name;
 }

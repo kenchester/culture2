@@ -5,6 +5,7 @@ import { createClient } from "@/lib/supabase/server";
 import { type Author, getAvatarUrl, getDisplayName } from "@/lib/profiles";
 import { getGeoName } from "@/lib/geo-translation";
 import { getPostMediaUrl } from "@/lib/post-media";
+import { getPlaceChain } from "@/lib/place-chain";
 import {
   cursorOf,
   fetchRepliesForPosts,
@@ -254,7 +255,18 @@ export default async function NetworkPage({
       ? await supabase.from("organizations").select("slug").eq("location_place_id", location.id).maybeSingle()
       : { data: null };
 
+  // The h1 keeps the short form to stay on one line; the subtitle beneath
+  // carries the disambiguating chain, for both ends of the pairing. A
+  // language or religion origin has no geography to expand, so it falls
+  // back to the plain name.
+  const [originChain, locationChain] = await Promise.all([
+    getPlaceChain(supabase, originPlace?.id ?? null, locale),
+    getPlaceChain(supabase, location?.id ?? null, locale),
+  ]);
+
   const originName = translatedLanguageName ?? translatedOriginName ?? religion?.name ?? "?";
+  const originSubtitle = originChain ?? originName;
+  const locationSubtitle = locationChain ?? translatedLocationName ?? "?";
   const isMember = Boolean(membership);
 
   // An org-gated network still renders its shell to a non-member - they
@@ -367,8 +379,8 @@ export default async function NetworkPage({
           <p className="text-sm text-muted">
             {gatingOrgForLocation ? (
               t.rich("originInLinked", {
-                origin: originName,
-                location: translatedLocationName ?? "?",
+                origin: originSubtitle,
+                location: locationSubtitle,
                 loc: (chunks) => (
                   <Link href={`/learn/${gatingOrgForLocation.slug}`} className="text-primary hover:underline">
                     {chunks}
@@ -376,7 +388,7 @@ export default async function NetworkPage({
                 ),
               })
             ) : (
-              t("originIn", { origin: originName, location: translatedLocationName ?? "?" })
+              t("originIn", { origin: originSubtitle, location: locationSubtitle })
             )}
           </p>
         </div>

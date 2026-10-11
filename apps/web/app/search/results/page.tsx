@@ -2,6 +2,7 @@ import Link from "next/link";
 import { redirect } from "next/navigation";
 import { getLocale, getTranslations } from "next-intl/server";
 import { createClient } from "@/lib/supabase/server";
+import { getPlaceChain } from "@/lib/place-chain";
 import { launchNetwork } from "@/app/search/actions";
 import { getGeoName } from "@/lib/geo-translation";
 import type { Locale } from "@/lib/locale";
@@ -216,11 +217,13 @@ export default async function SearchResultsPage({
     const broader = results.filter((m) => m.match_kind === "related_broader");
     const narrower = results.filter((m) => m.match_kind === "related_narrower");
 
-    const [originName, locationName] = await Promise.all([
+    const [originName, locationName, locationChain] = await Promise.all([
       translateOriginName(originKind, origin, locale),
       translateLocationName(location, locale),
+      // Full chain so "San Jose" is distinguishable from the other two.
+      getPlaceChain(supabase, location?.id ?? null, locale),
     ]);
-    const title = buildTitle(t, originKind, originName, locationName);
+    const title = buildTitle(t, originKind, originName, locationChain ?? locationName);
 
     return (
       <div className="mx-auto flex w-full max-w-lg flex-1 flex-col gap-8 px-4 py-12">
