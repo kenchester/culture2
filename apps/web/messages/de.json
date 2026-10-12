@@ -62,7 +62,8 @@
       "nameLabel": "Name",
       "namePlaceholder": "Nur nötig, wenn du neu hier bist",
       "continuing": "Geht weiter...",
-      "submit": "Weitermachen"
+      "submit": "Weitermachen",
+      "nameHelp": "Öffentlich gezeigt. Es muss nicht dein echter Name sein."
     },
     "rateLimited": "Zu viele Versuche. Bitte warten Sie etwas und versuchen Sie es erneut.",
     "disposableEmail": "Bitte verwenden Sie eine dauerhafte E-Mail-Adresse zur Anmeldung.",
@@ -72,7 +73,24 @@
       "prompt": "Wie möchtest du dich als <b>{email}</b>anmelden?"
     },
     "learnEmailHint": "Bitte melden Sie sich mit Ihrer Schul-E-Mail-Adresse an (z. B. einer .edu-Adresse), damit wir Ihre Schule erkennen können.",
-    "learnFallbackNotice": "Wenn deine Schule CultureMesh Learn noch nicht beigetreten ist, wirst du keine Möglichkeit haben, Inhalte auf den Beispielseiten zu nutzen, aber du kannst in der Zwischenzeit immer mit dem <a>Hauptnetzwerk von CultureMesh</a> zusammenarbeiten."
+    "learnFallbackNotice": "Wenn deine Schule CultureMesh Learn noch nicht beigetreten ist, wirst du keine Möglichkeit haben, Inhalte auf den Beispielseiten zu nutzen, aber du kannst in der Zwischenzeit immer mit dem <a>Hauptnetzwerk von CultureMesh</a> zusammenarbeiten.",
+    "identity": {
+      "heading": "Wie sollten die Leute dich sehen?",
+      "explainer": "Was auch immer du hier wählst, ist öffentlich: Es erscheint auf deinen Beiträgen, in deinen Netzwerken und für jeden, der einen Link dazu öffnet. Gib einen Namen an, wenn du so bekannt sein willst. Gib stattdessen einen Benutzernamen an, wenn du möchtest, dass dein echter Name nicht mit dem Ort verbunden ist, aus dem du kommst – manche Menschen haben gute Gründe dafür, und das ist hier eine normale Wahl, keine verdächtige.",
+      "nameLabel": "Name (optional)",
+      "usernameLabel": "Oder ein Benutzername (optional)",
+      "usernameHelp": "Buchstaben, Zahlen, Punkte, Striche und Unterstriche. 3–30 Zeichen.",
+      "needOne": "Bitte gib entweder einen Namen oder einen Benutzernamen an, damit die Leute dich nennen können.",
+      "bothNote": "Wenn du beide angibst, ist dein Name das, was die Leute sehen.",
+      "problem": {
+        "tooShort": "Dieser Benutzername ist zu kurz – bitte verwenden Sie mindestens 3 Zeichen.",
+        "tooLong": "Dieser Benutzername ist zu lang – bitte verwenden Sie 30 oder weniger Zeichen.",
+        "shape": "Ein Benutzername kann Buchstaben, Zahlen, Punkte, Striche und Unterstriche verwenden und muss mit einem Buchstaben oder einer Zahl beginnen.",
+        "reserved": "Dieser Benutzername ist reserviert. Bitte wählen Sie einen anderen.",
+        "taken": "Dieser Benutzername ist bereits besetzt. Bitte wähle einen anderen."
+      },
+      "currentlyShown": "Die Leute sehen dich derzeit als: {name}"
+    }
   },
   "home": {
     "heading": "Finde dein Diaspora-Netzwerk",

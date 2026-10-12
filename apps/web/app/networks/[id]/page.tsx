@@ -189,40 +189,35 @@ export default async function NetworkPage({
   // Deliberately silent otherwise: no empty state, no "no consul yet", no
   // explanation. A member of a community that has never held an election
   // should never learn this system exists from this page, and the great
-  // majority of networks never will. Two cheap queries on a pairing that
-  // could hold the office at all, skipped entirely for language-origin
-  // networks since the office only maps place to place.
+  // majority of networks never will.
+  //
+  // One query, not three. The first version walked principals -> outposts
+  // -> outpost_officers sequentially, which cost about 1.5s of round trips
+  // on every single network pageview to answer "no" - and this is already
+  // the heaviest page on the site. Inner joins with nested filters get the
+  // same answer in one trip. Skipped entirely for language-origin
+  // networks, since the office only maps place to place.
   let consul: { outpostId: number; name: string } | null = null;
   if (network.origin_place_id) {
-    const { data: principal } = await supabase
-      .from("principals")
-      .select("id")
-      .eq("place_id", network.origin_place_id)
+    const { data: officer } = await supabase
+      .from("outpost_officers")
+      .select(
+        "term_ends_at, profile:user_id(first_name, last_name, username), outpost:outposts!inner(id, host_place_id, kind, principal:principals!inner(place_id))",
+      )
+      .eq("outpost.host_place_id", network.location_place_id)
+      .eq("outpost.principal.place_id", network.origin_place_id)
+      .eq("outpost.kind", "honorary")
+      // The policy hides revoked officers; an expired term is excluded
+      // here so a lapsed mandate stops being advertised.
+      .or(`term_ends_at.is.null,term_ends_at.gt.${new Date().toISOString()}`)
+      .order("appointed_at", { ascending: false })
+      .limit(1)
       .maybeSingle();
-    if (principal) {
-      const { data: outpost } = await supabase
-        .from("outposts")
-        .select("id")
-        .eq("principal_id", principal.id)
-        .eq("host_place_id", network.location_place_id)
-        .eq("kind", "honorary")
-        .maybeSingle();
-      if (outpost) {
-        // The policy hides revoked officers; an expired term is excluded
-        // here so a lapsed mandate stops being advertised.
-        const { data: officer } = await supabase
-          .from("outpost_officers")
-          .select("term_ends_at, profile:user_id(first_name, last_name, username)")
-          .eq("outpost_id", outpost.id)
-          .or(`term_ends_at.is.null,term_ends_at.gt.${new Date().toISOString()}`)
-          .order("appointed_at", { ascending: false })
-          .limit(1)
-          .maybeSingle();
-        const profile = officer?.profile as unknown as Author | null;
-        if (profile) {
-          consul = { outpostId: outpost.id as number, name: getDisplayName(profile) };
-        }
-      }
+
+    const profile = officer?.profile as unknown as Author | null;
+    const outpost = officer?.outpost as unknown as { id: number } | null;
+    if (profile && outpost) {
+      consul = { outpostId: outpost.id, name: getDisplayName(profile) };
     }
   }
 

@@ -62,7 +62,8 @@
       "nameLabel": "Nome",
       "namePlaceholder": "Serve solo se sei nuovo qui",
       "continuing": "Continuando...",
-      "submit": "Continua"
+      "submit": "Continua",
+      "nameHelp": "Mostrato pubblicamente. Non deve essere per forza il tuo vero nome."
     },
     "rateLimited": "Troppi tentativi. Per favore, aspetta un po' e riprova.",
     "disposableEmail": "Si prega di utilizzare un indirizzo email permanente per iscriversi.",
@@ -72,7 +73,24 @@
       "prompt": "Come ti piacerebbe accedere come <b>{email}</b>?"
     },
     "learnEmailHint": "Per favore, accedi con la tua email scolastica (ad esempio un indirizzo .edu) così possiamo riconoscere la tua scuola.",
-    "learnFallbackNotice": "Se la tua scuola non si è ancora iscritta a CultureMesh Learn, non potrai interagire con contenuti nelle pagine di esempio, tuttavia potrai sempre interagire con la <a>rete principale di CultureMesh</a> nel frattempo."
+    "learnFallbackNotice": "Se la tua scuola non si è ancora iscritta a CultureMesh Learn, non potrai interagire con contenuti nelle pagine di esempio, tuttavia potrai sempre interagire con la <a>rete principale di CultureMesh</a> nel frattempo.",
+    "identity": {
+      "heading": "Come dovrebbero vederti le persone?",
+      "explainer": "Qualunque cosa tu scelga qui è pubblica: appare nei tuoi post, nelle tue reti e a chiunque apra un link a essi. Dai un nome se vuoi essere conosciuto con esso. Dai invece un nome utente se preferisci che il tuo vero nome non sia associato al luogo da cui vieni — alcune persone hanno buone ragioni per questo, ed è una scelta normale qui, non sospetta.",
+      "nameLabel": "Nome (opzionale)",
+      "usernameLabel": "Oppure un nome utente (opzionale)",
+      "usernameHelp": "Lettere, numeri, puntini, trattini e sottoline. 3–30 caratteri.",
+      "needOne": "Per favore, dai un nome o un username, così le persone hanno qualcosa con cui chiamarti.",
+      "bothNote": "Se dai entrambi, il tuo nome è quello che vedono le persone.",
+      "problem": {
+        "tooShort": "Quel nome utente è troppo breve — usa almeno 3 caratteri.",
+        "tooLong": "Quel nome utente è troppo lungo — per favore usa 30 caratteri o meno.",
+        "shape": "Un nome utente può usare lettere, numeri, puntini, trattini e sottoline, e deve iniziare con una lettera o un numero.",
+        "reserved": "Quel nome utente è riservato. Per favore, scegline un altro.",
+        "taken": "Quel nome utente è già preso. Per favore, scegline un altro."
+      },
+      "currentlyShown": "Attualmente le persone ti vedono come: {name}"
+    }
   },
   "home": {
     "heading": "Trova la tua rete di diaspora",

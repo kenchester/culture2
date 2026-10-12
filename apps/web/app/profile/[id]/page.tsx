@@ -1,4 +1,5 @@
 import { notFound } from "next/navigation";
+import { getTranslations } from "next-intl/server";
 import Image from "next/image";
 import { createClient } from "@/lib/supabase/server";
 import { getAvatarUrl, getDisplayName } from "@/lib/profiles";
@@ -17,6 +18,9 @@ export default async function ProfilePage({
 }) {
   const { id } = await params;
   const { error, saved } = await searchParams;
+  // This page is otherwise unlocalised; the identity copy is translated
+  // because it is the part someone has to understand to stay safe.
+  const ti = await getTranslations("auth");
   const supabase = await createClient();
 
   const { data: profile } = await supabase
@@ -79,9 +83,20 @@ export default async function ProfilePage({
             <p className="rounded-md bg-error-bg px-3 py-2 text-sm text-error">{error}</p>
           )}
           <form action={updateProfile} className="flex flex-col gap-4">
+            {/* The field existed here with no label beyond "Username" and
+                no hint that it is the thing standing in for a real name.
+                Anyone who needs a pseudonym had to guess that. */}
+            <div className="flex flex-col gap-2 rounded-md border border-border bg-primary-light/40 p-3">
+              <p className="font-medium text-ink">{ti("identity.heading")}</p>
+              <p className="text-sm text-body">{ti("identity.explainer")}</p>
+              <p className="text-sm text-ink">
+                {ti("identity.currentlyShown", { name: getDisplayName(profile) })}
+              </p>
+            </div>
             <Field>
               <Label htmlFor="username">Username</Label>
               <Input id="username" name="username" defaultValue={profile.username ?? ""} />
+              <p className="text-xs text-muted">{ti("identity.usernameHelp")}</p>
             </Field>
             <Field>
               <Label htmlFor="firstName">First name</Label>
@@ -94,6 +109,9 @@ export default async function ProfilePage({
             <Field>
               <Label htmlFor="lastName">Last name</Label>
               <Input id="lastName" name="lastName" defaultValue={profile.last_name ?? ""} />
+              {/* Stated plainly, because the precedence is not guessable
+                  and guessing wrong here publishes a real name. */}
+              <p className="text-xs text-muted">{ti("identity.bothNote")}</p>
             </Field>
             <Field>
               <Label htmlFor="aboutMe">About me</Label>

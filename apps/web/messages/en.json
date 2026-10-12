@@ -459,10 +459,28 @@
       "nameLabel": "Name",
       "namePlaceholder": "Only needed if you're new here",
       "continuing": "Continuing…",
-      "submit": "Continue"
+      "submit": "Continue",
+      "nameHelp": "Shown publicly. It doesn't have to be your real name."
     },
     "rateLimited": "Too many attempts. Please wait a bit and try again.",
-    "disposableEmail": "Please use a permanent email address to sign up."
+    "disposableEmail": "Please use a permanent email address to sign up.",
+    "identity": {
+      "heading": "How should people see you?",
+      "explainer": "Whatever you choose here is public: it appears on your posts, in your networks, and to anyone who opens a link to them. Give a name if you want to be known by it. Give a username instead if you would rather your real name not be attached to the place you came from — some people have good reasons for that, and it is a normal choice here, not a suspicious one.",
+      "nameLabel": "Name (optional)",
+      "usernameLabel": "Or a username (optional)",
+      "usernameHelp": "Letters, numbers, dots, dashes and underscores. 3–30 characters.",
+      "needOne": "Please give either a name or a username, so people have something to call you.",
+      "bothNote": "If you give both, your name is what people see.",
+      "problem": {
+        "tooShort": "That username is too short — please use at least 3 characters.",
+        "tooLong": "That username is too long — please use 30 characters or fewer.",
+        "shape": "A username can use letters, numbers, dots, dashes and underscores, and must start with a letter or number.",
+        "reserved": "That username is reserved. Please choose another.",
+        "taken": "That username is already taken. Please choose another."
+      },
+      "currentlyShown": "People currently see you as: {name}"
+    }
   },
   "home": {
     "heading": "Find your diaspora network",

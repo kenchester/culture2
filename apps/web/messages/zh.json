@@ -62,7 +62,8 @@
       "nameLabel": "名称",
       "namePlaceholder": "只有刚来这里才需要",
       "continuing": "继续......",
-      "submit": "继续"
+      "submit": "继续",
+      "nameHelp": "公开展示。不一定非得是你的真名。"
     },
     "rateLimited": "尝试太多了。请稍等再试。",
     "disposableEmail": "请使用永久邮箱注册。",
@@ -72,7 +73,24 @@
       "prompt": "您想如何登录？<b>{email}</b>"
     },
     "learnEmailHint": "请使用您的学校邮箱（例如.edu地址）登录，以便我们识别您的学校。",
-    "learnFallbackNotice": "如果你的学校还没有加入CultureMesh Learn，你将无法参与示例页面上的任何内容，但在此期间你仍然可以直接与主<a>CultureMesh网络</a>互动。"
+    "learnFallbackNotice": "如果你的学校还没有加入CultureMesh Learn，你将无法参与示例页面上的任何内容，但在此期间你仍然可以直接与主<a>CultureMesh网络</a>互动。",
+    "identity": {
+      "heading": "人们应该如何看待你？",
+      "explainer": "你在这里选择的内容是公开的：它会出现在你的帖子、你的网络中，以及任何打开链接的人那里。如果你想让别人用名字称呼你，就填写名字。如果你不希望真实姓名与你的出身地关联，可以改用用户名——有些人有充分的理由这样做，在这里这是正常的选择，而不是可疑的选择。",
+      "nameLabel": "名称（可选）",
+      "usernameLabel": "或者用户名（可选）",
+      "usernameHelp": "字母、数字、点、划线和下划线。3–30字符。",
+      "needOne": "请提供名字或用户名，这样别人就有个称呼。",
+      "bothNote": "如果你两者都给，人们看到的是你的名字。",
+      "problem": {
+        "tooShort": "用户名太短了——请至少使用3个字符。",
+        "tooLong": "用户名太长了——请使用30个字符以内。",
+        "shape": "用户名可以使用字母、数字、点、划线和下划线，且必须以字母或数字开头。",
+        "reserved": "该用户名已保留。请选择其他用户名。",
+        "taken": "该用户名已被使用。请选择其他用户名。"
+      },
+      "currentlyShown": "人们目前认为你是： {name}"
+    }
   },
   "home": {
     "heading": "寻找你的侨民网络",

@@ -13,6 +13,7 @@ import {
 } from "@/app/(auth)/actions";
 import { resolveLearnSlugForEmail } from "@/app/learn/actions";
 import { createClient } from "@/lib/supabase/client";
+import { checkUsername } from "@/lib/username";
 import { Button } from "@/components/ui/button";
 import { Field, Input, Label } from "@/components/ui/input";
 import { FormError } from "@/components/ui/form-error";
@@ -88,6 +89,13 @@ export function OtpForm({
   );
   const [email, setEmail] = useState("");
   const [pendingName, setPendingName] = useState<string | null>(null);
+  // Same reasoning as pendingName: the Safari cookie-bridge retry is a
+  // separate call with no access to the submit's FormData.
+  const [pendingUsername, setPendingUsername] = useState<string | null>(null);
+  // Set once the code has actually been accepted. A single-use code must
+  // not be re-sent if the identity step then fails (a taken username), so
+  // a retry skips straight to saving the identity.
+  const [verified, setVerified] = useState(false);
   // True for a brand-new signup that left the name field blank on the
   // first screen - we can't require it there (whether this is a signup
   // at all depends on checkEmailStatus, which only resolves after that
@@ -141,17 +149,25 @@ export function OtpForm({
     return true;
   }
 
-  async function applyPendingName(codeStepFormData?: FormData) {
+  /** Returns an error message to show, or null on success. */
+  async function applyPendingName(codeStepFormData?: FormData): Promise<string | null> {
     // A name typed on the code step (only shown when needsName is true)
     // takes priority over whatever was captured on the first screen,
     // since that's the freshest - and for needsName to be true, the
     // first screen's name would have been blank anyway.
     const typedOnCodeStep = ((codeStepFormData?.get("name") as string) || "").trim();
+    const typedUsername = ((codeStepFormData?.get("username") as string) || "").trim();
     const name = typedOnCodeStep || pendingName;
-    if (!name) return;
+    const username = typedUsername || pendingUsername;
+    if (!name && !username) return null;
+
     const formData = new FormData();
-    formData.set("name", name);
-    await setDisplayName(formData);
+    if (name) formData.set("name", name);
+    if (username) formData.set("username", username);
+    const result = await setDisplayName(formData);
+    // Previously discarded, which meant a rejected username left the
+    // account with no identity at all and nothing on screen to say so.
+    return "error" in result ? result.error : null;
   }
 
   async function sendCode(targetEmail: string, honeypot: string, exists: boolean) {
@@ -231,20 +247,55 @@ export function OtpForm({
       // retry - a separate call, with no access to this submit's
       // FormData - can still pick it up via pendingName.
       const typedOnCodeStep = ((formData.get("name") as string) || "").trim();
+      const typedUsername = ((formData.get("username") as string) || "").trim();
       if (typedOnCodeStep) setPendingName(typedOnCodeStep);
-      const result = await verifyOtp(formData);
-      if ("error" in result) {
-        setError(result.error);
-        return;
+      if (typedUsername) setPendingUsername(typedUsername);
+
+      // Checked before the code is spent, because the code is single-use:
+      // a rejected username must not cost someone their only way in.
+      // Neither field can be marked required in HTML now that either one
+      // will do, so the "both blank" case is enforced here instead.
+      if (needsName) {
+        if (!typedOnCodeStep && !typedUsername) {
+          setError(t("identity.needOne"));
+          return;
+        }
+        if (typedUsername) {
+          const problem = checkUsername(typedUsername);
+          if (problem) {
+            setError(t(`identity.problem.${problem}`));
+            return;
+          }
+        }
       }
+
+      if (!verified) {
+        const result = await verifyOtp(formData);
+        if ("error" in result) {
+          setError(result.error);
+          return;
+        }
+        setVerified(true);
+      }
+
+      let identityError: string | null = null;
       async function finishSetup() {
-        await applyPendingName(formData);
+        identityError = await applyPendingName(formData);
+        if (identityError) return;
         // formData already carries "password" (same form, optional field)
         // - setPassword itself no-ops if it's blank, so this is safe to
         // call unconditionally.
         await setPassword(formData);
       }
-      if (!(await trySettle(finishSetup))) {
+      const settled = await trySettle(finishSetup);
+      // Availability is only knowable at write time, so a collision can
+      // still land here. The session already exists, so staying put lets
+      // them pick another username and submit again without a new code.
+      if (identityError) {
+        setError(identityError);
+        return;
+      }
+      if (!settled) {
         setStep("bridge");
       }
     } finally {
@@ -256,8 +307,18 @@ export function OtpForm({
     setError(null);
     setIsPending(true);
     await tryRequestStorageAccess();
-    const settled = await trySettle(applyPendingName);
+    // Carries the identity captured earlier via pendingName/pendingUsername
+    // - this retry has no FormData of its own - and surfaces a rejected
+    // username rather than swallowing it.
+    let identityError: string | null = null;
+    const settled = await trySettle(async () => {
+      identityError = await applyPendingName();
+    });
     setIsPending(false);
+    if (identityError) {
+      setError(identityError);
+      return;
+    }
     if (!settled) {
       setError(t("bridge.stillBlocked"));
     }
@@ -427,10 +488,23 @@ export function OtpForm({
           />
         </Field>
         {needsName && (
-          <Field>
-            <Label htmlFor="name">{t("email.nameLabel")}</Label>
-            <Input id="name" name="name" required />
-          </Field>
+          <div className="flex flex-col gap-3 rounded-md border border-border bg-primary-light/40 p-3">
+            <p className="font-medium text-ink">{t("identity.heading")}</p>
+            {/* Spelled out rather than hinted at. Someone who needs a
+                pseudonym is usually the last person who will go looking
+                for one in a settings page. */}
+            <p className="text-sm text-body">{t("identity.explainer")}</p>
+            <Field>
+              <Label htmlFor="name">{t("identity.nameLabel")}</Label>
+              <Input id="name" name="name" autoComplete="name" />
+            </Field>
+            <Field>
+              <Label htmlFor="username">{t("identity.usernameLabel")}</Label>
+              <Input id="username" name="username" autoComplete="off" spellCheck={false} />
+              <p className="text-xs text-muted">{t("identity.usernameHelp")}</p>
+            </Field>
+            <p className="text-xs text-muted">{t("identity.bothNote")}</p>
+          </div>
         )}
         {offerPasswordSetup && (
           <Field>
@@ -512,6 +586,9 @@ export function OtpForm({
       <Field>
         <Label htmlFor="name">{t("email.nameLabel")}</Label>
         <Input id="name" name="name" placeholder={t("email.namePlaceholder")} />
+        {/* Reaches the people who never see the identity block, because
+            they typed a name here out of habit. */}
+        <p className="text-xs text-muted">{t("email.nameHelp")}</p>
       </Field>
       <SubmitButton className="w-full" disabled={isPending}>
         {isPending ? t("email.continuing") : t("email.submit")}

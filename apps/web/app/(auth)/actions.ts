@@ -5,6 +5,7 @@ import { getTranslations } from "next-intl/server";
 import { isValid as isNotDisposableEmail } from "mailchecker";
 import { createClient } from "@/lib/supabase/server";
 import { getClientIp, isRateLimited, recordAttempt } from "@/lib/rate-limit";
+import { checkUsername, isUsernameTaken, normalizeUsername } from "@/lib/username";
 
 type ActionResult = { ok: true } | { error: string };
 
@@ -126,7 +127,8 @@ export async function checkEmailStatus(
 // convention that doesn't hold for everyone (e.g. East Asian family-name-
 // first naming), and getDisplayName already just joins whatever's present.
 export async function setDisplayName(formData: FormData): Promise<ActionResult> {
-  const name = formData.get("name") as string;
+  const name = ((formData.get("name") as string) ?? "").trim();
+  const username = normalizeUsername(formData.get("username") as string);
 
   const supabase = await createClient();
   const {
@@ -137,13 +139,39 @@ export async function setDisplayName(formData: FormData): Promise<ActionResult> 
     return { error: "Not signed in." };
   }
 
+  const t = await getTranslations("auth");
+  if (!name && !username) {
+    return { error: t("identity.needOne") };
+  }
+
+  if (username) {
+    const problem = checkUsername(username);
+    if (problem) {
+      return { error: t(`identity.problem.${problem}`) };
+    }
+  }
+
+  // Only what was actually given is stored.
+  //
+  // Storing a real name alongside a username and then choosing between
+  // them at render time would mean one display helper, eighteen call
+  // sites, and a missed column in any one of their select strings silently
+  // revealing the name instead. The name we never hold cannot leak from a
+  // query somebody forgot to update - so "a username in place of your
+  // name" is implemented literally.
   const { error } = await supabase
     .from("profiles")
-    .update({ first_name: name || null, last_name: null })
+    .update({
+      first_name: name || null,
+      last_name: null,
+      ...(username ? { username } : {}),
+    })
     .eq("id", user.id);
 
   if (error) {
-    return { error: error.message };
+    return {
+      error: isUsernameTaken(error.message) ? t("identity.problem.taken") : error.message,
+    };
   }
 
   return { ok: true };

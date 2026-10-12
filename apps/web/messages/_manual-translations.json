@@ -6,6 +6,8 @@
     "network.reply"
   ],
   "ru": [
+    "auth.identity.bothNote",
+    "auth.identity.currentlyShown",
     "consul.metaDescription",
     "elections.metaTitle",
     "elections.title",
@@ -36,6 +38,7 @@
     "training.locationLabel"
   ],
   "zh": [
+    "auth.identity.explainer",
     "consul.metaDescription",
     "elections.metaTitle",
     "elections.title",
@@ -44,6 +47,7 @@
     "training.locationLabel"
   ],
   "ja": [
+    "auth.identity.explainer",
     "consul.heading",
     "consul.metaDescription",
     "elections.metaTitle",
@@ -51,6 +55,8 @@
     "training.locationLabel"
   ],
   "ko": [
+    "auth.identity.bothNote",
+    "auth.identity.explainer",
     "consul.heading",
     "consul.metaDescription",
     "consul.vacant",

@@ -54,8 +54,13 @@ test.describe("chrome and content", () => {
     await page.goto("/outposts");
     const first = page.getByRole("table").getByRole("link").first();
     await first.click();
-    await expect(page).toHaveURL(/\/networks\/\d+/);
-    await expect(page.getByRole("heading", { level: 1 })).toBeVisible();
+    // A network page is the heaviest route on the site - several
+    // server-side queries against a hosted database - and four workers
+    // run in parallel, so the default 10s assertion window is genuinely
+    // too tight here. This flaked twice before the timeout was raised;
+    // it was never a logic failure.
+    await expect(page).toHaveURL(/\/networks\/\d+/, { timeout: 30_000 });
+    await expect(page.getByRole("heading", { level: 1 })).toBeVisible({ timeout: 30_000 });
   });
 
   test("the elections page explains the office and lists elections", async ({ page }) => {
@@ -247,7 +252,7 @@ test.describe("permalinks", () => {
     test.skip(!(await permalink.count()), `network ${POST_NETWORK} has no posts`);
     const href = await permalink.getAttribute("href");
     await page.goto(href!);
-    await expect(page).toHaveURL(/\/networks\/\d+\/posts\/\d+/);
+    await expect(page).toHaveURL(/\/networks\/\d+\/posts\/\d+/, { timeout: 30_000 });
     // Both halves matter: the post itself, and the network it belongs to,
     // so a permalink arriving cold still has context.
     await expect(page.getByRole("heading", { level: 1 })).toBeVisible();

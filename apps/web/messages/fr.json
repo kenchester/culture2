@@ -62,7 +62,8 @@
       "nameLabel": "Nom",
       "namePlaceholder": "Seulement nécessaire si vous êtes nouveau ici",
       "continuing": "Continuant...",
-      "submit": "Continuez"
+      "submit": "Continuez",
+      "nameHelp": "Montré publiquement. Ce n’est pas obligé que ce soit ton vrai nom."
     },
     "rateLimited": "Trop d’essais. Veuillez patienter un peu et réessayer.",
     "disposableEmail": "Veuillez utiliser une adresse e-mail permanente pour vous inscrire.",
@@ -72,7 +73,24 @@
       "prompt": "Comment aimeriez-vous vous connecter en tant <b>{email}</b>que ?"
     },
     "learnEmailHint": "Veuillez vous connecter avec votre adresse e-mail (par exemple une adresse .edu) afin que nous puissions reconnaître votre établissement.",
-    "learnFallbackNotice": "Si votre école n’a pas encore rejoint CultureMesh Learn, vous ne pourrez pas interagir avec le contenu des pages d’exemple, mais vous pourrez toujours interagir avec le <a>réseau principal de CultureMesh</a> en attendant."
+    "learnFallbackNotice": "Si votre école n’a pas encore rejoint CultureMesh Learn, vous ne pourrez pas interagir avec le contenu des pages d’exemple, mais vous pourrez toujours interagir avec le <a>réseau principal de CultureMesh</a> en attendant.",
+    "identity": {
+      "heading": "Comment les gens devraient-ils vous percevoir ?",
+      "explainer": "Quoi que vous choisissiez ici est public : il apparaît sur vos publications, dans vos réseaux, et à toute personne qui ouvre un lien vers eux. Donnez un nom si vous voulez être connu sous ce nom. Donnez plutôt un nom d’utilisateur si vous préférez que votre vrai nom ne soit pas associé à l’endroit d’où vous venez — certaines personnes ont de bonnes raisons à cela, et c’est un choix normal ici, pas suspect.",
+      "nameLabel": "Nom (optionnel)",
+      "usernameLabel": "Ou un nom d’utilisateur (optionnel)",
+      "usernameHelp": "Lettres, chiffres, points, tirets et sous-entendus. 3 à 30 caractères.",
+      "needOne": "Merci de donner soit un nom, soit un nom d’utilisateur, pour que les gens aient quelque chose à vous appeler.",
+      "bothNote": "Si vous donnez les deux, c’est votre nom que les gens voient.",
+      "problem": {
+        "tooShort": "Ce nom d’utilisateur est trop court — veuillez utiliser au moins 3 caractères.",
+        "tooLong": "Ce nom d’utilisateur est trop long — veuillez utiliser 30 caractères ou moins.",
+        "shape": "Un nom d’utilisateur peut utiliser des lettres, des chiffres, des points, des tirets et des soulignements, et doit commencer par une lettre ou un chiffre.",
+        "reserved": "Ce nom d’utilisateur est réservé. Veuillez en choisir un autre.",
+        "taken": "Ce nom d’utilisateur est déjà pris. Veuillez en choisir un autre."
+      },
+      "currentlyShown": "Les gens vous voient actuellement comme suit : {name}"
+    }
   },
   "home": {
     "heading": "Trouvez votre réseau de diaspora",

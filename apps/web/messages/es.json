@@ -62,7 +62,8 @@
       "nameLabel": "Nombre",
       "namePlaceholder": "Solo necesitas si eres nuevo aquí",
       "continuing": "Continúa...",
-      "submit": "Continúa"
+      "submit": "Continúa",
+      "nameHelp": "Mostrado públicamente. No tiene que ser tu nombre real."
     },
     "rateLimited": "Demasiados intentos. Por favor, espera un poco y vuelve a intentarlo.",
     "disposableEmail": "Por favor, utiliza una dirección de correo electrónico permanente para registrarte.",
@@ -72,7 +73,24 @@
       "prompt": "¿Cómo te gustaría iniciar sesión como <b>{email}</b>?"
     },
     "learnEmailHint": "Por favor, inicia sesión con el correo electrónico de tu colegio (por ejemplo, una dirección .edu) para que podamos reconocer tu centro.",
-    "learnFallbackNotice": "Si tu colegio aún no se ha unido a CultureMesh Learn, no podrás interactuar con ningún contenido en las páginas de ejemplo, pero mientras tanto siempre puedes interactuar con la <a>red principal de CultureMesh</a>."
+    "learnFallbackNotice": "Si tu colegio aún no se ha unido a CultureMesh Learn, no podrás interactuar con ningún contenido en las páginas de ejemplo, pero mientras tanto siempre puedes interactuar con la <a>red principal de CultureMesh</a>.",
+    "identity": {
+      "heading": "¿Cómo debería verte la gente?",
+      "explainer": "Lo que elijas aquí es público: aparece en tus publicaciones, en tus redes y a cualquiera que abra un enlace a ellas. Da un nombre si quieres que te conozcan por él. Ponle un nombre de usuario si prefieres que tu nombre real no esté asociado al lugar de donde vienes — algunas personas tienen buenas razones para ello, y es una elección normal aquí, no sospechosa.",
+      "nameLabel": "Nombre (opcional)",
+      "usernameLabel": "O un nombre de usuario (opcional)",
+      "usernameHelp": "Letras, números, puntos, rayas y guiones bajos. 3–30 caracteres.",
+      "needOne": "Por favor, da un nombre o un nombre de usuario, para que la gente tenga algo con lo que llamarte.",
+      "bothNote": "Si das ambos, tu nombre es lo que la gente ve.",
+      "problem": {
+        "tooShort": "Ese nombre de usuario es demasiado corto — por favor, usa al menos 3 caracteres.",
+        "tooLong": "Ese nombre de usuario es demasiado largo — por favor, usa 30 caracteres o menos.",
+        "shape": "Un nombre de usuario puede usar letras, números, puntos, rayas y guiones bajos, y debe comenzar con una letra o un número.",
+        "reserved": "Ese nombre de usuario está reservado. Por favor, elige otro.",
+        "taken": "Ese nombre de usuario ya está ocupado. Por favor, elige otro."
+      },
+      "currentlyShown": "Actualmente, la gente te ve como: {name}"
+    }
   },
   "home": {
     "heading": "Encuentra tu red de diáspora",
