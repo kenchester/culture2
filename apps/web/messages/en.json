@@ -239,7 +239,10 @@
     "showAllReplies": "Show all replies",
     "replyingTo": "Replying to {name}",
     "clearReplyTarget": "Cancel replying to this person",
-    "postDeleted": "The original post was deleted by its author. This reply was kept because someone had shared a link to it."
+    "postDeleted": "The original post was deleted by its author. This reply was kept because someone had shared a link to it.",
+    "metaTitle": "Post in {network}",
+    "metaDescriptionFallback": "A post shared in {network} on CultureMesh.",
+    "metaReplyTitle": "Reply in {network}"
   },
   "network": {
     "originIn": "{origin} in {location}",
@@ -269,7 +272,8 @@
     "connectWithSpeakersIntro": "There's an active network near {location} on the main CultureMesh site.",
     "signInToSeePosts": "Sign in with your school email to see posts in this network.",
     "reply": "Reply",
-    "viewAllReplies": "View all {count} replies"
+    "viewAllReplies": "View all {count} replies",
+    "metaDescription": "{members} members · {posts} posts. Join the conversation among people who share this background and this place."
   },
   "demoNetwork": {
     "studentView": "Student view",
@@ -642,6 +646,18 @@
       "rejected": "Not confirmed — more votes against than in favour."
     },
     "outcomeTerm": "The term runs for {months} months from certification.",
-    "winner": "Elected Unofficial Consul"
+    "winner": "Elected Unofficial Consul",
+    "shareHeading": "Pass this on",
+    "shareBody": "Anyone can open this link, including people not yet on CultureMesh.",
+    "metaTitle": "{network} — Unofficial Consul election",
+    "metaNominating": "Nominations are open. Anyone in this community can stand, and members choose the winner.",
+    "metaVoting": "Voting is open. Members of this community choose who represents it.",
+    "metaClosed": "This election has closed.",
+    "rollExplainer": "Only members who joined before <cutoff></cutoff> can stand or vote in this election. Anyone can join the community and follow along, and will be eligible in the next one.",
+    "joinToTakePart": "Join this community"
+  },
+  "share": {
+    "share": "Share",
+    "copied": "Link copied"
   }
 }

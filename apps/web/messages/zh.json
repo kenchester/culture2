@@ -182,7 +182,10 @@
     "showAllReplies": "显示所有回复",
     "replyingTo": "回复{name}",
     "clearReplyTarget": "取消回复这个人",
-    "postDeleted": "原帖已被作者删除。此回复保留是因为有人分享了链接。"
+    "postDeleted": "原帖已被作者删除。此回复保留是因为有人分享了链接。",
+    "metaTitle": "帖子{network}",
+    "metaDescriptionFallback": "一篇{network}分享在CultureMesh上的帖子。",
+    "metaReplyTitle": "回复{network}"
   },
   "network": {
     "events": "活动",
@@ -212,7 +215,8 @@
     "loadMorePosts": "加载更多帖子",
     "signInToSeePosts": "请使用您的学校邮箱登录，查看本网络中的帖子。",
     "reply": "回复",
-    "viewAllReplies": "查看所有{count}回复"
+    "viewAllReplies": "查看所有{count}回复",
+    "metaDescription": "{members}成员 ·{posts}帖子。加入那些拥有相同背景和这个地方的人们的对话。"
   },
   "editableEntry": {
     "save": "保存",
@@ -599,7 +603,7 @@
     "districtsEarly": "早期阶段——这些大多是最近创建的，里面有少数几个人。"
   },
   "elections": {
-    "title": "非官方执政官选举",
+    "title": "非官方领事选举",
     "intro": "社区可以选择代表其身份，即使其没有官方存在。该职位由其所服务的人民选举产生，任期两年。",
     "historyNote": "这是较早期的职位形式：商业领事最初由海外贸易共同体选举产生，随后由各州接管任命。",
     "roleFull": "非官方领事——由社区成员选出，任期两年",
@@ -648,6 +652,18 @@
       "rejected": "未确认——反对票多于赞成票。"
     },
     "outcomeTerm": "该期限从认证起持续数{months}月。",
-    "winner": "当选非官守领事"
+    "winner": "当选非官方领事",
+    "shareHeading": "把这个传下去",
+    "shareBody": "任何人都可以打开这个链接，包括还没在CultureMesh上的人。",
+    "metaTitle": "{network} —— 非官方领事选举",
+    "metaNominating": "提名现已开放。社区中的任何人都可以站起来，成员们会选出获胜者。",
+    "metaVoting": "投票是公开的。社区成员决定代表。",
+    "metaClosed": "这次选举已经结束。",
+    "rollExplainer": "只有之前<cutoff></cutoff>加入的成员才能参加本次选举或投票。任何人都可以加入社区并关注，并且将在下一次选举中获得资格。",
+    "joinToTakePart": "加入这个社区"
+  },
+  "share": {
+    "share": "分享",
+    "copied": "链接已复制"
   }
 }

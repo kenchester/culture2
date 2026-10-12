@@ -182,7 +182,10 @@
     "showAllReplies": "Mostrar todas as respostas",
     "replyingTo": "Respondendo a {name}",
     "clearReplyTarget": "Cancelar a resposta para essa pessoa",
-    "postDeleted": "A postagem original foi deletada pelo autor. Esta resposta foi mantida porque alguém compartilhou um link para ela."
+    "postDeleted": "A postagem original foi deletada pelo autor. Esta resposta foi mantida porque alguém compartilhou um link para ela.",
+    "metaTitle": "Publicar em {network}",
+    "metaDescriptionFallback": "Um post compartilhado {network} no CultureMesh.",
+    "metaReplyTitle": "Responder em {network}"
   },
   "network": {
     "events": "Eventos",
@@ -212,7 +215,8 @@
     "loadMorePosts": "Carregar mais posts",
     "signInToSeePosts": "Faça login com o e-mail da sua escola para ver as publicações nesta rede.",
     "reply": "Responder",
-    "viewAllReplies": "Veja todas {count} as respostas"
+    "viewAllReplies": "Veja todas {count} as respostas",
+    "metaDescription": "{members} membros ·{posts} postagens. Participe da conversa entre pessoas que compartilham esse histórico e este lugar."
   },
   "editableEntry": {
     "save": "Salvar",
@@ -648,6 +652,18 @@
       "rejected": "Não confirmado — mais votos contra do que a favor."
     },
     "outcomeTerm": "O período dura {months} meses a partir da certificação.",
-    "winner": "Cônsul Não-Oficial Eleito"
+    "winner": "Cônsul Não-Oficial Eleito",
+    "shareHeading": "Passe isso adiante.",
+    "shareBody": "Qualquer pessoa pode abrir este link, inclusive pessoas que ainda não estão no CultureMesh.",
+    "metaTitle": "{network} — Eleição não oficial de cônsul",
+    "metaNominating": "As indicações estão abertas. Qualquer pessoa nesta comunidade pode se levantar, e os membros escolhem o vencedor.",
+    "metaVoting": "A votação está aberta. Os membros desta comunidade escolhem quem a representa.",
+    "metaClosed": "Esta eleição foi encerrada.",
+    "rollExplainer": "Apenas membros que já aderiram <cutoff></cutoff> antes podem concorrer ou votar nesta eleição. Qualquer pessoa pode se juntar à comunidade e acompanhar, e será elegível na próxima.",
+    "joinToTakePart": "Junte-se a esta comunidade"
+  },
+  "share": {
+    "share": "Compartilhe",
+    "copied": "Link copiado"
   }
 }

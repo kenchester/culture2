@@ -1,8 +1,10 @@
+import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { getTranslations } from "next-intl/server";
 import { createClient } from "@/lib/supabase/server";
+import { previewText, shareMetadata } from "@/lib/share-metadata";
 import { gatedContextForPost } from "@/lib/gated-access";
 import { SignInToView } from "@/components/sign-in-to-view";
 import { type Author, getAvatarUrl, getDisplayName } from "@/lib/profiles";
@@ -12,6 +14,46 @@ import { EditableEntry } from "@/app/networks/editable-entry";
 import { DemoReplyThread, type RealDemoReply } from "@/app/networks/[id]/posts/[postId]/demo-reply-thread";
 import { type ReplyView } from "@/app/networks/[id]/posts/[postId]/reply-thread";
 import { ReplySection } from "@/app/networks/[id]/posts/[postId]/reply-section";
+
+/**
+ * A permalink exists to be handed to someone, so it needs a preview. The
+ * post body becomes the description - trimmed, because clients clip around
+ * 180 characters and a mid-word cut looks broken.
+ *
+ * Reads through the ordinary RLS client on purpose: if this viewer cannot
+ * read the post, neither can the crawler, and returning nothing is the
+ * correct answer rather than leaking a gated body into a link preview.
+ */
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ id: string; postId: string }>;
+}): Promise<Metadata> {
+  const { id, postId } = await params;
+  const t = await getTranslations("postDetail");
+  const supabase = await createClient();
+
+  const { data: post } = await supabase
+    .from("posts")
+    .select("id, body, network_id, networks(title)")
+    .eq("id", postId)
+    .eq("network_id", id)
+    .is("deleted_at", null)
+    .maybeSingle();
+  if (!post) return {};
+
+  const networkTitle = (post.networks as unknown as { title: string } | null)?.title ?? "";
+  const body = ((post.body as string | null) ?? "").trim();
+
+  return shareMetadata({
+    title: t("metaTitle", { network: networkTitle }),
+    description: previewText(body || t("metaDescriptionFallback", { network: networkTitle })),
+    path: `/networks/${post.network_id}/posts/${post.id}`,
+    // Individual posts are members' words, not marketing surface. Still
+    // shareable by link, just not indexed.
+    noIndex: true,
+  });
+}
 
 export default async function PostPage({
   params,

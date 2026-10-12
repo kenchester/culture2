@@ -182,7 +182,10 @@
     "showAllReplies": "Mostra tutte le risposte",
     "replyingTo": "Rispondere a {name}",
     "clearReplyTarget": "Annulla di rispondere a questa persona",
-    "postDeleted": "Il post originale è stato cancellato dall'autore. Questa risposta è stata mantenuta perché qualcuno aveva condiviso un link."
+    "postDeleted": "Il post originale è stato cancellato dall'autore. Questa risposta è stata mantenuta perché qualcuno aveva condiviso un link.",
+    "metaTitle": "Pubblica in {network}",
+    "metaDescriptionFallback": "Un post {network} condiviso su CultureMesh.",
+    "metaReplyTitle": "Rispondi {network}"
   },
   "network": {
     "events": "Eventi",
@@ -212,7 +215,8 @@
     "loadMorePosts": "Carica altri post",
     "signInToSeePosts": "Accedi con la tua email scolastica per vedere i post in questa rete.",
     "reply": "Rispondi",
-    "viewAllReplies": "Visualizza tutte {count} le risposte"
+    "viewAllReplies": "Visualizza tutte {count} le risposte",
+    "metaDescription": "{members} Membri ·{posts} Post. Unisciti alla conversazione tra chi condivide questo background e questo luogo."
   },
   "editableEntry": {
     "save": "Salva",
@@ -648,6 +652,18 @@
       "rejected": "Non confermato — più voti contro che favorevoli."
     },
     "outcomeTerm": "Il periodo dura {months} mesi dalla certificazione.",
-    "winner": "Console non ufficiale eletto"
+    "winner": "Console non ufficiale eletto",
+    "shareHeading": "Passa questo",
+    "shareBody": "Chiunque può aprire questo link, comprese le persone che non sono ancora su CultureMesh.",
+    "metaTitle": "{network} — Elezione non ufficiale a console",
+    "metaNominating": "Le candidature sono aperte. Chiunque in questa comunità può candidarsi e i membri scelgono il vincitore.",
+    "metaVoting": "Il voto è aperto. I membri di questa comunità scelgono chi la rappresenta.",
+    "metaClosed": "Queste elezioni sono chiuse.",
+    "rollExplainer": "Solo i membri che si sono iscritti prima <cutoff></cutoff> possono candidarsi o votare in questa elezione. Chiunque può unirsi alla comunità e seguire il processo, e sarà idoneo alla prossima elezione.",
+    "joinToTakePart": "Unisciti a questa community"
+  },
+  "share": {
+    "share": "Condividi",
+    "copied": "Link copiato"
   }
 }

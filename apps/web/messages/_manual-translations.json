@@ -6,6 +6,8 @@
     "network.reply"
   ],
   "ru": [
+    "elections.metaTitle",
+    "elections.title",
     "nav.homeLogoAlt",
     "training.rules.geographySpread"
   ],
@@ -20,8 +22,9 @@
     "network.reply"
   ],
   "fr": [
-    "postDetail.reply",
+    "elections.metaTitle",
     "network.reply",
+    "postDetail.reply",
     "training.intro2"
   ],
   "pt": [
@@ -32,10 +35,21 @@
     "training.locationLabel"
   ],
   "zh": [
-    "training.locationLabel",
-    "training.intro2"
+    "elections.metaTitle",
+    "elections.title",
+    "elections.winner",
+    "training.intro2",
+    "training.locationLabel"
   ],
   "ja": [
+    "elections.metaTitle",
+    "elections.roleFull",
     "training.locationLabel"
+  ],
+  "ko": [
+    "elections.metaTitle",
+    "elections.roleFull",
+    "elections.title",
+    "elections.winner"
   ]
 }

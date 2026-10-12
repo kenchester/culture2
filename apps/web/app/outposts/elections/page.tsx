@@ -2,14 +2,20 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { getTranslations } from "next-intl/server";
 import { createClient } from "@/lib/supabase/server";
+import { previewText, shareMetadata } from "@/lib/share-metadata";
 import { openElection } from "@/app/outposts/elections/actions";
 import { FormError } from "@/components/ui/form-error";
 import { Field, fieldClass, Label } from "@/components/ui/input";
 import { SubmitButton } from "@/components/ui/submit-button";
 
-export const metadata: Metadata = {
-  title: "Consul elections — CultureMesh",
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const t = await getTranslations("elections");
+  return shareMetadata({
+    title: t("title"),
+    description: previewText(t("intro")),
+    path: "/outposts/elections",
+  });
+}
 
 function phaseOf(e: { nominations_close_at: string; voting_opens_at: string; voting_closes_at: string }) {
   const now = Date.now();

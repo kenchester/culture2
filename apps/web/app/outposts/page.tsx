@@ -2,10 +2,16 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { getTranslations } from "next-intl/server";
 import { createClient } from "@/lib/supabase/server";
+import { previewText, shareMetadata } from "@/lib/share-metadata";
 
-export const metadata: Metadata = {
-  title: "Outposts — CultureMesh",
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const t = await getTranslations("outposts");
+  return shareMetadata({
+    title: t("title"),
+    description: previewText(t("intro")),
+    path: "/outposts",
+  });
+}
 
 type Row = {
   principalName: string;

@@ -1,7 +1,10 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { getTranslations } from "next-intl/server";
 import { createClient } from "@/lib/supabase/server";
+import { previewText, shareMetadata } from "@/lib/share-metadata";
+import { ShareLink } from "@/components/share-link";
 import { castVote, nominate } from "@/app/outposts/elections/actions";
 import { getDisplayName, type Author } from "@/lib/profiles";
 import { LocalDateTime } from "@/components/local-datetime";
@@ -27,6 +30,51 @@ function phaseOf(e: {
 // read in a helper, same as phaseOf above.
 function votingHasClosed(e: { voting_closes_at: string }) {
   return new Date(e.voting_closes_at).getTime() <= Date.now();
+}
+
+/**
+ * Link-preview tags, which are what makes this page shareable at all: an
+ * election link is forwarded into group chats, and without these it
+ * arrives there as a bare URL.
+ */
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ id: string }>;
+}): Promise<Metadata> {
+  const { id } = await params;
+  const t = await getTranslations("elections");
+  const supabase = await createClient();
+
+  const { data: election } = await supabase
+    .from("elections")
+    .select("id, network_id, nominations_close_at, voting_opens_at, voting_closes_at")
+    .eq("id", id)
+    .is("cancelled_at", null)
+    .maybeSingle();
+  if (!election) return { title: t("title") };
+
+  const { data: network } = await supabase
+    .from("networks")
+    .select("title")
+    .eq("id", election.network_id)
+    .maybeSingle();
+
+  const phase = phaseOf(election);
+  const description =
+    phase === "nominating"
+      ? t("metaNominating")
+      : phase === "voting"
+        ? t("metaVoting")
+        : phase === "closed"
+          ? t("metaClosed")
+          : t("intro");
+
+  return shareMetadata({
+    title: t("metaTitle", { network: network?.title ?? `#${election.network_id}` }),
+    description: previewText(`${description} ${t("roleFull")}`),
+    path: `/outposts/elections/${election.id}`,
+  });
 }
 
 export default async function ElectionPage({
@@ -138,6 +186,16 @@ export default async function ElectionPage({
         <p className="text-body">{t("roleFull")}</p>
       </div>
 
+      <section className="flex flex-col gap-2 rounded-lg border border-border bg-primary-light/40 p-4">
+        <h2 className="text-sm font-medium text-ink">{t("shareHeading")}</h2>
+        <p className="text-sm text-body">{t("shareBody")}</p>
+        <ShareLink
+          path={`/outposts/elections/${election.id}`}
+          title={t("metaTitle", { network: network?.title ?? `#${election.network_id}` })}
+          className="pt-1"
+        />
+      </section>
+
       {error && <FormError>{error}</FormError>}
 
       <section className="flex flex-col gap-2 rounded-lg border border-border bg-surface p-4 text-sm">
@@ -155,6 +213,24 @@ export default async function ElectionPage({
         <p className="text-muted">
           {t("rollLine", { roll: rollRow.roll_size, turnout: rollRow.turnout })}
         </p>
+        {/* A shared link mostly reaches people who are not members yet, so
+            the frozen roll has to be explained before they sign up. Without
+            this, forwarding the link reliably produces someone who joins,
+            tries to vote, and is told no. */}
+        {!onRoll && phase !== "closed" && (
+          <div className="flex flex-col gap-1 border-t border-border pt-2">
+            <p className="text-muted">
+              {t.rich("rollExplainer", {
+                // Rendered client-side in the reader's own timezone, same
+                // as every other date on this page.
+                cutoff: () => <LocalDateTime iso={election!.roll_cutoff} />,
+              })}
+            </p>
+            <Link href={`/networks/${election.network_id}`} className="text-primary underline">
+              {t("joinToTakePart")}
+            </Link>
+          </div>
+        )}
       </section>
 
       {phase === "closed" && (

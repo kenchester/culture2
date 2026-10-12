@@ -1,7 +1,9 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound, redirect } from "next/navigation";
 import { getLocale, getTranslations } from "next-intl/server";
 import { createClient } from "@/lib/supabase/server";
+import { previewText, shareMetadata } from "@/lib/share-metadata";
 import { type Author, getAvatarUrl, getDisplayName } from "@/lib/profiles";
 import { getGeoName } from "@/lib/geo-translation";
 import { getPostMediaUrl } from "@/lib/post-media";
@@ -90,6 +92,55 @@ async function getSuggestedSpeakerNetwork(
   );
 
   return best ?? null;
+}
+
+/**
+ * A network link is the most-forwarded thing on the site, so it needs a
+ * preview. Organisation networks are gated (00000000000078), so their
+ * metadata stays generic and uncrawled: the title alone would disclose
+ * which school a private network belongs to.
+ */
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ id: string }>;
+}): Promise<Metadata> {
+  const { id } = await params;
+  const t = await getTranslations("network");
+  const supabase = await createClient();
+
+  const { data: network } = await supabase
+    .from("networks")
+    .select("id, title, member_count, post_count, location_place_id")
+    .eq("id", id)
+    .maybeSingle();
+
+  // An unreadable row here means missing; there is nothing to preview.
+  if (!network) return {};
+
+  // The title is not a secret - the page shows it to anonymous visitors
+  // above the sign-in prompt, and a student following a shared link needs
+  // the preview to look right. Being in a search index is a different
+  // question: a network anchored on a place hidden from search belongs to
+  // an organisation, and is already kept out of CultureMesh's own search,
+  // so it should not be crawled either.
+  const { data: place } = await supabase
+    .from("places")
+    .select("hidden_from_search")
+    .eq("id", network.location_place_id as number)
+    .maybeSingle();
+
+  return shareMetadata({
+    title: network.title as string,
+    description: previewText(
+      t("metaDescription", {
+        members: (network.member_count as number) ?? 0,
+        posts: (network.post_count as number) ?? 0,
+      }),
+    ),
+    path: `/networks/${network.id}`,
+    noIndex: Boolean(place?.hidden_from_search),
+  });
 }
 
 export default async function NetworkPage({

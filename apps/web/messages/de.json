@@ -182,7 +182,10 @@
     "showAllReplies": "Alle Antworten anzeigen",
     "replyingTo": "Antwort auf {name}",
     "clearReplyTarget": "Widerrufe die Antwort auf diese Person",
-    "postDeleted": "Der ursprüngliche Beitrag wurde vom Autor gelöscht. Diese Antwort wurde behalten, weil jemand einen Link dazu geteilt hatte."
+    "postDeleted": "Der ursprüngliche Beitrag wurde vom Autor gelöscht. Diese Antwort wurde behalten, weil jemand einen Link dazu geteilt hatte.",
+    "metaTitle": "Eintrag {network}",
+    "metaDescriptionFallback": "Ein Beitrag, der auf CultureMesh geteilt wurde{network}.",
+    "metaReplyTitle": "Antwort in {network}"
   },
   "network": {
     "events": "Veranstaltungen",
@@ -212,7 +215,8 @@
     "loadMorePosts": "Weitere Beiträge laden",
     "signInToSeePosts": "Melden Sie sich mit Ihrer Schul-E-Mail an, um Beiträge in diesem Netzwerk zu sehen.",
     "reply": "Antworten",
-    "viewAllReplies": "Alle {count} Antworten anzeigen"
+    "viewAllReplies": "Alle {count} Antworten anzeigen",
+    "metaDescription": "{members} Mitglieder ·{posts} Beiträge. Beteiligen Sie sich an der Diskussion unter Menschen, die diesen Hintergrund und diesen Ort teilen."
   },
   "editableEntry": {
     "save": "Speichern",
@@ -648,6 +652,18 @@
       "rejected": "Nicht bestätigt – mehr Stimmen dagegen als dafür."
     },
     "outcomeTerm": "Die Laufzeit dauert {months} Monate ab der Zertifizierung.",
-    "winner": "Gewählter inoffizieller Konsul"
+    "winner": "Gewählter inoffizieller Konsul",
+    "shareHeading": "Gib das weiter",
+    "shareBody": "Jeder kann diesen Link öffnen, auch Leute, die noch nicht bei CultureMesh sind.",
+    "metaTitle": "{network} — Inoffizielle Konsulwahl",
+    "metaNominating": "Nominierungen sind offen. Jeder in dieser Community kann kandidieren, und die Mitglieder wählen den Gewinner.",
+    "metaVoting": "Die Abstimmung ist offen. Die Mitglieder dieser Gemeinschaft entscheiden, wer sie vertritt.",
+    "metaClosed": "Diese Wahl ist beendet.",
+    "rollExplainer": "Nur Mitglieder, die zuvor <cutoff></cutoff> beigetreten sind, dürfen bei dieser Wahl kandidieren oder abstimmen. Jeder kann der Gemeinschaft beitreten, mitmachen und bei der nächsten Wahl wahlberechtigt sein.",
+    "joinToTakePart": "Tritt dieser Community bei."
+  },
+  "share": {
+    "share": "Teilen",
+    "copied": "Link kopiert"
   }
 }

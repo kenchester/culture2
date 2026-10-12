@@ -182,7 +182,10 @@
     "showAllReplies": "Mostrar todas las respuestas",
     "replyingTo": "Respondiendo a {name}",
     "clearReplyTarget": "Cancela responder a esta persona",
-    "postDeleted": "La publicación original fue eliminada por su autor. Esta respuesta se mantuvo porque alguien compartió un enlace."
+    "postDeleted": "La publicación original fue eliminada por su autor. Esta respuesta se mantuvo porque alguien compartió un enlace.",
+    "metaTitle": "Publicar en {network}",
+    "metaDescriptionFallback": "Una publicación compartida {network} en CultureMesh.",
+    "metaReplyTitle": "Responder en {network}"
   },
   "network": {
     "events": "Eventos",
@@ -212,7 +215,8 @@
     "loadMorePosts": "Cargar más publicaciones",
     "signInToSeePosts": "Inicia sesión con el correo electrónico de tu colegio para ver las publicaciones en esta red.",
     "reply": "Responder",
-    "viewAllReplies": "Ver todas {count} las respuestas"
+    "viewAllReplies": "Ver todas {count} las respuestas",
+    "metaDescription": "{members} miembros ·{posts} publicaciones. Únete a la conversación entre personas que comparten este trasfondo y este lugar."
   },
   "editableEntry": {
     "save": "Salvar",
@@ -648,6 +652,18 @@
       "rejected": "No confirmado — más votos en contra que a favor."
     },
     "outcomeTerm": "El periodo dura {months} meses desde la certificación.",
-    "winner": "Cónsul no oficial electo"
+    "winner": "Cónsul no oficial electo",
+    "shareHeading": "Pásame esto",
+    "shareBody": "Cualquiera puede abrir este enlace, incluyendo quienes aún no están en CultureMesh.",
+    "metaTitle": "{network} — Elección no oficial de cónsul",
+    "metaNominating": "Las nominaciones están abiertas. Cualquiera en esta comunidad puede presentarse, y los miembros eligen al ganador.",
+    "metaVoting": "La votación está abierta. Los miembros de esta comunidad eligen quién la representa.",
+    "metaClosed": "Estas elecciones han terminado.",
+    "rollExplainer": "Solo los miembros que se hayan unido antes <cutoff></cutoff> pueden presentarse o votar en esta elección. Cualquiera puede unirse a la comunidad y seguir, y será elegible en la próxima.",
+    "joinToTakePart": "Únete a esta comunidad"
+  },
+  "share": {
+    "share": "Compartir",
+    "copied": "Enlace copiado"
   }
 }

@@ -177,6 +177,69 @@ test.describe("language detection", () => {
   });
 });
 
+test.describe("link previews", () => {
+  // The whole point of these tags is that a forwarded link looks like
+  // something in a group chat. A page that ships without them shares as a
+  // bare URL, which is indistinguishable from spam - so this asserts the
+  // tags exist rather than trusting that each new page remembered them.
+  const SHAREABLE = ["/", "/outposts", "/outposts/elections", `/networks/${POST_NETWORK}`];
+
+  for (const path of SHAREABLE) {
+    test(`${path} previews with a title, description and image`, async ({ request }) => {
+      const html = await (await request.get(path)).text();
+      const tag = (property: string) =>
+        html.match(
+          new RegExp(`<meta (?:property|name)="${property}" content="([^"]*)"`),
+        )?.[1];
+
+      expect(tag("og:title"), "og:title").toBeTruthy();
+      expect(tag("og:description"), "og:description").toBeTruthy();
+      expect(tag("og:site_name")).toBe("CultureMesh");
+      // Absolute, because a chat client will not resolve a relative one.
+      expect(tag("og:image")).toMatch(/^https?:\/\//);
+      expect(tag("og:url")).toMatch(/^https?:\/\//);
+      expect(tag("twitter:card")).toBe("summary_large_image");
+    });
+  }
+
+  test("the card image is a real PNG", async ({ request }) => {
+    const response = await request.get("/opengraph-image");
+    expect(response.status()).toBe(200);
+    expect(response.headers()["content-type"]).toContain("image/png");
+    // A plausible size: an empty or error response would still be a 200.
+    expect((await response.body()).byteLength).toBeGreaterThan(5_000);
+  });
+
+  test("an election preview names the community and the stage", async ({ request }) => {
+    const list = await (await request.get("/outposts/elections")).text();
+    const id = list.match(/\/outposts\/elections\/(\d+)/)?.[1];
+    test.skip(!id, "no election to preview");
+
+    const html = await (await request.get(`/outposts/elections/${id}`)).text();
+    const title = html.match(/<meta property="og:title" content="([^"]*)"/)?.[1];
+    // Not just "CultureMesh": the forwarded link has to say which
+    // community is electing, or there is no reason to open it.
+    expect(title).toMatch(/Unofficial Consul election/);
+    expect(title!.length).toBeGreaterThan("Unofficial Consul election".length + 3);
+  });
+
+  test("an organisation network previews but is not indexed", async ({ request }) => {
+    const html = await (await request.get(`/networks/${ORG_NETWORK}`)).text();
+    // The title is not secret - the page already shows it above the
+    // sign-in prompt, and a student following a shared link needs the
+    // preview to look right.
+    expect(html.match(/<meta property="og:title" content="([^"]*)"/)?.[1]).toBeTruthy();
+    // Being crawled is the separate question, and the answer is no: these
+    // are kept out of CultureMesh's own search too.
+    expect(html).toMatch(/<meta name="robots" content="[^"]*noindex/);
+  });
+
+  test("a public network stays indexable", async ({ request }) => {
+    const html = await (await request.get(`/networks/${POST_NETWORK}`)).text();
+    expect(html).not.toMatch(/<meta name="robots" content="[^"]*noindex/);
+  });
+});
+
 test.describe("permalinks", () => {
   test("a post permalink shows the post and its network", async ({ page }) => {
     await page.goto(`/networks/${POST_NETWORK}`);

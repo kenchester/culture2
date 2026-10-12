@@ -1,8 +1,10 @@
+import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { getTranslations } from "next-intl/server";
 import { createClient } from "@/lib/supabase/server";
+import { previewText, shareMetadata } from "@/lib/share-metadata";
 import { gatedContextForPost } from "@/lib/gated-access";
 import { SignInToView } from "@/components/sign-in-to-view";
 import { type Author, getAvatarUrl, getDisplayName } from "@/lib/profiles";
@@ -31,6 +33,42 @@ function extractCount(value: unknown): number {
  * school network returns no rows to a non-member (00000000000078), so this
  * 404s for them rather than leaking that the reply exists.
  */
+/** Same reasoning as the post permalink: shareable, previewable, not indexed. */
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ id: string; postId: string; replyId: string }>;
+}): Promise<Metadata> {
+  const { id, postId, replyId } = await params;
+  const t = await getTranslations("postDetail");
+  const supabase = await createClient();
+
+  const { data: reply } = await supabase
+    .from("post_replies")
+    .select("id, body, post_id")
+    .eq("id", replyId)
+    .eq("post_id", postId)
+    .maybeSingle();
+  if (!reply) return {};
+
+  const { data: network } = await supabase
+    .from("networks")
+    .select("title")
+    .eq("id", id)
+    .maybeSingle();
+  const networkTitle = (network?.title as string | null) ?? "";
+
+  return shareMetadata({
+    title: t("metaReplyTitle", { network: networkTitle }),
+    description: previewText(
+      ((reply.body as string | null) ?? "").trim() ||
+        t("metaDescriptionFallback", { network: networkTitle }),
+    ),
+    path: `/networks/${id}/posts/${postId}/replies/${reply.id}`,
+    noIndex: true,
+  });
+}
+
 export default async function ReplyPage({
   params,
   searchParams,

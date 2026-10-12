@@ -182,7 +182,10 @@
     "showAllReplies": "Afficher toutes les réponses",
     "replyingTo": "Réponse à {name}",
     "clearReplyTarget": "Annulez la réponse à cette personne",
-    "postDeleted": "Le post original a été supprimé par son auteur. Cette réponse a été conservée parce que quelqu’un y avait partagé un lien."
+    "postDeleted": "Le post original a été supprimé par son auteur. Cette réponse a été conservée parce que quelqu’un y avait partagé un lien.",
+    "metaTitle": "Publier dans {network}",
+    "metaDescriptionFallback": "Un post partagé {network} sur CultureMesh.",
+    "metaReplyTitle": "Répondre dans {network}"
   },
   "network": {
     "events": "Événements",
@@ -212,7 +215,8 @@
     "loadMorePosts": "Charger plus de publications",
     "signInToSeePosts": "Connectez-vous avec votre adresse e-mail scolaire pour voir les publications de ce réseau.",
     "reply": "Répondre",
-    "viewAllReplies": "Voir toutes les {count} réponses"
+    "viewAllReplies": "Voir toutes les {count} réponses",
+    "metaDescription": "{members} membres ·{posts} publications. Rejoignez la conversation parmi les personnes partageant ce parcours et cet endroit."
   },
   "editableEntry": {
     "save": "Sauvegarder",
@@ -648,6 +652,18 @@
       "rejected": "Non confirmé — plus de votes contre que pour."
     },
     "outcomeTerm": "Le mandat dure {months} plusieurs mois à partir de la certification.",
-    "winner": "Consul non officiel élu"
+    "winner": "Consul non officiel élu",
+    "shareHeading": "Transmets ça",
+    "shareBody": "N’importe qui peut ouvrir ce lien, y compris les personnes qui ne sont pas encore sur CultureMesh.",
+    "metaTitle": "{network} — élection du consul non officiel",
+    "metaNominating": "Les candidatures sont ouvertes. Toute personne dans cette communauté peut se présenter, et les membres choisissent le gagnant.",
+    "metaVoting": "Le vote est ouvert. Les membres de cette communauté choisissent qui la représente.",
+    "metaClosed": "Cette élection est close.",
+    "rollExplainer": "Seuls les membres ayant rejoint auparavant <cutoff></cutoff> peuvent se présenter ou voter à cette élection. N’importe qui peut rejoindre la communauté et suivre, et sera éligible lors de la prochaine élection.",
+    "joinToTakePart": "Rejoignez cette communauté"
+  },
+  "share": {
+    "share": "Partager",
+    "copied": "Lien copié"
   }
 }

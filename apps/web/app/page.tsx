@@ -1,8 +1,19 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import { getTranslations } from "next-intl/server";
 import { SearchForm } from "@/app/search/search-form";
+import { previewText, shareMetadata } from "@/lib/share-metadata";
 
 const stepKeys = ["search", "joinLaunch", "connect"] as const;
+
+export async function generateMetadata(): Promise<Metadata> {
+  const t = await getTranslations("home");
+  return shareMetadata({
+    title: t("heading"),
+    description: previewText(t("subheading")),
+    path: "/",
+  });
+}
 
 export default async function Home() {
   const t = await getTranslations("home");

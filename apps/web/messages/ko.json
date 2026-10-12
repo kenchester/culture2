@@ -182,7 +182,10 @@
     "showAllReplies": "모든 답변 보기",
     "replyingTo": "답변 {name}",
     "clearReplyTarget": "이 사람에게 답장하는 것을 취소하세요",
-    "postDeleted": "원본 게시물은 작성자에 의해 삭제되었습니다. 이 답변은 누군가가 링크를 공유해 남겨두었습니다."
+    "postDeleted": "원본 게시물은 작성자에 의해 삭제되었습니다. 이 답변은 누군가가 링크를 공유해 남겨두었습니다.",
+    "metaTitle": "포스트 인 {network}",
+    "metaDescriptionFallback": "CultureMesh {network} 에 공유된 글입니다.",
+    "metaReplyTitle": "답글 작성 {network}"
   },
   "network": {
     "events": "행사",
@@ -212,7 +215,8 @@
     "loadMorePosts": "더 많은 게시물 불러오기",
     "signInToSeePosts": "이 네트워크의 게시물을 보시려면 학교 이메일로 로그인하세요.",
     "reply": "답글",
-    "viewAllReplies": "모든 {count} 답변 보기"
+    "viewAllReplies": "모든 {count} 답변 보기",
+    "metaDescription": "{members} 회원 ·{posts} 게시물. 이 배경과 장소를 공유하는 사람들 간의 대화에 참여하세요."
   },
   "editableEntry": {
     "save": "저장",
@@ -599,10 +603,10 @@
     "districtsEarly": "초기 시절 — 대부분 최근에 만들어졌고 소수의 인원이 등장합니다."
   },
   "elections": {
-    "title": "비공식 집정관 선거",
+    "title": "비공식 영사 선거",
     "intro": "공동체는 공식적인 존재가 없는 곳에서도 대표자를 선택할 수 있습니다. 이 직책은 자신이 섬기는 주민들에 의해 선출되며, 임기는 2년입니다.",
     "historyNote": "이것이 오래된 형태의 직책으로, 상업 영사는 처음에는 해외의 무역 공동체가 선출한 직책으로 시작되었으며, 이후 국가가 임명을 인수했습니다.",
-    "roleFull": "비공식 영사 — 지역 주민들이 2년 임기로 선출하는 인물",
+    "roleFull": "비공식 영사 — 커뮤니티 구성원이 2년 임기로 선출",
     "scopeNote": "비공식 영사는 어떤 정부에서도 임명하지 않으며 공식 지위도 없습니다. 그들은 서류를 발급하거나 수수료를 부과하거나 이민 관련 조언을 할 수 없습니다.",
     "openTitle": "선거",
     "noneYet": "아직 선거는 없어.",
@@ -648,6 +652,18 @@
       "rejected": "비확정 — 찬성보다 반대 투표가 더 많았습니다."
     },
     "outcomeTerm": "이 기간은 자격증 후 몇 달간 {months} 지속됩니다.",
-    "winner": "비공식 집정관으로 선출됨"
+    "winner": "비공식 영사로 선출됨",
+    "shareHeading": "이걸 전해 주세요",
+    "shareBody": "이 링크는 아직 CultureMesh에 가입하지 않은 사람도 포함해 누구나 열 수 있습니다.",
+    "metaTitle": "{network} — 비공식 영사 선거",
+    "metaNominating": "추천은 열려 있습니다. 이 커뮤니티의 누구나 출마할 수 있으며, 회원들이 수상자를 선택합니다.",
+    "metaVoting": "투표는 열려 있습니다. 이 커뮤니티의 구성원들이 대표를 선택합니다.",
+    "metaClosed": "이번 선거는 이미 종료되었습니다.",
+    "rollExplainer": "이전에 <cutoff></cutoff> 가입한 회원만이 이번 선거에 출마하거나 투표할 수 있습니다. 누구나 커뮤니티에 가입하여 참여할 수 있으며, 다음 선거에도 참여할 수 있습니다.",
+    "joinToTakePart": "이 커뮤니티에 참여하세요"
+  },
+  "share": {
+    "share": "공유하기",
+    "copied": "링크 복사됨"
   }
 }

@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import { useTranslations } from "next-intl";
 import { markReplyPermalinkCopied } from "@/app/networks/actions";
+import { copyToClipboard } from "@/lib/copy-to-clipboard";
 
 function LinkIcon() {
   return (
@@ -54,32 +55,12 @@ export function CopyLinkButton({
   async function handleCopy() {
     const url = new URL(path, window.location.origin).toString();
 
-    try {
-      await navigator.clipboard.writeText(url);
-    } catch {
-      // navigator.clipboard is undefined outside a secure context and is
-      // still refused by some mobile browsers even inside one. The
-      // textarea/execCommand route is deprecated but remains the only
-      // thing that works there, and iOS additionally needs the explicit
-      // selection range - select() alone does nothing on it.
-      const scratch = document.createElement("textarea");
-      scratch.value = url;
-      scratch.setAttribute("readonly", "");
-      scratch.style.position = "fixed";
-      scratch.style.top = "0";
-      scratch.style.opacity = "0";
-      document.body.appendChild(scratch);
-      scratch.select();
-      scratch.setSelectionRange(0, url.length);
-      try {
-        document.execCommand("copy");
-      } catch {
-        // Nothing left to try; the confirmation below would be a lie, so
-        // bail out without showing it.
-        document.body.removeChild(scratch);
-        return;
-      }
-      document.body.removeChild(scratch);
+    // Shared with components/share-link.tsx: one clipboard fallback
+    // path, not two that can drift.
+    if (!(await copyToClipboard(url))) {
+      // Nothing left to try; the confirmation below would be a lie, so
+      // bail out without showing it.
+      return;
     }
 
     // Recorded only for replies, and only after the copy actually

@@ -6,7 +6,7 @@ import { getLocale, getMessages, getTranslations } from "next-intl/server";
 import { Nav } from "@/app/nav";
 import { Footer } from "@/app/footer";
 import { RTL_LOCALES, type Locale } from "@/lib/locale";
-import { isLearnHost } from "@/lib/site-url";
+import { getSiteUrl, isLearnHost } from "@/lib/site-url";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -46,10 +46,26 @@ const spaceMono = Space_Mono({
   preload: false,
 });
 
-export const metadata: Metadata = {
-  title: "CultureMesh",
-  description: "Find your diaspora network.",
-};
+// The site-wide defaults every page inherits unless it builds its own
+// through lib/share-metadata.ts. metadataBase has to be set for the
+// opengraph-image to resolve to an absolute URL, which is the only kind a
+// chat client will fetch.
+export async function generateMetadata(): Promise<Metadata> {
+  const siteUrl = await getSiteUrl();
+  return {
+    metadataBase: new URL(siteUrl),
+    title: { default: "CultureMesh", template: "%s — CultureMesh" },
+    description: "Find your diaspora network.",
+    applicationName: "CultureMesh",
+    openGraph: {
+      type: "website",
+      siteName: "CultureMesh",
+      title: "CultureMesh",
+      description: "Find your diaspora network.",
+    },
+    twitter: { card: "summary_large_image" },
+  };
+}
 
 export default async function RootLayout({ children }: LayoutProps<"/">) {
   const locale = await getLocale();
