@@ -777,6 +777,13 @@
     "startOne": "Comece uma comunidade",
     "sourcesHeading": "Fontes",
     "sourcesNote": "Estatísticas oficiais, relações cívicas e os próprios dados do CultureMesh são mantidos separados e atribuídos, para que o leitor possa identificar quais são qual.",
-    "metaDescription": "De onde {city}vieram as pessoas, com quem a cidade é irmã e as comunidades da diáspora que existem lá."
+    "metaDescription": "De onde {city}vieram as pessoas, com quem a cidade é irmã e as comunidades da diáspora que existem lá.",
+    "gapIntro": "Comparando as {top} maiores comunidades daqui com as cidades com as quais esta cidade é irmã.",
+    "startIncoming": "Comece uma comunidade em {city}",
+    "startOutgoing": "Comece uma comunidade para pessoas de {city}",
+    "missingHeading": "Comunidades que ainda não existem",
+    "missingIntro": "Origens com pessoas vivendo aqui e ainda sem lugar para que se encontrem. As contagens são do censo acima.",
+    "missingPeople": "{count} pessoas aqui",
+    "missingStart": "Ligue"
   }
 }

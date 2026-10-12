@@ -777,6 +777,13 @@
     "startOne": "创建社区",
     "sourcesHeading": "资料来源",
     "sourcesNote": "官方统计数据、公民关系和CultureMesh自身数据都被分开并注明，读者可以分辨出哪一个。",
-    "metaDescription": "人们来自哪里{city}，城市与谁结为友好城市，以及那里存在的侨民社区。"
+    "metaDescription": "人们来自哪里{city}，城市与谁结为友好城市，以及那里存在的侨民社区。",
+    "gapIntro": "将这里最大的{top}个社区与该市的友好城市进行比较。",
+    "startIncoming": "在{city}创建一个社区",
+    "startOutgoing": "创建一个面向来自{city}的人的社区",
+    "missingHeading": "尚未存在的社区",
+    "missingIntro": "起源于居住在这里的人们，但尚未找到彼此。这些伯爵来自上述人口普查。",
+    "missingPeople": "这里有{count}人",
+    "missingStart": "开始吧"
   }
 }

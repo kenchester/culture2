@@ -777,6 +777,13 @@
     "startOne": "Crea una comunidad",
     "sourcesHeading": "Fuentes",
     "sourcesNote": "Las estadísticas oficiales, las relaciones cívicas y los propios datos de CultureMesh se mantienen separados y se atribuin, para que el lector pueda distinguir cuál es cuál.",
-    "metaDescription": "De dónde {city}proviene la gente, con quién está hermanada la ciudad y las comunidades de la diáspora que existen allí."
+    "metaDescription": "De dónde {city}proviene la gente, con quién está hermanada la ciudad y las comunidades de la diáspora que existen allí.",
+    "gapIntro": "Comparando las {top} comunidades más grandes de aquí con las ciudades con las que esta ciudad está hermanada.",
+    "startIncoming": "Crear una comunidad en {city}",
+    "startOutgoing": "Crear una comunidad para personas de {city}",
+    "missingHeading": "Comunidades que aún no existen",
+    "missingIntro": "Orígenes con personas viviendo aquí y aún sin ningún lugar donde puedan encontrarse. Los recuentos provienen del censo anterior.",
+    "missingPeople": "{count} personas aquí",
+    "missingStart": "Enciéndelo"
   }
 }

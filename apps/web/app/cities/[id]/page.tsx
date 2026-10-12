@@ -79,12 +79,58 @@ async function loadCity(id: string, locale: Locale) {
     getPlaceChain(supabase, Number(place.id), locale),
   ]);
 
+  // Which countries already have a community arriving here?
+  //
+  // Resolved up the place hierarchy, because an origin can be
+  // sub-national: "People from Fujian in New York City" means China is
+  // covered, and telling New York it has no Chinese community would be
+  // both wrong and the exact opposite of this project's argument that
+  // sub-national origin matters.
+  const incomingOriginIds = (networks ?? [])
+    .filter((n) => n.location_place_id === place.id && n.origin_place_id)
+    .map((n) => n.origin_place_id as number);
+
+  const coveredCountryIds = new Set<number>();
+  let frontier = incomingOriginIds;
+  // Depth 3 covers city -> region -> country, the deepest this data goes.
+  for (let depth = 0; depth < 3 && frontier.length > 0; depth++) {
+    const { data: rows } = await supabase
+      .from("places")
+      .select("id, type, parent_id")
+      .in("id", frontier);
+    const next: number[] = [];
+    for (const row of rows ?? []) {
+      if (row.type === "country") coveredCountryIds.add(row.id as number);
+      else if (row.parent_id) next.push(row.parent_id as number);
+    }
+    frontier = next;
+  }
+
+  // Census origins are ISO codes; networks are place ids. The join is the
+  // countries table.
+  const isoCodes = (origins ?? [])
+    .filter((o) => !o.is_total)
+    .slice(0, 25)
+    .map((o) => o.origin_country_iso);
+  const { data: countryPlaces } = isoCodes.length
+    ? await supabase
+        .from("places")
+        .select("id, name, iso_code")
+        .eq("type", "country")
+        .in("iso_code", isoCodes)
+    : { data: [] };
+  const placeForIso = new Map(
+    (countryPlaces ?? []).map((p) => [p.iso_code as string, p.id as number]),
+  );
+
   return {
     place,
     chain,
     sisters: (sisters ?? []) as SisterCity[],
     origins: (origins ?? []) as OriginStat[],
     networks: (networks ?? []) as NetworkRow[],
+    coveredCountryIds,
+    placeForIso,
   };
 }
 
@@ -113,7 +159,7 @@ export default async function CityPage({ params }: { params: Promise<{ id: strin
   const loaded = await loadCity(id, locale);
   if (!loaded) notFound();
 
-  const { place, chain, sisters, origins, networks } = loaded;
+  const { place, chain, sisters, origins, networks, coveredCountryIds, placeForIso } = loaded;
 
   const total = origins.find((o) => o.is_total) ?? null;
   const countries = origins.filter((o) => !o.is_total);
@@ -127,20 +173,36 @@ export default async function CityPage({ params }: { params: Promise<{ id: strin
   const partnerCountries = new Set(
     sisters.map((s) => s.partner_country_iso).filter(Boolean) as string[],
   );
-  const originCountries = new Map(countries.map((c) => [c.origin_country_iso, c]));
-  const canCompare = partnerCountries.size > 0 && originCountries.size > 0;
+  // Compared against the largest communities, not against every country
+  // the census lists. The census names about 120 countries, so almost
+  // every twin city's country has SOMEBODY here - comparing against the
+  // full list made "a partnership and a community here" mean "has at
+  // least one resident", which measures nothing. Fifteen is arbitrary but
+  // stated on the page rather than hidden in here.
+  const TOP_ORIGINS = 15;
+  const top = countries.slice(0, TOP_ORIGINS);
+  const topIsos = new Set(top.map((c) => c.origin_country_iso));
+  const canCompare = partnerCountries.size > 0 && top.length > 0;
 
-  const both = canCompare
-    ? [...originCountries.values()].filter((c) => partnerCountries.has(c.origin_country_iso))
-    : [];
+  const both = canCompare ? top.filter((c) => partnerCountries.has(c.origin_country_iso)) : [];
   const communityOnly = canCompare
-    ? [...originCountries.values()].filter((c) => !partnerCountries.has(c.origin_country_iso))
+    ? top.filter((c) => !partnerCountries.has(c.origin_country_iso))
     : [];
   const partnerOnly = canCompare
-    ? sisters.filter(
-        (s) => s.partner_country_iso && !originCountries.has(s.partner_country_iso),
-      )
+    ? sisters.filter((s) => s.partner_country_iso && !topIsos.has(s.partner_country_iso))
     : [];
+
+  // Top origins with people here, a country row we can link to, and no
+  // incoming community yet.
+  const missing = countries
+    .map((c) => ({
+      iso: c.origin_country_iso,
+      label: c.origin_label,
+      people: c.people,
+      placeId: placeForIso.get(c.origin_country_iso) ?? null,
+    }))
+    .filter((c) => c.placeId !== null && !coveredCountryIds.has(c.placeId as number))
+    .slice(0, 8) as { iso: string; label: string; people: number; placeId: number }[];
 
   const sourceNote = sisters[0];
 
@@ -235,6 +297,7 @@ export default async function CityPage({ params }: { params: Promise<{ id: strin
              reads this page at all. */}
       <section className="flex flex-col gap-3 rounded-lg border border-border bg-primary-light/40 p-5">
         <h2 className="font-display text-xl text-ink">{t("gapHeading")}</h2>
+        {canCompare && <p className="text-sm text-body">{t("gapIntro", { top: TOP_ORIGINS })}</p>}
         {!canCompare ? (
           <p className="text-sm text-body">{t("gapPending")}</p>
         ) : (
@@ -327,10 +390,56 @@ export default async function CityPage({ params }: { params: Promise<{ id: strin
           )}
         </div>
 
-        <Link href="/suggest-network" className="self-start text-sm text-primary underline">
-          {t("startOne")}
-        </Link>
+        <div className="flex flex-wrap gap-4">
+          {/* Prefills the right side of the search, so the link lands on
+              "pick an origin for a community in this city" rather than on
+              the suggest-a-missing-geography form - almost every city is
+              already in the database. */}
+          <Link
+            href={`/search/results?locationId=${place.id}&locationQuery=${encodeURIComponent(place.name as string)}`}
+            className="text-sm text-primary underline"
+          >
+            {t("startIncoming", { city: place.name as string })}
+          </Link>
+          <Link
+            href={`/search/results?originId=${place.id}&originQuery=${encodeURIComponent(place.name as string)}`}
+            className="text-sm text-primary underline"
+          >
+            {t("startOutgoing", { city: place.name as string })}
+          </Link>
+        </div>
       </section>
+
+      {/* The payoff of the census block: a specific, counted, missing
+          community, with both sides of the link already filled in. This
+          works in a city with no users at all, which is the point. */}
+      {missing.length > 0 && (
+        <section className="flex flex-col gap-3">
+          <h2 className="text-lg font-medium text-ink">{t("missingHeading")}</h2>
+          <p className="text-sm text-muted">{t("missingIntro")}</p>
+          <ul className="flex flex-col gap-1">
+            {missing.map((m) => (
+              <li
+                key={m.iso}
+                className="flex flex-wrap items-baseline justify-between gap-2 border-b border-border py-1 text-sm"
+              >
+                <span className="text-ink">{m.label}</span>
+                <span className="flex items-baseline gap-3">
+                  <span className="text-muted tabular-nums">
+                    {t("missingPeople", { count: m.people.toLocaleString(locale) })}
+                  </span>
+                  <Link
+                    href={`/search/results?originId=${m.placeId}&originQuery=${encodeURIComponent(m.label)}&locationId=${place.id}&locationQuery=${encodeURIComponent(place.name as string)}`}
+                    className="text-primary underline"
+                  >
+                    {t("missingStart")}
+                  </Link>
+                </span>
+              </li>
+            ))}
+          </ul>
+        </section>
+      )}
 
       <section className="flex flex-col gap-2 border-t border-border pt-4">
         <h2 className="text-sm font-medium text-ink">{t("sourcesHeading")}</h2>

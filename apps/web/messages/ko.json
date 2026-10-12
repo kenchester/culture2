@@ -777,6 +777,13 @@
     "startOne": "커뮤니티를 시작하세요",
     "sourcesHeading": "출처",
     "sourcesNote": "공식 통계, 시민 관계, 그리고 CultureMesh 자체 데이터는 별도로 보관되고 출처가 명시되어 독자가 누가 누구인지 구분할 수 있습니다.",
-    "metaDescription": "사람들이 어디{city}서 왔는지, 도시가 자매결연을 맺고 있는지, 그리고 그곳에 존재하는 디아스포라 공동체들."
+    "metaDescription": "사람들이 어디{city}서 왔는지, 도시가 자매결연을 맺고 있는지, 그리고 그곳에 존재하는 디아스포라 공동체들.",
+    "gapIntro": "이곳에서 가장 큰 {top}개 커뮤니티와 이 도시의 자매도시를 비교합니다.",
+    "startIncoming": "{city}에서 커뮤니티 시작하기",
+    "startOutgoing": "{city} 출신 사람들을 위한 커뮤니티 시작하기",
+    "missingHeading": "아직 존재하지 않는 공동체들",
+    "missingIntro": "이곳에 사는 사람들과 기원이 있었고, 아직 서로를 찾을 곳이 없다는 것. 이 백작은 위 인구조사에서 나온 것이다.",
+    "missingPeople": "이곳에 {count}명",
+    "missingStart": "시작해"
   }
 }

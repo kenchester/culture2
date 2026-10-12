@@ -1,210 +1,203 @@
 // Loads foreign-born residents by country of birth, per city, from the
-// US Census Bureau's American Community Survey (table B05006).
+// US Census Bureau's American Community Survey (table B05006). This is
+// block 1 of a city page, and block 3 - the sister-city gap - cannot be
+// computed without it.
 //
-// This is block 1 of a city page, and block 3 - the sister-city gap -
-// cannot be computed without it.
+// Reads through Census Reporter rather than api.census.gov. The Census
+// Bureau's own API now redirects unauthenticated requests to a "missing
+// key" page; Census Reporter is a long-running nonprofit mirror of the
+// same tables, needs no key, and reports which ACS release each figure
+// came from - which matters, because the release differs by city (1-year
+// estimates are only published for places above 65,000 people, so smaller
+// cities fall back to 5-year). The release is stored per row rather than
+// hardcoded for exactly that reason.
 //
-// NEEDS A FREE API KEY. api.census.gov used to answer unauthenticated
-// requests and now redirects them to a "Missing Key" page, so this cannot
-// run until CENSUS_API_KEY is set:
-//
-//   1. Request one (takes a minute): https://api.census.gov/data/key_signup.html
-//   2. Add CENSUS_API_KEY=... to apps/web/.env.local
-//   3. npx tsx scripts/load-census-origins.ts --dry-run
-//   4. npx tsx scripts/load-census-origins.ts --prod
-//
-// --dry-run prints what it would write and touches no database, so the
-// numbers can be eyeballed against data.census.gov before anything lands.
-//
-// NOTE: this script has never been executed - no key was available when it
-// was written. Run --dry-run first and read the output.
+// Run: npm run load-census-origins -- --dry-run     (prints, writes nothing)
+//      npm run load-census-origins -- --prod
 import countries from "i18n-iso-countries";
 import enCountryNames from "i18n-iso-countries/langs/en.json";
 import { adminClient } from "./lib/admin";
 
 countries.registerLocale(enCountryNames);
 
-const DATASET = "2023/acs/acs5";
-const PERIOD = "ACS 2019-2023 5-year estimates";
-const SOURCE = "US Census Bureau, ACS table B05006";
+const SOURCE = "US Census Bureau, ACS table B05006 (via Census Reporter)";
 
-// Census FIPS: state code and "place" code. A place is the incorporated
-// city, which is the right granularity here - a metro area would fold in
-// suburbs the city does not govern.
-const CITIES: { placeId: number; name: string; state: string; place: string }[] = [
-  { placeId: 25760, name: "New York City", state: "36", place: "51000" },
-  { placeId: 24835, name: "Houston", state: "48", place: "35000" },
+// Census geo ids: 16000US + state FIPS + place FIPS. A "place" is the
+// incorporated city, which is the right granularity - a metro area folds
+// in suburbs the city does not govern.
+const CITIES: { placeId: number; name: string; geoId: string }[] = [
+  { placeId: 25760, name: "New York City", geoId: "16000US3651000" },
+  { placeId: 24835, name: "Houston", geoId: "16000US4835000" },
 ];
 
-// ACS country labels that i18n-iso-countries will not resolve on its own.
-// Anything still unmatched after this is reported and skipped rather than
-// guessed at.
+// Residual categories, not countries. "Other Eastern Asia" and
+// "Asia, n.e.c." are what the Bureau puts people in when the specific
+// country is suppressed or unlisted; treating them as origins would
+// invent places.
+function isResidual(label: string): boolean {
+  return (
+    label.startsWith("Other ") ||
+    label.includes("n.e.c.") ||
+    label === "West Indies"
+  );
+}
+
+// ACS labels that i18n-iso-countries will not resolve. Several map to the
+// same ISO code on purpose - England, Scotland and the remainder of the
+// UK are three ACS rows for one country - which is why the loader sums by
+// code rather than mapping one row to one row.
 const ALIASES: Record<string, string> = {
-  "Viet Nam": "VN",
-  "Korea": "KR",
-  "South Korea": "KR",
-  "North Korea": "KP",
-  "Burma": "MM",
-  "Myanmar": "MM",
-  "Cape Verde": "CV",
-  "Ivory Coast": "CI",
-  "Côte d'Ivoire": "CI",
-  "Laos": "LA",
-  "Macedonia": "MK",
-  "North Macedonia": "MK",
-  "Czechoslovakia": "CZ",
-  "Czechia": "CZ",
-  "Czech Republic": "CZ",
-  "Russia": "RU",
-  "Syria": "SY",
-  "Taiwan": "TW",
-  "Hong Kong": "HK",
-  "Macau": "MO",
-  "Bolivia": "BO",
-  "Tanzania": "TZ",
-  "Moldova": "MD",
-  "Brunei": "BN",
+  "Burma (Myanmar)": "MM",
   "Cabo Verde": "CV",
-  "Congo": "CG",
-  "Democratic Republic of Congo": "CD",
-  "Zaire": "CD",
+  "China, excluding Hong Kong and Taiwan": "CN",
+  // A real ACS category for people born in the former state. Folded into
+  // Czechia, which is where most of that population originated; imperfect,
+  // and small enough not to move any ranking.
+  "Czechoslovakia (includes Czech Republic and Slovakia)": "CZ",
+  "Democratic Republic of Congo (Zaire)": "CD",
+  England: "GB",
+  Scotland: "GB",
+  "United Kingdom, excluding England and Scotland": "GB",
+  // An autonomous region of Portugal, reported separately by the Bureau.
+  "Azores Islands": "PT",
+  Korea: "KR",
+  Laos: "LA",
+  Micronesia: "FM",
+  Moldova: "MD",
+  "North Macedonia (Macedonia)": "MK",
   "St. Lucia": "LC",
   "St. Vincent and the Grenadines": "VC",
-  "St. Kitts-Nevis": "KN",
-  "Trinidad and Tobago": "TT",
-  "Antigua and Barbuda": "AG",
-  "Bosnia and Herzegovina": "BA",
+  Syria: "SY",
 };
 
-function isoFor(label: string): string | null {
-  if (ALIASES[label]) return ALIASES[label];
-  const code = countries.getAlpha2Code(label, "en");
-  return code ?? null;
+// i18n-iso-countries returns the formal ISO name, which for several codes
+// is a label this project deliberately avoids - components/autocomplete-
+// field.tsx already suppresses the "country" badge for exactly these
+// places because displaying the ISO framing reads as taking a political
+// position CultureMesh has no reason to take. Same reasoning, applied to
+// the name itself.
+const DISPLAY_NAMES: Record<string, string> = {
+  CN: "China",
+  TW: "Taiwan",
+  HK: "Hong Kong",
+  MO: "Macao",
+  KR: "South Korea",
+  KP: "North Korea",
+  PS: "Palestine",
+  VN: "Vietnam",
+  LA: "Laos",
+  MD: "Moldova",
+  SY: "Syria",
+  RU: "Russia",
+  BO: "Bolivia",
+  TZ: "Tanzania",
+  VE: "Venezuela",
+  IR: "Iran",
+  GB: "United Kingdom",
+  CD: "Democratic Republic of the Congo",
+  CZ: "Czechia",
+};
+
+function displayName(iso: string): string {
+  return DISPLAY_NAMES[iso] ?? countries.getName(iso, "en") ?? iso;
 }
 
-async function fetchJson(url: string) {
-  const response = await fetch(url);
-  const text = await response.text();
-  if (!response.ok || text.trimStart().startsWith("<")) {
-    throw new Error(
-      `Census API returned ${response.status}. ${
-        text.includes("Missing Key")
-          ? "CENSUS_API_KEY is missing or rejected - see the header of this file."
-          : text.slice(0, 200)
-      }`,
-    );
-  }
-  return JSON.parse(text);
+function isoFor(label: string): string | null {
+  return ALIASES[label] ?? countries.getAlpha2Code(label, "en") ?? null;
 }
+
+type Reporter = {
+  release: { id: string; name: string; years: string };
+  tables: { B05006: { columns: Record<string, { indent: number; name: string }> } };
+  data: Record<string, { B05006: { estimate: Record<string, number> } }>;
+};
 
 async function main() {
   const dryRun = process.argv.includes("--dry-run");
-  const key = process.env.CENSUS_API_KEY;
-  if (!key) {
-    console.error(
-      [
-        "",
-        "CENSUS_API_KEY is not set, and api.census.gov now refuses",
-        "unauthenticated requests.",
-        "",
-        "  1. Request a free key: https://api.census.gov/data/key_signup.html",
-        "  2. Add CENSUS_API_KEY=... to apps/web/.env.local",
-        "  3. Re-run with --dry-run first",
-        "",
-      ].join("\n"),
-    );
-    process.exit(1);
-  }
-
-  // Labels look like "Estimate!!Total:!!Europe:!!Northern Europe:!!Denmark".
-  // A leaf - an actual country - is a segment with no trailing colon.
-  const groups = await fetchJson(
-    `https://api.census.gov/data/${DATASET}/groups/B05006.json?key=${key}`,
-  );
-  const labels: Record<string, string> = Object.fromEntries(
-    Object.entries(groups.variables as Record<string, { label: string }>).map(([k, v]) => [
-      k,
-      v.label,
-    ]),
-  );
-
   const admin = dryRun ? null : adminClient();
   const unmatched = new Set<string>();
 
   for (const city of CITIES) {
-    const raw = await fetchJson(
-      `https://api.census.gov/data/${DATASET}?get=group(B05006)&for=place:${city.place}&in=state:${city.state}&key=${key}`,
+    // Census Reporter rejects requests with no User-Agent (403), and
+    // identifying the caller is the polite thing to do against a free
+    // nonprofit API regardless.
+    const response = await fetch(
+      `https://api.censusreporter.org/1.0/data/show/latest?table_ids=B05006&geo_ids=${city.geoId}`,
+      { headers: { "User-Agent": "CultureMesh/1.0 (city pages; https://www.culturemesh.com)" } },
     );
-    const values: Record<string, string> = Object.fromEntries(
-      (raw[0] as string[]).map((header, i) => [header, (raw[1] as string[])[i]]),
-    );
-
-    const rows: {
-      city_place_id: number;
-      origin_country_iso: string;
-      origin_label: string;
-      people: number;
-      is_total: boolean;
-      source: string;
-      period: string;
-    }[] = [];
-
-    const total = Number(values["B05006_001E"] ?? 0);
-    if (total > 0) {
-      rows.push({
-        city_place_id: city.placeId,
-        origin_country_iso: "TOTAL",
-        origin_label: "Total foreign-born",
-        people: total,
-        is_total: true,
-        source: SOURCE,
-        period: PERIOD,
-      });
+    if (!response.ok) {
+      console.log(`FAIL ${city.name}: Census Reporter returned ${response.status}`);
+      continue;
     }
+    const body = (await response.json()) as Reporter;
+    const columns = body.tables.B05006.columns;
+    const estimates = body.data[city.geoId]?.B05006?.estimate;
+    if (!estimates) {
+      console.log(`FAIL ${city.name}: no estimates for ${city.geoId}`);
+      continue;
+    }
+    const period = body.release.name;
 
-    for (const [variable, value] of Object.entries(values)) {
-      if (!variable.endsWith("E") || variable === "B05006_001E") continue;
-      const label = labels[variable];
-      if (!label || value == null || value === "" || value.startsWith("-")) continue;
-      const parts = label.split("!!");
-      const leaf = parts[parts.length - 1];
-      // Skip the continent and sub-region roll-ups.
-      if (parts.length < 3 || leaf.endsWith(":")) continue;
+    // Sum by ISO code, because several ACS rows can be one country.
+    const byIso = new Map<string, number>();
+    for (const [column, value] of Object.entries(estimates)) {
+      const label = columns[column]?.name;
+      if (!label || column === "B05006001") continue;
+      // A roll-up ("Europe:", "Northern Europe:") ends in a colon.
+      if (label.endsWith(":") || isResidual(label)) continue;
+      if (!value || value <= 0) continue;
 
-      const iso = isoFor(leaf);
+      const iso = isoFor(label);
       if (!iso) {
-        unmatched.add(leaf);
+        unmatched.add(label);
         continue;
       }
-      const people = Number(value);
-      if (!Number.isFinite(people) || people <= 0) continue;
-
-      rows.push({
-        city_place_id: city.placeId,
-        origin_country_iso: iso,
-        origin_label: leaf,
-        people,
-        is_total: false,
-        source: SOURCE,
-        period: PERIOD,
-      });
+      byIso.set(iso, (byIso.get(iso) ?? 0) + value);
     }
 
-    rows.sort((a, b) => b.people - a.people);
-    console.log(`\n=== ${city.name}: ${rows.length} rows ===`);
-    for (const row of rows.slice(0, 12)) {
+    const rows = [
+      ...(estimates["B05006001"]
+        ? [
+            {
+              city_place_id: city.placeId,
+              origin_country_iso: "TOTAL",
+              origin_label: "Total foreign-born",
+              people: Math.round(estimates["B05006001"]),
+              is_total: true,
+              source: SOURCE,
+              period,
+            },
+          ]
+        : []),
+      ...[...byIso.entries()].map(([iso, people]) => ({
+        city_place_id: city.placeId,
+        origin_country_iso: iso,
+        // One name per country, so three UK rows read as one United
+        // Kingdom - and not the formal ISO rendering where that carries a
+        // political claim.
+        origin_label: displayName(iso),
+        people: Math.round(people),
+        is_total: false,
+        source: SOURCE,
+        period,
+      })),
+    ];
+
+    const top = rows.filter((r) => !r.is_total).sort((a, b) => b.people - a.people);
+    console.log(`\n=== ${city.name} — ${period} — ${rows.length} rows ===`);
+    for (const row of top.slice(0, 10)) {
       console.log(`  ${row.origin_label.padEnd(30)} ${row.people.toLocaleString()}`);
     }
 
     if (dryRun || !admin) continue;
 
-    // Replace this city's rows for this release rather than accumulating
-    // them, so a re-run after a correction leaves one set of figures.
+    // Replace this release's rows rather than accumulating, so a re-run
+    // after a correction leaves exactly one set of figures.
     await admin
       .from("city_origin_stats")
       .delete()
       .eq("city_place_id", city.placeId)
-      .eq("period", PERIOD);
+      .eq("period", period);
     const { error } = await admin.from("city_origin_stats").insert(rows);
     if (error) {
       console.log(`FAIL ${city.name}: ${error.message}`);
@@ -214,9 +207,7 @@ async function main() {
   }
 
   if (unmatched.size > 0) {
-    console.log(
-      `\nSkipped ${unmatched.size} label(s) with no ISO match (add to ALIASES if any matter):`,
-    );
+    console.log(`\nSkipped ${unmatched.size} label(s) with no ISO match:`);
     console.log(`  ${[...unmatched].sort().join(", ")}`);
   }
   if (dryRun) console.log("\n--dry-run: nothing was written.");

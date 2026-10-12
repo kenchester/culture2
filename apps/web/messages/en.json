@@ -754,6 +754,7 @@
     "sisterNone": "No sister-city relationships recorded for this city yet.",
     "sisterSource": "Source: {source}",
     "gapHeading": "The gap",
+    "gapIntro": "Comparing the {top} largest communities here with the cities this city is twinned with.",
     "gapPending": "This comparison needs both the official statistics and the sister-city list.",
     "gapBoth": "A partnership and a community here",
     "gapCommunityOnly": "People here, no partnership",
@@ -768,9 +769,14 @@
     "memberCount": "Members: {count}",
     "noMembersYet": "no members yet",
     "consulLine": "Unofficial Consul: {name}",
-    "startOne": "Start a community",
     "sourcesHeading": "Sources",
     "sourcesNote": "Official statistics, civic relationships and CultureMesh's own data are kept separate and attributed, so a reader can tell which is which.",
-    "metaDescription": "Where {city}'s people came from, who the city is twinned with, and the diaspora communities that exist there."
+    "metaDescription": "Where {city}'s people came from, who the city is twinned with, and the diaspora communities that exist there.",
+    "startIncoming": "Start a community in {city}",
+    "startOutgoing": "Start a community for people from {city}",
+    "missingHeading": "Communities that don't exist yet",
+    "missingIntro": "Origins with people living here and nowhere yet for them to find each other. The counts are from the census above.",
+    "missingPeople": "{count} people here",
+    "missingStart": "Start it"
   }
 }

@@ -777,6 +777,13 @@
     "startOne": "Gründet eine Gemeinschaft",
     "sourcesHeading": "Quellen",
     "sourcesNote": "Offizielle Statistiken, bürgerschaftliche Beziehungen und die eigenen Daten von CultureMesh werden getrennt und zugeordnet, sodass ein Leser erkennen kann, was was ist.",
-    "metaDescription": "Woher {city}die Menschen kommen, mit wem die Stadt partnerschaftlich verbunden ist und welche Diaspora-Gemeinschaften dort existieren."
+    "metaDescription": "Woher {city}die Menschen kommen, mit wem die Stadt partnerschaftlich verbunden ist und welche Diaspora-Gemeinschaften dort existieren.",
+    "gapIntro": "Vergleicht man die {top} größten Gemeinden hier mit den Städten, mit denen diese Stadt partnerschaftlich ist.",
+    "startIncoming": "Eine Gemeinschaft in {city} gründen",
+    "startOutgoing": "Eine Gemeinschaft für Menschen aus {city} gründen",
+    "missingHeading": "Gemeinschaften, die es noch nicht gibt,",
+    "missingIntro": "Ursprünge mit Menschen, die hier leben, und noch nirgends, damit sie einander finden konnten. Die Zahlen stammen aus der obigen Volkszählung.",
+    "missingPeople": "{count} Menschen hier",
+    "missingStart": "Fang an"
   }
 }
