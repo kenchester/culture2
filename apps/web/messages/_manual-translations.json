@@ -1,13 +1,22 @@
 {
   "_comment": "Translations corrected by hand. --fix-stale reports these but will not overwrite them; only --force will. Every entry here exists because machine translation chose the wrong sense of an ambiguous English word, so re-running it would reintroduce the same error.",
   "de": [
+    "city.gapBoth",
+    "city.gapCaveat",
+    "city.gapCommunityOnly",
+    "city.gapPartnerOnly",
     "nav.homeLogoAlt",
-    "postDetail.reply",
-    "network.reply"
+    "network.reply",
+    "postDetail.reply"
   ],
   "ru": [
     "auth.identity.bothNote",
     "auth.identity.currentlyShown",
+    "city.gapBoth",
+    "city.gapCaveat",
+    "city.gapCommunityOnly",
+    "city.gapPartnerOnly",
+    "city.sisterHeading",
     "consul.metaDescription",
     "elections.metaTitle",
     "elections.title",
@@ -15,30 +24,54 @@
     "training.rules.geographySpread"
   ],
   "it": [
+    "city.gapBoth",
+    "city.gapCaveat",
+    "city.gapCommunityOnly",
+    "city.gapPartnerOnly",
     "nav.homeLogoAlt",
-    "postDetail.reply",
     "network.reply",
+    "postDetail.reply",
     "training.intro2"
   ],
   "es": [
-    "postDetail.reply",
-    "network.reply"
+    "city.gapBoth",
+    "city.gapCaveat",
+    "city.gapCommunityOnly",
+    "city.gapPartnerOnly",
+    "network.reply",
+    "postDetail.reply"
   ],
   "fr": [
+    "city.gapBoth",
+    "city.gapCaveat",
+    "city.gapCommunityOnly",
+    "city.gapPartnerOnly",
     "elections.metaTitle",
     "network.reply",
     "postDetail.reply",
     "training.intro2"
   ],
   "pt": [
-    "postDetail.reply",
-    "network.reply"
+    "city.gapBoth",
+    "city.gapCaveat",
+    "city.gapCommunityOnly",
+    "city.gapPartnerOnly",
+    "network.reply",
+    "postDetail.reply"
   ],
   "ar": [
+    "city.gapBoth",
+    "city.gapCaveat",
+    "city.gapCommunityOnly",
+    "city.gapPartnerOnly",
     "training.locationLabel"
   ],
   "zh": [
     "auth.identity.explainer",
+    "city.gapBoth",
+    "city.gapCaveat",
+    "city.gapCommunityOnly",
+    "city.gapPartnerOnly",
     "consul.metaDescription",
     "elections.metaTitle",
     "elections.title",
@@ -48,6 +81,11 @@
   ],
   "ja": [
     "auth.identity.explainer",
+    "city.gapBoth",
+    "city.gapCaveat",
+    "city.gapCommunityOnly",
+    "city.gapPartnerOnly",
+    "city.sisterHeading",
     "consul.heading",
     "consul.metaDescription",
     "elections.metaTitle",
@@ -57,6 +95,10 @@
   "ko": [
     "auth.identity.bothNote",
     "auth.identity.explainer",
+    "city.gapBoth",
+    "city.gapCaveat",
+    "city.gapCommunityOnly",
+    "city.gapPartnerOnly",
     "consul.heading",
     "consul.metaDescription",
     "consul.vacant",
