@@ -273,7 +273,8 @@
     "signInToSeePosts": "Sign in with your school email to see posts in this network.",
     "reply": "Reply",
     "viewAllReplies": "View all {count} replies",
-    "metaDescription": "{members} members · {posts} posts. Join the conversation among people who share this background and this place."
+    "metaDescription": "{members} members · {posts} posts. Join the conversation among people who share this background and this place.",
+    "consulLine": "Unofficial Consul: {name}"
   },
   "demoNetwork": {
     "studentView": "Student view",
@@ -659,5 +660,33 @@
   "share": {
     "share": "Share",
     "copied": "Link copied"
+  },
+  "consul": {
+    "backToOutposts": "All outposts",
+    "role": "Unofficial Consul",
+    "heading": "{principal} in {host}",
+    "servingSince": "Serving since",
+    "termEnds": "Term ends",
+    "termEnded": "This term has ended. The community can hold a new election.",
+    "vacant": "No one holds this office.",
+    "aboutHeading": "About this community",
+    "contactHeading": "How to get in touch",
+    "websiteHeading": "Elsewhere",
+    "nothingYet": "The consul has not written anything here yet.",
+    "networkLink": "Go to the community",
+    "electionLink": "See the election that chose them",
+    "disclaimer": "An Unofficial Consul is chosen by community members on CultureMesh. They are not appointed by any government and hold no official standing. They cannot issue documents, charge fees, or give immigration advice.",
+    "editHeading": "Your page",
+    "editIntro": "You are the serving consul, so you can write this page. Keep it to who this community is and how to reach you.",
+    "aboutLabel": "About this community",
+    "aboutPlaceholder": "Who is here, what brought them, what they need.",
+    "contactLabel": "How people can reach you",
+    "contactPlaceholder": "An email address, a meeting place, a time of week.",
+    "websiteLabel": "A link (optional)",
+    "save": "Save page",
+    "saved": "Saved.",
+    "lastUpdated": "Last updated",
+    "metaDescription": "{name} is the Unofficial Consul for {principal} in {host}, chosen by community members on CultureMesh.",
+    "historyHeading": "History"
   }
 }

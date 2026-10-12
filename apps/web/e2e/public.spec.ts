@@ -261,6 +261,41 @@ test.describe("permalinks", () => {
   });
 });
 
+test.describe("the consul page", () => {
+  // Reachable from the directory, so it has to render for an outpost with
+  // nobody in the office too - which is most of them, and all of them
+  // right now.
+  test("an outpost with no consul still has a page", async ({ page }) => {
+    await page.goto("/outposts");
+    const link = page.locator('a[href^="/outposts/"]').filter({ hasNotText: /election/i }).first();
+    const href = (await link.count()) ? await link.getAttribute("href") : "/outposts/1";
+    await page.goto(href!.match(/^\/outposts\/\d+$/) ? href! : "/outposts/1");
+
+    await expect(page.getByRole("heading", { level: 1 })).toBeVisible();
+    // The disclaimer is on every view, not only the flattering ones.
+    await expect(page.getByText(/not appointed by any government/i)).toBeVisible();
+  });
+
+  test("a closed mission shows its history", async ({ page }) => {
+    await page.goto("/outposts/1");
+    await expect(page.getByText("History", { exact: true })).toBeVisible();
+    await expect(page.getByText(/Gulangyu/)).toBeVisible();
+  });
+
+  test("the edit form is not offered to a visitor", async ({ page }) => {
+    await page.goto("/outposts/1");
+    // The real guard is update_outpost_page's serving-officer check; this
+    // asserts the UI doesn't dangle a form that would only be refused.
+    await expect(page.locator('textarea[name="about"]')).toHaveCount(0);
+  });
+
+  test("an unknown outpost is friendly, not an error", async ({ page }) => {
+    const response = await page.goto("/outposts/99999999");
+    expect(response?.status()).toBe(404);
+    await expect(page.getByText("This page doesn't appear to exist")).toBeVisible();
+  });
+});
+
 test.describe("gates and errors", () => {
   test("an unknown URL offers the homepage and contact, not an error page", async ({ page }) => {
     const response = await page.goto("/this-page-does-not-exist");

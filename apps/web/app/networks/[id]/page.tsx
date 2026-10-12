@@ -184,6 +184,48 @@ export default async function NetworkPage({
     .eq("id", network.location_place_id)
     .single();
 
+  // The Unofficial Consul, if and only if an election has produced one.
+  //
+  // Deliberately silent otherwise: no empty state, no "no consul yet", no
+  // explanation. A member of a community that has never held an election
+  // should never learn this system exists from this page, and the great
+  // majority of networks never will. Two cheap queries on a pairing that
+  // could hold the office at all, skipped entirely for language-origin
+  // networks since the office only maps place to place.
+  let consul: { outpostId: number; name: string } | null = null;
+  if (network.origin_place_id) {
+    const { data: principal } = await supabase
+      .from("principals")
+      .select("id")
+      .eq("place_id", network.origin_place_id)
+      .maybeSingle();
+    if (principal) {
+      const { data: outpost } = await supabase
+        .from("outposts")
+        .select("id")
+        .eq("principal_id", principal.id)
+        .eq("host_place_id", network.location_place_id)
+        .eq("kind", "honorary")
+        .maybeSingle();
+      if (outpost) {
+        // The policy hides revoked officers; an expired term is excluded
+        // here so a lapsed mandate stops being advertised.
+        const { data: officer } = await supabase
+          .from("outpost_officers")
+          .select("term_ends_at, profile:user_id(first_name, last_name, username)")
+          .eq("outpost_id", outpost.id)
+          .or(`term_ends_at.is.null,term_ends_at.gt.${new Date().toISOString()}`)
+          .order("appointed_at", { ascending: false })
+          .limit(1)
+          .maybeSingle();
+        const profile = officer?.profile as unknown as Author | null;
+        if (profile) {
+          consul = { outpostId: outpost.id as number, name: getDisplayName(profile) };
+        }
+      }
+    }
+  }
+
   // A campus-anchored network only ever exists because it was launched
   // from within learn.culturemesh.com (see 00000000000058_campus_place_
   // type.sql), so it should always resolve under that host - and,
@@ -453,6 +495,17 @@ export default async function NetworkPage({
             {t("events")}
           </Link>
         </p>
+
+        {consul && (
+          <p className="text-sm">
+            <Link
+              href={`/outposts/${consul.outpostId}`}
+              className="font-medium text-primary hover:underline"
+            >
+              {t("consulLine", { name: consul.name })}
+            </Link>
+          </p>
+        )}
 
         {isExample ? (
           <DemoNetworkFeed

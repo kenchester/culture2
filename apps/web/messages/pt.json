@@ -216,7 +216,8 @@
     "signInToSeePosts": "Faça login com o e-mail da sua escola para ver as publicações nesta rede.",
     "reply": "Responder",
     "viewAllReplies": "Veja todas {count} as respostas",
-    "metaDescription": "{members} membros ·{posts} postagens. Participe da conversa entre pessoas que compartilham esse histórico e este lugar."
+    "metaDescription": "{members} membros ·{posts} postagens. Participe da conversa entre pessoas que compartilham esse histórico e este lugar.",
+    "consulLine": "Cônsul Não Oficial: {name}"
   },
   "editableEntry": {
     "save": "Salvar",
@@ -665,5 +666,33 @@
   "share": {
     "share": "Compartilhe",
     "copied": "Link copiado"
+  },
+  "consul": {
+    "backToOutposts": "Todos os postos avançados",
+    "role": "Cônsul Não Oficial",
+    "heading": "{principal} em {host}",
+    "servingSince": "Servindo desde",
+    "termEnds": "Fim do mandato",
+    "termEnded": "Este mandato terminou. A comunidade pode realizar uma nova eleição.",
+    "vacant": "Ninguém ocupa esse cargo.",
+    "aboutHeading": "Sobre esta comunidade",
+    "contactHeading": "Como entrar em contato",
+    "websiteHeading": "Em outros lugares",
+    "nothingYet": "O cônsul ainda não escreveu nada aqui.",
+    "networkLink": "Vá para a comunidade",
+    "electionLink": "Veja a eleição que os escolheu",
+    "disclaimer": "Um Cônsul Não Oficial é escolhido pelos membros da comunidade no CultureMesh. Eles não são nomeados por nenhum governo e não possuem posição oficial. Eles não podem emitir documentos, cobrar taxas ou dar aconselhamento de imigração.",
+    "editHeading": "Sua página",
+    "editIntro": "Você é o cônsul em exercício, então pode escrever esta página. Mantenha isso em quem é essa comunidade e como posso te alcançar.",
+    "aboutLabel": "Sobre esta comunidade",
+    "aboutPlaceholder": "Quem está aqui, o que os trouxe, o que eles precisam.",
+    "contactLabel": "Como as pessoas podem te alcançar",
+    "contactPlaceholder": "Um endereço de e-mail, um local de encontro, um horário da semana.",
+    "websiteLabel": "Um link (opcional)",
+    "save": "Salvar página",
+    "saved": "Salvo.",
+    "lastUpdated": "Última atualização",
+    "metaDescription": "{name} é o Cônsul Não Oficial para {principal} em {host}, escolhido pelos membros da comunidade no CultureMesh.",
+    "historyHeading": "História"
   }
 }

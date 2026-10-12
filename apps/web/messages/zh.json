@@ -216,7 +216,8 @@
     "signInToSeePosts": "请使用您的学校邮箱登录，查看本网络中的帖子。",
     "reply": "回复",
     "viewAllReplies": "查看所有{count}回复",
-    "metaDescription": "{members}成员 ·{posts}帖子。加入那些拥有相同背景和这个地方的人们的对话。"
+    "metaDescription": "{members}成员 ·{posts}帖子。加入那些拥有相同背景和这个地方的人们的对话。",
+    "consulLine": "非官方领事： {name}"
   },
   "editableEntry": {
     "save": "保存",
@@ -665,5 +666,33 @@
   "share": {
     "share": "分享",
     "copied": "链接已复制"
+  },
+  "consul": {
+    "backToOutposts": "所有前哨站",
+    "role": "非官方领事",
+    "heading": "{principal}在{host}",
+    "servingSince": "至今任职",
+    "termEnds": "任期结束",
+    "termEnded": "本届任期已结束。社区可以举行新选举。",
+    "vacant": "没有人担任这个职位。",
+    "aboutHeading": "关于这个社区",
+    "contactHeading": "如何联系",
+    "websiteHeading": "其他地区",
+    "nothingYet": "领事还没在这里写任何东西。",
+    "networkLink": "去社区",
+    "electionLink": "看看选出他们的选举",
+    "disclaimer": "非官方领事由社区成员在CultureMesh上选出。他们不由任何政府任命，也无官方地位。他们不能出具文件、收取费用或提供移民建议。",
+    "editHeading": "你的页面",
+    "editIntro": "你是现任领事，所以你可以写这页。请关注这个社区是谁，以及如何联系你。",
+    "aboutLabel": "关于这个社区",
+    "aboutPlaceholder": "谁来了，是什么带他们来的，他们需要什么。",
+    "contactLabel": "人们如何联系你",
+    "contactPlaceholder": "一个电子邮件地址、一个见面地点、一个星期中的某个时间。",
+    "websiteLabel": "一个链接（可选）",
+    "save": "保存页面",
+    "saved": "得救了。",
+    "lastUpdated": "最后更新",
+    "metaDescription": "{name}是{host}的{principal}社区非官方领事，由社区成员在 CultureMesh 上选出。",
+    "historyHeading": "历史"
   }
 }

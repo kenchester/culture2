@@ -216,7 +216,8 @@
     "signInToSeePosts": "Melden Sie sich mit Ihrer Schul-E-Mail an, um Beiträge in diesem Netzwerk zu sehen.",
     "reply": "Antworten",
     "viewAllReplies": "Alle {count} Antworten anzeigen",
-    "metaDescription": "{members} Mitglieder ·{posts} Beiträge. Beteiligen Sie sich an der Diskussion unter Menschen, die diesen Hintergrund und diesen Ort teilen."
+    "metaDescription": "{members} Mitglieder ·{posts} Beiträge. Beteiligen Sie sich an der Diskussion unter Menschen, die diesen Hintergrund und diesen Ort teilen.",
+    "consulLine": "Inoffizieller Konsul: {name}"
   },
   "editableEntry": {
     "save": "Speichern",
@@ -665,5 +666,33 @@
   "share": {
     "share": "Teilen",
     "copied": "Link kopiert"
+  },
+  "consul": {
+    "backToOutposts": "Alle Außenposten",
+    "role": "Inoffizieller Konsul",
+    "heading": "{principal} in {host}",
+    "servingSince": "Seit Amtszeit",
+    "termEnds": "Amtszeit endet",
+    "termEnded": "Diese Amtszeit ist beendet. Die Gemeinde kann eine Neuwahl abhalten.",
+    "vacant": "Niemand bekleidet dieses Amt.",
+    "aboutHeading": "Über diese Gemeinschaft",
+    "contactHeading": "Wie man Kontakt aufnimmt",
+    "websiteHeading": "Anderswo",
+    "nothingYet": "Der Konsul hat hier noch nichts geschrieben.",
+    "networkLink": "Geh in die Gemeinschaft",
+    "electionLink": "Siehe die Wahl, die sie gewählt hat",
+    "disclaimer": "Ein inoffizieller Konsul wird von den Gemeindemitgliedern auf CultureMesh ausgewählt. Er wird von keiner Regierung ernannt und hat keinen offiziellen Ruf. Er kann keine Dokumente ausstellen, keine Gebühren verlangen oder Einwanderungsberatung geben.",
+    "editHeading": "Deine Seite",
+    "editIntro": "Du bist der diensthabende Konsul, also kannst du diese Seite schreiben. Behalte es bei dieser Gemeinschaft und wie ich dich erreichen kann.",
+    "aboutLabel": "Über diese Gemeinschaft",
+    "aboutPlaceholder": "Wer hier ist, was sie gebracht hat, was sie brauchen.",
+    "contactLabel": "Wie Menschen dich erreichen können",
+    "contactPlaceholder": "Eine E-Mail-Adresse, ein Treffpunkt, eine Wochenzeit.",
+    "websiteLabel": "Ein Link (optional)",
+    "save": "Seite speichern",
+    "saved": "Gerettet.",
+    "lastUpdated": "Zuletzt aktualisiert",
+    "metaDescription": "{name} ist der inoffizielle Konsul für {principal} in {host}, ausgewählt von Community-Mitgliedern auf CultureMesh.",
+    "historyHeading": "Geschichte"
   }
 }

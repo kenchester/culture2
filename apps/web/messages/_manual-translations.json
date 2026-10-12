@@ -6,6 +6,7 @@
     "network.reply"
   ],
   "ru": [
+    "consul.metaDescription",
     "elections.metaTitle",
     "elections.title",
     "nav.homeLogoAlt",
@@ -35,6 +36,7 @@
     "training.locationLabel"
   ],
   "zh": [
+    "consul.metaDescription",
     "elections.metaTitle",
     "elections.title",
     "elections.winner",
@@ -42,11 +44,16 @@
     "training.locationLabel"
   ],
   "ja": [
+    "consul.heading",
+    "consul.metaDescription",
     "elections.metaTitle",
     "elections.roleFull",
     "training.locationLabel"
   ],
   "ko": [
+    "consul.heading",
+    "consul.metaDescription",
+    "consul.vacant",
     "elections.metaTitle",
     "elections.roleFull",
     "elections.title",

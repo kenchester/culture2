@@ -216,7 +216,8 @@
     "signInToSeePosts": "このネットワークの投稿を見るには、学校のメールアドレスでサインインしてください。",
     "reply": "返信",
     "viewAllReplies": "すべての{count}返信を見る",
-    "metaDescription": "{members}メンバー ·{posts}投稿。この背景やこの場所を共有する人々の会話に参加しましょう。"
+    "metaDescription": "{members}メンバー ·{posts}投稿。この背景やこの場所を共有する人々の会話に参加しましょう。",
+    "consulLine": "非公式領事: {name}"
   },
   "editableEntry": {
     "save": "セーブ",
@@ -665,5 +666,33 @@
   "share": {
     "share": "シェア",
     "copied": "リンクをコピーしました"
+  },
+  "consul": {
+    "backToOutposts": "すべての前哨基地",
+    "role": "非公式領事",
+    "heading": "{host}の{principal}",
+    "servingSince": "その後の勤務",
+    "termEnds": "任期終了",
+    "termEnded": "この任期は終了しました。コミュニティは新たな選挙を実施できます。",
+    "vacant": "この役職に就く者はいない。",
+    "aboutHeading": "このコミュニティについて",
+    "contactHeading": "お問い合わせ方法",
+    "websiteHeading": "その他の場所",
+    "nothingYet": "領事はまだここに何も書いていない。",
+    "networkLink": "コミュニティへ行こう",
+    "electionLink": "彼らを選んだ選挙を参照",
+    "disclaimer": "非公式の領事は、コミュニティメンバーによってCultureMeshで選ばれます。彼らはいかなる政府によっても任命されず、公式な地位も持っていません。書類の発行、手数料の請求、移民に関する助言を行うことはできません。",
+    "editHeading": "あなたのページ",
+    "editIntro": "あなたは執政官ですから、このページを書くことができます。このコミュニティが誰で、どうやってあなたに連絡できるかを伝えてください。",
+    "aboutLabel": "このコミュニティについて",
+    "aboutPlaceholder": "誰がここにいるのか、何が彼らを連れてきたのか、何が必要としているのか。",
+    "contactLabel": "人々があなたに連絡を取る方法",
+    "contactPlaceholder": "メールアドレス、待ち合わせ場所、週の時間帯。",
+    "websiteLabel": "リンク(任意)",
+    "save": "セーブページ",
+    "saved": "救われた。",
+    "lastUpdated": "最終更新",
+    "metaDescription": "{name}は、{host}における{principal}コミュニティの非公式領事で、CultureMesh のコミュニティメンバーによって選ばれました。",
+    "historyHeading": "歴史"
   }
 }

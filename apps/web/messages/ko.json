@@ -216,7 +216,8 @@
     "signInToSeePosts": "이 네트워크의 게시물을 보시려면 학교 이메일로 로그인하세요.",
     "reply": "답글",
     "viewAllReplies": "모든 {count} 답변 보기",
-    "metaDescription": "{members} 회원 ·{posts} 게시물. 이 배경과 장소를 공유하는 사람들 간의 대화에 참여하세요."
+    "metaDescription": "{members} 회원 ·{posts} 게시물. 이 배경과 장소를 공유하는 사람들 간의 대화에 참여하세요.",
+    "consulLine": "비공식 영사: {name}"
   },
   "editableEntry": {
     "save": "저장",
@@ -665,5 +666,33 @@
   "share": {
     "share": "공유하기",
     "copied": "링크 복사됨"
+  },
+  "consul": {
+    "backToOutposts": "모든 전초기지",
+    "role": "비공식 영사",
+    "heading": "{host}의 {principal}",
+    "servingSince": "이후 근무",
+    "termEnds": "임기 종료",
+    "termEnded": "이번 임기는 끝났습니다. 공동체는 새 선거를 치를 수 있습니다.",
+    "vacant": "이 직책을 맡은 사람이 없습니다.",
+    "aboutHeading": "이 커뮤니티에 대하여",
+    "contactHeading": "연락하는 방법",
+    "websiteHeading": "기타 지역",
+    "nothingYet": "영사는 아직 여기서 아무 글도 쓰지 않았어.",
+    "networkLink": "커뮤니티로 가세요",
+    "electionLink": "그들을 선출한 선거를 참조하세요",
+    "disclaimer": "비공식 영사는 CultureMesh에서 커뮤니티 구성원들이 선출합니다. 이들은 어떤 정부에서도 임명하지 않으며 공식적인 지위를 갖지 않습니다. 서류를 발급하거나 수수료를 부과하거나 이민 관련 조언을 할 수 없습니다.",
+    "editHeading": "당신의 페이지",
+    "editIntro": "당신은 현직 영사이니 이 페이지를 쓸 수 있습니다. 이 커뮤니티가 누구인지, 어떻게 연락할 수 있는지에 집중하세요.",
+    "aboutLabel": "이 커뮤니티에 대하여",
+    "aboutPlaceholder": "누가 여기 있는지, 무엇이 그들을 데려왔는지, 무엇이 필요한지.",
+    "contactLabel": "사람들이 당신에게 연락하는 방법",
+    "contactPlaceholder": "이메일 주소, 만남 장소, 주 중 시간대.",
+    "websiteLabel": "링크 (선택 사항)",
+    "save": "저장 페이지",
+    "saved": "구원받았다.",
+    "lastUpdated": "마지막 업데이트",
+    "metaDescription": "{name}님은 {host}의 {principal} 커뮤니티 비공식 영사로, CultureMesh 커뮤니티 구성원들이 선출했습니다.",
+    "historyHeading": "역사"
   }
 }

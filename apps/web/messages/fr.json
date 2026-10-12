@@ -216,7 +216,8 @@
     "signInToSeePosts": "Connectez-vous avec votre adresse e-mail scolaire pour voir les publications de ce réseau.",
     "reply": "Répondre",
     "viewAllReplies": "Voir toutes les {count} réponses",
-    "metaDescription": "{members} membres ·{posts} publications. Rejoignez la conversation parmi les personnes partageant ce parcours et cet endroit."
+    "metaDescription": "{members} membres ·{posts} publications. Rejoignez la conversation parmi les personnes partageant ce parcours et cet endroit.",
+    "consulLine": "Consul non officiel : {name}"
   },
   "editableEntry": {
     "save": "Sauvegarder",
@@ -665,5 +666,33 @@
   "share": {
     "share": "Partager",
     "copied": "Lien copié"
+  },
+  "consul": {
+    "backToOutposts": "Tous les avant-postes",
+    "role": "Consul non officiel",
+    "heading": "{principal} dans {host}",
+    "servingSince": "En fonction depuis",
+    "termEnds": "Fin du mandat",
+    "termEnded": "Ce mandat est terminé. La communauté peut organiser une nouvelle élection.",
+    "vacant": "Personne ne tient ce poste.",
+    "aboutHeading": "À propos de cette communauté",
+    "contactHeading": "Comment entrer en contact",
+    "websiteHeading": "Ailleurs",
+    "nothingYet": "Le consul n’a encore rien écrit ici.",
+    "networkLink": "Allez dans la communauté",
+    "electionLink": "Voir l’élection qui les a choisis",
+    "disclaimer": "Un consul non officiel est choisi par les membres de la communauté sur CultureMesh. Il n’est nommé par aucun gouvernement et n’a aucun statut officiel. Il ne peut pas délivrer de documents, facturer des frais ni donner de conseils en immigration.",
+    "editHeading": "Votre page",
+    "editIntro": "Vous êtes le consul en fonction, donc vous pouvez écrire cette page. Gardez cela dans ce qu’est cette communauté et comment vous joindre.",
+    "aboutLabel": "À propos de cette communauté",
+    "aboutPlaceholder": "Qui est là, ce qui les a amenés, ce dont ils ont besoin.",
+    "contactLabel": "Comment les gens peuvent vous atteindre",
+    "contactPlaceholder": "Une adresse e-mail, un lieu de rendez-vous, un moment de la semaine.",
+    "websiteLabel": "Un lien (optionnel)",
+    "save": "Sauvegarder la page",
+    "saved": "Sauvé.",
+    "lastUpdated": "Dernière mise à jour",
+    "metaDescription": "{name} est le consul non officiel pour {principal} en {host}, choisi par les membres de la communauté sur CultureMesh.",
+    "historyHeading": "Histoire"
   }
 }

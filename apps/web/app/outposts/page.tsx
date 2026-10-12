@@ -19,6 +19,7 @@ type Row = {
   networkId: number;
   members: number;
   consul: string | null;
+  outpostId: number | null;
   electionId: number | null;
   electionPhase: "nominating" | "voting" | "closed" | null;
 };
@@ -113,6 +114,7 @@ export default async function OutpostsPage() {
       networkId: network.id as number,
       members: (network.member_count as number) ?? 0,
       consul: outpost ? (officerFor.get(outpost.id as number) ?? null) : null,
+      outpostId: (outpost?.id as number | undefined) ?? null,
       electionId: (election?.id as number | undefined) ?? null,
       electionPhase: election ? phaseOf(election) : null,
     });
@@ -214,8 +216,10 @@ export default async function OutpostsPage() {
                   </td>
                   <td className="py-2 pr-4 text-right text-body tabular-nums">{row.members}</td>
                   <td className="py-2">
-                    {row.consul ? (
-                      <span className="text-primary">{row.consul}</span>
+                    {row.consul && row.outpostId ? (
+                      <Link href={`/outposts/${row.outpostId}`} className="text-primary underline">
+                        {row.consul}
+                      </Link>
                     ) : row.electionId && row.electionPhase !== "closed" ? (
                       <Link
                         href={`/outposts/elections/${row.electionId}`}
