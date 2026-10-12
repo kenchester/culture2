@@ -13,14 +13,9 @@
 //
 // Run via: npm run backfill-geo-cldr [-- --force]
 
-import { createClient, type SupabaseClient } from "@supabase/supabase-js";
+import { type SupabaseClient } from "@supabase/supabase-js";
+import { adminClient } from "./lib/admin";
 
-try {
-  process.loadEnvFile(".env.local");
-} catch {
-  // .env.local not present (e.g. CI) - fall through to whatever's already
-  // in the environment.
-}
 
 const SUPPORTED_LOCALES = ["es", "fr", "ja", "de", "zh", "it", "ar", "ko", "ru", "pt"] as const;
 const FORCE = process.argv.includes("--force");
@@ -28,11 +23,7 @@ const FORCE = process.argv.includes("--force");
 type Row = { id: number; name: string; iso_code: string };
 
 async function main() {
-  const admin = createClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.SUPABASE_SECRET_KEY!,
-    { auth: { autoRefreshToken: false, persistSession: false } },
-  );
+  const admin = adminClient();
 
   const { data: countries, error: countryError } = await admin
     .from("places")

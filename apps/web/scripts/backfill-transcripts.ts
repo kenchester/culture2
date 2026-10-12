@@ -9,7 +9,7 @@
 //
 // Run via: npx tsx scripts/backfill-transcripts.ts [--limit N]
 
-import { createClient } from "@supabase/supabase-js";
+import { adminClient } from "./lib/admin";
 
 const GROQ_URL = "https://api.groq.com/openai/v1/audio/transcriptions";
 const MODEL = "whisper-large-v3-turbo";
@@ -33,7 +33,6 @@ function normalizeLanguage(raw: string | undefined): string {
 }
 
 async function main() {
-  process.loadEnvFile(".env.local");
   const groqKey = process.env.GROQ_API_KEY;
   if (!groqKey || groqKey.startsWith("PLACEHOLDER")) {
     console.error("GROQ_API_KEY missing or still a placeholder in .env.local.");
@@ -43,11 +42,7 @@ async function main() {
   const limitArg = process.argv.indexOf("--limit");
   const limit = limitArg > -1 ? Number(process.argv[limitArg + 1]) : 100;
 
-  const admin = createClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.SUPABASE_SECRET_KEY!,
-    { auth: { autoRefreshToken: false, persistSession: false } },
-  );
+  const admin = adminClient();
 
   // Which networks are signed-language, so their video posts are skipped.
   const { data: signedLanguages } = await admin.from("languages").select("id").eq("is_signed", true);

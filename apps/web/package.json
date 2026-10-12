@@ -4,6 +4,10 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
+    "db:start": "tsx scripts/dev-db.ts start",
+    "db:stop": "tsx scripts/dev-db.ts stop",
+    "db:reset": "tsx scripts/dev-db.ts reset",
+    "db:status": "tsx scripts/dev-db.ts status",
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
@@ -13,8 +17,11 @@
     "backfill-geo-cldr": "tsx scripts/backfill-geo-cldr.ts",
     "fix-mojibake-names": "tsx scripts/fix-mojibake-names.ts",
     "seed-acme-university": "tsx scripts/seed-acme-university.ts",
+    "seed-scroll-test-network": "tsx scripts/seed-scroll-test-network.ts",
     "backfill-transcripts": "tsx scripts/backfill-transcripts.ts",
-    "test": "tsx --test lib/*.test.ts"
+    "test": "tsx --test lib/*.test.ts",
+    "test:e2e": "playwright test",
+    "test:e2e:ui": "playwright test --ui"
   },
   "dependencies": {
     "@mediapipe/tasks-vision": "^1.0.1",
@@ -37,6 +44,7 @@
     "zod": "^4.4.3"
   },
   "devDependencies": {
+    "@playwright/test": "^1.64.0",
     "@tailwindcss/postcss": "^4",
     "@types/node": "^20",
     "@types/react": "^19",

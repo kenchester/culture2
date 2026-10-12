@@ -15,17 +15,11 @@
 // Safe to re-run: only touches rows where iso_code is still null.
 // Run via: npm run backfill-iso-codes
 
-import { createClient } from "@supabase/supabase-js";
+import { adminClient } from "./lib/admin";
 import countries from "i18n-iso-countries";
 import enCountryNames from "i18n-iso-countries/langs/en.json";
 import ISO6391 from "iso-639-1";
 
-try {
-  process.loadEnvFile(".env.local");
-} catch {
-  // .env.local not present (e.g. CI) - fall through to whatever's already
-  // in the environment.
-}
 
 countries.registerLocale(enCountryNames);
 
@@ -69,11 +63,7 @@ const COUNTRY_ALIASES: Record<string, string> = {
 };
 
 async function main() {
-  const admin = createClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.SUPABASE_SECRET_KEY!,
-    { auth: { autoRefreshToken: false, persistSession: false } },
-  );
+  const admin = adminClient();
 
   // Countries: use the package purely for the authoritative code list,
   // but Intl.DisplayNames for the actual name comparison - that's the

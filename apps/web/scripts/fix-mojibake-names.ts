@@ -14,14 +14,8 @@
 //
 // Run via: npm run fix-mojibake-names
 
-import { createClient } from "@supabase/supabase-js";
+import { adminClient } from "./lib/admin";
 
-try {
-  process.loadEnvFile(".env.local");
-} catch {
-  // .env.local not present (e.g. CI) - fall through to whatever's already
-  // in the environment.
-}
 
 // Windows-1252's 0x80-0x9F range - the only place it diverges from
 // Latin-1 (0xA0-0xFF are identical in both).
@@ -71,11 +65,7 @@ function fixMojibake(name: string): string | null {
 }
 
 async function main() {
-  const admin = createClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.SUPABASE_SECRET_KEY!,
-    { auth: { autoRefreshToken: false, persistSession: false } },
-  );
+  const admin = adminClient();
 
   const { data: rows, error } = await admin.from("places").select("id, name").like("name", "%Ã%");
   if (error) throw error;

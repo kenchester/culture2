@@ -6,15 +6,12 @@
 // inventing missions would defeat that.
 //
 // Run: npx tsx scripts/seed-outpost-principals.ts
-process.loadEnvFile(".env.local");
-import { createClient } from "@supabase/supabase-js";
+import { adminClient } from "./lib/admin";
 
 const PLACE_KIND: Record<string, string> = { country: "country", region: "region", city: "city" };
 
 async function main() {
-  const admin = createClient(process.env.NEXT_PUBLIC_SUPABASE_URL!, process.env.SUPABASE_SECRET_KEY!, {
-    auth: { persistSession: false },
-  });
+  const admin = adminClient();
 
   const { data: networks, error } = await admin
     .from("networks")
@@ -23,10 +20,16 @@ async function main() {
   if (error) throw new Error(error.message);
 
   const originIds = [...new Set((networks ?? []).map((n) => n.origin_place_id as number))];
+  // hidden_from_search is the one switch for "this place shouldn't
+  // surface", and it covers test geographies as well as organisation
+  // anchors. Without this filter the script mints principals for places
+  // the directory then has to filter back out - Antarctica's test
+  // networks produced exactly that.
   const { data: places } = await admin
     .from("places")
     .select("id, name, type")
-    .in("id", originIds);
+    .in("id", originIds)
+    .eq("hidden_from_search", false);
 
   const { data: existing } = await admin.from("principals").select("place_id");
   const have = new Set((existing ?? []).map((p) => p.place_id as number));

@@ -12,20 +12,10 @@
 //
 // Run via: npm run seed-acme-university
 
-import { createClient } from "@supabase/supabase-js";
+import { adminClient } from "./lib/admin";
 
-try {
-  process.loadEnvFile(".env.local");
-} catch {
-  // .env.local not present (e.g. CI) - fall through to whatever's already
-  // in the environment.
-}
 
-const admin = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL!,
-  process.env.SUPABASE_SECRET_KEY!,
-  { auth: { autoRefreshToken: false, persistSession: false } },
-);
+const admin = adminClient();
 
 type FakeStudent = {
   usernameSuffix: string;

@@ -15,8 +15,7 @@
 // "fix" is worse than a visible "?".
 //
 // Run: npx tsx scripts/fix-lossy-place-names.ts [--apply]
-process.loadEnvFile(".env.local");
-import { createClient } from "@supabase/supabase-js";
+import { adminClient } from "./lib/admin";
 
 type Fix = { id: number; from: string; to: string; confidence: "certain" | "inferred"; note: string };
 
@@ -42,9 +41,7 @@ const FIXES: Fix[] = [
 
 async function main() {
   const apply = process.argv.includes("--apply");
-  const admin = createClient(process.env.NEXT_PUBLIC_SUPABASE_URL!, process.env.SUPABASE_SECRET_KEY!, {
-    auth: { persistSession: false },
-  });
+  const admin = adminClient();
 
   const { data: rows } = await admin
     .from("places")

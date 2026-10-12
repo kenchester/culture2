@@ -9,8 +9,7 @@
 // 00000000000078, which is what we want for a scroll fixture.
 //
 // Run: npx tsx scripts/seed-scroll-test-network.ts
-process.loadEnvFile(".env.local");
-import { createClient } from "@supabase/supabase-js";
+import { adminClient } from "./lib/admin";
 
 // Springfield, the city Acme University sits in - NOT the campus place.
 // A network located on a campus belonging to a demo organization inherits
@@ -23,7 +22,7 @@ const TITLE = "Scroll test";
 const TARGET_POSTS = 100;
 
 async function main() {
-  const admin = createClient(process.env.NEXT_PUBLIC_SUPABASE_URL!, process.env.SUPABASE_SECRET_KEY!, { auth: { persistSession: false } });
+  const admin = adminClient();
 
   const { data: owner, error: ownerErr } = await admin
     .from("profiles").select("id, first_name, last_name").eq("is_admin", true).limit(1).single();
