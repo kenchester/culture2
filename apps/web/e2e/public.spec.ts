@@ -103,7 +103,10 @@ test.describe("language detection", () => {
       headers: { "Accept-Language": header },
     });
     expect(response.status()).toBe(200);
-    return (await response.text()).match(/<html lang="([^"]+)"/)?.[1];
+    // Attribute order is not stable: Vercel injects data-dpl-id ahead of
+    // lang in production, so anchoring on `<html lang=` passes locally and
+    // fails against the deployed site.
+    return (await response.text()).match(/<html[^>]*\slang="([^"]+)"/)?.[1];
   }
 
   test("Accept-Language picks the language on the first render", async ({ browser }) => {
