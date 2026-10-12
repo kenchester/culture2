@@ -639,6 +639,15 @@
     "notOnRoll": "Seuls les membres qui ont rejoint avant l’ouverture des candidatures peuvent se présenter ou voter. Vous pouvez toujours suivre l’élection.",
     "statementLabel": "Pourquoi tu te tiens debout",
     "tiesFieldLabel": "Votre lien avec cette communauté (optionnel)",
-    "rollLine": "Inscrits sur la liste : {roll} · Votes exprimés : {turnout}"
+    "rollLine": "Inscrits sur la liste : {roll} · Votes exprimés : {turnout}",
+    "outcome": {
+      "counting": "Compter les votes...",
+      "elected": "Élu",
+      "tied": "Égalité — personne n’est élu. Une égalité reste non résolue plutôt que rompue par une règle arbitraire.",
+      "no_candidates": "Fermé sans personne debout.",
+      "rejected": "Non confirmé — plus de votes contre que pour."
+    },
+    "outcomeTerm": "Le mandat dure {months} plusieurs mois à partir de la certification.",
+    "winner": "Consul non officiel élu"
   }
 }

@@ -23,6 +23,12 @@ function phaseOf(e: {
   return "closed";
 }
 
+// The lint rule against impure calls in render means the clock has to be
+// read in a helper, same as phaseOf above.
+function votingHasClosed(e: { voting_closes_at: string }) {
+  return new Date(e.voting_closes_at).getTime() <= Date.now();
+}
+
 export default async function ElectionPage({
   params,
   searchParams,
@@ -35,15 +41,32 @@ export default async function ElectionPage({
   const t = await getTranslations("elections");
   const supabase = await createClient();
 
-  const { data: election } = await supabase
+  const ELECTION_COLUMNS =
+    "id, network_id, roll_cutoff, nominations_close_at, voting_opens_at, voting_closes_at, term_months, certified_at, outcome, winning_candidate_id";
+
+  let { data: election } = await supabase
     .from("elections")
-    .select(
-      "id, network_id, roll_cutoff, nominations_close_at, voting_opens_at, voting_closes_at, term_months",
-    )
+    .select(ELECTION_COLUMNS)
     .eq("id", id)
     .is("cancelled_at", null)
     .maybeSingle();
   if (!election) notFound();
+
+  // Settle the election on the first view after the deadline. There is no
+  // scheduler in this project, and a result that waits for someone to
+  // remember is not a result. certify_election is idempotent and only ever
+  // counts votes already cast, so calling it from a render is safe - but
+  // only call it when there is something to settle, and re-read afterwards
+  // so this very visitor sees the outcome rather than "counting".
+  if (votingHasClosed(election) && !election.certified_at) {
+    await supabase.rpc("certify_election", { p_election_id: election.id });
+    const { data: certified } = await supabase
+      .from("elections")
+      .select(ELECTION_COLUMNS)
+      .eq("id", election.id)
+      .maybeSingle();
+    if (certified) election = certified;
+  }
 
   const {
     data: { user },
@@ -134,6 +157,17 @@ export default async function ElectionPage({
         </p>
       </section>
 
+      {phase === "closed" && (
+        <section className="rounded-lg border border-border bg-primary-light/40 p-4">
+          <p className="font-medium text-ink">
+            {election.outcome ? t(`outcome.${election.outcome}`) : t("outcome.counting")}
+          </p>
+          {election.outcome === "elected" && (
+            <p className="mt-1 text-sm text-body">{t("outcomeTerm", { months: election.term_months })}</p>
+          )}
+        </section>
+      )}
+
       <section className="flex flex-col gap-4">
         <h2 className="text-lg font-medium text-ink">{t("candidates")}</h2>
         {(candidates ?? []).length === 0 && <p className="text-sm text-muted">{t("noCandidates")}</p>}
@@ -175,6 +209,9 @@ export default async function ElectionPage({
                     <SubmitButton>{t("voteFor")}</SubmitButton>
                   )}
                 </form>
+              )}
+              {election.winning_candidate_id === candidate.id && (
+                <p className="text-sm font-medium text-primary">{t("winner")}</p>
               )}
               {isMine && <p className="text-sm text-primary">{t("yourVote")}</p>}
             </div>

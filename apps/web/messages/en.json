@@ -633,6 +633,15 @@
     "alreadyStanding": "You are already standing in this election.",
     "notOnRoll": "Only members who joined before nominations opened can stand or vote. You can still follow the election.",
     "statementLabel": "Why you are standing",
-    "tiesFieldLabel": "Your connection to this community (optional)"
+    "tiesFieldLabel": "Your connection to this community (optional)",
+    "outcome": {
+      "counting": "Counting the votes...",
+      "elected": "Elected",
+      "tied": "Tied — no one elected. A tie is left unresolved rather than broken by an arbitrary rule.",
+      "no_candidates": "Closed with nobody standing.",
+      "rejected": "Not confirmed — more votes against than in favour."
+    },
+    "outcomeTerm": "The term runs for {months} months from certification.",
+    "winner": "Elected Unofficial Consul"
   }
 }

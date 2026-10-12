@@ -639,6 +639,15 @@
     "notOnRoll": "후보 등록 전에 가입한 회원만 출마하거나 투표할 수 있습니다. 선거 결과를 계속 지켜볼 수 있습니다.",
     "statementLabel": "왜 서 있느냐",
     "tiesFieldLabel": "이 커뮤니티와의 연결 (선택 사항)",
-    "rollLine": "명단: {roll} · 투표 내역: {turnout}"
+    "rollLine": "명단: {roll} · 투표 내역: {turnout}",
+    "outcome": {
+      "counting": "투표 집계 중...",
+      "elected": "선출",
+      "tied": "동점 — 아무도 선출되지 않습니다. 동점은 임의의 규칙으로 깨지는 것이 아니라 해결되지 않은 상태로 남겨집니다.",
+      "no_candidates": "아무도 서 있지 않은 채 닫혀 있었다.",
+      "rejected": "비확정 — 찬성보다 반대 투표가 더 많았습니다."
+    },
+    "outcomeTerm": "이 기간은 자격증 후 몇 달간 {months} 지속됩니다.",
+    "winner": "비공식 집정관으로 선출됨"
   }
 }

@@ -639,6 +639,15 @@
     "notOnRoll": "只有在提名开放前加入的成员才能参选或投票。你仍然可以关注选举结果。",
     "statementLabel": "你为什么站着",
     "tiesFieldLabel": "你与这个社区的联系（可选）",
-    "rollLine": "名单上： {roll} ·投票{turnout}："
+    "rollLine": "名单上： {roll} ·投票{turnout}：",
+    "outcome": {
+      "counting": "计票......",
+      "elected": "当选",
+      "tied": "平局——无人当选。平局是未解决的，而不是被任意规则打破。",
+      "no_candidates": "关闭时没有人站着。",
+      "rejected": "未确认——反对票多于赞成票。"
+    },
+    "outcomeTerm": "该期限从认证起持续数{months}月。",
+    "winner": "当选非官守领事"
   }
 }

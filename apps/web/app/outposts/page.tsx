@@ -86,7 +86,9 @@ export default async function OutpostsPage() {
         username: string | null;
       } | null;
       const name = p ? [p.first_name, p.last_name].filter(Boolean).join(" ") || p.username : null;
-      return [o.outpost_id as number, (o.title as string | null) ?? name];
+      // Name first: every elected consul carries the same title, so the
+      // title alone would make each row say the same thing.
+      return [o.outpost_id as number, name ?? (o.title as string | null)];
     }),
   );
   const electionByNetwork = new Map((elections ?? []).map((e) => [e.network_id as number, e]));

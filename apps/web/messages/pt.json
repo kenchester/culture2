@@ -639,6 +639,15 @@
     "notOnRoll": "Apenas membros que se inscreveram antes da abertura das indicações podem se candidatar ou votar. Você ainda pode acompanhar a eleição.",
     "statementLabel": "Por que você está de pé",
     "tiesFieldLabel": "Sua conexão com esta comunidade (opcional)",
-    "rollLine": "Na lista: {roll} · Votos expressos: {turnout}"
+    "rollLine": "Na lista: {roll} · Votos expressos: {turnout}",
+    "outcome": {
+      "counting": "Contando os votos...",
+      "elected": "Eleito",
+      "tied": "Empatado — ninguém foi eleito. Um empate fica sem solução, e não quebrado por uma regra arbitrária.",
+      "no_candidates": "Fechado sem ninguém em pé.",
+      "rejected": "Não confirmado — mais votos contra do que a favor."
+    },
+    "outcomeTerm": "O período dura {months} meses a partir da certificação.",
+    "winner": "Cônsul Não-Oficial Eleito"
   }
 }

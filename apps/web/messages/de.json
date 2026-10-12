@@ -639,6 +639,15 @@
     "notOnRoll": "Nur Mitglieder, die vor der Öffnung der Nominierungen beigetreten sind, dürfen kandidieren oder abstimmen. Sie können die Wahl weiterhin verfolgen.",
     "statementLabel": "Warum du stehst",
     "tiesFieldLabel": "Deine Verbindung zu dieser Community (optional)",
-    "rollLine": "Auf der Liste: {roll} · Abgegebene Stimmen: {turnout}"
+    "rollLine": "Auf der Liste: {roll} · Abgegebene Stimmen: {turnout}",
+    "outcome": {
+      "counting": "Die Stimmen werden ausgezählt...",
+      "elected": "Gewählt",
+      "tied": "Unentschieden – niemand wurde gewählt. Ein Unentschieden bleibt ungelöst, statt durch eine willkürliche Regel gebrochen zu werden.",
+      "no_candidates": "Geschlossen, niemand steht da.",
+      "rejected": "Nicht bestätigt – mehr Stimmen dagegen als dafür."
+    },
+    "outcomeTerm": "Die Laufzeit dauert {months} Monate ab der Zertifizierung.",
+    "winner": "Gewählter inoffizieller Konsul"
   }
 }

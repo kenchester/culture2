@@ -639,6 +639,15 @@
     "notOnRoll": "Solo i membri che si sono iscritti prima dell'apertura delle candidature possono candidarsi o votare. Puoi comunque seguire l'elezione.",
     "statementLabel": "Perché stai in piedi",
     "tiesFieldLabel": "Il tuo legame con questa comunità (facoltativo)",
-    "rollLine": "Iscritti: {roll} · Voti espressi: {turnout}"
+    "rollLine": "Iscritti: {roll} · Voti espressi: {turnout}",
+    "outcome": {
+      "counting": "Contando i voti...",
+      "elected": "Eletto",
+      "tied": "Parità — nessuno eletto. Un pareggio rimane irrisolto piuttosto che rotto da una regola arbitraria.",
+      "no_candidates": "Chiuso senza nessuno in piedi.",
+      "rejected": "Non confermato — più voti contro che favorevoli."
+    },
+    "outcomeTerm": "Il periodo dura {months} mesi dalla certificazione.",
+    "winner": "Console non ufficiale eletto"
   }
 }
