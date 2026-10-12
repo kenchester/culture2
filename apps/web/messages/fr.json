@@ -683,7 +683,8 @@
   },
   "share": {
     "share": "Partager",
-    "copied": "Lien copié"
+    "copied": "Lien copié",
+    "copy": "Bien reçu"
   },
   "consul": {
     "backToOutposts": "Tous les avant-postes",
@@ -712,5 +713,41 @@
     "lastUpdated": "Dernière mise à jour",
     "metaDescription": "{name} est le consul non officiel pour {principal} en {host}, choisi par les membres de la communauté sur CultureMesh.",
     "historyHeading": "Histoire"
+  },
+  "join": {
+    "invalidTitle": "Ce lien n’est pas valide",
+    "invalidBody": "Il se peut qu’il ait expiré ou ait été retiré. Vous pouvez <home>toujours trouver votre communauté</home> vous-même, ou <contact>nous contacter</contact>.",
+    "heading": "{institution} vous a orienté vers une communauté",
+    "networkLab": "La communauté",
+    "whatThisIs": "C’est un groupe de personnes sur CultureMesh qui partage d’où vous venez et où vous vivez aujourd’hui. Ce n’est pas dirigé par {institution}, et il ne s’arrête pas quand votre dossier s’arrête — il continue, tout comme votre place dans le domaine.",
+    "publicNote": "Les publications ici sont publiques. Vous choisissez ce que vous souhaitez partager, et vous pouvez choisir un nom d’utilisateur au lieu de votre nom.",
+    "privacyNote": "{institution} on y voit combien de personnes ont rejoint via son lien, et rien sur qui. Nous ne conservons pas de trace reliant à eux.",
+    "leaveNote": "Vous pouvez partir à tout moment.",
+    "joinCta": "Rejoignez cette communauté",
+    "signInCta": "Connectez-vous pour rejoindre",
+    "alreadyMember": "Vous faites déjà partie de cette communauté.",
+    "goToCommunity": "Allez dans la communauté"
+  },
+  "institutions": {
+    "title": "Votre institution",
+    "none": "Vous n’êtes pas inscrit comme membre du personnel d’aucune institution. Si c’est faux, contactez-nous.",
+    "inviteHeading": "Liens de référence",
+    "inviteIntro": "Donnez le même lien à toutes les personnes que vous voyez. Il fonctionne sans adresse e-mail, il peut être lu à voix haute ou imprimé, et toute personne qui l’ouvre choisit elle-même de s’inscrire.",
+    "chooseNetwork": "Communauté",
+    "chooseNetworkPlaceholder": "Choisissez une communauté à {place}...",
+    "noNetworks": "Aucune communauté n’est encore répertoriée dans la ville de cette institution.",
+    "noteLabel": "Étiquette pour vos propres disques (optionnel)",
+    "notePlaceholder": "par exemple, arrivées en octobre",
+    "createCta": "Créez un lien de recommandation",
+    "noInvites": "Pas encore de liens de recommandation.",
+    "usesLabel": "{count} a rejoint",
+    "revoke": "Retrait",
+    "revoked": "Retiré",
+    "countsHeading": "Personnes qui ont rejoint via vos liens",
+    "countsIntro": "Compte seulement. Nous n’enregistrons pas quelles personnes ont rejoint via un lien, donc cela ne peut pas être décomposé par personne — par conception.",
+    "countsMonth": "Mois",
+    "countsNetwork": "Communauté",
+    "countsJoined": "A rejoint",
+    "noCounts": "Personne n’a encore rejoint via un lien."
   }
 }

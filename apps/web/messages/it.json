@@ -683,7 +683,8 @@
   },
   "share": {
     "share": "Condividi",
-    "copied": "Link copiato"
+    "copied": "Link copiato",
+    "copy": "Ricevuto"
   },
   "consul": {
     "backToOutposts": "Tutti gli avamposti",
@@ -712,5 +713,41 @@
     "lastUpdated": "Ultimo aggiornamento",
     "metaDescription": "{name} è il Console Non Ufficiale per {principal} in {host}, scelto dai membri della comunità su CultureMesh.",
     "historyHeading": "Storia"
+  },
+  "join": {
+    "invalidTitle": "Questo link non è valido",
+    "invalidBody": "Potrebbe essere scaduto o essere stato ritirate. Puoi <home>comunque trovare la tua community</home> da solo, <contact>oppure contattarci</contact>.",
+    "heading": "{institution} ti ha indirizzato verso una comunità",
+    "networkLab": "La comunità",
+    "whatThisIs": "Questo è un gruppo di persone su CultureMesh che condividono da dove vieni e dove vivi ora. Non è gestito da {institution}, e non finisce quando finisce il tuo caso — continua, e così come il tuo ruolo in esso.",
+    "publicNote": "I post qui sono pubblici. Scegli tu cosa condividere, e puoi scegliere un nome utente invece del tuo nome.",
+    "privacyNote": "{institution} mostra quante persone si sono unite tramite il suo link, e nulla su chi. Non teniamo traccia che ti colleghi a loro.",
+    "leaveNote": "Puoi andartene in qualsiasi momento.",
+    "joinCta": "Unisciti a questa community",
+    "signInCta": "Accedi per unirti",
+    "alreadyMember": "Sei già un membro di questa comunità.",
+    "goToCommunity": "Vai nella comunità"
+  },
+  "institutions": {
+    "title": "La tua istituzione",
+    "none": "Non sei elencato come personale per nessuna istituzione. Se non è sbagliato, contattaci.",
+    "inviteHeading": "Collegamenti di riferimento",
+    "inviteIntro": "Dai lo stesso link a tutti quelli che vedi. Funziona senza indirizzo email, può essere letto ad alta voce o stampato, e chiunque lo apra decide se unirsi.",
+    "chooseNetwork": "Comunità",
+    "chooseNetworkPlaceholder": "Scegli una comunità in {place}...",
+    "noNetworks": "Nessuna comunità è ancora elencata nella città di questa istituzione.",
+    "noteLabel": "Etichetta per i tuoi dischi (opzionale)",
+    "notePlaceholder": "ad esempio arrivi di ottobre",
+    "createCta": "Crea un link di segnalazione",
+    "noInvites": "Nessun link di segnalazione ancora.",
+    "usesLabel": "{count} si unì",
+    "revoke": "Ritiro",
+    "revoked": "Ritirato",
+    "countsHeading": "Persone che si sono iscritte tramite i tuoi link",
+    "countsIntro": "Solo conteggi. Non registriamo quali persone si sono unite tramite un link, quindi questo non può essere suddiviso per persona — per design.",
+    "countsMonth": "Mese",
+    "countsNetwork": "Comunità",
+    "countsJoined": "Arruolati",
+    "noCounts": "Nessuno si è ancora iscritto tramite un link."
   }
 }

@@ -683,7 +683,8 @@
   },
   "share": {
     "share": "分享",
-    "copied": "链接已复制"
+    "copied": "链接已复制",
+    "copy": "收到"
   },
   "consul": {
     "backToOutposts": "所有前哨站",
@@ -712,5 +713,41 @@
     "lastUpdated": "最后更新",
     "metaDescription": "{name}是{host}的{principal}社区非官方领事，由社区成员在 CultureMesh 上选出。",
     "historyHeading": "历史"
+  },
+  "join": {
+    "invalidTitle": "这个链接无效",
+    "invalidBody": "它可能已过期或被撤回。你仍然可以<home>自己找到你的社区</home>，或者<contact>联系我们</contact>。",
+    "heading": "{institution}指引你去一个社区",
+    "networkLab": "社区",
+    "whatThisIs": "这是一群在CultureMesh上分享你来自哪里、现在住在哪里的人。它不是由{institution}，也不会因为你的案件结束而结束——它会继续，你在其中的位置也会继续。",
+    "publicNote": "这里的帖子是公开的。你可以选择分享内容，也可以选择用户名而不是名字。",
+    "privacyNote": "{institution}通过链接显示有多少人加入，但没有关于具体是谁。我们不会保留与他们的联系记录。",
+    "leaveNote": "你随时可以离开。",
+    "joinCta": "加入这个社区",
+    "signInCta": "登录加入",
+    "alreadyMember": "你已经是这个社区的一员了。",
+    "goToCommunity": "去社区"
+  },
+  "institutions": {
+    "title": "你的机构",
+    "none": "你没有被列为任何机构的工作人员。如果有误，请联系我们。",
+    "inviteHeading": "推荐链接",
+    "inviteIntro": "给你看到的每个人都发同一个链接。它无需电子邮件地址即可使用，可以朗读或打印，任何打开的人都可以自行决定是否加入。",
+    "chooseNetwork": "社区",
+    "chooseNetworkPlaceholder": "选择社区......{place}",
+    "noNetworks": "该机构所在城市尚无社区登记。",
+    "noteLabel": "为自己的唱片贴标签（可选）",
+    "notePlaceholder": "例如：十月到达",
+    "createCta": "创建一个推荐链接",
+    "noInvites": "还没有推荐链接。",
+    "usesLabel": "{count}加入",
+    "revoke": "撤退",
+    "revoked": "退役",
+    "countsHeading": "通过你的链接加入的人",
+    "countsIntro": "仅限计数。我们不会记录通过链接加入的人员，因此无法按人而细分——这是设计的。",
+    "countsMonth": "月份",
+    "countsNetwork": "社区",
+    "countsJoined": "加入",
+    "noCounts": "还没有人通过链接加入。"
   }
 }

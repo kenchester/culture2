@@ -683,7 +683,8 @@
   },
   "share": {
     "share": "Compartir",
-    "copied": "Enlace copiado"
+    "copied": "Enlace copiado",
+    "copy": "Copiado"
   },
   "consul": {
     "backToOutposts": "Todos los puestos avanzados",
@@ -712,5 +713,41 @@
     "lastUpdated": "Última actualización",
     "metaDescription": "{name} es el Cónsul No Oficial de {principal} en {host}, elegido por los miembros de la comunidad en CultureMesh.",
     "historyHeading": "Historia"
+  },
+  "join": {
+    "invalidTitle": "Este enlace no es válido",
+    "invalidBody": "Puede que haya caducado o haya sido retirado. Aún puedes <home>encontrar tu comunidad</home> por ti mismo o <contact>contactarnos</contact>.",
+    "heading": "{institution} te ha señalado una comunidad",
+    "networkLab": "La comunidad",
+    "whatThisIs": "Este es un grupo de personas en CultureMesh que comparten de dónde vienes y dónde vives ahora. No está dirigido por {institution}, y no termina cuando termina tu caso — sigue adelante, y también tu lugar en él.",
+    "publicNote": "Las publicaciones aquí son públicas. Tú eliges qué compartir, y puedes elegir un nombre de usuario en lugar del tuyo.",
+    "privacyNote": "{institution} se muestra cuántas personas se unieron a través de su enlace, y nada sobre quiénes. No guardamos ningún registro que te conecte con ellos.",
+    "leaveNote": "Puedes irte en cualquier momento.",
+    "joinCta": "Únete a esta comunidad",
+    "signInCta": "Iniciar sesión para unirse",
+    "alreadyMember": "Ya eres miembro de esta comunidad.",
+    "goToCommunity": "Ve a la comunidad"
+  },
+  "institutions": {
+    "title": "Tu institución",
+    "none": "No aparece como personal de ninguna institución. Si eso es incorrecto, contáctanos.",
+    "inviteHeading": "Enlaces de referencia",
+    "inviteIntro": "Da el mismo enlace a todos los que veas. Funciona sin dirección de correo electrónico, se puede leer en voz alta o imprimir, y quien lo abra decide si quiere unirse.",
+    "chooseNetwork": "Comunidad",
+    "chooseNetworkPlaceholder": "Elige una comunidad en {place}...",
+    "noNetworks": "Aún no hay comunidades listadas en la ciudad de esta institución.",
+    "noteLabel": "Etiqueta para tus propios discos (opcional)",
+    "notePlaceholder": "por ejemplo, llegadas en octubre",
+    "createCta": "Crea un enlace de referencia",
+    "noInvites": "Todavía no hay enlaces de derivación.",
+    "usesLabel": "{count} Unió",
+    "revoke": "Retirada",
+    "revoked": "Retirada",
+    "countsHeading": "Personas que se unieron a través de vuestros enlaces",
+    "countsIntro": "Solo cuenta. No registramos qué personas se unieron a través de un enlace, así que esto no puede desglosarse por persona — por diseño.",
+    "countsMonth": "Mes",
+    "countsNetwork": "Comunidad",
+    "countsJoined": "Incorporado",
+    "noCounts": "Nadie se ha unido aún por enlace."
   }
 }

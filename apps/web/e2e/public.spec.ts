@@ -301,6 +301,34 @@ test.describe("the consul page", () => {
   });
 });
 
+test.describe("referral links", () => {
+  test("an invalid token is friendly and reveals nothing", async ({ page }) => {
+    await page.goto("/join/11111111-1111-1111-1111-111111111111");
+    await expect(page.getByText("This link isn't valid")).toBeVisible();
+    // Expired, withdrawn, exhausted and made-up all look identical on
+    // purpose, so a token cannot be probed for.
+    await expect(page.getByRole("link", { name: /find your community/i })).toBeVisible();
+  });
+
+  test("a referral page is not indexed and previews as nothing specific", async ({ request }) => {
+    const html = await (
+      await request.get("/join/11111111-1111-1111-1111-111111111111")
+    ).text();
+    expect(html).toMatch(/<meta name="robots" content="[^"]*noindex/);
+    // The page inherits the site-wide card rather than building its own,
+    // which is what it should do: the URL is handed over in person, and a
+    // preview naming a resettlement agency - generated wherever the link
+    // gets pasted - would be a disclosure in itself. A generic card is
+    // also friendlier than no card at all.
+    expect(html.match(/<meta property="og:title" content="([^"]*)"/)?.[1]).toBe("CultureMesh");
+  });
+
+  test("staff pages require signing in", async ({ page }) => {
+    await page.goto("/institutions");
+    await expect(page).toHaveURL(/\/sign-in/);
+  });
+});
+
 test.describe("gates and errors", () => {
   test("an unknown URL offers the homepage and contact, not an error page", async ({ page }) => {
     const response = await page.goto("/this-page-does-not-exist");

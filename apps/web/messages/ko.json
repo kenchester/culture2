@@ -683,7 +683,8 @@
   },
   "share": {
     "share": "공유하기",
-    "copied": "링크 복사됨"
+    "copied": "링크 복사됨",
+    "copy": "알겠습니다"
   },
   "consul": {
     "backToOutposts": "모든 전초기지",
@@ -712,5 +713,41 @@
     "lastUpdated": "마지막 업데이트",
     "metaDescription": "{name}님은 {host}의 {principal} 커뮤니티 비공식 영사로, CultureMesh 커뮤니티 구성원들이 선출했습니다.",
     "historyHeading": "역사"
+  },
+  "join": {
+    "invalidTitle": "이 링크는 유효하지 않습니다",
+    "invalidBody": "만료되었거나 철회되었을 수도 있습니다. 직접 <home>커뮤니티를 찾</home>거나 <contact>저희에게 연락</contact>하실 수 있습니다.",
+    "heading": "{institution} 커뮤니티를 알려주었다",
+    "networkLab": "커뮤니티",
+    "whatThisIs": "이곳은 CultureMesh에서 여러분이 어디서 왔고 지금 어디에 사는지 공유하는 사람들입니다. 이 조직은 {institution}, 그리고 사건이 끝난다고 해서 끝나지 않습니다 — 계속 진행되며, 여러분의 위치도 마찬가지입니다.",
+    "publicNote": "여기 게시글은 공개되어 있습니다. 공유할 내용을 직접 선택할 수 있고, 이름 대신 사용자 이름을 선택할 수도 있습니다.",
+    "privacyNote": "{institution} 몇 명이 가입했는지는 링크를 통해 나오지만, 누군지에 대한 정보는 없습니다. 우리는 여러분을 연결하는 기록을 남기지 않습니다.",
+    "leaveNote": "언제든 떠날 수 있어.",
+    "joinCta": "이 커뮤니티에 참여하세요",
+    "signInCta": "가입하려면 로그인하세요",
+    "alreadyMember": "당신은 이미 이 커뮤니티의 일원입니다.",
+    "goToCommunity": "커뮤니티로 가세요"
+  },
+  "institutions": {
+    "title": "당신의 기관",
+    "none": "당신은 어떤 기관의 직원으로도 등록되어 있지 않습니다. 만약 그렇지 않다면 저희에게 연락해 주세요.",
+    "inviteHeading": "추천 링크",
+    "inviteIntro": "보는 모든 사람에게 같은 링크를 주세요. 이메일 주소 없이도 작동하며, 소리 내어 읽거나 인쇄할 수 있으며, 열어보는 누구나 가입 여부를 스스로 결정합니다.",
+    "chooseNetwork": "커뮤니티",
+    "chooseNetworkPlaceholder": "... 커뮤니티를 {place}선택하세요",
+    "noNetworks": "이 기관의 도시에는 아직 어떤 커뮤니티도 등록되어 있지 않습니다.",
+    "noteLabel": "자신의 레코드에 라벨을 붙이세요 (선택 사항)",
+    "notePlaceholder": "예: 10월 도착자",
+    "createCta": "추천 링크 생성",
+    "noInvites": "아직 추천 링크는 없습니다.",
+    "usesLabel": "{count} 가입",
+    "revoke": "철수",
+    "revoked": "철회",
+    "countsHeading": "당신의 링크를 통해 가입한 사람들",
+    "countsIntro": "카운트만 가능합니다. 링크를 통해 가입한 사람들을 기록하지 않기 때문에, 의도적으로 개인별로 나눌 수 없습니다.",
+    "countsMonth": "한 달",
+    "countsNetwork": "커뮤니티",
+    "countsJoined": "가입",
+    "noCounts": "아직 링크를 통해 가입한 사람은 없습니다."
   }
 }

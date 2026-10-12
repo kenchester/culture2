@@ -677,7 +677,8 @@
   },
   "share": {
     "share": "Share",
-    "copied": "Link copied"
+    "copied": "Link copied",
+    "copy": "Copy"
   },
   "consul": {
     "backToOutposts": "All outposts",
@@ -706,5 +707,41 @@
     "lastUpdated": "Last updated",
     "metaDescription": "{name} is the Unofficial Consul for {principal} in {host}, chosen by community members on CultureMesh.",
     "historyHeading": "History"
+  },
+  "join": {
+    "invalidTitle": "This link isn't valid",
+    "invalidBody": "It may have expired or been withdrawn. You can still <home>find your community</home> yourself, or <contact>contact us</contact>.",
+    "heading": "{institution} has pointed you to a community",
+    "networkLab": "The community",
+    "whatThisIs": "This is a group of people on CultureMesh who share where you came from and where you live now. It is not run by {institution}, and it does not end when your case does — it keeps going, and so does your place in it.",
+    "publicNote": "Posts here are public. You choose what to share, and you can choose a username instead of your name.",
+    "privacyNote": "{institution} is shown how many people joined through its link, and nothing about who. We do not keep a record connecting you to them.",
+    "leaveNote": "You can leave at any time.",
+    "joinCta": "Join this community",
+    "signInCta": "Sign in to join",
+    "alreadyMember": "You are already a member of this community.",
+    "goToCommunity": "Go to the community"
+  },
+  "institutions": {
+    "title": "Your institution",
+    "none": "You are not listed as staff for any institution. If that's wrong, contact us.",
+    "inviteHeading": "Referral links",
+    "inviteIntro": "Give the same link to everyone you see. It works without an email address, it can be read aloud or printed, and anyone who opens it chooses for themselves whether to join.",
+    "chooseNetwork": "Community",
+    "chooseNetworkPlaceholder": "Choose a community in {place}...",
+    "noNetworks": "No communities are listed in this institution's city yet.",
+    "noteLabel": "Label for your own records (optional)",
+    "notePlaceholder": "e.g. October arrivals",
+    "createCta": "Create a referral link",
+    "noInvites": "No referral links yet.",
+    "usesLabel": "{count} joined",
+    "revoke": "Withdraw",
+    "revoked": "Withdrawn",
+    "countsHeading": "People who joined through your links",
+    "countsIntro": "Counts only. We do not record which people joined through a link, so this cannot be broken down by person — by design.",
+    "countsMonth": "Month",
+    "countsNetwork": "Community",
+    "countsJoined": "Joined",
+    "noCounts": "Nobody has joined through a link yet."
   }
 }

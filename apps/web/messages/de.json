@@ -683,7 +683,8 @@
   },
   "share": {
     "share": "Teilen",
-    "copied": "Link kopiert"
+    "copied": "Link kopiert",
+    "copy": "Verstanden"
   },
   "consul": {
     "backToOutposts": "Alle Außenposten",
@@ -712,5 +713,41 @@
     "lastUpdated": "Zuletzt aktualisiert",
     "metaDescription": "{name} ist der inoffizielle Konsul für {principal} in {host}, ausgewählt von Community-Mitgliedern auf CultureMesh.",
     "historyHeading": "Geschichte"
+  },
+  "join": {
+    "invalidTitle": "Dieser Link ist nicht gültig",
+    "invalidBody": "Sie könnte abgelaufen oder zurückgezogen worden sein. Sie können <home>Ihre Community</home> weiterhin selbst finden oder <contact>uns kontaktieren</contact>.",
+    "heading": "{institution} Sie auf eine Gemeinschaft hingewiesen hat",
+    "networkLab": "Die Gemeinde",
+    "whatThisIs": "Das ist eine Gruppe von Menschen auf CultureMesh, die teilen, woher Sie kommen und wo Sie jetzt leben. Sie wird nicht von {institution}betrieben, und sie endet nicht, wenn Ihr Fall endet – sie läuft weiter, und ebenso Ihr Platz darin.",
+    "publicNote": "Die Beiträge hier sind öffentlich. Du entscheidest, was du teilst, und du kannst einen Benutzernamen statt deines Namens wählen.",
+    "privacyNote": "{institution} wird gezeigt, wie viele Menschen sich über die Verbindung angeschlossen haben, und nichts über wen. Wir führen keine Aufzeichnungen, die dich mit ihnen verbinden.",
+    "leaveNote": "Du kannst jederzeit gehen.",
+    "joinCta": "Tritt dieser Community bei.",
+    "signInCta": "Melden Sie sich an, um beizutreten",
+    "alreadyMember": "Du bist bereits Mitglied dieser Community.",
+    "goToCommunity": "Geh in die Gemeinschaft"
+  },
+  "institutions": {
+    "title": "Deine Institution",
+    "none": "Sie sind bei keiner Institution als Mitarbeiter aufgeführt. Wenn das falsch ist, kontaktieren Sie uns.",
+    "inviteHeading": "Empfehlungslinks",
+    "inviteIntro": "Gib denselben Link jedem, den du siehst. Er funktioniert ohne E-Mail-Adresse, kann vorgelesen oder gedruckt werden, und jeder, der ihn öffnet, entscheidet selbst, ob er beitreten will.",
+    "chooseNetwork": "Gemeinschaft",
+    "chooseNetworkPlaceholder": "Wähle eine Gemeinschaft in {place}...",
+    "noNetworks": "In der Stadt dieser Institution sind bisher keine Gemeinden aufgeführt.",
+    "noteLabel": "Label für deine eigenen Platten (optional)",
+    "notePlaceholder": "z. B. Ankünfte im Oktober",
+    "createCta": "Erstelle einen Empfehlungslink",
+    "noInvites": "Noch keine Empfehlungslinks.",
+    "usesLabel": "{count} Mitglied",
+    "revoke": "Rückzug",
+    "revoked": "Zurückgezogen",
+    "countsHeading": "Menschen, die über deine Links beigetreten sind",
+    "countsIntro": "Nur Zählungen. Wir erfassen nicht, welche Personen über einen Link beigetreten sind, daher kann das nicht per Person – absichtlich – aufgeteilt werden.",
+    "countsMonth": "Monat",
+    "countsNetwork": "Gemeinschaft",
+    "countsJoined": "Beigetreten",
+    "noCounts": "Niemand ist bisher über einen Link beigetreten."
   }
 }

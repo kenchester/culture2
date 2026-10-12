@@ -683,7 +683,8 @@
   },
   "share": {
     "share": "シェア",
-    "copied": "リンクをコピーしました"
+    "copied": "リンクをコピーしました",
+    "copy": "了解"
   },
   "consul": {
     "backToOutposts": "すべての前哨基地",
@@ -712,5 +713,41 @@
     "lastUpdated": "最終更新",
     "metaDescription": "{name}は、{host}における{principal}コミュニティの非公式領事で、CultureMesh のコミュニティメンバーによって選ばれました。",
     "historyHeading": "歴史"
+  },
+  "join": {
+    "invalidTitle": "このリンクは有効ではありません",
+    "invalidBody": "期限切れか、取り下げられている可能性があります。ご自身<home>でコミュニティを探</home>すか、<contact>当社にお問い合わせください</contact>。",
+    "heading": "コミュニティを紹介{institution}してくれた",
+    "networkLab": "コミュニティ",
+    "whatThisIs": "これはCultureMeshのグループで、あなたがどこから来たのか、どこに住んでいるのかを共有しています。この組織は{institution}、あなたの事件が終わったからといって終わるのではなく、続きますし、あなたの居場所も続きます。",
+    "publicNote": "ここでの投稿は公開されています。共有内容は自分で選べ、名前の代わりにユーザー名を選べます。",
+    "privacyNote": "{institution}リンクを通じて何人が参加したかは示され、誰かについては何も記載されていません。私たちはあなたを彼らとつなぐ記録を残していません。",
+    "leaveNote": "いつでも出て行っていいよ。",
+    "joinCta": "このコミュニティに参加しましょう",
+    "signInCta": "サインインして参加",
+    "alreadyMember": "あなたはすでにこのコミュニティの一員です。",
+    "goToCommunity": "コミュニティへ行こう"
+  },
+  "institutions": {
+    "title": "あなたの所属機関",
+    "none": "あなたはどの機関のスタッフとしても登録されていません。もし違う場合は、私たちにご連絡ください。",
+    "inviteHeading": "紹介リンク",
+    "inviteIntro": "見かけた全員に同じリンクを送ってください。メールアドレスなしでも動作し、声に出して読んでも印刷もでき、開いた人は誰でも参加するかどうか自分で選べます。",
+    "chooseNetwork": "コミュニティ",
+    "chooseNetworkPlaceholder": "コミュニティを選びましょう{place}...",
+    "noNetworks": "この機関の都市にはまだコミュニティは掲載されていません。",
+    "noteLabel": "自分のレコードにラベルを付ける(任意)",
+    "notePlaceholder": "例:10月の到着者",
+    "createCta": "紹介リンクを作成する",
+    "noInvites": "まだ紹介リンクはありません。",
+    "usesLabel": "{count}加入",
+    "revoke": "撤退",
+    "revoked": "撤退",
+    "countsHeading": "あなたのリンクを通じて参加した人たち",
+    "countsIntro": "カウントのみです。リンクを通じて参加した人を記録していないため、個人ごとに分類することはできません。",
+    "countsMonth": "月間",
+    "countsNetwork": "コミュニティ",
+    "countsJoined": "加入",
+    "noCounts": "まだ誰もリンク経由で参加していません。"
   }
 }
