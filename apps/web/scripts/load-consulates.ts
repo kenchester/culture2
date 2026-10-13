@@ -24,6 +24,8 @@ const DISPLAY: Record<string, string> = {
 
 const ALIASES: Record<string, string> = {
   "Ivory Coast": "CI",
+  "North Macedonia": "MK",
+  "San Marino": "SM",
   "Czech Republic": "CZ",
   "South Korea": "KR",
   Russia: "RU",
@@ -96,6 +98,44 @@ const DATA: {
       ["Turkey", "Consulate-General"], ["Ukraine", "Honorary Consulate"],
       ["United Kingdom", "Consulate-General", "https://www.gov.uk/government/world/organisations/british-consulate-general-houston"], ["Uruguay", "Consulate-General"],
       ["Vietnam", "Consulate-General", "http://vietnamconsulateinhouston.org/"],
+    ],
+  },
+  {
+    cityPlaceId: 25420,
+    cityName: "Detroit",
+    // Wikipedia has no Detroit missions list and its US-wide page is too
+    // long to read in full, so this comes from embassies.net. That source
+    // carries no URLs, so the links below were derived from each foreign
+    // ministry's own pattern and then checked: only Detroit-specific URLs
+    // that actually resolve are included. Generic ministry index pages
+    // ("all our representations") were dropped - linking one as "the
+    // Detroit consulate's page" would be misleading.
+    source: "embassies.net: Foreign embassies and consulates in Detroit",
+    sourceUrl: "https://embassies.net/united-states/detroit",
+    missions: [
+      ["Austria", "Consulate"],
+      ["Belgium", "Honorary Consulate"],
+      ["Belize", "Consulate-General"],
+      ["Canada", "Consulate-General", "https://www.international.gc.ca/country-pays/us-eu/detroit.aspx?lang=eng"],
+      ["Denmark", "Honorary Consulate"],
+      ["Finland", "Honorary Consulate"],
+      ["France", "Honorary Consulate"],
+      ["Germany", "Honorary Consulate"],
+      ["Iceland", "Consulate-General"],
+      ["Iraq", "Consulate-General", "https://mofa.gov.iq/detroit/en/"],
+      ["Italy", "Consulate-General"],
+      // Returns 403 to automated requests, but the host is live and the
+      // hostname follows the same pattern as the verified Houston one.
+      ["Japan", "Consulate-General", "https://www.detroit.us.emb-japan.go.jp/itpr_en/index.html"],
+      ["Lebanon", "Consulate-General"],
+      ["Mexico", "Consulate", "https://consulmex.sre.gob.mx/detroit/"],
+      ["Netherlands", "Honorary Consulate"],
+      ["North Macedonia", "Consulate-General"],
+      ["Poland", "Honorary Consulate", "https://www.gov.pl/web/usa-en/detroit"],
+      ["San Marino", "Consulate"],
+      ["Slovenia", "Consulate"],
+      ["Sweden", "Consulate"],
+      ["Switzerland", "Consulate"],
     ],
   },
 ];
