@@ -787,7 +787,7 @@
     "missingStart": "Enciéndelo",
     "originsNote": "Residentes que viven aquí ahora y que nacieron en otro país. Esto no es ascendencia — las oleadas anteriores de inmigración cuyos descendientes nacieron aquí no aparecen.",
     "consulHeading": "Quién está representado oficialmente aquí",
-    "consulIntro": "Los consulados son ubicados por gobiernos extranjeros, que los sitúan donde están sus nacionales. Las ciudades hermanas son elegidas por la propia ciudad. Ambas miden cosas diferentes.",
+    "consulIntro": "A continuación se muestra una lista de embajadas y consulados alojados aquí, enlazada a sitios web oficiales donde disponemos de su información.",
     "consulNone": "Los consulados de esta ciudad aún no se han cargado.",
     "consulCount": "Los {count} países mantienen aquí un consulado o misión",
     "consulSource": "Fuente: {source}",

@@ -343,7 +343,6 @@ export default async function CityPage({ params }: { params: Promise<{ id: strin
             {/* Grouped, because a single alphabetical run of 87 is a
                 wall rather than a list. Order and membership follow UN
                 M49 (lib/continents.ts). */}
-            <p className="text-xs text-muted">{t("consulLinkNote")}</p>
             {groupByContinent(consulates, (c) => c.country_iso).map((group) => (
               <div key={group.continent} className="flex flex-col gap-2">
                 <h3 className="text-sm font-medium uppercase tracking-wide text-muted">

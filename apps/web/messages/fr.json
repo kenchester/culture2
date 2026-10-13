@@ -787,7 +787,7 @@
     "missingStart": "Démarre-le",
     "originsNote": "Des résidents vivant ici aujourd’hui et qui sont nés dans un autre pays. Ce n’est pas de l’ascendance — les vagues précédentes d’immigration dont les descendants sont nés ici n’apparaissent pas.",
     "consulHeading": "Qui est officiellement représenté ici",
-    "consulIntro": "Les consulats sont placés par des gouvernements étrangers, qui les placent là où se trouvent leurs ressortissants. Les villes jumelées sont choisies par la ville elle-même. Les deux mesures sont différentes.",
+    "consulIntro": "Voici une liste des ambassades et consulats hébergés ici, avec des liens hypertextuels vers les sites officiels où nous disposons de leurs informations.",
     "consulNone": "Les consulats pour cette ville n’ont pas encore été chargés.",
     "consulCount": "{count} Les pays y ont un consulat ou une mission",
     "consulSource": "Source : {source}",

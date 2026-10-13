@@ -334,6 +334,7 @@
   "zh": [
     "auth.identity.explainer",
     "city.consulHeading",
+    "city.consulIntro",
     "city.gapCaveat",
     "city.gapPartnerOnly",
     "city.markNo",
@@ -367,6 +368,7 @@
     "auth.identity.explainer",
     "city.citeHeading",
     "city.consulHeading",
+    "city.consulIntro",
     "city.gapCaveat",
     "city.gapIntro",
     "city.gapPartnerOnly",

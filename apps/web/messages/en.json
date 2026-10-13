@@ -777,7 +777,7 @@
     "missingStart": "Start it",
     "originsNote": "Residents living here now who were born in another country. This is not ancestry — earlier waves of immigration whose descendants were born here do not appear.",
     "consulHeading": "Who is officially represented here",
-    "consulIntro": "Consulates are placed by foreign governments, which put them where their nationals are. Sister cities are chosen by the city itself. The two measure different things.",
+    "consulIntro": "The following is a list of embassies and consulates hosted here, hyperlinked to official websites where we have their information.",
     "consulNone": "Consulates for this city haven't been loaded yet.",
     "consulCount": "{count} countries keep a consulate or mission here",
     "consulSource": "Source: {source}",
@@ -798,7 +798,6 @@
       "europe": "Europe",
       "oceania": "Oceania",
       "other": "Elsewhere"
-    },
-    "consulLinkNote": "Names in colour link to the mission's own page, where the source lists one."
+    }
   }
 }

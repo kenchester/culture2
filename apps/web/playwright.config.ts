@@ -35,6 +35,14 @@ export default defineConfig({
   timeout: 45_000,
   expect: { timeout: 10_000 },
   fullyParallel: true,
+  // Two workers, not the default four. Every spec here hits one hosted
+  // Supabase instance through server-rendered pages that each take a
+  // couple of seconds, so the contention is in the database, not the
+  // browser - and it produced three separate flakes in pages that pass
+  // comfortably on their own. Halving concurrency removes the cause;
+  // raising each assertion's timeout only hid it and made real failures
+  // slower to surface.
+  workers: 2,
   forbidOnly: !!process.env.CI,
   retries: process.env.CI ? 1 : 0,
   reporter: process.env.CI ? [["github"], ["list"]] : [["list"]],
