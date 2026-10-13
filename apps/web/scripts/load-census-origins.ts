@@ -28,6 +28,12 @@ const SOURCE = "US Census Bureau, ACS table B05006 (via Census Reporter)";
 const CITIES: { placeId: number; name: string; geoId: string }[] = [
   { placeId: 25760, name: "New York City", geoId: "16000US3651000" },
   { placeId: 24835, name: "Houston", geoId: "16000US4835000" },
+  // Detroit city proper, not metro Detroit. An organisation like Global
+  // Detroit works metro-wide and will find this number smaller than the
+  // one they use - Dearborn and Hamtramck are separate places - but
+  // mixing geographies across city pages would be worse than being
+  // consistently narrow and saying so.
+  { placeId: 25420, name: "Detroit", geoId: "16000US2622000" },
 ];
 
 // Residual categories, not countries. "Other Eastern Asia" and

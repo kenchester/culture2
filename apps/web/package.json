@@ -20,6 +20,7 @@
     "seed-scroll-test-network": "tsx scripts/seed-scroll-test-network.ts",
     "seed-showcase-corridors": "tsx scripts/seed-showcase-corridors.ts",
     "load-sister-cities": "tsx scripts/load-sister-cities.ts",
+    "load-consulates": "tsx scripts/load-consulates.ts",
     "load-census-origins": "tsx scripts/load-census-origins.ts",
     "backfill-transcripts": "tsx scripts/backfill-transcripts.ts",
     "test": "tsx --test lib/*.test.ts",

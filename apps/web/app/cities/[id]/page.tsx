@@ -5,6 +5,8 @@ import { getTranslations } from "next-intl/server";
 import { createClient } from "@/lib/supabase/server";
 import { previewText, shareMetadata } from "@/lib/share-metadata";
 import { getPlaceChain } from "@/lib/place-chain";
+import { getSiteUrl } from "@/lib/site-url";
+import { CopyTextButton } from "@/components/copy-text-button";
 import { getLocale } from "next-intl/server";
 import type { Locale } from "@/lib/locale";
 
@@ -24,6 +26,14 @@ type OriginStat = {
   is_total: boolean;
   source: string;
   period: string;
+};
+
+type Consulate = {
+  country_iso: string;
+  country_name: string;
+  mission_type: string | null;
+  source: string;
+  source_url: string | null;
 };
 
 type NetworkRow = {
@@ -60,7 +70,8 @@ async function loadCity(id: string, locale: Locale) {
   // neither should have a public page about it.
   if (!place || place.hidden_from_search) return null;
 
-  const [{ data: sisters }, { data: origins }, { data: networks }, chain] = await Promise.all([
+  const [{ data: sisters }, { data: origins }, { data: consulates }, { data: networks }, chain] =
+    await Promise.all([
     supabase
       .from("city_sister_cities")
       .select("partner_name, partner_country_iso, partner_place_id, since_year, source, source_url")
@@ -72,12 +83,17 @@ async function loadCity(id: string, locale: Locale) {
       .eq("city_place_id", place.id)
       .order("people", { ascending: false }),
     supabase
+      .from("city_consulates")
+      .select("country_iso, country_name, mission_type, source, source_url")
+      .eq("city_place_id", place.id)
+      .order("country_name"),
+    supabase
       .from("networks")
       .select("id, title, member_count, origin_place_id, location_place_id")
       .or(`location_place_id.eq.${place.id},origin_place_id.eq.${place.id}`)
       .order("member_count", { ascending: false }),
     getPlaceChain(supabase, Number(place.id), locale),
-  ]);
+    ]);
 
   // Which countries already have a community arriving here?
   //
@@ -128,6 +144,7 @@ async function loadCity(id: string, locale: Locale) {
     chain,
     sisters: (sisters ?? []) as SisterCity[],
     origins: (origins ?? []) as OriginStat[],
+    consulates: (consulates ?? []) as Consulate[],
     networks: (networks ?? []) as NetworkRow[],
     coveredCountryIds,
     placeForIso,
@@ -156,10 +173,11 @@ export default async function CityPage({ params }: { params: Promise<{ id: strin
   const { id } = await params;
   const locale = (await getLocale()) as Locale;
   const t = await getTranslations("city");
-  const loaded = await loadCity(id, locale);
+  const [loaded, siteUrl] = await Promise.all([loadCity(id, locale), getSiteUrl()]);
   if (!loaded) notFound();
 
-  const { place, chain, sisters, origins, networks, coveredCountryIds, placeForIso } = loaded;
+  const { place, chain, sisters, origins, consulates, networks, coveredCountryIds, placeForIso } =
+    loaded;
 
   const total = origins.find((o) => o.is_total) ?? null;
   const countries = origins.filter((o) => !o.is_total);
@@ -184,10 +202,7 @@ export default async function CityPage({ params }: { params: Promise<{ id: strin
   const topIsos = new Set(top.map((c) => c.origin_country_iso));
   const canCompare = partnerCountries.size > 0 && top.length > 0;
 
-  const both = canCompare ? top.filter((c) => partnerCountries.has(c.origin_country_iso)) : [];
-  const communityOnly = canCompare
-    ? top.filter((c) => !partnerCountries.has(c.origin_country_iso))
-    : [];
+  const consulateByIso = new Map(consulates.map((c) => [c.country_iso, c]));
   const partnerOnly = canCompare
     ? sisters.filter((s) => s.partner_country_iso && !topIsos.has(s.partner_country_iso))
     : [];
@@ -205,6 +220,17 @@ export default async function CityPage({ params }: { params: Promise<{ id: strin
     .slice(0, 8) as { iso: string; label: string; people: number; placeId: number }[];
 
   const sourceNote = sisters[0];
+
+  // Assembled from the sources this page actually carries, so it can
+  // never credit a source that is not on the page.
+  const citation = [
+    `CultureMesh, "${chain || place.name}" city page (${siteUrl}/cities/${place.id}).`,
+    countries.length > 0 ? `Foreign-born figures: ${countries[0].source}, ${countries[0].period}.` : null,
+    sisters.length > 0 ? `Sister cities: ${sisters[0].source}.` : null,
+    consulates.length > 0 ? `Consular missions: ${consulates[0].source}.` : null,
+  ]
+    .filter(Boolean)
+    .join(" ");
 
   return (
     <div className="mx-auto flex w-full max-w-3xl flex-1 flex-col gap-10 px-4 py-12">
@@ -224,6 +250,10 @@ export default async function CityPage({ params }: { params: Promise<{ id: strin
              which is what keeps this page from being empty on day one. */}
       <section className="flex flex-col gap-3">
         <h2 className="text-lg font-medium text-ink">{t("originsHeading")}</h2>
+        {/* Pre-empts the reasonable objection from anyone who knows the
+            city was a third German in 1890: this table counts people, not
+            descent. */}
+        <p className="text-sm text-muted">{t("originsNote")}</p>
         {countries.length === 0 ? (
           <p className="text-sm text-muted">{t("originsPending")}</p>
         ) : (
@@ -293,6 +323,50 @@ export default async function CityPage({ params }: { params: Promise<{ id: strin
         )}
       </section>
 
+      {/* 2b. Official representation. Governments put consulates where
+              their nationals are, so this layer tracks population in a
+              way twinning does not - and it is the direct counterpart to
+              the communities that have no representation and elect an
+              Unofficial Consul instead. */}
+      <section className="flex flex-col gap-3">
+        <h2 className="text-lg font-medium text-ink">{t("consulHeading")}</h2>
+        <p className="text-sm text-muted">{t("consulIntro")}</p>
+        {consulates.length === 0 ? (
+          <p className="text-sm text-muted">{t("consulNone")}</p>
+        ) : (
+          <>
+            <p className="text-sm text-body tabular-nums">
+              {t("consulCount", { count: consulates.length })}
+            </p>
+            <ul className="flex flex-wrap gap-2">
+              {consulates.map((c) => (
+                <li
+                  key={c.country_iso}
+                  className="rounded-md border border-border bg-surface px-3 py-1 text-sm text-body"
+                  title={c.mission_type ?? undefined}
+                >
+                  {c.country_name}
+                </li>
+              ))}
+            </ul>
+            <p className="text-xs text-muted">
+              {consulates[0].source_url ? (
+                <a
+                  href={consulates[0].source_url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="underline hover:text-primary"
+                >
+                  {t("consulSource", { source: consulates[0].source })}
+                </a>
+              ) : (
+                t("consulSource", { source: consulates[0].source })
+              )}
+            </p>
+          </>
+        )}
+      </section>
+
       {/* 3. The comparison. The reason an international-relations officer
              reads this page at all. */}
       <section className="flex flex-col gap-3 rounded-lg border border-border bg-primary-light/40 p-5">
@@ -302,35 +376,55 @@ export default async function CityPage({ params }: { params: Promise<{ id: strin
           <p className="text-sm text-body">{t("gapPending")}</p>
         ) : (
           <>
-            <dl className="flex flex-col gap-3 text-sm">
-              <div>
-                <dt className="font-medium text-ink">{t("gapBoth")}</dt>
-                <dd className="text-body">
-                  {both.length === 0
-                    ? t("gapNone")
-                    : both.map((c) => c.origin_label).join(" · ")}
-                </dd>
-              </div>
-              <div>
-                <dt className="font-medium text-ink">{t("gapCommunityOnly")}</dt>
-                <dd className="text-body">
-                  {communityOnly.length === 0
-                    ? t("gapNone")
-                    : communityOnly
-                        .slice(0, 10)
-                        .map((c) => `${c.origin_label} (${c.people.toLocaleString(locale)})`)
-                        .join(" · ")}
-                </dd>
-              </div>
-              <div>
-                <dt className="font-medium text-ink">{t("gapPartnerOnly")}</dt>
-                <dd className="text-body">
-                  {partnerOnly.length === 0
-                    ? t("gapNone")
-                    : partnerOnly.map((s) => s.partner_name).join(" · ")}
-                </dd>
-              </div>
-            </dl>
+            {/* A table rather than three prose buckets: an economic
+                development office reads down a column, and the three
+                signals only mean something next to each other. */}
+            <div className="overflow-x-auto">
+              <table className="w-full min-w-[28rem] border-collapse text-sm">
+                <thead>
+                  <tr className="border-b border-border text-left text-muted">
+                    <th scope="col" className="py-2 pr-4 font-medium">{t("colOrigin")}</th>
+                    <th scope="col" className="py-2 pr-4 text-right font-medium">{t("colPeople")}</th>
+                    <th scope="col" className="py-2 pr-4 font-medium">{t("colConsulate")}</th>
+                    <th scope="col" className="py-2 font-medium">{t("colTwinned")}</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {top.map((c) => {
+                    const consulate = consulateByIso.get(c.origin_country_iso);
+                    const twinned = partnerCountries.has(c.origin_country_iso);
+                    return (
+                      <tr key={c.origin_country_iso} className="border-b border-border">
+                        <td className="py-2 pr-4 text-ink">{c.origin_label}</td>
+                        <td className="py-2 pr-4 text-right text-body tabular-nums">
+                          {c.people.toLocaleString(locale)}
+                        </td>
+                        <td className="py-2 pr-4 text-body">
+                          {consulates.length === 0 ? (
+                            <span className="text-muted">—</span>
+                          ) : consulate ? (
+                            <span title={consulate.mission_type ?? undefined}>
+                              {consulate.mission_type ?? t("markYes")}
+                            </span>
+                          ) : (
+                            <span className="text-muted">{t("markNo")}</span>
+                          )}
+                        </td>
+                        <td className="py-2 text-body">
+                          {twinned ? t("markYes") : <span className="text-muted">{t("markNo")}</span>}
+                        </td>
+                      </tr>
+                    );
+                  })}
+                </tbody>
+              </table>
+            </div>
+            {partnerOnly.length > 0 && (
+              <p className="text-sm text-body">
+                <span className="font-medium text-ink">{t("gapPartnerOnlyLine")}</span>{" "}
+                {partnerOnly.map((s) => s.partner_name).join(" · ")}
+              </p>
+            )}
             {/* Without this the page reads as an accusation, and an
                 accusation does not get forwarded inside a city hall. */}
             <p className="text-xs text-muted">{t("gapCaveat")}</p>
@@ -441,8 +535,19 @@ export default async function CityPage({ params }: { params: Promise<{ id: strin
         </section>
       )}
 
+      {/* Organisations working on this - a Global Detroit, a city office,
+          a resettlement agency writing a grant application - need a line
+          they can paste. Giving them one costs nothing and is the whole
+          reason the sources are kept separate above. */}
       <section className="flex flex-col gap-2 border-t border-border pt-4">
-        <h2 className="text-sm font-medium text-ink">{t("sourcesHeading")}</h2>
+        <h2 className="text-sm font-medium text-ink">{t("citeHeading")}</h2>
+        <p className="text-xs text-muted">{t("citeIntro")}</p>
+        <div className="flex flex-wrap items-center gap-2">
+          <code className="flex-1 break-words rounded-md border border-border bg-surface p-2 text-xs text-body">
+            {citation}
+          </code>
+          <CopyTextButton text={citation} />
+        </div>
         <p className="text-xs text-muted">{t("sourcesNote")}</p>
       </section>
     </div>

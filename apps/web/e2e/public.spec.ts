@@ -77,9 +77,12 @@ test.describe("chrome and content", () => {
     const election = page.locator('a[href^="/outposts/elections/"]').first();
     test.skip(!(await election.count()), "no election to open");
     await election.click();
-    await expect(page).toHaveURL(/\/outposts\/elections\/\d+/);
+    // Same reason as the district test: a server-rendered page against a
+    // hosted database, with four workers running in parallel, does not
+    // reliably land inside the default 10s window.
+    await expect(page).toHaveURL(/\/outposts\/elections\/\d+/, { timeout: 30_000 });
     // The turnout line is published on every election, flattering or not.
-    await expect(page.getByText(/on the roll/i)).toBeVisible();
+    await expect(page.getByText(/on the roll/i)).toBeVisible({ timeout: 30_000 });
     // And the disclaimer, which is the whole reason the office is called
     // unofficial.
     await expect(page.getByText(/not appointed by any government/i)).toBeVisible();

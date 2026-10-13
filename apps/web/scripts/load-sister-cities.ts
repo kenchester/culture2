@@ -76,6 +76,21 @@ const DATA: {
       { name: "Ulsan", iso: "KR" },
     ],
   },
+  {
+    cityPlaceId: 25420,
+    cityName: "Detroit",
+    source: "Wikipedia: List of twin towns and sister cities in Michigan",
+    sourceUrl: `${WIKI}List_of_twin_towns_and_sister_cities_in_Michigan`,
+    partners: [
+      { name: "Chongqing", iso: "CN" },
+      { name: "Dubai", iso: "AE" },
+      { name: "Kitwe", iso: "ZM" },
+      { name: "Minsk", iso: "BY" },
+      { name: "Nassau", iso: "BS" },
+      { name: "Toyota", iso: "JP" },
+      { name: "Turin", iso: "IT" },
+    ],
+  },
   // Xiamen is deliberately absent. Its sister cities exist, but neither
   // Wikipedia's Xiamen article nor the China twin-towns list returned a
   // list I could read in full, and entering them from memory would put
