@@ -809,6 +809,17 @@
       "oceania": "オセアニア",
       "other": "その他の場所"
     },
-    "consulLinkNote": "色で示された名前はミッション自身のページにリンクされており、情報源には名前が記載されています。"
+    "consulLinkNote": "色で示された名前はミッション自身のページにリンクされており、情報源には名前が記載されています。",
+    "domesticHeading": "この都市の起源(国内移住)",
+    "domesticNote": "同じ国の他地域で生まれた住民。国勢調査では、州ごとではなく地域ごとに都市ごとに公表されているので、これが利用可能な詳細です。",
+    "domesticBornHere": "{state}生まれ",
+    "domesticElsewhere": "他州生まれ",
+    "domesticSource": "出典: {source}{period}",
+    "censusRegion": {
+      "Northeast": "北東部",
+      "Midwest": "中西部",
+      "South": "南部",
+      "West": "西部"
+    }
   }
 }

@@ -809,6 +809,17 @@
       "oceania": "오세아니아",
       "other": "기타 지역"
     },
-    "consulLinkNote": "색상으로 표시된 이름은 미션 자체 페이지로 연결되며, 출처에 명시되어 있습니다."
+    "consulLinkNote": "색상으로 표시된 이름은 미션 자체 페이지로 연결되며, 출처에 명시되어 있습니다.",
+    "domesticHeading": "이 도시가 어디서 왔는지 (국내 이주)",
+    "domesticNote": "같은 국가 내 다른 지역에서 태어난 거주자들. 인구조사는 개별 주가 아닌 지역별로 도시별로 이 정보를 공개하므로, 이것이 이용 가능한 세부 정보입니다.",
+    "domesticBornHere": "{state} 출생",
+    "domesticElsewhere": "다른 주에서 태어났다",
+    "domesticSource": "출처: {source}, {period}",
+    "censusRegion": {
+      "Northeast": "북동부",
+      "Midwest": "중서부",
+      "South": "남부",
+      "West": "서부"
+    }
   }
 }

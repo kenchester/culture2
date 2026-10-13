@@ -809,6 +809,17 @@
       "oceania": "大洋洲",
       "other": "其他地区"
     },
-    "consulLinkNote": "颜色上的名字链接到任务官方页面，来源中列出了一个名字。"
+    "consulLinkNote": "颜色上的名字链接到任务官方页面，来源中列出了一个名字。",
+    "domesticHeading": "这座城市的起源（国内迁徙）",
+    "domesticNote": "出生在同一国家其他地方的居民。人口普查是按地区而非单一州发布的城市信息，这就是可用的详细信息。",
+    "domesticBornHere": "出生于{state}",
+    "domesticElsewhere": "出生在另一个州",
+    "domesticSource": "来源：{source}， {period}",
+    "censusRegion": {
+      "Northeast": "东北部",
+      "Midwest": "中西部",
+      "South": "南部",
+      "West": "西部"
+    }
   }
 }

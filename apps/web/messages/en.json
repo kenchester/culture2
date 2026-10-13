@@ -749,6 +749,17 @@
     "originsHeading": "Where this city came from (recent immigration)",
     "originsPending": "Official statistics for this city haven't been loaded yet.",
     "originsSource": "Source: {source}, {period}",
+    "domesticHeading": "Where this city came from (domestic migration)",
+    "domesticNote": "Residents born elsewhere in the same country. The census publishes this for a city by region rather than by individual state, so that is the detail available.",
+    "domesticBornHere": "Born in {state}",
+    "domesticElsewhere": "Born in another state",
+    "domesticSource": "Source: {source}, {period}",
+    "censusRegion": {
+      "Northeast": "Northeast",
+      "Midwest": "Midwest",
+      "South": "South",
+      "West": "West"
+    },
     "foreignBorn": "{count, plural, one {# resident born outside the country} other {# residents born outside the country}}",
     "sisterHeading": "Who the city is twinned with",
     "sisterNone": "No sister-city relationships recorded for this city yet.",

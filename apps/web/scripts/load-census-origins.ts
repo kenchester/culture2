@@ -21,6 +21,13 @@ import { adminClient } from "./lib/admin";
 countries.registerLocale(enCountryNames);
 
 const SOURCE = "US Census Bureau, ACS table B05006 (via Census Reporter)";
+// Place of birth including the native-born, which is where the domestic
+// half of the question is answered.
+const DOMESTIC_SOURCE = "US Census Bureau, ACS table B05002 (via Census Reporter)";
+const CENSUS_REGIONS = ["Northeast", "Midwest", "South", "West"];
+// Census Reporter rejects requests with no User-Agent (403), and
+// identifying the caller is polite against a free nonprofit API.
+const UA = "CultureMesh/1.0 (city pages; https://www.culturemesh.com)";
 
 // Census geo ids: 16000US + state FIPS + place FIPS. A "place" is the
 // incorporated city, which is the right granularity - a metro area folds
@@ -118,6 +125,86 @@ type Reporter = {
   data: Record<string, { B05006: { estimate: Record<string, number> } }>;
 };
 
+/**
+ * Domestic place of birth, from B05002.
+ *
+ * ACS reports "born in another state" for a city only as the four census
+ * regions - individual states are not published at place level - so this
+ * stores what exists rather than implying a precision that does not.
+ */
+async function loadDomestic(
+  city: { placeId: number; name: string; geoId: string },
+  admin: ReturnType<typeof adminClient> | null,
+  stateName: string | null,
+) {
+  const response = await fetch(
+    `https://api.censusreporter.org/1.0/data/show/latest?table_ids=B05002&geo_ids=${city.geoId}`,
+    { headers: { "User-Agent": UA } },
+  );
+  if (!response.ok) {
+    console.log(`  domestic: Census Reporter returned ${response.status}`);
+    return;
+  }
+  const body = (await response.json()) as {
+    release: { name: string };
+    tables: { B05002: { columns: Record<string, { indent: number; name: string }> } };
+    data: Record<string, { B05002: { estimate: Record<string, number> } }>;
+  };
+  const columns = body.tables.B05002.columns;
+  const estimates = body.data[city.geoId]?.B05002?.estimate;
+  if (!estimates) {
+    console.log("  domestic: no estimates");
+    return;
+  }
+  const period = body.release.name;
+
+  const rows: Record<string, unknown>[] = [];
+  for (const [column, value] of Object.entries(estimates)) {
+    const label = columns[column]?.name;
+    if (!label || !value || value <= 0) continue;
+    if (label === "Born in state of residence") {
+      rows.push({
+        city_place_id: city.placeId,
+        kind: "same_state",
+        // The state's own name reads better than the census wording, and
+        // the page has no other way to know it.
+        label: stateName ?? label,
+        people: Math.round(value),
+        source: DOMESTIC_SOURCE,
+        period,
+      });
+    } else if (CENSUS_REGIONS.includes(label) && columns[column].indent === 3) {
+      rows.push({
+        city_place_id: city.placeId,
+        kind: "region",
+        label,
+        people: Math.round(value),
+        source: DOMESTIC_SOURCE,
+        period,
+      });
+    }
+  }
+
+  // Four regions plus the home state; anything less means the shape of
+  // the table changed and the page should not be fed a partial picture.
+  if (rows.length < 2) {
+    console.log(`  domestic: only ${rows.length} row(s) found, skipping`);
+    return;
+  }
+  console.log(`  domestic (${period}):`);
+  for (const r of [...rows].sort((a, b) => (b.people as number) - (a.people as number))) {
+    console.log(`    ${String(r.label).padEnd(14)} ${(r.people as number).toLocaleString()}`);
+  }
+  if (!admin) return;
+  await admin
+    .from("city_domestic_origins")
+    .delete()
+    .eq("city_place_id", city.placeId)
+    .eq("period", period);
+  const { error } = await admin.from("city_domestic_origins").insert(rows);
+  if (error) console.log(`  domestic FAIL: ${error.message}`);
+}
+
 async function main() {
   const dryRun = process.argv.includes("--dry-run");
   const admin = dryRun ? null : adminClient();
@@ -129,7 +216,7 @@ async function main() {
     // nonprofit API regardless.
     const response = await fetch(
       `https://api.censusreporter.org/1.0/data/show/latest?table_ids=B05006&geo_ids=${city.geoId}`,
-      { headers: { "User-Agent": "CultureMesh/1.0 (city pages; https://www.culturemesh.com)" } },
+      { headers: { "User-Agent": UA } },
     );
     if (!response.ok) {
       console.log(`FAIL ${city.name}: Census Reporter returned ${response.status}`);
@@ -210,6 +297,25 @@ async function main() {
       continue;
     }
     console.log(`  written`);
+
+    // The city's state, for the "born here" row.
+    let stateName: string | null = null;
+    if (admin) {
+      const { data: place } = await admin
+        .from("places")
+        .select("parent_id")
+        .eq("id", city.placeId)
+        .maybeSingle();
+      if (place?.parent_id) {
+        const { data: parent } = await admin
+          .from("places")
+          .select("name, type")
+          .eq("id", place.parent_id)
+          .maybeSingle();
+        if (parent?.type === "region") stateName = parent.name as string;
+      }
+    }
+    await loadDomestic(city, admin, stateName);
   }
 
   if (unmatched.size > 0) {

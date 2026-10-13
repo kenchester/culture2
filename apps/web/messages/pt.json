@@ -809,6 +809,17 @@
       "oceania": "Oceania",
       "other": "Em outros lugares"
     },
-    "consulLinkNote": "Nomes em cores linkam para a própria página da missão, onde a fonte lista um."
+    "consulLinkNote": "Nomes em cores linkam para a própria página da missão, onde a fonte lista um.",
+    "domesticHeading": "De onde veio essa cidade (migração interna)",
+    "domesticNote": "Residentes nascidos em outras partes do mesmo país. O censo publica isso para uma cidade por região, e não por estado individual, então esse é o detalhe disponível.",
+    "domesticBornHere": "Nascido em {state}",
+    "domesticElsewhere": "Nascido em outro estado",
+    "domesticSource": "Fonte: {source}, {period}",
+    "censusRegion": {
+      "Northeast": "Nordeste",
+      "Midwest": "Meio-Oeste",
+      "South": "Sul",
+      "West": "Oeste"
+    }
   }
 }

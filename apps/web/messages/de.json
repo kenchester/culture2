@@ -809,6 +809,17 @@
       "oceania": "Ozeanien",
       "other": "Anderswo"
     },
-    "consulLinkNote": "Farbige Namen verlinken auf die eigene Seite der Mission, wo die Quelle einen angibt."
+    "consulLinkNote": "Farbige Namen verlinken auf die eigene Seite der Mission, wo die Quelle einen angibt.",
+    "domesticHeading": "Woher diese Stadt stammt (Inlandsmigration)",
+    "domesticNote": "Einwohner, die anderswo im selben Land geboren wurden. Die Volkszählung veröffentlicht dies für eine Stadt nach Region und nicht nach einzelnen Bundesstaaten, daher ist das die verfügbare Information.",
+    "domesticBornHere": "Geboren in {state}",
+    "domesticElsewhere": "Geboren in einem anderen Bundesstaat",
+    "domesticSource": "Quelle: {source}, {period}",
+    "censusRegion": {
+      "Northeast": "Nordosten",
+      "Midwest": "Mittlerer Westen",
+      "South": "Süden",
+      "West": "Westen"
+    }
   }
 }

@@ -38,6 +38,14 @@ type Consulate = {
   source_url: string | null;
 };
 
+type DomesticOrigin = {
+  kind: "same_state" | "region";
+  label: string;
+  people: number;
+  source: string;
+  period: string;
+};
+
 type NetworkRow = {
   id: number;
   title: string;
@@ -72,8 +80,14 @@ async function loadCity(id: string, locale: Locale) {
   // neither should have a public page about it.
   if (!place || place.hidden_from_search) return null;
 
-  const [{ data: sisters }, { data: origins }, { data: consulates }, { data: networks }, chain] =
-    await Promise.all([
+  const [
+    { data: sisters },
+    { data: origins },
+    { data: domestic },
+    { data: consulates },
+    { data: networks },
+    chain,
+  ] = await Promise.all([
     supabase
       .from("city_sister_cities")
       .select("partner_name, partner_country_iso, partner_place_id, since_year, source, source_url")
@@ -82,6 +96,11 @@ async function loadCity(id: string, locale: Locale) {
     supabase
       .from("city_origin_stats")
       .select("origin_country_iso, origin_label, people, is_total, source, period")
+      .eq("city_place_id", place.id)
+      .order("people", { ascending: false }),
+    supabase
+      .from("city_domestic_origins")
+      .select("kind, label, people, source, period")
       .eq("city_place_id", place.id)
       .order("people", { ascending: false }),
     supabase
@@ -146,6 +165,7 @@ async function loadCity(id: string, locale: Locale) {
     chain,
     sisters: (sisters ?? []) as SisterCity[],
     origins: (origins ?? []) as OriginStat[],
+    domestic: (domestic ?? []) as DomesticOrigin[],
     consulates: (consulates ?? []) as Consulate[],
     networks: (networks ?? []) as NetworkRow[],
     coveredCountryIds,
@@ -178,7 +198,7 @@ export default async function CityPage({ params }: { params: Promise<{ id: strin
   const [loaded, siteUrl] = await Promise.all([loadCity(id, locale), getSiteUrl()]);
   if (!loaded) notFound();
 
-  const { place, chain, sisters, origins, consulates, networks, coveredCountryIds, placeForIso } =
+  const { place, chain, sisters, origins, domestic, consulates, networks, coveredCountryIds, placeForIso } =
     loaded;
 
   const total = origins.find((o) => o.is_total) ?? null;
@@ -277,6 +297,38 @@ export default async function CityPage({ params }: { params: Promise<{ id: strin
           </>
         )}
       </section>
+
+      {/* 1b. The domestic half of the same question. Rendered only when
+              there is something to render - no equivalent data exists for
+              most countries, and an empty section explaining its own
+              absence is worse than no section. */}
+      {domestic.length > 0 && (
+        <section className="flex flex-col gap-3">
+          <h2 className="text-lg font-medium text-ink">{t("domesticHeading")}</h2>
+          <p className="text-sm text-muted">{t("domesticNote")}</p>
+          <ul className="grid gap-x-8 gap-y-1 sm:grid-cols-2">
+            {domestic.map((row) => (
+              <li
+                key={row.label}
+                className="flex justify-between border-b border-border py-1 text-sm"
+              >
+                <span className="text-body">
+                  {row.kind === "same_state"
+                    ? t("domesticBornHere", { state: row.label })
+                    : /* The four census regions are English administrative
+                         terms rather than proper nouns, so unlike country
+                         names they are worth translating. */
+                      t(`censusRegion.${row.label}`)}
+                </span>
+                <span className="text-ink tabular-nums">{row.people.toLocaleString(locale)}</span>
+              </li>
+            ))}
+          </ul>
+          <p className="text-xs text-muted">
+            {t("domesticSource", { source: domestic[0].source, period: domestic[0].period })}
+          </p>
+        </section>
+      )}
 
       {/* 2. The civic layer. */}
       <section className="flex flex-col gap-3">
