@@ -800,6 +800,15 @@
     "gapPartnerOnlyLine": "Hermanada con, pero no entre las comunidades más grandes de aquí:",
     "citeHeading": "Uso de esta página",
     "citeIntro": "Esta página es pública y es gratuita para citar. Las cifras provienen de las fuentes mencionadas arriba, no de CultureMesh.",
-    "citeCopy": "Cita"
+    "citeCopy": "Cita",
+    "continent": {
+      "africa": "África",
+      "americas": "América",
+      "asia": "Asia",
+      "europe": "Europa",
+      "oceania": "Oceanía",
+      "other": "En otros lugares"
+    },
+    "consulLinkNote": "Los nombres en color enlazan a la propia página de la misión, donde la fuente indica uno."
   }
 }

@@ -1,0 +1,12 @@
+-- A consulate's own web page, where the source gives one.
+--
+-- Roughly a third of Houston's 87 missions publish a URL on the source
+-- list; the rest are name-only. The page therefore has to render both
+-- states, and the presence of a link is itself useful information - a
+-- career consulate-general almost always has a site, an honorary consul
+-- run out of a law office often does not.
+--
+-- Some of these are Facebook pages rather than government domains. Stored
+-- as the source gives them: substituting a guessed official domain would
+-- be inventing a citation.
+alter table city_consulates add column website text;

@@ -800,6 +800,15 @@
     "gapPartnerOnlyLine": "与这里最大的社区结为姊妹城市，但并非最大的社区之一：",
     "citeHeading": "使用此页面",
     "citeIntro": "本页面为公开且可自由引用。数据来源于上述来源，而非CultureMesh。",
-    "citeCopy": "引用"
+    "citeCopy": "引用",
+    "continent": {
+      "africa": "非洲",
+      "americas": "美洲",
+      "asia": "亚洲",
+      "europe": "欧洲",
+      "oceania": "大洋洲",
+      "other": "其他地区"
+    },
+    "consulLinkNote": "颜色上的名字链接到任务官方页面，来源中列出了一个名字。"
   }
 }

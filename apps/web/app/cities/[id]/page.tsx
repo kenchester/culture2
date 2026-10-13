@@ -5,6 +5,7 @@ import { getTranslations } from "next-intl/server";
 import { createClient } from "@/lib/supabase/server";
 import { previewText, shareMetadata } from "@/lib/share-metadata";
 import { getPlaceChain } from "@/lib/place-chain";
+import { groupByContinent } from "@/lib/continents";
 import { getSiteUrl } from "@/lib/site-url";
 import { CopyTextButton } from "@/components/copy-text-button";
 import { getLocale } from "next-intl/server";
@@ -32,6 +33,7 @@ type Consulate = {
   country_iso: string;
   country_name: string;
   mission_type: string | null;
+  website: string | null;
   source: string;
   source_url: string | null;
 };
@@ -84,7 +86,7 @@ async function loadCity(id: string, locale: Locale) {
       .order("people", { ascending: false }),
     supabase
       .from("city_consulates")
-      .select("country_iso, country_name, mission_type, source, source_url")
+      .select("country_iso, country_name, mission_type, website, source, source_url")
       .eq("city_place_id", place.id)
       .order("country_name"),
     supabase
@@ -338,17 +340,44 @@ export default async function CityPage({ params }: { params: Promise<{ id: strin
             <p className="text-sm text-body tabular-nums">
               {t("consulCount", { count: consulates.length })}
             </p>
-            <ul className="flex flex-wrap gap-2">
-              {consulates.map((c) => (
-                <li
-                  key={c.country_iso}
-                  className="rounded-md border border-border bg-surface px-3 py-1 text-sm text-body"
-                  title={c.mission_type ?? undefined}
-                >
-                  {c.country_name}
-                </li>
-              ))}
-            </ul>
+            {/* Grouped, because a single alphabetical run of 87 is a
+                wall rather than a list. Order and membership follow UN
+                M49 (lib/continents.ts). */}
+            <p className="text-xs text-muted">{t("consulLinkNote")}</p>
+            {groupByContinent(consulates, (c) => c.country_iso).map((group) => (
+              <div key={group.continent} className="flex flex-col gap-2">
+                <h3 className="text-sm font-medium uppercase tracking-wide text-muted">
+                  {t(`continent.${group.continent}`)}{" "}
+                  <span className="tabular-nums font-normal">({group.items.length})</span>
+                </h3>
+                <ul className="flex flex-wrap gap-2">
+                  {group.items.map((c) => (
+                    <li key={c.country_iso}>
+                      {c.website ? (
+                        <a
+                          href={c.website}
+                          target="_blank"
+                          // nofollow because these URLs come from a
+                          // community-edited source, not from us.
+                          rel="noopener noreferrer nofollow"
+                          title={c.mission_type ?? undefined}
+                          className="block rounded-md border border-primary bg-primary-light/50 px-3 py-1 text-sm text-primary hover:bg-primary-light"
+                        >
+                          {c.country_name}
+                        </a>
+                      ) : (
+                        <span
+                          title={c.mission_type ?? undefined}
+                          className="block rounded-md border border-border bg-surface px-3 py-1 text-sm text-body"
+                        >
+                          {c.country_name}
+                        </span>
+                      )}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            ))}
             <p className="text-xs text-muted">
               {consulates[0].source_url ? (
                 <a

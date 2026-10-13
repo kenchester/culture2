@@ -44,7 +44,7 @@ const DATA: {
   cityName: string;
   source: string;
   sourceUrl: string;
-  missions: [string, string][];
+  missions: [string, string, string?][];
 }[] = [
   {
     cityPlaceId: 24835,
@@ -52,50 +52,50 @@ const DATA: {
     source: "Wikipedia: List of diplomatic missions in Houston",
     sourceUrl: "https://en.wikipedia.org/wiki/List_of_diplomatic_missions_in_Houston",
     missions: [
-      ["Albania", "Honorary Consul"], ["Angola", "Consulate-General"],
-      ["Argentina", "Consulate-General"], ["Australia", "Consulate-General"],
-      ["Austria", "Honorary Consulate"], ["Bangladesh", "Consulate-General"],
+      ["Albania", "Honorary Consul"], ["Angola", "Consulate-General", "http://www.angolaconsulate-tx.org/"],
+      ["Argentina", "Consulate-General", "http://www.chous.mrecic.gov.ar/"], ["Australia", "Consulate-General", "https://usa.embassy.gov.au/our-locations"],
+      ["Austria", "Honorary Consulate", "http://www.austrianconsulatehouston.org/"], ["Bangladesh", "Consulate-General"],
       ["Barbados", "Honorary Consulate"], ["Belgium", "Honorary Consulate"],
-      ["Belize", "Consulate-General"], ["Bolivia", "Consulate-General"],
-      ["Botswana", "Honorary Consulate"], ["Brazil", "Consulate-General"],
-      ["Cameroon", "Honorary Consulate"], ["Canada", "Trade Commission"],
-      ["Chile", "Consulate-General"], ["Colombia", "Consulate-General"],
+      ["Belize", "Consulate-General"], ["Bolivia", "Consulate-General", "http://www.boliviatx.org"],
+      ["Botswana", "Honorary Consulate"], ["Brazil", "Consulate-General", "http://houston.itamaraty.gov.br/en-us/"],
+      ["Cameroon", "Honorary Consulate"], ["Canada", "Trade Commission", "https://www.tradecommissioner.gc.ca/united-states-of-america-etats-unis-amerique/index.aspx?lang=eng"],
+      ["Chile", "Consulate-General", "https://chile.gob.cl/houston/"], ["Colombia", "Consulate-General"],
       ["Costa Rica", "Consulate-General"], ["Ivory Coast", "Consulate-General"],
       ["Cyprus", "Honorary Consulate"], ["Czech Republic", "Honorary Consulate"],
-      ["Denmark", "Consulate-General"], ["Dominican Republic", "Consulate-General"],
-      ["Ecuador", "Consulate-General"], ["Egypt", "Consulate-General"],
-      ["El Salvador", "Consulate-General"], ["Equatorial Guinea", "Consulate-General"],
+      ["Denmark", "Consulate-General", "https://usa.um.dk/en/about-us/danish-missions/consulate-general-of-denmark-houston"], ["Dominican Republic", "Consulate-General"],
+      ["Ecuador", "Consulate-General", "https://www.facebook.com/Cecuhouston/"], ["Egypt", "Consulate-General"],
+      ["El Salvador", "Consulate-General", "https://www.facebook.com/CGESHoustonSV/"], ["Equatorial Guinea", "Consulate-General"],
       ["Ethiopia", "Honorary Consulate"], ["Finland", "Honorary Consulate"],
-      ["France", "Consulate-General"], ["Georgia", "Honorary Consulate"],
-      ["Germany", "Consulate-General"], ["Ghana", "Honorary Consulate"],
-      ["Greece", "Consulate-General"], ["Guatemala", "Consulate-General"],
+      ["France", "Consulate-General", "https://houston.consulfrance.org/-english-"], ["Georgia", "Honorary Consulate"],
+      ["Germany", "Consulate-General", "http://www.germany.info/houston"], ["Ghana", "Honorary Consulate", "https://www.facebook.com/GhanaConsulateHouston/"],
+      ["Greece", "Consulate-General", "https://www.mfa.gr/usa/en/consulate-in-houston/"], ["Guatemala", "Consulate-General", "https://www.facebook.com/GuateenHouston/"],
       ["Guyana", "Honorary Consulate"], ["Haiti", "Honorary Vice Consul"],
       ["Honduras", "Consulate-General"], ["Hungary", "Vice-Consulate"],
-      ["Iceland", "Honorary Consulate"], ["India", "Consulate-General"],
-      ["Indonesia", "Consulate-General"], ["Ireland", "Honorary Consulate"],
-      ["Israel", "Consulate-General"], ["Italy", "Consulate-General"],
-      ["Jamaica", "Honorary Consulate"], ["Japan", "Consulate-General"],
-      ["Jordan", "Consulate-General"], ["South Korea", "Consulate-General"],
+      ["Iceland", "Honorary Consulate"], ["India", "Consulate-General", "https://cgihouston.gov.in"],
+      ["Indonesia", "Consulate-General", "https://www.kemlu.go.id/houston/id/default.aspx"], ["Ireland", "Honorary Consulate"],
+      ["Israel", "Consulate-General", "https://embassies.gov.il/houston/Pages/Home.aspx"], ["Italy", "Consulate-General", "https://conshouston.esteri.it/consolato_houston/it/"],
+      ["Jamaica", "Honorary Consulate"], ["Japan", "Consulate-General", "http://www.houston.us.emb-japan.go.jp/index_e.htm"],
+      ["Jordan", "Consulate-General"], ["South Korea", "Consulate-General", "http://usa-houston.mofa.go.kr/english/"],
       ["Kyrgyzstan", "Honorary Consulate"], ["Latvia", "Honorary Consulate"],
       ["Lebanon", "Honorary Consulate"], ["Lithuania", "Honorary Consulate"],
       ["Madagascar", "Honorary Consulate"], ["Malaysia", "Honorary Consulate"],
-      ["Malta", "Honorary Consulate"], ["Mexico", "Consulate-General"],
+      ["Malta", "Honorary Consulate"], ["Mexico", "Consulate-General", "http://consulmex.sre.gob.mx/houston/"],
       ["Mongolia", "Honorary Consulate"], ["Morocco", "Honorary Consulate"],
       ["Namibia", "Honorary Consulate"], ["Netherlands", "Honorary Consulate"],
       ["New Zealand", "Honorary Consulate"], ["Nicaragua", "Consulate-General"],
       ["Pakistan", "Consulate-General"], ["Panama", "Consulate-General"],
-      ["Papua New Guinea", "Consulate-General"], ["Peru", "Consulate-General"],
+      ["Papua New Guinea", "Consulate-General"], ["Peru", "Consulate-General", "https://www.consulado.pe/es/Houston/Paginas/Inicio.aspx"],
       ["Philippines", "Consulate-General"], ["Poland", "Consulate-General"],
       ["Portugal", "Honorary Consulate"], ["Qatar", "Consulate-General"],
-      ["Romania", "Consulate-General"], ["Russia", "Consulate-General"],
+      ["Romania", "Consulate-General"], ["Russia", "Consulate-General", "https://houston.kdmid.ru"],
       ["Saudi Arabia", "Consulate-General"], ["Senegal", "Consulate-General"],
-      ["Slovenia", "Honorary Consulate"], ["Spain", "Consulate-General"],
-      ["Sweden", "Consulate-General"], ["Switzerland", "Honorary Consulate"],
-      ["Taiwan", "Economic and Cultural Office"], ["Thailand", "Consulate-General"],
+      ["Slovenia", "Honorary Consulate"], ["Spain", "Consulate-General", "https://www.exteriores.gob.es/Consulados/houston/en/Paginas/index.aspx"],
+      ["Sweden", "Consulate-General", "https://www.swedenabroad.se/sv/utlandsmyndigheter/usa-houston/"], ["Switzerland", "Honorary Consulate"],
+      ["Taiwan", "Economic and Cultural Office", "http://www.taiwanembassy.org/US/HOU/mp.asp?mp=37"], ["Thailand", "Consulate-General"],
       ["Trinidad and Tobago", "Honorary Consulate"], ["Tunisia", "Honorary Consulate"],
       ["Turkey", "Consulate-General"], ["Ukraine", "Honorary Consulate"],
-      ["United Kingdom", "Consulate-General"], ["Uruguay", "Consulate-General"],
-      ["Vietnam", "Consulate-General"],
+      ["United Kingdom", "Consulate-General", "https://www.gov.uk/government/world/organisations/british-consulate-general-houston"], ["Uruguay", "Consulate-General"],
+      ["Vietnam", "Consulate-General", "http://vietnamconsulateinhouston.org/"],
     ],
   },
 ];
@@ -105,7 +105,7 @@ async function main() {
   for (const city of DATA) {
     const rows: Record<string, unknown>[] = [];
     const unmatched: string[] = [];
-    for (const [name, type] of city.missions) {
+    for (const [name, type, website] of city.missions) {
       const iso = ALIASES[name] ?? countries.getAlpha2Code(name, "en");
       if (!iso) { unmatched.push(name); continue; }
       rows.push({
@@ -113,6 +113,8 @@ async function main() {
         country_iso: iso,
         country_name: DISPLAY[iso] ?? countries.getName(iso, "en") ?? name,
         mission_type: type,
+        // Only where the source actually lists one. Roughly a third do.
+        website: website ?? null,
         source: city.source,
         source_url: city.sourceUrl,
       });

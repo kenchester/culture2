@@ -800,6 +800,15 @@
     "gapPartnerOnlyLine": "Geminados, mas não entre as maiores comunidades daqui:",
     "citeHeading": "Usando esta página",
     "citeIntro": "Esta página é pública e gratuita para citar. Os números vêm das fontes mencionadas acima, não do CultureMesh.",
-    "citeCopy": "Citação"
+    "citeCopy": "Citação",
+    "continent": {
+      "africa": "África",
+      "americas": "Américas",
+      "asia": "Ásia",
+      "europe": "Europa",
+      "oceania": "Oceania",
+      "other": "Em outros lugares"
+    },
+    "consulLinkNote": "Nomes em cores linkam para a própria página da missão, onde a fonte lista um."
   }
 }

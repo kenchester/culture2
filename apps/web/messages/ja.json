@@ -800,6 +800,15 @@
     "gapPartnerOnlyLine": "姉妹都市提携を結んでいますが、ここにある最大級のコミュニティには含まれていません:",
     "citeHeading": "このページの利用",
     "citeIntro": "このページは公開されており、引用は自由です。数字は上記の情報源から得られ、CultureMeshからのものではありません。",
-    "citeCopy": "引用文献"
+    "citeCopy": "引用文献",
+    "continent": {
+      "africa": "アフリカ",
+      "americas": "アメリカ大陸",
+      "asia": "アジア",
+      "europe": "ヨーロッパ",
+      "oceania": "オセアニア",
+      "other": "その他の場所"
+    },
+    "consulLinkNote": "色で示された名前はミッション自身のページにリンクされており、情報源には名前が記載されています。"
   }
 }

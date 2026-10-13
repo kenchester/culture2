@@ -790,6 +790,15 @@
     "gapPartnerOnlyLine": "Twinned with, but not among the largest communities here:",
     "citeHeading": "Using this page",
     "citeIntro": "This page is public and free to cite. Figures come from the sources named above, not from CultureMesh.",
-    "citeCopy": "Citation"
+    "citeCopy": "Citation",
+    "continent": {
+      "africa": "Africa",
+      "americas": "Americas",
+      "asia": "Asia",
+      "europe": "Europe",
+      "oceania": "Oceania",
+      "other": "Elsewhere"
+    },
+    "consulLinkNote": "Names in colour link to the mission's own page, where the source lists one."
   }
 }

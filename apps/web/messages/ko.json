@@ -800,6 +800,15 @@
     "gapPartnerOnlyLine": "이곳에서 가장 큰 커뮤니티 중 하나가 아닌 자매 자매 결연:",
     "citeHeading": "이 페이지 인용하기",
     "citeIntro": "이 페이지는 공개되어 있으며 인용이 자유롭습니다. 수치는 위에 언급된 출처에서 가져온 것이며, CultureMesh에서 나온 것이 아닙니다.",
-    "citeCopy": "인용문"
+    "citeCopy": "인용문",
+    "continent": {
+      "africa": "아프리카",
+      "americas": "아메리카 대륙",
+      "asia": "아시아",
+      "europe": "유럽",
+      "oceania": "오세아니아",
+      "other": "기타 지역"
+    },
+    "consulLinkNote": "색상으로 표시된 이름은 미션 자체 페이지로 연결되며, 출처에 명시되어 있습니다."
   }
 }

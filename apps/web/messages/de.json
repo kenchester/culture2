@@ -800,6 +800,15 @@
     "gapPartnerOnlyLine": "Partnerstädte mit, aber nicht zu den größten Gemeinden hier:",
     "citeHeading": "Nutzung dieser Seite",
     "citeIntro": "Diese Seite ist öffentlich und kann frei zitiert werden. Die Zahlen stammen aus den oben genannten Quellen, nicht von CultureMesh.",
-    "citeCopy": "Zitat"
+    "citeCopy": "Zitat",
+    "continent": {
+      "africa": "Afrika",
+      "americas": "Amerika",
+      "asia": "Asien",
+      "europe": "Europa",
+      "oceania": "Ozeanien",
+      "other": "Anderswo"
+    },
+    "consulLinkNote": "Farbige Namen verlinken auf die eigene Seite der Mission, wo die Quelle einen angibt."
   }
 }
