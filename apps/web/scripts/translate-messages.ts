@@ -417,7 +417,18 @@ async function main() {
     }
     // --force is the deliberate escape hatch and overwrites everything;
     // --fix-stale leaves hand-corrected keys alone and names them instead.
-    const staleToFix = fixStale ? stale.filter((key) => !protectedKeys.has(key)) : [];
+    const staleToFix = fixStale
+      ? stale.filter((key) => !protectedKeys.has(key) && !ICU_CONSTRUCT.test(flatEn[key]))
+      : [];
+    // Reported separately: a stale ICU key still needs updating, just by
+    // hand. Silently skipping it would let the locales drift.
+    const staleIcu = stale.filter((key) => ICU_CONSTRUCT.test(flatEn[key]));
+    if (staleIcu.length > 0) {
+      console.log(
+        `  ${locale}: ${staleIcu.length} ICU key(s) are stale and must be updated by hand: ` +
+          staleIcu.join(", "),
+      );
+    }
     const skipped = fixStale ? stale.filter((key) => protectedKeys.has(key)) : [];
     const keysToTranslate = force
       ? allKeys

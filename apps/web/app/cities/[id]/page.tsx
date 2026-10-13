@@ -242,7 +242,7 @@ export default async function CityPage({ params }: { params: Promise<{ id: strin
         </h1>
         {total && (
           <p className="text-body tabular-nums">
-            {t("foreignBorn", { count: total.people.toLocaleString(locale) })}
+            {t("foreignBorn", { count: total.people })}
           </p>
         )}
         <p className="text-sm text-muted">{t("intro")}</p>
@@ -548,7 +548,7 @@ export default async function CityPage({ params }: { params: Promise<{ id: strin
                 <span className="text-ink">{m.label}</span>
                 <span className="flex items-baseline gap-3">
                   <span className="text-muted tabular-nums">
-                    {t("missingPeople", { count: m.people.toLocaleString(locale) })}
+                    {t("missingPeople", { count: m.people })}
                   </span>
                   <Link
                     href={`/search/results?originId=${m.placeId}&originQuery=${encodeURIComponent(m.label)}&locationId=${place.id}&locationQuery=${encodeURIComponent(place.name as string)}`}
