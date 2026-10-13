@@ -821,5 +821,23 @@
       "South": "Süden",
       "West": "Westen"
     }
+  },
+  "corridor": {
+    "heading": "Über diesen Korridor",
+    "subNational": "{people} Die {city} Bewohner wurden in {country}geboren. Dieses Netzwerk ist für diejenigen aus {origin} — eine Unterscheidung, die offizielle Statistiken nicht dokumentieren.",
+    "national": "{people} Die {city} Bewohner wurden in {country}geboren.",
+    "censusSource": "{source}, {period}",
+    "consulateHere": "{country} behält ein {mission} in {city}.",
+    "consulateLink": "Besuchen Sie die Seite der Mission",
+    "consulateNone": "Keine",
+    "twinnedYes": "Ja",
+    "twinnedNo": "Nein",
+    "elsewhereHeading": "Derselbe Ursprung, anderswo",
+    "cityLink": "Siehe das vollständige Bild für {city}",
+    "beFirst": "Niemand aus dieser Community ist bisher beigetreten. Alles oben ist wahr, egal ob es jemand tut oder nicht – aber das Gespräch beginnt erst, wenn jemand es beginnt.",
+    "bornLabel": "Geburtsland",
+    "subNationalNote": "Dieses Netzwerk ist für Menschen aus {origin} – eine Unterscheidung, die amtliche Statistiken nicht erfassen.",
+    "consulateLabel": "Konsulat in dieser Stadt",
+    "twinnedLabel": "Schwesterstadtverbindung"
   }
 }

@@ -21,6 +21,8 @@ import type { Locale } from "@/lib/locale";
 import { createPost, joinNetwork, leaveNetwork, setNetworkPrompt } from "@/app/networks/actions";
 import { DemoNetworkFeed, type RealDemoPost } from "@/app/networks/[id]/demo-network-feed";
 import { InviteFriendsBox } from "@/app/networks/[id]/invite-friends-box";
+import { CorridorContextBlock } from "@/app/networks/[id]/corridor-context-block";
+import { getCorridorContext } from "@/lib/corridor-context";
 import { PostComposer } from "@/app/networks/[id]/post-composer";
 import { PostFeed } from "@/app/networks/[id]/post-feed";
 import { PostingIndicator } from "@/components/posting-indicator";
@@ -183,6 +185,24 @@ export default async function NetworkPage({
     .select("id, name, type, iso_code")
     .eq("id", network.location_place_id)
     .single();
+
+  // PROTOTYPE: limited to one network so the treatment can be compared
+  // against untouched pages. Remove the id check to roll it out.
+  // 91: El Salvador -> Houston, the fullest data (census + linked
+  // consulate). 87: Fujian -> New York City, which exercises the
+  // sub-national line.
+  const CORRIDOR_CONTEXT_PROTOTYPE = [91, 87];
+  const corridorContext =
+    CORRIDOR_CONTEXT_PROTOTYPE.includes(network.id)
+      ? await getCorridorContext(supabase, {
+          origin_place_id: network.origin_place_id,
+          location_place_id: network.location_place_id,
+        })
+      : null;
+  // Above the feed until a community exists, below it afterwards. Never
+  // removed: one member is not a conversation, so the feed is not yet the
+  // reason anybody is on this page.
+  const contextLeads = (network.member_count ?? 0) < 2;
 
   // The Unofficial Consul, if and only if an election has produced one.
   //
@@ -502,6 +522,14 @@ export default async function NetworkPage({
           </p>
         )}
 
+        {corridorContext && contextLeads && (
+          <CorridorContextBlock
+            context={corridorContext}
+            cityPlaceId={network.location_place_id}
+            isEmpty={(network.member_count ?? 0) === 0}
+          />
+        )}
+
         {isExample ? (
           <DemoNetworkFeed
             networkId={network.id}
@@ -584,6 +612,14 @@ export default async function NetworkPage({
               />
             </div>
           </>
+        )}
+
+        {corridorContext && !contextLeads && (
+          <CorridorContextBlock
+            context={corridorContext}
+            cityPlaceId={network.location_place_id}
+            isEmpty={false}
+          />
         )}
       </div>
 

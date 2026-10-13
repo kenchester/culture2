@@ -821,5 +821,23 @@
       "South": "南部",
       "West": "西部"
     }
+  },
+  "corridor": {
+    "heading": "この廊下について",
+    "subNational": "{people} {city}住民は {country}で生まれました。このネットワークは{origin}、公式統計には記録されていない区別の対象です。",
+    "national": "{people} {city}住民は {country}で生まれました。",
+    "censusSource": "{source}, {period}",
+    "consulateHere": "は {mission} を{country}保持{city}します。",
+    "consulateLink": "ミッションのページをご覧ください",
+    "consulateNone": "全くありません",
+    "twinnedYes": "はい",
+    "twinnedNo": "いいえ",
+    "elsewhereHeading": "同じ起源、他の場所でも",
+    "cityLink": "詳細はこちらをご覧ください{city}",
+    "beFirst": "このコミュニティの誰もまだ参加していません。上記のことは誰が参加しようがいまいが真実ですが、会話は誰かが始めて初めて始まるのです。",
+    "bornLabel": "出生国",
+    "subNationalNote": "このネットワークは{origin}出身の人のためのものです。公式統計には記録されない区別です。",
+    "consulateLabel": "この都市の領事館",
+    "twinnedLabel": "姉妹都市の関係"
   }
 }

@@ -821,5 +821,23 @@
       "South": "남부",
       "West": "서부"
     }
+  },
+  "corridor": {
+    "heading": "이 복도에 대해",
+    "subNational": "{people} {city} 거주자들은 에서 {country}태어났습니다. 이 네트워크는 {origin} — 공식 통계가 기록하지 않는 구분을 위한 것입니다.",
+    "national": "{people} {city} 거주자는 {country}.",
+    "censusSource": "{source}, {period}",
+    "consulateHere": "인 {mission} 맥 {city}{country} 을 유지한다.",
+    "consulateLink": "선교 페이지를 방문하세요",
+    "consulateNone": "전혀 없습니다",
+    "twinnedYes": "네",
+    "twinnedNo": "아니",
+    "elsewhereHeading": "같은 기원이지만 다른 곳에서",
+    "cityLink": "전체 그림을 확인하세요.{city}",
+    "beFirst": "아직 이 커뮤니티에서 참여한 사람은 없습니다. 위의 모든 내용은 누가 참여하든 아니든 사실입니다 — 하지만 대화는 누군가가 먼저 시작할 때에만 시작됩니다.",
+    "bornLabel": "출생 국가",
+    "subNationalNote": "이 네트워크는 {origin} 출신 사람들을 위한 것입니다. 공식 통계가 기록하지 않는 구분입니다.",
+    "consulateLabel": "이 도시의 영사관",
+    "twinnedLabel": "자매 도시 연계"
   }
 }

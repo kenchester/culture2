@@ -821,5 +821,23 @@
       "South": "南部",
       "West": "西部"
     }
+  },
+  "corridor": {
+    "heading": "关于这条走廊",
+    "subNational": "{people} {city}居民出生于。{country}该网络面向来自{origin}——官方统计未记录的区分。",
+    "national": "{people} {city}居民出生于{country}。",
+    "censusSource": "{source}， {period}",
+    "consulateHere": "{country}保持一个 {mission} 。{city}",
+    "consulateLink": "访问任务页面",
+    "consulateNone": "没有",
+    "twinnedYes": "是的",
+    "twinnedNo": "不",
+    "elsewhereHeading": "同样的起源，但别处也有",
+    "cityLink": "查看完整图片{city}",
+    "beFirst": "这个社区里还没有人加入。无论有没有人加入，以上内容都是真的——但只有有人开始讨论时，讨论才会开始。",
+    "bornLabel": "出生国",
+    "subNationalNote": "本网络面向来自{origin}的人——这是官方统计未作记录的区分。",
+    "consulateLabel": "该市领事馆",
+    "twinnedLabel": "姐妹城市联系"
   }
 }
