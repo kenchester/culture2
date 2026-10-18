@@ -314,6 +314,14 @@ test.describe("slugs, corridors and the sitemap", () => {
     }
   });
 
+  test("the numeric form points its canonical at the slug", async ({ request }) => {
+    // Otherwise both URLs declare themselves canonical and nothing is
+    // deduplicated, which is the entire reason for not redirecting.
+    const html = await (await request.get("/cities/25420")).text();
+    const canonical = html.match(/<link rel="canonical" href="([^"]+)"/)?.[1];
+    expect(canonical).toMatch(/\/cities\/[a-z-]+-25420$/);
+  });
+
   test("a nonsense slug is a 404, not a database query", async ({ page }) => {
     const response = await page.goto("/cities/detroit-michigan");
     expect(response?.status()).toBe(404);

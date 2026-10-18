@@ -3,7 +3,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { getTranslations } from "next-intl/server";
 import { createClient } from "@/lib/supabase/server";
-import { idFromSlug } from "@/lib/slug";
+import { idFromSlug, slugWithId } from "@/lib/slug";
 import { previewText, shareMetadata } from "@/lib/share-metadata";
 import { getPlaceChain } from "@/lib/place-chain";
 import { groupByContinent } from "@/lib/continents";
@@ -192,7 +192,7 @@ export async function generateMetadata({
   return shareMetadata({
     title: loaded.chain || (loaded.place.name as string),
     description: previewText(t("metaDescription", { city: loaded.place.name as string })),
-    path: `/cities/${id}`,
+    path: `/cities/${slugWithId(loaded.place.name as string, loaded.place.id as number)}`,
   });
 }
 

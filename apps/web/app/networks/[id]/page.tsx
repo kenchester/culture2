@@ -145,7 +145,7 @@ export async function generateMetadata({
         posts: (network.post_count as number) ?? 0,
       }),
     ),
-    path: `/networks/${network.id}`,
+    path: `/networks/${slugWithId(network.title as string, network.id as number)}`,
     noIndex: Boolean(place?.hidden_from_search),
   });
 }
