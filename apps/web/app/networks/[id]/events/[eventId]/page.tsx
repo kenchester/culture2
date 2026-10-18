@@ -2,6 +2,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { getTranslations } from "next-intl/server";
 import { createClient } from "@/lib/supabase/server";
+import { idFromSlug } from "@/lib/slug";
 import { getDisplayName } from "@/lib/profiles";
 import { demoEventTimestamp } from "@/lib/demo-network";
 import { cancelRsvp, rsvp } from "@/app/networks/[id]/events/[eventId]/actions";
@@ -18,6 +19,10 @@ export default async function EventPage({
   searchParams: Promise<{ error?: string; embed?: string }>;
 }) {
   const { id, eventId } = await params;
+  // The route accepts both the bare id and the readable slug that ends
+  // in it (lib/slug.ts), so links shared before slugs existed still work.
+  const networkId = idFromSlug(id);
+  if (networkId === null) notFound();
   const { error, embed } = await searchParams;
   const isEmbedded = embed === "1";
   const embedSuffix = isEmbedded ? "?embed=1" : "";
@@ -124,7 +129,7 @@ export default async function EventPage({
             {STATUSES.map((status) => (
               <form key={status} action={rsvp}>
                 <input type="hidden" name="eventId" value={event.id} />
-                <input type="hidden" name="networkId" value={id} />
+                <input type="hidden" name="networkId" value={networkId} />
                 <input type="hidden" name="status" value={status} />
                 {isEmbedded && <input type="hidden" name="embed" value="1" />}
                 <Button
@@ -139,7 +144,7 @@ export default async function EventPage({
           {myRsvp && (
             <form action={cancelRsvp}>
               <input type="hidden" name="eventId" value={event.id} />
-              <input type="hidden" name="networkId" value={id} />
+              <input type="hidden" name="networkId" value={networkId} />
               {isEmbedded && <input type="hidden" name="embed" value="1" />}
               <button type="submit" className="text-sm text-muted underline hover:text-primary">
                 {t("removeRsvp")}

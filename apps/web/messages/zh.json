@@ -838,6 +838,20 @@
     "bornLabel": "出生国",
     "subNationalNote": "本网络面向来自{origin}的人——这是官方统计未作记录的区分。",
     "consulateLabel": "该市领事馆",
-    "twinnedLabel": "姐妹城市联系"
+    "twinnedLabel": "姐妹城市联系",
+    "otherEndLabel": "这条路线也反向行驶",
+    "otherEndMembers": "{count}在那里",
+    "otherEndNone": "还没人到",
+    "corridorLink": "看完整条走廊"
+  },
+  "corridorPage": {
+    "title": "{a}以及{b}",
+    "intro": "一条走廊向两端延伸。沿线的人们、贸易和机构是共享的，尽管两端的社区并不相同。",
+    "directionsHeading": "两个方向",
+    "noNetwork": "目前还没有针对这个方向的社区。",
+    "startThis": "开始吧",
+    "membersLabel": "成员： {count}",
+    "factsHeading": "沿线",
+    "metaDescription": "{a}与{b}之间的走廊：两端居住者、服务机构以及CultureMesh上的社区。"
   }
 }

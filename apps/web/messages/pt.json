@@ -838,6 +838,20 @@
     "bornLabel": "Local de nascimento",
     "subNationalNote": "Esta rede é para aqueles de {origin} — uma distinção que as estatísticas oficiais não registram.",
     "consulateLabel": "Consulado nesta cidade",
-    "twinnedLabel": "Vínculo entre cidades-irmãs"
+    "twinnedLabel": "Vínculo entre cidades-irmãs",
+    "otherEndLabel": "Essa rota também segue no sentido oposto",
+    "otherEndMembers": "{count} Ali",
+    "otherEndNone": "Ninguém lá ainda",
+    "corridorLink": "Veja todo o corredor"
+  },
+  "corridorPage": {
+    "title": "{a} e {b}",
+    "intro": "Um corredor corre em ambas as direções. As pessoas, o comércio e as instituições ao longo dele são compartilhados, mesmo que as comunidades em cada extremidade não sejam as mesmas.",
+    "directionsHeading": "As duas direções",
+    "noNetwork": "Ainda não existe nenhuma comunidade nessa direção.",
+    "startThis": "Ligue",
+    "membersLabel": "Membros: {count}",
+    "factsHeading": "Ao longo dessa rota",
+    "metaDescription": "O corredor entre {a} e {b}: quem mora em cada extremidade, quais instituições o atendem e as comunidades no CultureMesh."
   }
 }

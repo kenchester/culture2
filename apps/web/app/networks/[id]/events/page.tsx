@@ -2,6 +2,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { getTranslations } from "next-intl/server";
 import { createClient } from "@/lib/supabase/server";
+import { idFromSlug } from "@/lib/slug";
 import { createEvent } from "@/app/networks/[id]/events/actions";
 import { EventDateField } from "@/app/networks/[id]/events/event-date-field";
 import { Field, Input, Label, Textarea } from "@/components/ui/input";
@@ -17,6 +18,10 @@ export default async function EventsPage({
   searchParams: Promise<{ error?: string; embed?: string }>;
 }) {
   const { id } = await params;
+  // The route accepts both the bare id and the readable slug that ends
+  // in it (lib/slug.ts), so links shared before slugs existed still work.
+  const networkId = idFromSlug(id);
+  if (networkId === null) notFound();
   const { error, embed } = await searchParams;
   const isEmbedded = embed === "1";
   const embedSuffix = isEmbedded ? "?embed=1" : "";
@@ -26,7 +31,7 @@ export default async function EventsPage({
   const { data: network } = await supabase
     .from("networks")
     .select("id, title")
-    .eq("id", id)
+    .eq("id", networkId)
     .single();
 
   if (!network) {

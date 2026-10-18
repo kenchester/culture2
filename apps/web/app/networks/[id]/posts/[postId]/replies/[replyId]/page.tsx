@@ -4,6 +4,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { getTranslations } from "next-intl/server";
 import { createClient } from "@/lib/supabase/server";
+import { idFromSlug } from "@/lib/slug";
 import { previewText, shareMetadata } from "@/lib/share-metadata";
 import { gatedContextForPost } from "@/lib/gated-access";
 import { SignInToView } from "@/components/sign-in-to-view";
@@ -40,6 +41,10 @@ export async function generateMetadata({
   params: Promise<{ id: string; postId: string; replyId: string }>;
 }): Promise<Metadata> {
   const { id, postId, replyId } = await params;
+  // The route accepts both the bare id and the readable slug that ends
+  // in it (lib/slug.ts), so links shared before slugs existed still work.
+  const networkId = idFromSlug(id);
+  if (networkId === null) notFound();
   const t = await getTranslations("postDetail");
   const supabase = await createClient();
 
@@ -54,7 +59,7 @@ export async function generateMetadata({
   const { data: network } = await supabase
     .from("networks")
     .select("title")
-    .eq("id", id)
+    .eq("id", networkId)
     .maybeSingle();
   const networkTitle = (network?.title as string | null) ?? "";
 
@@ -77,6 +82,10 @@ export default async function ReplyPage({
   searchParams: Promise<{ embed?: string }>;
 }) {
   const { id, postId, replyId } = await params;
+  // The route accepts both the bare id and the readable slug that ends
+  // in it (lib/slug.ts), so links shared before slugs existed still work.
+  const networkId = idFromSlug(id);
+  if (networkId === null) notFound();
   const { embed } = await searchParams;
   const embedSuffix = embed === "1" ? "?embed=1" : "";
   const supabase = await createClient();
@@ -121,7 +130,7 @@ export default async function ReplyPage({
     // NOT filtered on deleted_at: this page is the one place a soft-deleted
     // post still matters, because the reply below it survived precisely so
     // this URL would keep working (00000000000081).
-    .eq("network_id", id)
+    .eq("network_id", networkId)
     .maybeSingle();
 
   if (!post) {
@@ -290,7 +299,7 @@ export default async function ReplyPage({
           gone: createReply still needs a live post to hang the reply on. */}
       {!postWasDeleted && (
       <ReplySection
-        networkId={id}
+        networkId={String(networkId)}
         postId={postId}
         replies={[]}
         someoneLabel={t("someone")}

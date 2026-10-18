@@ -838,6 +838,20 @@
     "bornLabel": "Lieu de naissance",
     "subNationalNote": "Ce réseau s'adresse aux personnes originaires de {origin} — une distinction que les statistiques officielles n'enregistrent pas.",
     "consulateLabel": "Consulat dans cette ville",
-    "twinnedLabel": "Lien entre villes jumelées"
+    "twinnedLabel": "Lien entre villes jumelées",
+    "otherEndLabel": "Cette route passe aussi dans l’autre sens",
+    "otherEndMembers": "{count} Voilà",
+    "otherEndNone": "Personne n’est encore là",
+    "corridorLink": "Voir tout le couloir"
+  },
+  "corridorPage": {
+    "title": "{a} et {b}",
+    "intro": "Un corridor court dans les deux sens. Les habitants, le commerce et les institutions qui le longent sont partagés, même si les communautés à chaque extrémité ne sont pas les mêmes.",
+    "directionsHeading": "Les deux directions",
+    "noNetwork": "Aucune communauté n’existe encore dans cette direction.",
+    "startThis": "Démarre-le",
+    "membersLabel": "Membres : {count}",
+    "factsHeading": "Le long de cet itinéraire",
+    "metaDescription": "Le corridor entre {a} et {b}: qui vit à chaque extrémité, quelles institutions le desservent, et les communautés sur CultureMesh."
   }
 }

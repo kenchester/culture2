@@ -838,6 +838,20 @@
     "bornLabel": "출생 국가",
     "subNationalNote": "이 네트워크는 {origin} 출신 사람들을 위한 것입니다. 공식 통계가 기록하지 않는 구분입니다.",
     "consulateLabel": "이 도시의 영사관",
-    "twinnedLabel": "자매 도시 연계"
+    "twinnedLabel": "자매 도시 연계",
+    "otherEndLabel": "이 노선은 반대 방향으로도 운행됩니다",
+    "otherEndMembers": "{count} 저기",
+    "otherEndNone": "아직 아무도 없어",
+    "corridorLink": "복도 전체를 확인하세요"
+  },
+  "corridorPage": {
+    "title": "{a} 그리고 {b}",
+    "intro": "복도는 양방향으로 이어져 있습니다. 사람들, 무역, 그리고 그 주변의 기관들은 공유되지만, 양쪽 끝의 공동체는 같지 않습니다.",
+    "directionsHeading": "두 방향",
+    "noNetwork": "아직 이 방향을 위한 커뮤니티는 존재하지 않습니다.",
+    "startThis": "시작해",
+    "membersLabel": "회원: {count}",
+    "factsHeading": "이 경로를 따라",
+    "metaDescription": "{a} 와 {b}사이의 통로: 양 끝에 누가 살고 있는지, 어떤 기관이 그 복도를 담당하는지, 그리고 CultureMesh 커뮤니티에 관한 것입니다."
   }
 }

@@ -4,6 +4,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { getTranslations } from "next-intl/server";
 import { createClient } from "@/lib/supabase/server";
+import { idFromSlug } from "@/lib/slug";
 import { previewText, shareMetadata } from "@/lib/share-metadata";
 import { gatedContextForPost } from "@/lib/gated-access";
 import { SignInToView } from "@/components/sign-in-to-view";
@@ -30,6 +31,10 @@ export async function generateMetadata({
   params: Promise<{ id: string; postId: string }>;
 }): Promise<Metadata> {
   const { id, postId } = await params;
+  // The route accepts both the bare id and the readable slug that ends
+  // in it (lib/slug.ts), so links shared before slugs existed still work.
+  const networkId = idFromSlug(id);
+  if (networkId === null) notFound();
   const t = await getTranslations("postDetail");
   const supabase = await createClient();
 
@@ -37,7 +42,7 @@ export async function generateMetadata({
     .from("posts")
     .select("id, body, network_id, networks(title)")
     .eq("id", postId)
-    .eq("network_id", id)
+    .eq("network_id", networkId)
     .is("deleted_at", null)
     .maybeSingle();
   if (!post) return {};
@@ -63,6 +68,10 @@ export default async function PostPage({
   searchParams: Promise<{ error?: string; embed?: string; replyTo?: string; replies?: string }>;
 }) {
   const { id, postId } = await params;
+  // The route accepts both the bare id and the readable slug that ends
+  // in it (lib/slug.ts), so links shared before slugs existed still work.
+  const networkId = idFromSlug(id);
+  if (networkId === null) notFound();
   const { error, embed, replyTo, replies: repliesParam } = await searchParams;
   const isEmbedded = embed === "1";
   const embedSuffix = isEmbedded ? "?embed=1" : "";
@@ -344,7 +353,7 @@ export default async function PostPage({
       ) : (
         <>
           <ReplySection
-            networkId={id}
+            networkId={String(networkId)}
             postId={postId}
             replies={replyViews}
             someoneLabel={t("someone")}

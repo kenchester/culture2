@@ -838,6 +838,20 @@
     "bornLabel": "مكان الميلاد",
     "subNationalNote": "هذه الشبكة مخصصة لأولئك من {origin} — وهو تمييز لا تسجل الإحصاءات الرسمية.",
     "consulateLabel": "القنصلية في هذه المدينة",
-    "twinnedLabel": "رابطة المدن الشقيقة"
+    "twinnedLabel": "رابطة المدن الشقيقة",
+    "otherEndLabel": "هذا الطريق يسير أيضا في الاتجاه الآخر",
+    "otherEndMembers": "{count} ها هو",
+    "otherEndNone": "لا أحد هناك حتى الآن",
+    "corridorLink": "انظر إلى الممر بأكمله"
+  },
+  "corridorPage": {
+    "title": "{a} و {b}",
+    "intro": "يمتد الممر في كلا الاتجاهين. الناس والتجارة والمؤسسات على يناله مشتركون، رغم أن المجتمعات في كل طرف ليست متشابهة.",
+    "directionsHeading": "الاتجاهان",
+    "noNetwork": "لا توجد مجتمع لهذا الاتجاه حتى الآن.",
+    "startThis": "شغلها",
+    "membersLabel": "الأعضاء: {count}",
+    "factsHeading": "على طول هذا الطريق",
+    "metaDescription": "الممر بين {a} و {b}: من يعيش في كل طرف، أي المؤسسات تخدمه، والمجتمعات على CultureMesh."
   }
 }

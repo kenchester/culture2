@@ -3,6 +3,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { getTranslations } from "next-intl/server";
 import { createClient } from "@/lib/supabase/server";
+import { idFromSlug } from "@/lib/slug";
 import { previewText, shareMetadata } from "@/lib/share-metadata";
 import { getPlaceChain } from "@/lib/place-chain";
 import { groupByContinent } from "@/lib/continents";
@@ -68,7 +69,7 @@ type NetworkRow = {
  * Most cities only ever show one side, and that asymmetry is itself
  * information.
  */
-async function loadCity(id: string, locale: Locale) {
+async function loadCity(id: number, locale: Locale) {
   const supabase = await createClient();
 
   const { data: place } = await supabase
@@ -179,9 +180,13 @@ export async function generateMetadata({
   params: Promise<{ id: string }>;
 }): Promise<Metadata> {
   const { id } = await params;
+  // The route accepts both the bare id and the readable slug that ends
+  // in it (lib/slug.ts), so links shared before slugs existed still work.
+  const networkId = idFromSlug(id);
+  if (networkId === null) notFound();
   const locale = (await getLocale()) as Locale;
   const t = await getTranslations("city");
-  const loaded = await loadCity(id, locale);
+  const loaded = await loadCity(networkId, locale);
   if (!loaded) return {};
 
   return shareMetadata({
@@ -193,9 +198,13 @@ export async function generateMetadata({
 
 export default async function CityPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
+  // The route accepts both the bare id and the readable slug that ends
+  // in it (lib/slug.ts), so links shared before slugs existed still work.
+  const networkId = idFromSlug(id);
+  if (networkId === null) notFound();
   const locale = (await getLocale()) as Locale;
   const t = await getTranslations("city");
-  const [loaded, siteUrl] = await Promise.all([loadCity(id, locale), getSiteUrl()]);
+  const [loaded, siteUrl] = await Promise.all([loadCity(networkId, locale), getSiteUrl()]);
   if (!loaded) notFound();
 
   const { place, chain, sisters, origins, domestic, consulates, networks, coveredCountryIds, placeForIso } =

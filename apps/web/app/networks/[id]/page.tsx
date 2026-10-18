@@ -3,6 +3,7 @@ import Link from "next/link";
 import { notFound, redirect } from "next/navigation";
 import { getLocale, getTranslations } from "next-intl/server";
 import { createClient } from "@/lib/supabase/server";
+import { corridorSlug, idFromSlug, slugWithId } from "@/lib/slug";
 import { previewText, shareMetadata } from "@/lib/share-metadata";
 import { type Author, getAvatarUrl, getDisplayName } from "@/lib/profiles";
 import { getGeoName } from "@/lib/geo-translation";
@@ -108,13 +109,17 @@ export async function generateMetadata({
   params: Promise<{ id: string }>;
 }): Promise<Metadata> {
   const { id } = await params;
+  // The route accepts both the bare id and the readable slug that ends
+  // in it (lib/slug.ts), so links shared before slugs existed still work.
+  const networkId = idFromSlug(id);
+  if (networkId === null) notFound();
   const t = await getTranslations("network");
   const supabase = await createClient();
 
   const { data: network } = await supabase
     .from("networks")
     .select("id, title, member_count, post_count, location_place_id")
-    .eq("id", id)
+    .eq("id", networkId)
     .maybeSingle();
 
   // An unreadable row here means missing; there is nothing to preview.
@@ -158,10 +163,15 @@ export default async function NetworkPage({
   }>;
 }) {
   const { id } = await params;
+  // The route accepts both the bare id and the readable slug that ends
+  // in it (lib/slug.ts), so links shared before slugs existed still work.
+  const networkId = idFromSlug(id);
+  if (networkId === null) notFound();
   const { error, embed, invited, inviteError } = await searchParams;
   const isEmbedded = embed === "1";
   const supabase = await createClient();
   const t = await getTranslations("network");
+  const tCorridor = await getTranslations("corridor");
   const locale = (await getLocale()) as Locale;
 
   const {
@@ -173,7 +183,7 @@ export default async function NetworkPage({
     .select(
       "id, title, member_count, post_count, language_id, origin_place_id, religion_id, location_place_id, instructor_prompt",
     )
-    .eq("id", id)
+    .eq("id", networkId)
     .single();
 
   if (!network) {
@@ -192,6 +202,17 @@ export default async function NetworkPage({
   // consulate). 87: Fujian -> New York City, which exercises the
   // sub-national line.
   const CORRIDOR_CONTEXT_PROTOTYPE = [91, 87];
+  // The same route, the other way round. Two people on opposite ends is
+  // a working corridor; twenty in one city is not a prerequisite.
+  const { data: reverseNetwork } = network.origin_place_id
+    ? await supabase
+        .from("networks")
+        .select("id, title, member_count")
+        .eq("origin_place_id", network.location_place_id)
+        .eq("location_place_id", network.origin_place_id)
+        .maybeSingle()
+    : { data: null };
+
   const corridorContext =
     CORRIDOR_CONTEXT_PROTOTYPE.includes(network.id)
       ? await getCorridorContext(supabase, {
@@ -520,6 +541,31 @@ export default async function NetworkPage({
               {t("consulLine", { name: consul.name })}
             </Link>
           </p>
+        )}
+
+        {network.origin_place_id && (
+          <div className="flex flex-wrap items-baseline gap-x-3 gap-y-1 text-sm">
+            <span className="text-muted">{tCorridor("otherEndLabel")}</span>
+            {reverseNetwork ? (
+              <Link
+                href={`/networks/${slugWithId(reverseNetwork.title as string, reverseNetwork.id as number)}`}
+                className="text-primary underline"
+              >
+                {reverseNetwork.title as string}
+              </Link>
+            ) : (
+              <span className="text-muted">{tCorridor("otherEndNone")}</span>
+            )}
+            <Link
+              href={`/corridors/${corridorSlug(
+                { id: network.origin_place_id, name: originSubtitle },
+                { id: network.location_place_id, name: locationSubtitle },
+              )}`}
+              className="text-primary underline"
+            >
+              {tCorridor("corridorLink")}
+            </Link>
+          </div>
         )}
 
         {corridorContext && contextLeads && (

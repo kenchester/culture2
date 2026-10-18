@@ -304,6 +304,43 @@ test.describe("the consul page", () => {
   });
 });
 
+test.describe("slugs, corridors and the sitemap", () => {
+  test("a page answers to both its bare id and its readable slug", async ({ request }) => {
+    // Numeric links were shared before slugs existed and must keep
+    // working; the slug is canonical, declared in metadata rather than
+    // enforced by a redirect.
+    for (const path of ["/cities/25420", "/cities/detroit-michigan-25420"]) {
+      expect((await request.get(path)).status(), path).toBe(200);
+    }
+  });
+
+  test("a nonsense slug is a 404, not a database query", async ({ page }) => {
+    const response = await page.goto("/cities/detroit-michigan");
+    expect(response?.status()).toBe(404);
+  });
+
+  test("a corridor resolves from either direction to one page", async ({ request }) => {
+    const forward = await request.get("/corridors/841-25760");
+    expect(forward.status()).toBe(200);
+    const html = await forward.text();
+    expect(html).toContain("The two directions");
+    // Ids given the other way round canonicalise to the same corridor.
+    const reversed = await request.get("/corridors/25760-841");
+    expect(reversed.status()).toBe(200);
+  });
+
+  test("the sitemap lists reference pages and excludes gated ones", async ({ request }) => {
+    const xml = await (await request.get("/sitemap.xml")).text();
+    expect(xml).toContain("/cities/");
+    expect(xml).toContain("/corridors/");
+    expect(xml).toContain("/outposts");
+    // Organisation networks are gated and test geographies are hidden;
+    // neither should ever be advertised to a crawler.
+    expect(xml.toLowerCase()).not.toContain("acme");
+    expect(xml.toLowerCase()).not.toContain("antarctica");
+  });
+});
+
 test.describe("referral links", () => {
   test("an invalid token is friendly and reveals nothing", async ({ page }) => {
     await page.goto("/join/11111111-1111-1111-1111-111111111111");

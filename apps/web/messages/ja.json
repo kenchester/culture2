@@ -838,6 +838,20 @@
     "bornLabel": "出生国",
     "subNationalNote": "このネットワークは{origin}出身の人のためのものです。公式統計には記録されない区別です。",
     "consulateLabel": "この都市の領事館",
-    "twinnedLabel": "姉妹都市の関係"
+    "twinnedLabel": "姉妹都市の関係",
+    "otherEndLabel": "このルートは逆方向にも走っています",
+    "otherEndMembers": "{count}そこだ",
+    "otherEndNone": "まだ誰もいません",
+    "corridorLink": "廊下全体を見てください"
+  },
+  "corridorPage": {
+    "title": "{a}および{b}",
+    "intro": "両方向に廊下が走っています。人々、交易、そしてその沿いの制度は共有されていますが、両端のコミュニティは同じではありません。",
+    "directionsHeading": "2つの方向",
+    "noNetwork": "この方向性のコミュニティはまだ存在しません。",
+    "startThis": "始めて",
+    "membersLabel": "メンバー: {count}",
+    "factsHeading": "このルートに沿って",
+    "metaDescription": "{a}と{b}の間の回廊:両端に誰が住んでいるのか、どの機関がそれに奉仕しているのか、そしてCultureMesh上のコミュニティについて。"
   }
 }
