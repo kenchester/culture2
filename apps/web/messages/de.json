@@ -853,5 +853,45 @@
     "membersLabel": "Mitglieder: {count}",
     "factsHeading": "Entlang dieser Route",
     "metaDescription": "Der Korridor zwischen {a} und {b}: Wer an jedem Ende wohnt, welche Institutionen es bedienen und die Gemeinschaften auf CultureMesh."
+  },
+  "trips": {
+    "heading": "Menschen, die diese Route befahren",
+    "intro": "Diasporas haben das schon immer informell gemacht – jemand, der nach Hause fliegt, trägt die Medizin. Das macht sie in einer Gemeinschaft sichtbar, die sich bereits kennt.",
+    "memberOnly": "Für Mitglieder einer Gemeinschaft auf dieser Route sichtbar. Tritt einem bei, um zu sehen, wer unterwegs ist.",
+    "none": "Niemand hat bisher eine Fahrt auf dieser Route gepostet.",
+    "addHeading": "Nach einer Reise",
+    "direction": "In welche Richtung gehst du?",
+    "dateLabel": "Reisedatum",
+    "offeringLabel": "Was bieten Sie an?",
+    "offering": {
+      "carry": "Ich kann etwas Kleines tragen",
+      "meet": "Ich freue mich, Leute am anderen Ende kennenzulernen",
+      "advice": "Ich bin diesen Weg gegangen und werde Fragen beantworten"
+    },
+    "noteLabel": "Alles andere (optional)",
+    "notePlaceholder": "z. B. Fliegen von Guangzhou aus, nur kleine Gegenstände",
+    "submit": "Nach dieser Reise",
+    "cancel": "Stornieren",
+    "cancelled": "Eingestellt",
+    "messageThem": "Schreib ihnen eine Nachricht",
+    "responsibility": "Wenn du etwas trägst, bist du an der Grenze dafür verantwortlich. Trage niemals etwas Versiegeltes mit, etwas, das du nicht gesehen hast, oder irgendetwas für jemanden, den du nicht kennst. Dies ist kein Lieferdienst und hier sollte keine Zahlung den Besitzer wechseln."
+  },
+  "corridorQuestions": {
+    "heading": "Was die Leute hier wissen",
+    "intro": "Je ein Absatz, von Menschen, die diese Reise gegangen sind. Das ist der Teil, den eine Suchmaschine dir nicht geben kann.",
+    "unanswered": "Niemand hat das bisher beantwortet.",
+    "answerCta": "Beantworte das",
+    "answerLabel": "Deine Antwort",
+    "answerPlaceholder": "Ein Absatz reicht aus.",
+    "submit": "Poste deine Antwort",
+    "memberOnly": "Tritt einer Community auf diesem Weg bei, um zu antworten.",
+    "directionTo": "Ankunft in {place}",
+    "question": {
+      "firstWeek": "Was sollte jemand in seiner ersten Woche hier wissen?",
+      "gather": "Wo versammeln sich die Menschen aus dieser Gemeinschaft eigentlich?",
+      "food": "Wo kaufst du das Essen, mit dem du aufgewachsen bist?",
+      "money": "Wie schicken die Leute hier Geld nach Hause?",
+      "mistake": "Was ist der Fehler, den Neulinge machen?"
+    }
   }
 }

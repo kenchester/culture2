@@ -853,5 +853,45 @@
     "membersLabel": "成员： {count}",
     "factsHeading": "沿线",
     "metaDescription": "{a}与{b}之间的走廊：两端居住者、服务机构以及CultureMesh上的社区。"
+  },
+  "trips": {
+    "heading": "沿途旅客",
+    "intro": "侨民一直以非正式的方式进行——有人飞回家时携带药物。这使得在彼此认识的社区中显现出来。",
+    "memberOnly": "此路线上社区成员可见。加入其中一员，查看谁在行驶。",
+    "none": "还没有人发布过这条路线的行程。",
+    "addHeading": "发布一次旅行",
+    "direction": "你要往哪边走？",
+    "dateLabel": "旅行日期",
+    "offeringLabel": "你打算给什么？",
+    "offering": {
+      "carry": "我能带点小东西",
+      "meet": "很高兴在另一端认识新朋友",
+      "advice": "我走过这条路，会回答问题"
+    },
+    "noteLabel": "其他任何内容（可选）",
+    "notePlaceholder": "例如从广州飞往，仅携带小件物品",
+    "submit": "发布这次旅行",
+    "cancel": "取消",
+    "cancelled": "取消",
+    "messageThem": "给他们发消息",
+    "responsibility": "如果你携带物品，你在边境需对其负责。切勿携带任何密封物品、未见过或为陌生人携带。这不是送货服务，这里不应有任何付款。"
+  },
+  "corridorQuestions": {
+    "heading": "这里的人都知道什么",
+    "intro": "每人一段，来自经历过这段旅程的人。这是搜索引擎无法提供给你的部分。",
+    "unanswered": "目前还没有人回答这个问题。",
+    "answerCta": "回答这个问题",
+    "answerLabel": "你的答案",
+    "answerPlaceholder": "一段就够了。",
+    "submit": "请发布你的答案",
+    "memberOnly": "加入这条路线的社区来回答。",
+    "directionTo": "抵达{place}",
+    "question": {
+      "firstWeek": "刚来这里的第一周应该知道些什么？",
+      "gather": "这个社区的人通常在哪里聚集？",
+      "food": "你在哪里买你从小吃的食物？",
+      "money": "这里的人是怎么把钱汇回家的？",
+      "mistake": "新手犯的错误是什么？"
+    }
   }
 }

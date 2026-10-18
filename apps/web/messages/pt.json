@@ -853,5 +853,45 @@
     "membersLabel": "Membros: {count}",
     "factsHeading": "Ao longo dessa rota",
     "metaDescription": "O corredor entre {a} e {b}: quem mora em cada extremidade, quais instituições o atendem e as comunidades no CultureMesh."
+  },
+  "trips": {
+    "heading": "Pessoas que viajam por essa rota",
+    "intro": "As diásporas sempre fizeram isso informalmente — alguém que voa para casa carrega o remédio. Isso o torna visível dentro de uma comunidade que já se conhece.",
+    "memberOnly": "Visível para membros da comunidade nesta rota. Junte-se a um para ver quem está viajando.",
+    "none": "Ninguém postou uma viagem nessa rota ainda.",
+    "addHeading": "Após uma viagem",
+    "direction": "Pra que lado você vai?",
+    "dateLabel": "Data da viagem",
+    "offeringLabel": "O que você está oferecendo?",
+    "offering": {
+      "carry": "Posso carregar algo pequeno",
+      "meet": "Fico feliz em conhecer pessoas do outro lado",
+      "advice": "Já fiz esse caminho e vou responder perguntas"
+    },
+    "noteLabel": "Qualquer outra coisa (opcional)",
+    "notePlaceholder": "por exemplo, voar de Guangzhou, apenas itens pequenos",
+    "submit": "Pós-essa viagem",
+    "cancel": "Cancelar",
+    "cancelled": "Cancelado",
+    "messageThem": "Mande mensagem para eles",
+    "responsibility": "Se você carregar algo, é responsável por isso na fronteira. Nunca carregue nada lacrado, nada que você não tenha visto, ou algo para alguém que você não conheça. Este não é um serviço de entrega e nenhum pagamento deve mudar de mãos aqui."
+  },
+  "corridorQuestions": {
+    "heading": "O que as pessoas aqui sabem",
+    "intro": "Um parágrafo para cada, de pessoas que já fizeram essa jornada. Essa é a parte que um motor de busca não pode te oferecer.",
+    "unanswered": "Ninguém respondeu isso ainda.",
+    "answerCta": "Responda isso",
+    "answerLabel": "Sua resposta",
+    "answerPlaceholder": "Um parágrafo já é suficiente.",
+    "submit": "Poste sua resposta",
+    "memberOnly": "Junte-se a uma comunidade nesse caminho para responder.",
+    "directionTo": "Chegando em {place}",
+    "question": {
+      "firstWeek": "O que alguém deveria saber na primeira semana aqui?",
+      "gather": "Onde as pessoas dessa comunidade realmente se reúnem?",
+      "food": "Onde você compra a comida com que cresceu?",
+      "money": "Como as pessoas aqui enviam dinheiro para casa?",
+      "mistake": "Qual é o erro que os novatos cometem?"
+    }
   }
 }

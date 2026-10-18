@@ -853,5 +853,45 @@
     "membersLabel": "Membres : {count}",
     "factsHeading": "Le long de cet itinéraire",
     "metaDescription": "Le corridor entre {a} et {b}: qui vit à chaque extrémité, quelles institutions le desservent, et les communautés sur CultureMesh."
+  },
+  "trips": {
+    "heading": "Personnes empruntant cet itinéraire",
+    "intro": "Les diasporas ont toujours fait cela de manière informelle — quelqu’un qui rentre chez lui transporte le médicament. Cela le rend visible au sein d’une communauté qui se connaît déjà.",
+    "memberOnly": "Visible pour les membres d’une communauté sur cet itinéraire. Rejoignez-en un pour voir qui voyage.",
+    "none": "Personne n’a encore publié de voyage sur cette route.",
+    "addHeading": "Après un voyage",
+    "direction": "Tu vas dans quelle direction ?",
+    "dateLabel": "Date de voyage",
+    "offeringLabel": "Qu’est-ce que tu proposes ?",
+    "offering": {
+      "carry": "Je peux porter quelque chose de petit",
+      "meet": "Heureux de rencontrer des gens à l’autre bout",
+      "advice": "J’ai suivi cette voie et je répondrai à toutes vos questions"
+    },
+    "noteLabel": "Tout le reste (optionnel)",
+    "notePlaceholder": "par exemple, l’avion depuis Guangzhou, uniquement les petits objets",
+    "submit": "Après ce voyage",
+    "cancel": "Annuler",
+    "cancelled": "Annulé",
+    "messageThem": "Envoyez-leur un message",
+    "responsibility": "Si vous transportez quelque chose, vous en êtes responsable à la frontière. Ne portez jamais rien de scellé, rien que vous n’avez pas vu, ou quoi que ce soit pour quelqu’un que vous ne connaissez pas. Ce n’est pas un service de livraison et aucun paiement ne doit être changé ici."
+  },
+  "corridorQuestions": {
+    "heading": "Ce que les gens ici savent",
+    "intro": "Un paragraphe chacun, de la part de personnes qui ont fait ce parcours. C’est la partie qu’un moteur de recherche ne peut pas vous donner.",
+    "unanswered": "Personne n’a encore répondu à cette question.",
+    "answerCta": "Réponds à ça",
+    "answerLabel": "Votre réponse",
+    "answerPlaceholder": "Un paragraphe, c’est suffisant.",
+    "submit": "Publiez votre réponse",
+    "memberOnly": "Rejoignez une communauté sur cette voie pour y répondre.",
+    "directionTo": "Arrivée à {place}",
+    "question": {
+      "firstWeek": "Que devrait savoir quelqu’un lors de sa première semaine ici ?",
+      "gather": "Où se réunissent réellement les gens de cette communauté ?",
+      "food": "Où achètes-vous la nourriture avec laquelle vous avez grandi ?",
+      "money": "Comment les gens ici envoient-ils de l’argent chez eux ?",
+      "mistake": "Quelle est l’erreur que font les nouveaux venus ?"
+    }
   }
 }

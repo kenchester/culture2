@@ -839,5 +839,45 @@
     "membersLabel": "Members: {count}",
     "factsHeading": "Along this route",
     "metaDescription": "The corridor between {a} and {b}: who lives at each end, which institutions serve it, and the communities on CultureMesh."
+  },
+  "trips": {
+    "heading": "People travelling this route",
+    "intro": "Diasporas have always done this informally — somebody flying home carries the medicine. This makes it visible inside a community that already knows each other.",
+    "memberOnly": "Visible to members of a community on this route. Join one to see who is travelling.",
+    "none": "Nobody has posted a trip on this route yet.",
+    "addHeading": "Post a trip",
+    "direction": "Which way are you going?",
+    "dateLabel": "Date of travel",
+    "offeringLabel": "What are you offering?",
+    "offering": {
+      "carry": "I can carry something small",
+      "meet": "Happy to meet people at the other end",
+      "advice": "I've done this route and will answer questions"
+    },
+    "noteLabel": "Anything else (optional)",
+    "notePlaceholder": "e.g. flying from Guangzhou, small items only",
+    "submit": "Post this trip",
+    "cancel": "Cancel",
+    "cancelled": "Cancelled",
+    "messageThem": "Message them",
+    "responsibility": "If you carry something, you are responsible for it at the border. Never carry anything sealed, anything you have not seen, or anything for someone you do not know. This is not a delivery service and no payment should change hands here."
+  },
+  "corridorQuestions": {
+    "heading": "What people here know",
+    "intro": "One paragraph each, from people who have made this journey. This is the part a search engine cannot give you.",
+    "unanswered": "Nobody has answered this yet.",
+    "answerCta": "Answer this",
+    "answerLabel": "Your answer",
+    "answerPlaceholder": "A paragraph is plenty.",
+    "submit": "Post your answer",
+    "memberOnly": "Join a community on this route to answer.",
+    "directionTo": "Arriving in {place}",
+    "question": {
+      "firstWeek": "What should someone know in their first week here?",
+      "gather": "Where do people from this community actually gather?",
+      "food": "Where do you buy the food you grew up with?",
+      "money": "How do people here send money home?",
+      "mistake": "What is the mistake newcomers make?"
+    }
   }
 }
