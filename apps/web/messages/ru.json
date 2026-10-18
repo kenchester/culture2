@@ -843,9 +843,10 @@
     "otherEndMembers": "{count} Вон там",
     "otherEndNone": "Пока никого нет",
     "corridorLink": "Посмотри весь коридор",
-    "consulateUnknown": "Пока не записано",
+    "consulateUnknown": "Неизвестно",
     "headingNetwork": "Об этой сети",
-    "headingCorridor": "Об этом коридоре"
+    "headingCorridor": "Об этом коридоре",
+    "consulatePresent": "Консульство"
   },
   "corridorPage": {
     "title": "{a} и {b}",

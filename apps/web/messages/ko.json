@@ -831,7 +831,7 @@
     "consulateLink": "선교 페이지를 방문하세요",
     "consulateNone": "전혀 없습니다",
     "twinnedYes": "네",
-    "twinnedNo": "아니",
+    "twinnedNo": "없음",
     "elsewhereHeading": "같은 기원이지만 다른 곳에서",
     "cityLink": "전체 그림을 확인하세요.{city}",
     "beFirst": "아직 이 커뮤니티에서 참여한 사람은 없습니다. 위의 모든 내용은 누가 참여하든 아니든 사실입니다 — 하지만 대화는 누군가가 먼저 시작할 때에만 시작됩니다.",
@@ -843,9 +843,10 @@
     "otherEndMembers": "{count} 저기",
     "otherEndNone": "아직 아무도 없어",
     "corridorLink": "복도 전체를 확인하세요",
-    "consulateUnknown": "아직 기록되지 않았다",
+    "consulateUnknown": "알려지지 않음",
     "headingNetwork": "이 네트워크에 대하여",
-    "headingCorridor": "이 복도에 대해"
+    "headingCorridor": "이 복도에 대해",
+    "consulatePresent": "영사관"
   },
   "corridorPage": {
     "title": "{a} 그리고 {b}",

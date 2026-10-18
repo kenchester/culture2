@@ -72,10 +72,10 @@ export async function CorridorContextBlock({
                     className="text-primary underline"
                     title={t("consulateLink")}
                   >
-                    {context.consulate.missionType ?? t("twinnedYes")}
+                    {context.consulate.missionType ?? t("consulatePresent")}
                   </a>
                 ) : (
-                  (context.consulate.missionType ?? t("twinnedYes"))
+                  (context.consulate.missionType ?? t("consulatePresent"))
                 )
               ) : (
                 <span className="text-muted">
@@ -87,8 +87,13 @@ export async function CorridorContextBlock({
 
           <div className="flex flex-col gap-0.5">
             <dt className="text-sm text-muted">{t("twinnedLabel")}</dt>
-            <dd className={context.twinned ? "text-ink" : "text-muted"}>
-              {context.twinned ? t("twinnedYes") : t("twinnedNo")}
+            {/* Naming the pair rather than saying "yes": the fact is
+                which two cities are twinned, and a bare yes was what let
+                a country-level match pass as a city-level one. */}
+            <dd className={context.twinning ? "text-ink" : "text-muted"}>
+              {context.twinning
+                ? `${context.twinning.cityName} ↔ ${context.twinning.partnerName}`
+                : t("twinnedNo")}
             </dd>
           </div>
         </div>

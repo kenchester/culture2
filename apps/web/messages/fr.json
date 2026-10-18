@@ -831,7 +831,7 @@
     "consulateLink": "Visitez la page de la mission",
     "consulateNone": "Aucun",
     "twinnedYes": "Oui",
-    "twinnedNo": "Non",
+    "twinnedNo": "Aucun",
     "elsewhereHeading": "La même origine, ailleurs",
     "cityLink": "Voir l’image complète pour {city}",
     "beFirst": "Personne de cette communauté n’a encore rejoint. Tout ce qui précède est vrai, que quelqu’un le fasse ou non — mais la conversation ne commence que lorsque quelqu’un la commence.",
@@ -843,9 +843,10 @@
     "otherEndMembers": "{count} Voilà",
     "otherEndNone": "Personne n’est encore là",
     "corridorLink": "Voir tout le couloir",
-    "consulateUnknown": "Pas encore enregistré",
+    "consulateUnknown": "Inconnu",
     "headingNetwork": "À propos de ce réseau",
-    "headingCorridor": "À propos de ce corridor"
+    "headingCorridor": "À propos de ce corridor",
+    "consulatePresent": "Consulat"
   },
   "corridorPage": {
     "title": "{a} et {b}",

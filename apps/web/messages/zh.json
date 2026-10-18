@@ -831,7 +831,7 @@
     "consulateLink": "访问任务页面",
     "consulateNone": "没有",
     "twinnedYes": "是的",
-    "twinnedNo": "不",
+    "twinnedNo": "没有",
     "elsewhereHeading": "同样的起源，但别处也有",
     "cityLink": "查看完整图片{city}",
     "beFirst": "这个社区里还没有人加入。无论有没有人加入，以上内容都是真的——但只有有人开始讨论时，讨论才会开始。",
@@ -843,9 +843,10 @@
     "otherEndMembers": "{count}在那里",
     "otherEndNone": "还没人到",
     "corridorLink": "看完整条走廊",
-    "consulateUnknown": "尚未录制",
+    "consulateUnknown": "未知",
     "headingNetwork": "关于这个网络",
-    "headingCorridor": "关于这条走廊"
+    "headingCorridor": "关于这条走廊",
+    "consulatePresent": "领事馆"
   },
   "corridorPage": {
     "title": "{a}以及{b}",

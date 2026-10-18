@@ -1,5 +1,6 @@
 import "server-only";
 import type { SupabaseClient } from "@supabase/supabase-js";
+import { partnerIsInside } from "@/lib/place-containment";
 
 /**
  * The reference layer for one corridor, assembled entirely from data the
@@ -39,8 +40,100 @@ export type CorridorContext = {
   /** False when this city's consular list has never been loaded, which is
    *  not the same claim as "no consulate exists". */
   consulateDataLoaded: boolean;
-  twinned: boolean;
+  /** The actual pair, when one exists - naming it is both more useful and
+   *  harder to get quietly wrong than a bare yes. */
+  twinning: { cityName: string; partnerName: string } | null;
 };
+
+/** A place and everything that contains it, up to the country. */
+async function ancestorsOf(supabase: SupabaseClient, placeId: number): Promise<number[]> {
+  const chain = [placeId];
+  let current: number | null = placeId;
+  for (let depth = 0; depth < 3 && current; depth++) {
+    const { data }: { data: { parent_id: number | null } | null } = await supabase
+      .from("places")
+      .select("parent_id")
+      .eq("id", current)
+      .maybeSingle();
+    current = data?.parent_id ?? null;
+    if (current) chain.push(current);
+  }
+  return chain;
+}
+
+/**
+ * Is there a sister-city relationship between these two places?
+ *
+ * Sister cities are always city-to-city, but a corridor pairs places at
+ * any level - Fujian to New York City is a region and a city. Matching on
+ * country, which is what this used to do, made New York's partnership
+ * with Beijing read as a tie to every Chinese region including Fujian,
+ * which it plainly is not.
+ *
+ * So the test is containment: a pair (X, Y) counts when X sits inside one
+ * end of the corridor and Y inside the other. Computed over the unordered
+ * pair, which also makes the answer identical in both directions - it is
+ * one relationship, and previously the reverse direction said "no" purely
+ * because the other end's sister list had never been loaded.
+ */
+async function resolveTwinning(
+  supabase: SupabaseClient,
+  aId: number,
+  bId: number,
+): Promise<{ cityName: string; partnerName: string } | null> {
+  const [aChain, bChain] = await Promise.all([ancestorsOf(supabase, aId), ancestorsOf(supabase, bId)]);
+
+  const { data: rows } = await supabase
+    .from("city_sister_cities")
+    .select("city_place_id, partner_name, partner_place_id, partner_country_iso")
+    .in("city_place_id", [...new Set([...aChain, ...bChain])]);
+  if (!rows || rows.length === 0) return null;
+
+  const partnerIds = rows.map((r) => r.partner_place_id).filter(Boolean) as number[];
+  const partnerChains = new Map<number, number[]>();
+  await Promise.all(
+    [...new Set(partnerIds)].map(async (id) => {
+      partnerChains.set(id, await ancestorsOf(supabase, id));
+    }),
+  );
+
+  const { data: countries } = await supabase
+    .from("places")
+    .select("id, iso_code")
+    .in("id", [...new Set([...aChain, ...bChain])])
+    .eq("type", "country");
+  const isoFor = new Map((countries ?? []).map((c) => [c.id as number, c.iso_code as string | null]));
+
+  const cityIds = [...new Set(rows.map((r) => r.city_place_id as number))];
+  const { data: cityNames } = await supabase.from("places").select("id, name").in("id", cityIds);
+  const nameFor = new Map((cityNames ?? []).map((c) => [c.id as number, c.name as string]));
+
+  for (const row of rows) {
+    const cityId = row.city_place_id as number;
+    const onA = aChain.includes(cityId);
+    if (!onA && !bChain.includes(cityId)) continue;
+    // The OTHER end itself, not its ancestors. Testing against the chain
+    // was the bug: Fujian's chain contains China, so New York's
+    // partnership with Beijing matched a Fujian corridor. The partner has
+    // to sit inside the end in question.
+    const otherEndId = onA ? bId : aId;
+
+    const partnerId = row.partner_place_id as number | null;
+    const matches = partnerId
+      ? partnerIsInside(partnerChains.get(partnerId) ?? [], otherEndId)
+      : // A name-only partner carries no place, so the most that can be
+        // claimed is that the other end is the country it sits in.
+        isoFor.get(otherEndId) === row.partner_country_iso;
+
+    if (matches) {
+      return {
+        cityName: nameFor.get(cityId) ?? "",
+        partnerName: row.partner_name as string,
+      };
+    }
+  }
+  return null;
+}
 
 export async function getCorridorContext(
   supabase: SupabaseClient,
@@ -92,7 +185,7 @@ export async function getCorridorContext(
     .eq("id", network.location_place_id)
     .maybeSingle();
 
-  const [{ data: stat }, { data: consulate }, { data: sister }, { count: consulateRows }] =
+  const [{ data: stat }, { data: consulate }, twinning, { count: consulateRows }] =
     await Promise.all([
       supabase
         .from("city_origin_stats")
@@ -107,12 +200,7 @@ export async function getCorridorContext(
         .eq("city_place_id", network.location_place_id)
         .eq("country_iso", countryIso)
         .maybeSingle(),
-      supabase
-        .from("city_sister_cities")
-        .select("partner_name")
-        .eq("city_place_id", network.location_place_id)
-        .eq("partner_country_iso", countryIso)
-        .maybeSingle(),
+      resolveTwinning(supabase, network.origin_place_id, network.location_place_id),
       supabase
         .from("city_consulates")
         .select("id", { count: "exact", head: true })
@@ -140,6 +228,6 @@ export async function getCorridorContext(
         }
       : null,
     consulateDataLoaded,
-    twinned: Boolean(sister),
+    twinning,
   };
 }

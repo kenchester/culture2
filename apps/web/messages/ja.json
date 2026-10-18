@@ -831,7 +831,7 @@
     "consulateLink": "ミッションのページをご覧ください",
     "consulateNone": "全くありません",
     "twinnedYes": "はい",
-    "twinnedNo": "いいえ",
+    "twinnedNo": "なし",
     "elsewhereHeading": "同じ起源、他の場所でも",
     "cityLink": "詳細はこちらをご覧ください{city}",
     "beFirst": "このコミュニティの誰もまだ参加していません。上記のことは誰が参加しようがいまいが真実ですが、会話は誰かが始めて初めて始まるのです。",
@@ -843,9 +843,10 @@
     "otherEndMembers": "{count}そこだ",
     "otherEndNone": "まだ誰もいません",
     "corridorLink": "廊下全体を見てください",
-    "consulateUnknown": "まだ記録されていません",
+    "consulateUnknown": "不明",
     "headingNetwork": "このネットワークについて",
-    "headingCorridor": "この廊下について"
+    "headingCorridor": "この廊下について",
+    "consulatePresent": "領事館"
   },
   "corridorPage": {
     "title": "{a}および{b}",

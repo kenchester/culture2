@@ -818,17 +818,17 @@
     "consulateNone": "None",
     "consulateLink": "Visit the mission's page",
     "twinnedLabel": "Sister-city tie",
-    "twinnedYes": "Yes",
-    "twinnedNo": "No",
+    "twinnedNo": "None",
     "cityLink": "See the full picture for {city}",
     "beFirst": "Nobody from this community has joined yet. Everything above is true whether or not anyone does — but the conversation only starts when someone begins it.",
     "otherEndLabel": "This route also runs the other way",
     "otherEndMembers": "{count} there",
     "otherEndNone": "Nobody there yet",
     "corridorLink": "See the whole corridor",
-    "consulateUnknown": "Not yet recorded",
+    "consulateUnknown": "Not known",
     "headingNetwork": "About this network",
-    "headingCorridor": "About this corridor"
+    "headingCorridor": "About this corridor",
+    "consulatePresent": "Consulate"
   },
   "corridorPage": {
     "title": "{a} and {b}",

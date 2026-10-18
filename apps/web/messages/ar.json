@@ -831,7 +831,7 @@
     "consulateLink": "قم بزيارة صفحة المهمة",
     "consulateNone": "لا شيء",
     "twinnedYes": "نعم",
-    "twinnedNo": "لا",
+    "twinnedNo": "لا شيء",
     "elsewhereHeading": "نفس الأصل، في أماكن أخرى",
     "cityLink": "شاهد الصورة الكاملة ل {city}",
     "beFirst": "لم ينضم أحد من هذا المجتمع بعد. كل ما سبق صحيح سواء فعل أحد ذلك أم لا — لكن المحادثة تبدأ فقط عندما يبدأ أحدهم.",
@@ -843,9 +843,10 @@
     "otherEndMembers": "{count} ها هو",
     "otherEndNone": "لا أحد هناك حتى الآن",
     "corridorLink": "انظر إلى الممر بأكمله",
-    "consulateUnknown": "لم يتم تسجيله بعد",
+    "consulateUnknown": "غير معروف",
     "headingNetwork": "حول هذه الشبكة",
-    "headingCorridor": "عن هذا الممر"
+    "headingCorridor": "عن هذا الممر",
+    "consulatePresent": "القنصلية"
   },
   "corridorPage": {
     "title": "{a} و {b}",
