@@ -44,10 +44,21 @@ export async function CorridorContextBlock({
         {people && (
           <div className="flex flex-col gap-0.5">
             <dt className="text-xs uppercase tracking-wide text-muted">{t("bornLabel")}</dt>
-            <dd className="text-2xl text-ink tabular-nums">{people}</dd>
-            {/* The country is data, not copy - no preposition to get
-                wrong in any language. */}
+            {/* Country first, then the count. The other way round read as
+                "366,301 Fujianese" on a Fujian corridor, when the figure
+                is for China. The country is data, not copy, so there is
+                no preposition to get wrong in any language. */}
             <dd className="text-ink">{context.countryName}</dd>
+            <dd className="text-2xl text-ink tabular-nums">{people}</dd>
+            {/* Said plainly wherever the corridor is narrower than the
+                statistic, because the number is otherwise read as a
+                measure of this community rather than of the country it
+                sits inside. */}
+            {context.subNationalOrigin && (
+              <dd className="text-sm text-muted">
+                {t("notCountedSeparately", { origin: context.subNationalOrigin })}
+              </dd>
+            )}
             {context.peopleSource && (
               <dd className="text-xs text-muted">
                 {t("censusSource", {

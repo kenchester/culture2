@@ -846,7 +846,8 @@
     "consulateUnknown": "Неизвестно",
     "headingNetwork": "Об этой сети",
     "headingCorridor": "Об этом коридоре",
-    "consulatePresent": "Консульство"
+    "consulatePresent": "Консульство",
+    "notCountedSeparately": "{origin} не учитывается отдельно."
   },
   "corridorPage": {
     "title": "{a} и {b}",

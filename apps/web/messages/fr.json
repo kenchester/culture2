@@ -846,7 +846,8 @@
     "consulateUnknown": "Inconnu",
     "headingNetwork": "À propos de ce réseau",
     "headingCorridor": "À propos de ce corridor",
-    "consulatePresent": "Consulat"
+    "consulatePresent": "Consulat",
+    "notCountedSeparately": "{origin} n’est pas compté séparément."
   },
   "corridorPage": {
     "title": "{a} et {b}",

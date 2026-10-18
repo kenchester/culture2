@@ -846,7 +846,8 @@
     "consulateUnknown": "알려지지 않음",
     "headingNetwork": "이 네트워크에 대하여",
     "headingCorridor": "이 복도에 대해",
-    "consulatePresent": "영사관"
+    "consulatePresent": "영사관",
+    "notCountedSeparately": "{origin}: 따로 집계되지 않습니다."
   },
   "corridorPage": {
     "title": "{a} 그리고 {b}",

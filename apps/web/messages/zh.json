@@ -846,7 +846,8 @@
     "consulateUnknown": "未知",
     "headingNetwork": "关于这个网络",
     "headingCorridor": "关于这条走廊",
-    "consulatePresent": "领事馆"
+    "consulatePresent": "领事馆",
+    "notCountedSeparately": "{origin}不单独计入。"
   },
   "corridorPage": {
     "title": "{a}以及{b}",

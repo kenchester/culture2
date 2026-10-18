@@ -846,7 +846,8 @@
     "consulateUnknown": "不明",
     "headingNetwork": "このネットワークについて",
     "headingCorridor": "この廊下について",
-    "consulatePresent": "領事館"
+    "consulatePresent": "領事館",
+    "notCountedSeparately": "{origin}は個別に集計されていません。"
   },
   "corridorPage": {
     "title": "{a}および{b}",

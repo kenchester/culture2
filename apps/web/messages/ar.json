@@ -846,7 +846,8 @@
     "consulateUnknown": "غير معروف",
     "headingNetwork": "حول هذه الشبكة",
     "headingCorridor": "عن هذا الممر",
-    "consulatePresent": "القنصلية"
+    "consulatePresent": "القنصلية",
+    "notCountedSeparately": "{origin} لا يحتسب بشكل منفصل."
   },
   "corridorPage": {
     "title": "{a} و {b}",
