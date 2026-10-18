@@ -842,7 +842,10 @@
     "otherEndLabel": "Cette route passe aussi dans l’autre sens",
     "otherEndMembers": "{count} Voilà",
     "otherEndNone": "Personne n’est encore là",
-    "corridorLink": "Voir tout le couloir"
+    "corridorLink": "Voir tout le couloir",
+    "consulateUnknown": "Pas encore enregistré",
+    "headingNetwork": "À propos de ce réseau",
+    "headingCorridor": "À propos de ce corridor"
   },
   "corridorPage": {
     "title": "{a} et {b}",

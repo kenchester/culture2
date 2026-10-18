@@ -91,8 +91,16 @@ async function loadCorridor(pair: string, locale: Locale) {
   // data for and show both.
   const contexts = (
     await Promise.all([
-      getCorridorContext(supabase, { origin_place_id: lowId, location_place_id: highId }),
-      getCorridorContext(supabase, { origin_place_id: highId, location_place_id: lowId }),
+      getCorridorContext(
+        supabase,
+        { origin_place_id: lowId, location_place_id: highId },
+        { allowEmpty: true },
+      ),
+      getCorridorContext(
+        supabase,
+        { origin_place_id: highId, location_place_id: lowId },
+        { allowEmpty: true },
+      ),
     ])
   ).filter(Boolean) as CorridorContext[];
 
@@ -177,6 +185,7 @@ export default async function CorridorPage({
     loaded;
   const tTrips = await getTranslations("trips");
   const tQ = await getTranslations("corridorQuestions");
+  const tCorridorBox = await getTranslations("corridor");
   const pairSlug = corridorSlug(low, high);
   const directionOptions = [
     { value: `${low.id}:${high.id}`, label: `${low.name} → ${high.name}` },
@@ -398,14 +407,20 @@ export default async function CorridorPage({
       {contexts.length > 0 && (
         <section className="flex flex-col gap-4">
           <h2 className="text-lg font-medium text-ink">{t("factsHeading")}</h2>
-          {contexts.map((context) => (
-            <CorridorContextBlock
-              key={context.cityName}
-              context={context}
-              cityPlaceId={context.cityName === low.name ? low.id : high.id}
-              isEmpty={false}
-            />
-          ))}
+          {directions.map((direction) => {
+            const context = contexts.find((c) => c.cityName === direction.to.name);
+            if (!context) return null;
+            return (
+              <CorridorContextBlock
+                key={`${direction.from.id}-${direction.to.id}`}
+                context={context}
+                cityPlaceId={direction.to.id}
+                isEmpty={false}
+                heading={tCorridorBox("headingCorridor")}
+                directionLabel={`${direction.from.name} → ${direction.to.name}`}
+              />
+            );
+          })}
         </section>
       )}
     </div>

@@ -842,7 +842,10 @@
     "otherEndLabel": "Anche questo percorso corre nell'altra direzione",
     "otherEndMembers": "{count} Lì",
     "otherEndNone": "Nessuno c'è ancora",
-    "corridorLink": "Vedi tutto il corridoio"
+    "corridorLink": "Vedi tutto il corridoio",
+    "consulateUnknown": "Non ancora registrato",
+    "headingNetwork": "Informazioni su questa rete",
+    "headingCorridor": "Informazioni su questo corridoio"
   },
   "corridorPage": {
     "title": "{a} e {b}",

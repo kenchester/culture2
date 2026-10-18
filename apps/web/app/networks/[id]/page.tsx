@@ -573,6 +573,7 @@ export default async function NetworkPage({
             context={corridorContext}
             cityPlaceId={network.location_place_id}
             isEmpty={(network.member_count ?? 0) === 0}
+            heading={tCorridor("headingNetwork")}
           />
         )}
 
@@ -665,6 +666,7 @@ export default async function NetworkPage({
             context={corridorContext}
             cityPlaceId={network.location_place_id}
             isEmpty={false}
+            heading={tCorridor("headingNetwork")}
           />
         )}
       </div>

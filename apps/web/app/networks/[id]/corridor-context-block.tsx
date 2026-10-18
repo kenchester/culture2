@@ -17,11 +17,19 @@ export async function CorridorContextBlock({
   context,
   cityPlaceId,
   isEmpty,
+  heading,
+  directionLabel,
 }: {
   context: CorridorContext;
   cityPlaceId: number;
   /** Drives the invitation line only; the content is identical either way. */
   isEmpty: boolean;
+  /** "About this network" on a network page, "About this corridor" on a
+   *  corridor page - the same facts, a different thing being described. */
+  heading: string;
+  /** Shown on the corridor page, where both directions appear and the
+   *  facts are meaningless without knowing which way round they are. */
+  directionLabel?: string;
 }) {
   const t = await getTranslations("corridor");
   const locale = (await getLocale()) as Locale;
@@ -29,7 +37,8 @@ export async function CorridorContextBlock({
 
   return (
     <section className="flex flex-col gap-4 rounded-lg border border-border bg-surface p-5">
-      <h2 className="text-xs uppercase tracking-wide text-muted">{t("heading")}</h2>
+      <h2 className="text-xs uppercase tracking-wide text-muted">{heading}</h2>
+      {directionLabel && <p className="font-medium text-ink">{directionLabel}</p>}
 
       <dl className="flex flex-col gap-3">
         {people && (
@@ -69,7 +78,9 @@ export async function CorridorContextBlock({
                   (context.consulate.missionType ?? t("twinnedYes"))
                 )
               ) : (
-                <span className="text-muted">{t("consulateNone")}</span>
+                <span className="text-muted">
+                  {context.consulateDataLoaded ? t("consulateNone") : t("consulateUnknown")}
+                </span>
               )}
             </dd>
           </div>
@@ -82,31 +93,6 @@ export async function CorridorContextBlock({
           </div>
         </div>
       </dl>
-
-      {/* The product's whole argument, stated as a fact about this page -
-          and kept in its own sentence so translation cannot interleave it
-          with the numbers above. */}
-      {context.subNationalOrigin && (
-        <p className="text-balance text-body">
-          {t("subNationalNote", { origin: context.subNationalOrigin })}
-        </p>
-      )}
-
-      {context.elsewhere.length > 0 && (
-        <div className="flex flex-col gap-1">
-          <p className="text-xs uppercase tracking-wide text-muted">{t("elsewhereHeading")}</p>
-          <ul className="flex flex-wrap gap-x-4 gap-y-1 text-sm text-body tabular-nums">
-            {context.elsewhere.map((row) => (
-              <li key={row.cityPlaceId}>
-                <Link href={`/cities/${row.cityPlaceId}`} className="hover:text-primary">
-                  {row.cityName}
-                </Link>{" "}
-                {row.people.toLocaleString(locale)}
-              </li>
-            ))}
-          </ul>
-        </div>
-      )}
 
       <div className="flex flex-col gap-2 border-t border-border pt-3">
         {isEmpty && <p className="text-sm text-muted">{t("beFirst")}</p>}

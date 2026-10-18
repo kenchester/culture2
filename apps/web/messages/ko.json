@@ -842,7 +842,10 @@
     "otherEndLabel": "이 노선은 반대 방향으로도 운행됩니다",
     "otherEndMembers": "{count} 저기",
     "otherEndNone": "아직 아무도 없어",
-    "corridorLink": "복도 전체를 확인하세요"
+    "corridorLink": "복도 전체를 확인하세요",
+    "consulateUnknown": "아직 기록되지 않았다",
+    "headingNetwork": "이 네트워크에 대하여",
+    "headingCorridor": "이 복도에 대해"
   },
   "corridorPage": {
     "title": "{a} 그리고 {b}",

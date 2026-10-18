@@ -36,14 +36,20 @@ export type CorridorContext = {
   peopleSource: string | null;
   peoplePeriod: string | null;
   consulate: { missionType: string | null; website: string | null } | null;
+  /** False when this city's consular list has never been loaded, which is
+   *  not the same claim as "no consulate exists". */
+  consulateDataLoaded: boolean;
   twinned: boolean;
-  /** The same origin, counted in other cities we hold data for. */
-  elsewhere: { cityPlaceId: number; cityName: string; people: number }[];
 };
 
 export async function getCorridorContext(
   supabase: SupabaseClient,
   network: { origin_place_id: number | null; location_place_id: number },
+  // A corridor page shows both directions and has to say "not recorded"
+  // for the empty one, rather than silently showing a single side and
+  // implying the route only runs one way. A network page describes one
+  // direction, so there it is better to render nothing at all.
+  options: { allowEmpty?: boolean } = {},
 ): Promise<CorridorContext | null> {
   if (!network.origin_place_id) return null;
 
@@ -86,7 +92,7 @@ export async function getCorridorContext(
     .eq("id", network.location_place_id)
     .maybeSingle();
 
-  const [{ data: stat }, { data: consulate }, { data: sister }, { data: elsewhere }] =
+  const [{ data: stat }, { data: consulate }, { data: sister }, { count: consulateRows }] =
     await Promise.all([
       supabase
         .from("city_origin_stats")
@@ -108,23 +114,16 @@ export async function getCorridorContext(
         .eq("partner_country_iso", countryIso)
         .maybeSingle(),
       supabase
-        .from("city_origin_stats")
-        .select("city_place_id, people")
-        .eq("origin_country_iso", countryIso)
-        .eq("is_total", false)
-        .neq("city_place_id", network.location_place_id)
-        .order("people", { ascending: false })
-        .limit(4),
+        .from("city_consulates")
+        .select("id", { count: "exact", head: true })
+        .eq("city_place_id", network.location_place_id),
     ]);
 
-  const otherCityIds = (elsewhere ?? []).map((row) => row.city_place_id as number);
-  const { data: otherCities } = otherCityIds.length
-    ? await supabase.from("places").select("id, name").in("id", otherCityIds)
-    : { data: [] };
-  const nameFor = new Map((otherCities ?? []).map((p) => [p.id as number, p.name as string]));
+  const consulateDataLoaded = (consulateRows ?? 0) > 0;
 
-  // Nothing to say at all - better to render no block than an empty one.
-  if (!stat && !consulate && (elsewhere ?? []).length === 0) return null;
+  // Nothing to say at all - better to render no block than an empty one,
+  // unless the caller specifically wants the absence shown.
+  if (!stat && !consulate && !consulateDataLoaded && !options.allowEmpty) return null;
 
   return {
     countryIso,
@@ -140,13 +139,7 @@ export async function getCorridorContext(
           website: (consulate.website as string | null) ?? null,
         }
       : null,
+    consulateDataLoaded,
     twinned: Boolean(sister),
-    elsewhere: (elsewhere ?? [])
-      .filter((row) => nameFor.has(row.city_place_id as number))
-      .map((row) => ({
-        cityPlaceId: row.city_place_id as number,
-        cityName: nameFor.get(row.city_place_id as number)!,
-        people: row.people as number,
-      })),
   };
 }

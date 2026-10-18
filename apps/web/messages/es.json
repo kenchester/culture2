@@ -842,7 +842,10 @@
     "otherEndLabel": "Esta ruta también va en sentido contrario",
     "otherEndMembers": "{count} Ahí",
     "otherEndNone": "Todavía no hay nadie",
-    "corridorLink": "Ver todo el pasillo"
+    "corridorLink": "Ver todo el pasillo",
+    "consulateUnknown": "Aún no registrado",
+    "headingNetwork": "Acerca de esta red",
+    "headingCorridor": "Sobre este corredor"
   },
   "corridorPage": {
     "title": "{a} y {b}",

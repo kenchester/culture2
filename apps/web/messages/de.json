@@ -842,7 +842,10 @@
     "otherEndLabel": "Auch diese Strecke verläuft in die entgegengesetzte Richtung",
     "otherEndMembers": "{count} Da",
     "otherEndNone": "Noch niemand da",
-    "corridorLink": "Sieh dir den ganzen Korridor an"
+    "corridorLink": "Sieh dir den ganzen Korridor an",
+    "consulateUnknown": "Noch nicht aufgezeichnet",
+    "headingNetwork": "Über dieses Netzwerk",
+    "headingCorridor": "Über diesen Korridor"
   },
   "corridorPage": {
     "title": "{a} und {b}",

@@ -842,7 +842,10 @@
     "otherEndLabel": "このルートは逆方向にも走っています",
     "otherEndMembers": "{count}そこだ",
     "otherEndNone": "まだ誰もいません",
-    "corridorLink": "廊下全体を見てください"
+    "corridorLink": "廊下全体を見てください",
+    "consulateUnknown": "まだ記録されていません",
+    "headingNetwork": "このネットワークについて",
+    "headingCorridor": "この廊下について"
   },
   "corridorPage": {
     "title": "{a}および{b}",

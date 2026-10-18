@@ -842,7 +842,10 @@
     "otherEndLabel": "هذا الطريق يسير أيضا في الاتجاه الآخر",
     "otherEndMembers": "{count} ها هو",
     "otherEndNone": "لا أحد هناك حتى الآن",
-    "corridorLink": "انظر إلى الممر بأكمله"
+    "corridorLink": "انظر إلى الممر بأكمله",
+    "consulateUnknown": "لم يتم تسجيله بعد",
+    "headingNetwork": "حول هذه الشبكة",
+    "headingCorridor": "عن هذا الممر"
   },
   "corridorPage": {
     "title": "{a} و {b}",

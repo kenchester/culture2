@@ -842,7 +842,10 @@
     "otherEndLabel": "Essa rota também segue no sentido oposto",
     "otherEndMembers": "{count} Ali",
     "otherEndNone": "Ninguém lá ainda",
-    "corridorLink": "Veja todo o corredor"
+    "corridorLink": "Veja todo o corredor",
+    "consulateUnknown": "Ainda não registrado",
+    "headingNetwork": "Sobre esta rede",
+    "headingCorridor": "Sobre este corredor"
   },
   "corridorPage": {
     "title": "{a} e {b}",
