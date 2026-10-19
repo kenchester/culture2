@@ -858,7 +858,7 @@
     "centroidNote": "Misurato tra i centri geografici di questi luoghi, non tra città.",
     "nearestLabel": "Più vicino",
     "farthestLabel": "Più lontano",
-    "spreadNote": "Una regione non ha una sola posizione, quindi questo si misura in base alle sue città."
+    "spreadNote": "Una regione o un paese non ha una sola sede, quindi questo si misura dalle sue città più grandi."
   },
   "corridorPage": {
     "title": "{a} e {b}",

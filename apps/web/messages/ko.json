@@ -858,7 +858,7 @@
     "centroidNote": "도시 간 측정이 아니라 이 지역들의 지리적 중심지 사이에서 측정한 것입니다.",
     "nearestLabel": "가장 가까운 곳",
     "farthestLabel": "가장 먼 곳",
-    "spreadNote": "한 지역에는 단일 위치가 없으므로 이는 도시 단위로 측정됩니다."
+    "spreadNote": "지역이나 국가는 단일 위치가 없으므로, 이는 가장 큰 도시에서 측정됩니다."
   },
   "corridorPage": {
     "title": "{a} 그리고 {b}",

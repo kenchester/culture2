@@ -43,40 +43,39 @@ test("flight time is a plausible floor, to the half hour", () => {
   assert.equal(hours % 0.5, 0);
 });
 
-import { distanceSpread } from "./distance";
+import { distanceLegs } from "./distance";
 
 const FUZHOU = { name: "Fuzhou", lat: 26.0614, lng: 119.3061 };
 const XIAMEN = { name: "Xiamen", lat: 24.4798, lng: 118.0819 };
+const QUANZHOU = { name: "Quanzhou", lat: 24.9139, lng: 118.5858 };
 const NYC = { name: "New York City", lat: 40.7143, lng: -74.006 };
 
-test("two single cities give an exact figure, not a range", () => {
-  const spread = distanceSpread([XIAMEN], [NYC])!;
-  assert.equal(spread.isRange, false);
-  assert.equal(spread.nearestKm, spread.farthestKm);
-  assert.equal(spread.nearestFrom, "Xiamen");
+test("two single cities give one exact leg", () => {
+  const legs = distanceLegs([XIAMEN], [NYC]);
+  assert.equal(legs.length, 1);
+  assert.equal(legs[0].from, "Xiamen");
+  assert.equal(legs[0].to, "New York City");
 });
 
-test("a region spreads between its nearest and farthest city", () => {
-  const spread = distanceSpread([FUZHOU, XIAMEN], [NYC])!;
-  assert.equal(spread.isRange, true);
-  // Fuzhou is the northern coastal city and is the shorter hop.
-  assert.equal(spread.nearestFrom, "Fuzhou");
-  assert.equal(spread.farthestFrom, "Xiamen");
-  assert.ok(spread.nearestKm < spread.farthestKm);
+test("a region gives one leg per representative city", () => {
+  const legs = distanceLegs([FUZHOU, XIAMEN, QUANZHOU], [NYC]);
+  assert.equal(legs.length, 3);
+  // The destination is held constant so the rows are comparable.
+  assert.deepEqual(new Set(legs.map((l) => l.to)), new Set(["New York City"]));
+  assert.deepEqual(legs.map((l) => l.from), ["Fuzhou", "Xiamen", "Quanzhou"]);
 });
 
-test("the spread names both endpoints so nothing is cherry-picked", () => {
-  const spread = distanceSpread([FUZHOU, XIAMEN], [NYC])!;
-  assert.equal(spread.nearestTo, "New York City");
-  assert.equal(spread.farthestTo, "New York City");
+test("the limit caps how many cities are listed", () => {
+  assert.equal(distanceLegs([FUZHOU, XIAMEN, QUANZHOU], [NYC], 2).length, 2);
 });
 
-test("places without coordinates are skipped, not counted as zero", () => {
-  const spread = distanceSpread([{ name: "China", lat: null, lng: null }], [NYC]);
-  assert.equal(spread, null);
+test("both ends multiple: the destination's largest anchors every row", () => {
+  const legs = distanceLegs([FUZHOU, XIAMEN], [NYC, { name: "Albany", lat: 42.65, lng: -73.75 }]);
+  assert.deepEqual(new Set(legs.map((l) => l.to)), new Set(["New York City"]));
 });
 
-test("identical duplicates do not fake a range", () => {
-  const spread = distanceSpread([XIAMEN, { ...XIAMEN, name: "Xiamen copy" }], [NYC])!;
-  assert.equal(spread.isRange, false);
+test("nothing to measure gives no legs rather than a wrong number", () => {
+  assert.deepEqual(distanceLegs([], [NYC]), []);
+  assert.deepEqual(distanceLegs([XIAMEN], []), []);
+  assert.deepEqual(distanceLegs([{ name: "China", lat: null, lng: null }], [NYC]), []);
 });

@@ -835,9 +835,7 @@
     "flightValue": "{hours} h",
     "flightCaveat": "Based on the straight-line distance. Real journeys are longer.",
     "distanceValue": "{km} km / {miles} mi",
-    "nearestLabel": "Nearest",
-    "farthestLabel": "Farthest",
-    "spreadNote": "A region has no single location, so this is measured to its cities."
+    "spreadNote": "A region or country has no single location, so this is measured from its largest cities."
   },
   "corridorPage": {
     "title": "{a} and {b}",

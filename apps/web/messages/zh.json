@@ -858,7 +858,7 @@
     "centroidNote": "是指这些地方的地理中心之间，而不是城市之间。",
     "nearestLabel": "最近的",
     "farthestLabel": "最远",
-    "spreadNote": "一个地区没有单一的位置，因此以城市为单位来衡量。"
+    "spreadNote": "一个地区或国家没有单一的具体位置，因此这是从其最大城市开始测量的。"
   },
   "corridorPage": {
     "title": "{a}以及{b}",

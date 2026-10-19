@@ -196,12 +196,6 @@ export default async function NetworkPage({
     .eq("id", network.location_place_id)
     .single();
 
-  // PROTOTYPE: limited to one network so the treatment can be compared
-  // against untouched pages. Remove the id check to roll it out.
-  // 91: El Salvador -> Houston, the fullest data (census + linked
-  // consulate). 87: Fujian -> New York City, which exercises the
-  // sub-national line.
-  const CORRIDOR_CONTEXT_PROTOTYPE = [91, 87];
   // The same route, the other way round. Two people on opposite ends is
   // a working corridor; twenty in one city is not a prerequisite.
   const { data: reverseNetwork } = network.origin_place_id
@@ -213,13 +207,12 @@ export default async function NetworkPage({
         .maybeSingle()
     : { data: null };
 
-  const corridorContext =
-    CORRIDOR_CONTEXT_PROTOTYPE.includes(network.id)
-      ? await getCorridorContext(supabase, {
-          origin_place_id: network.origin_place_id,
-          location_place_id: network.location_place_id,
-        })
-      : null;
+  // getCorridorContext returns null when there is nothing worth saying,
+  // so every network can ask and only the ones with facts render a box.
+  const corridorContext = await getCorridorContext(supabase, {
+    origin_place_id: network.origin_place_id,
+    location_place_id: network.location_place_id,
+  });
   // Above the feed until a community exists, below it afterwards. Never
   // removed: one member is not a conversation, so the feed is not yet the
   // reason anybody is on this page.

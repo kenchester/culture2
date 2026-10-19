@@ -1,7 +1,7 @@
 import "server-only";
 import type { SupabaseClient } from "@supabase/supabase-js";
 import { partnerIsInside } from "@/lib/place-containment";
-import { distanceSpread, type Point, type Spread } from "@/lib/distance";
+import { distanceLegs as distanceLegs_, type Leg, type Point } from "@/lib/distance";
 
 /**
  * The reference layer for one corridor, assembled entirely from data the
@@ -46,9 +46,9 @@ export type CorridorContext = {
   twinning: { cityName: string; partnerName: string } | null;
   /** Null whenever either end lacks coordinates, which countries mostly
    *  do - better no figure than an invented centroid. */
-  /** Nearest and farthest real city-to-city measurement across the
-   *  corridor, or null when an end has nothing to measure from. */
-  distance: Spread | null;
+  /** One row per representative city at the origin end, measured to the
+   *  largest city at the destination. Empty when neither end resolves. */
+  distanceLegs: Leg[];
 };
 
 /**
@@ -76,14 +76,31 @@ async function measurementPoints(
       ? []
       : [{ name: place.name as string, lat: place.lat as number, lng: place.lng as number }];
   }
-  if (place.type !== "region") return [];
+
+  // A region's cities directly; a country's are one level further down,
+  // since this hierarchy is country -> region -> city.
+  let parentIds = [placeId];
+  if (place.type === "country") {
+    const { data: regions } = await supabase
+      .from("places")
+      .select("id")
+      .eq("parent_id", placeId)
+      .eq("type", "region");
+    parentIds = (regions ?? []).map((r) => r.id as number);
+    if (parentIds.length === 0) return [];
+  } else if (place.type !== "region") {
+    return [];
+  }
 
   const { data: cities } = await supabase
     .from("places")
-    .select("name, lat, lng")
-    .eq("parent_id", placeId)
+    .select("name, lat, lng, population")
+    .in("parent_id", parentIds)
     .eq("type", "city")
-    .not("lat", "is", null);
+    .not("lat", "is", null)
+    .not("population", "is", null)
+    .order("population", { ascending: false })
+    .limit(3);
   return (cities ?? []).map((c) => ({
     name: c.name as string,
     lat: c.lat as number,
@@ -230,7 +247,7 @@ export async function getCorridorContext(
     measurementPoints(supabase, network.origin_place_id),
     measurementPoints(supabase, network.location_place_id),
   ]);
-  const distance = distanceSpread(originPoints, destinationPoints);
+  const distanceLegs = distanceLegs_(originPoints, destinationPoints);
 
   const [{ data: stat }, { data: consulate }, twinning, { count: consulateRows }] =
     await Promise.all([
@@ -276,6 +293,6 @@ export async function getCorridorContext(
       : null,
     consulateDataLoaded,
     twinning,
-    distance,
+    distanceLegs,
   };
 }

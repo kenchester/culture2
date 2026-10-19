@@ -21,6 +21,7 @@
     "seed-showcase-corridors": "tsx scripts/seed-showcase-corridors.ts",
     "load-sister-cities": "tsx scripts/load-sister-cities.ts",
     "load-consulates": "tsx scripts/load-consulates.ts",
+    "load-city-population": "tsx scripts/load-city-population.ts",
     "load-census-origins": "tsx scripts/load-census-origins.ts",
     "backfill-transcripts": "tsx scripts/backfill-transcripts.ts",
     "test": "tsx --test lib/*.test.ts",

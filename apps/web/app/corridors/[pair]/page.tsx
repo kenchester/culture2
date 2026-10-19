@@ -429,9 +429,11 @@ export default async function CorridorPage({
           <h2 className="text-lg font-medium text-ink">{t("factsHeading")}</h2>
           {/* Symmetric, so it belongs to the corridor rather than to
               either direction - the per-direction blocks suppress it. */}
-          {contexts.find((c) => c.distance) && (
+          {contexts.find((c) => c.distanceLegs.length > 0) && (
             <dl className="text-sm">
-              <DistanceFacts distance={contexts.find((c) => c.distance)!.distance!} />
+              <DistanceFacts
+                legs={contexts.find((c) => c.distanceLegs.length > 0)!.distanceLegs}
+              />
             </dl>
           )}
           {directions.map((direction) => {

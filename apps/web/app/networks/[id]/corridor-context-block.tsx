@@ -97,8 +97,8 @@ export async function CorridorContextBlock({
             </dd>
           </div>
 
-          {context.distance && !directionLabel && (
-            <DistanceFacts distance={context.distance} />
+          {context.distanceLegs.length > 0 && !directionLabel && (
+            <DistanceFacts legs={context.distanceLegs} />
           )}
 
           <div className="flex flex-col gap-0.5">

@@ -858,7 +858,7 @@
     "centroidNote": "これらの場所の地理的中心間で測定され、都市間では測られていません。",
     "nearestLabel": "最寄り",
     "farthestLabel": "最も遠い",
-    "spreadNote": "地域には単一の位置がないため、その地域は都市単位で測定されます。"
+    "spreadNote": "地域や国には単一の位置は存在しないため、最大の都市から測定されます。"
   },
   "corridorPage": {
     "title": "{a}および{b}",
