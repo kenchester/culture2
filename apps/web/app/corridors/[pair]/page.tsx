@@ -254,9 +254,27 @@ export default async function CorridorPage({
       {/* The questions. This is the content that makes a corridor page
           worth landing on before anyone has joined - and answering
           requires membership, so it is a reason to join rather than a
-          substitute for joining. */}
-      <section className="flex flex-col gap-4">
-        <h2 className="text-lg font-medium text-ink">{tQ("heading")}</h2>
+          substitute for joining.
+          
+          Collapsed while unanswered, because five questions times two
+          directions is a wall of empty prompts that buries everything
+          else on the page; open once there are answers, because then it
+          is the content rather than a chore.
+          
+          <details> rather than the button disclosure used for
+          transcripts: this contains server-action forms, which must keep
+          working without JavaScript, and that rules out client state. */}
+      <details
+        open={answers.length > 0}
+        className="flex flex-col gap-4 rounded-lg border border-border bg-surface p-5"
+      >
+        {/* One label chosen by state rather than swapped on toggle: a
+            summary is a control, and its text shifting under the cursor
+            is worse than it staying put. */}
+        <summary className="cursor-pointer list-none font-medium text-primary marker:hidden [&::-webkit-details-marker]:hidden">
+          {answers.length > 0 ? tQ("heading") : tQ("collapsedCta")}
+        </summary>
+        <div className="flex flex-col gap-4 pt-3">
         <p className="text-sm text-muted">{tQ("intro")}</p>
         {!isMember && <p className="text-sm text-muted">{tQ("memberOnly")}</p>}
 
@@ -311,7 +329,8 @@ export default async function CorridorPage({
             })}
           </div>
         ))}
-      </section>
+        </div>
+      </details>
 
       {/* Trips. Deliberately not a marketplace - see 00000000000096. */}
       <section className="flex flex-col gap-3">

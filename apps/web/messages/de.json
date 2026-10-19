@@ -897,6 +897,7 @@
       "food": "Wo kaufst du das Essen, mit dem du aufgewachsen bist?",
       "money": "Wie schicken die Leute hier Geld nach Hause?",
       "mistake": "Was ist der Fehler, den Neulinge machen?"
-    }
+    },
+    "collapsedCta": "Hilfe bei der Beantwortung einiger häufig gestellter Fragen"
   }
 }
