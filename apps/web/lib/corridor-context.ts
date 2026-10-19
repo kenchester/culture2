@@ -1,7 +1,7 @@
 import "server-only";
 import type { SupabaseClient } from "@supabase/supabase-js";
 import { partnerIsInside } from "@/lib/place-containment";
-import { greatCircleKm } from "@/lib/distance";
+import { distanceSpread, type Point, type Spread } from "@/lib/distance";
 
 /**
  * The reference layer for one corridor, assembled entirely from data the
@@ -46,8 +46,50 @@ export type CorridorContext = {
   twinning: { cityName: string; partnerName: string } | null;
   /** Null whenever either end lacks coordinates, which countries mostly
    *  do - better no figure than an invented centroid. */
-  distanceKm: number | null;
+  /** Nearest and farthest real city-to-city measurement across the
+   *  corridor, or null when an end has nothing to measure from. */
+  distance: Spread | null;
 };
+
+/**
+ * The places a distance can honestly be measured from.
+ *
+ * A city is itself. A region is its cities, because its own coordinate is
+ * a geographic centroid that may sit where nobody lives. A country is
+ * nothing: this dataset stores no coordinates for any of its 255
+ * countries, and walking two levels down would mean loading every city in
+ * the United States to answer one line on a page.
+ */
+async function measurementPoints(
+  supabase: SupabaseClient,
+  placeId: number,
+): Promise<Point[]> {
+  const { data: place } = await supabase
+    .from("places")
+    .select("name, type, lat, lng")
+    .eq("id", placeId)
+    .maybeSingle();
+  if (!place) return [];
+
+  if (place.type === "city") {
+    return place.lat === null
+      ? []
+      : [{ name: place.name as string, lat: place.lat as number, lng: place.lng as number }];
+  }
+  if (place.type !== "region") return [];
+
+  const { data: cities } = await supabase
+    .from("places")
+    .select("name, lat, lng")
+    .eq("parent_id", placeId)
+    .eq("type", "city")
+    .not("lat", "is", null);
+  return (cities ?? []).map((c) => ({
+    name: c.name as string,
+    lat: c.lat as number,
+    lng: c.lng as number,
+  }));
+}
 
 /** A place and everything that contains it, up to the country. */
 async function ancestorsOf(supabase: SupabaseClient, placeId: number): Promise<number[]> {
@@ -183,25 +225,12 @@ export async function getCorridorContext(
   }
   if (!countryIso) return null;
 
-  const [{ data: city }, { data: originPlace }] = await Promise.all([
-    supabase
-      .from("places")
-      .select("name, lat, lng")
-      .eq("id", network.location_place_id)
-      .maybeSingle(),
-    supabase
-      .from("places")
-      .select("lat, lng")
-      .eq("id", network.origin_place_id)
-      .maybeSingle(),
+  const [{ data: city }, originPoints, destinationPoints] = await Promise.all([
+    supabase.from("places").select("name").eq("id", network.location_place_id).maybeSingle(),
+    measurementPoints(supabase, network.origin_place_id),
+    measurementPoints(supabase, network.location_place_id),
   ]);
-  const distanceKm =
-    city && originPlace
-      ? greatCircleKm(
-          { lat: originPlace.lat as number | null, lng: originPlace.lng as number | null },
-          { lat: city.lat as number | null, lng: city.lng as number | null },
-        )
-      : null;
+  const distance = distanceSpread(originPoints, destinationPoints);
 
   const [{ data: stat }, { data: consulate }, twinning, { count: consulateRows }] =
     await Promise.all([
@@ -247,6 +276,6 @@ export async function getCorridorContext(
       : null,
     consulateDataLoaded,
     twinning,
-    distanceKm,
+    distance,
   };
 }

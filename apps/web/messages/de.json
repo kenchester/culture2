@@ -853,7 +853,12 @@
     "flightEstimate": "Etwa {hours} Stunden in der Luft, geschätzt aus der Entfernung. Echte Reisen sind länger.",
     "flightLabel": "Ungefähre Flugzeit",
     "flightValue": "{hours} h",
-    "flightCaveat": "Basierend auf der geraden Strecke. Echte Reisen sind länger."
+    "flightCaveat": "Basierend auf der geraden Strecke. Echte Reisen sind länger.",
+    "distanceApproxLabel": "Ungefähre Entfernung",
+    "centroidNote": "Gemessen zwischen den geografischen Zentren dieser Orte, nicht zwischen Städten.",
+    "nearestLabel": "Nächstgelegene",
+    "farthestLabel": "Am weitesten",
+    "spreadNote": "Eine Region hat keinen einzelnen Standort, daher wird dieser an ihren Städten gemessen."
   },
   "corridorPage": {
     "title": "{a} und {b}",

@@ -853,7 +853,12 @@
     "flightEstimate": "从远处估计，飞行时间大约{hours}是几个小时。真正的旅程更长。",
     "flightLabel": "近似飞行时间",
     "flightValue": "{hours} h",
-    "flightCaveat": "基于直线距离。真实的旅程更长。"
+    "flightCaveat": "基于直线距离。真实的旅程更长。",
+    "distanceApproxLabel": "近似距离",
+    "centroidNote": "是指这些地方的地理中心之间，而不是城市之间。",
+    "nearestLabel": "最近的",
+    "farthestLabel": "最远",
+    "spreadNote": "一个地区没有单一的位置，因此以城市为单位来衡量。"
   },
   "corridorPage": {
     "title": "{a}以及{b}",

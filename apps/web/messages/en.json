@@ -831,10 +831,13 @@
     "consulatePresent": "Consulate",
     "notCountedSeparately": "{origin} is not counted separately.",
     "distanceLabel": "Distance",
-    "distanceValue": "{km} km / {miles} mi",
     "flightLabel": "Approximate flying time",
     "flightValue": "{hours} h",
-    "flightCaveat": "Based on the straight-line distance. Real journeys are longer."
+    "flightCaveat": "Based on the straight-line distance. Real journeys are longer.",
+    "distanceValue": "{km} km / {miles} mi",
+    "nearestLabel": "Nearest",
+    "farthestLabel": "Farthest",
+    "spreadNote": "A region has no single location, so this is measured to its cities."
   },
   "corridorPage": {
     "title": "{a} and {b}",

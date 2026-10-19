@@ -31,6 +31,89 @@ export function greatCircleKm(
   return Math.round(2 * EARTH_RADIUS_KM * Math.asin(Math.sqrt(h)));
 }
 
+/**
+ * Rounds a centroid-derived figure to a confidence it can actually
+ * support.
+ *
+ * Region rows carry geographic centroids, not cities: Texas sits at
+ * farmland near Brady, 420km from Houston, and Michigan's is woods near
+ * Cadillac. Reporting "1,743 km" from a point that far from where anyone
+ * lives is false precision, so any distance involving a non-city end is
+ * reported to the nearest hundred kilometres.
+ */
+export function roundToConfidence(km: number): number {
+  return Math.round(km / 100) * 100;
+}
+
+export type Point = { name: string; lat: number | null; lng: number | null };
+
+export type Spread = {
+  nearestKm: number;
+  farthestKm: number;
+  /** The actual places the two figures were measured between. */
+  nearestFrom: string;
+  nearestTo: string;
+  farthestFrom: string;
+  farthestTo: string;
+  /** False when both ends were single cities and the figure is exact. */
+  isRange: boolean;
+};
+
+/**
+ * The shortest and longest real city-to-city distance across a corridor.
+ *
+ * A region has no single location. Its stored coordinate is a geographic
+ * centroid - Texas sits in farmland 420km from Houston, Michigan's is
+ * woods near Cadillac - so measuring from it reports a precise number
+ * from a point where nobody lives.
+ *
+ * Picking "a few representative cities" instead would need a population
+ * ranking this database does not have, and any other choice (alphabetical,
+ * insertion order) is arbitrary dressed as authoritative. Nearest and
+ * farthest need no ranking, name real places, and the width of the spread
+ * is itself the answer to how rough the estimate is.
+ */
+export function distanceSpread(from: Point[], to: Point[]): Spread | null {
+  let nearest: Spread | null = null;
+  let farthestKm = -1;
+  let farthestFrom = "";
+  let farthestTo = "";
+
+  for (const a of from) {
+    for (const b of to) {
+      const km = greatCircleKm(a, b);
+      if (km === null) continue;
+      if (nearest === null || km < nearest.nearestKm) {
+        nearest = {
+          nearestKm: km,
+          farthestKm: km,
+          nearestFrom: a.name,
+          nearestTo: b.name,
+          farthestFrom: a.name,
+          farthestTo: b.name,
+          isRange: false,
+        };
+      }
+      if (km > farthestKm) {
+        farthestKm = km;
+        farthestFrom = a.name;
+        farthestTo = b.name;
+      }
+    }
+  }
+  if (nearest === null) return null;
+
+  return {
+    ...nearest,
+    farthestKm,
+    farthestFrom,
+    farthestTo,
+    // One pair means both ends were single cities: an exact measurement,
+    // not a range.
+    isRange: from.length * to.length > 1 && farthestKm !== nearest.nearestKm,
+  };
+}
+
 export function kmToMiles(km: number): number {
   return Math.round(km * 0.621371);
 }

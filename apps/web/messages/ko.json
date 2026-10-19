@@ -853,7 +853,12 @@
     "flightEstimate": "거리에서 보면 약 {hours} 몇 시간 정도 비행할 수 있습니다. 실제 여행은 더 깁니다.",
     "flightLabel": "대략적인 비행 시간",
     "flightValue": "{hours} h",
-    "flightCaveat": "직선 거리를 기준으로 합니다. 실제 여정은 더 깁니다."
+    "flightCaveat": "직선 거리를 기준으로 합니다. 실제 여정은 더 깁니다.",
+    "distanceApproxLabel": "대략적인 거리",
+    "centroidNote": "도시 간 측정이 아니라 이 지역들의 지리적 중심지 사이에서 측정한 것입니다.",
+    "nearestLabel": "가장 가까운 곳",
+    "farthestLabel": "가장 먼 곳",
+    "spreadNote": "한 지역에는 단일 위치가 없으므로 이는 도시 단위로 측정됩니다."
   },
   "corridorPage": {
     "title": "{a} 그리고 {b}",

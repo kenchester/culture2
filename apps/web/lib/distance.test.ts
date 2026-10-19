@@ -42,3 +42,41 @@ test("flight time is a plausible floor, to the half hour", () => {
   assert.ok(hours >= 15 && hours <= 17, String(hours));
   assert.equal(hours % 0.5, 0);
 });
+
+import { distanceSpread } from "./distance";
+
+const FUZHOU = { name: "Fuzhou", lat: 26.0614, lng: 119.3061 };
+const XIAMEN = { name: "Xiamen", lat: 24.4798, lng: 118.0819 };
+const NYC = { name: "New York City", lat: 40.7143, lng: -74.006 };
+
+test("two single cities give an exact figure, not a range", () => {
+  const spread = distanceSpread([XIAMEN], [NYC])!;
+  assert.equal(spread.isRange, false);
+  assert.equal(spread.nearestKm, spread.farthestKm);
+  assert.equal(spread.nearestFrom, "Xiamen");
+});
+
+test("a region spreads between its nearest and farthest city", () => {
+  const spread = distanceSpread([FUZHOU, XIAMEN], [NYC])!;
+  assert.equal(spread.isRange, true);
+  // Fuzhou is the northern coastal city and is the shorter hop.
+  assert.equal(spread.nearestFrom, "Fuzhou");
+  assert.equal(spread.farthestFrom, "Xiamen");
+  assert.ok(spread.nearestKm < spread.farthestKm);
+});
+
+test("the spread names both endpoints so nothing is cherry-picked", () => {
+  const spread = distanceSpread([FUZHOU, XIAMEN], [NYC])!;
+  assert.equal(spread.nearestTo, "New York City");
+  assert.equal(spread.farthestTo, "New York City");
+});
+
+test("places without coordinates are skipped, not counted as zero", () => {
+  const spread = distanceSpread([{ name: "China", lat: null, lng: null }], [NYC]);
+  assert.equal(spread, null);
+});
+
+test("identical duplicates do not fake a range", () => {
+  const spread = distanceSpread([XIAMEN, { ...XIAMEN, name: "Xiamen copy" }], [NYC])!;
+  assert.equal(spread.isRange, false);
+});

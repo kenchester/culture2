@@ -853,7 +853,12 @@
     "flightEstimate": "Environ {hours} des heures dans les airs, estimées à distance. Les vrais trajets sont plus longs.",
     "flightLabel": "Temps de vol approximatif",
     "flightValue": "{hours} h",
-    "flightCaveat": "Basé sur la distance en ligne droite. Les vrais trajets sont plus longs."
+    "flightCaveat": "Basé sur la distance en ligne droite. Les vrais trajets sont plus longs.",
+    "distanceApproxLabel": "Distance approximative",
+    "centroidNote": "Mesuré entre les centres géographiques de ces lieux, pas entre les villes.",
+    "nearestLabel": "Le plus proche",
+    "farthestLabel": "Le plus éloigné",
+    "spreadNote": "Une région n’a pas de localisation unique, donc cela se mesure à ses villes."
   },
   "corridorPage": {
     "title": "{a} et {b}",

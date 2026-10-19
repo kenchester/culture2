@@ -853,7 +853,12 @@
     "flightEstimate": "遠くから見積もれば、約{hours}数時間の飛行距離です。実際の旅はもっと長いです。",
     "flightLabel": "おおよその飛行時間",
     "flightValue": "{hours} h",
-    "flightCaveat": "直線距離に基づいています。実際の旅はもっと長いです。"
+    "flightCaveat": "直線距離に基づいています。実際の旅はもっと長いです。",
+    "distanceApproxLabel": "おおよその距離",
+    "centroidNote": "これらの場所の地理的中心間で測定され、都市間では測られていません。",
+    "nearestLabel": "最寄り",
+    "farthestLabel": "最も遠い",
+    "spreadNote": "地域には単一の位置がないため、その地域は都市単位で測定されます。"
   },
   "corridorPage": {
     "title": "{a}および{b}",
