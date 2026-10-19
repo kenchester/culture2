@@ -847,7 +847,13 @@
     "headingNetwork": "このネットワークについて",
     "headingCorridor": "この廊下について",
     "consulatePresent": "領事館",
-    "notCountedSeparately": "{origin}は個別に集計されていません。"
+    "notCountedSeparately": "{origin}は個別に集計されていません。",
+    "distanceLabel": "距離",
+    "distanceValue": "{km} km / {miles} mi",
+    "flightEstimate": "遠くから見積もれば、約{hours}数時間の飛行距離です。実際の旅はもっと長いです。",
+    "flightLabel": "おおよその飛行時間",
+    "flightValue": "{hours} h",
+    "flightCaveat": "直線距離に基づいています。実際の旅はもっと長いです。"
   },
   "corridorPage": {
     "title": "{a}および{b}",

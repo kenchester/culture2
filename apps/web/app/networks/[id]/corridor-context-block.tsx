@@ -2,6 +2,7 @@ import Link from "next/link";
 import { getTranslations, getLocale } from "next-intl/server";
 import type { CorridorContext } from "@/lib/corridor-context";
 import type { Locale } from "@/lib/locale";
+import { approximateFlightHours, kmToMiles } from "@/lib/distance";
 
 /**
  * The reference layer for a corridor, rendered above the feed while the
@@ -95,6 +96,26 @@ export async function CorridorContextBlock({
               )}
             </dd>
           </div>
+
+          {context.distanceKm !== null && !directionLabel && (
+            <div className="flex flex-col gap-0.5">
+              <dt className="text-sm text-muted">{t("distanceLabel")}</dt>
+              <dd className="text-ink tabular-nums">
+                {t("distanceValue", {
+                  km: context.distanceKm.toLocaleString(locale),
+                  miles: kmToMiles(context.distanceKm).toLocaleString(locale),
+                })}
+              </dd>
+              {/* Air time from the distance, not an itinerary: it ignores
+                  winds, routing and any connection, so it is a floor
+                  rather than a prediction. */}
+              <dd className="text-ink tabular-nums">
+                <span className="text-sm text-muted">{t("flightLabel")}</span>{" "}
+                {t("flightValue", { hours: approximateFlightHours(context.distanceKm) })}
+              </dd>
+              <dd className="text-xs text-muted">{t("flightCaveat")}</dd>
+            </div>
+          )}
 
           <div className="flex flex-col gap-0.5">
             <dt className="text-sm text-muted">{t("twinnedLabel")}</dt>

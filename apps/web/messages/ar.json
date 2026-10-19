@@ -847,7 +847,13 @@
     "headingNetwork": "حول هذه الشبكة",
     "headingCorridor": "عن هذا الممر",
     "consulatePresent": "القنصلية",
-    "notCountedSeparately": "{origin} لا يحتسب بشكل منفصل."
+    "notCountedSeparately": "{origin} لا يحتسب بشكل منفصل.",
+    "distanceLabel": "المسافة",
+    "distanceValue": "{km} كم / {miles} ميل",
+    "flightEstimate": "حوالي {hours} ساعات في الهواء، تقديرا من المسافة. الرحلات الحقيقية أطول.",
+    "flightLabel": "زمن الطيران التقريبي",
+    "flightValue": "{hours} س",
+    "flightCaveat": "بناء على المسافة المستقيمة. الرحلات الحقيقية أطول."
   },
   "corridorPage": {
     "title": "{a} و {b}",

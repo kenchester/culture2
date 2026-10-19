@@ -847,7 +847,13 @@
     "headingNetwork": "Über dieses Netzwerk",
     "headingCorridor": "Über diesen Korridor",
     "consulatePresent": "Konsulat",
-    "notCountedSeparately": "{origin} wird nicht separat gezählt."
+    "notCountedSeparately": "{origin} wird nicht separat gezählt.",
+    "distanceLabel": "Entfernung",
+    "distanceValue": "{km} km / {miles} mi",
+    "flightEstimate": "Etwa {hours} Stunden in der Luft, geschätzt aus der Entfernung. Echte Reisen sind länger.",
+    "flightLabel": "Ungefähre Flugzeit",
+    "flightValue": "{hours} h",
+    "flightCaveat": "Basierend auf der geraden Strecke. Echte Reisen sind länger."
   },
   "corridorPage": {
     "title": "{a} und {b}",

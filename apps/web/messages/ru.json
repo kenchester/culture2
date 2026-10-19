@@ -847,7 +847,13 @@
     "headingNetwork": "Об этой сети",
     "headingCorridor": "Об этом коридоре",
     "consulatePresent": "Консульство",
-    "notCountedSeparately": "{origin} не учитывается отдельно."
+    "notCountedSeparately": "{origin} не учитывается отдельно.",
+    "distanceLabel": "Расстояние",
+    "distanceValue": "{km} км / {miles} миль",
+    "flightEstimate": "Около {hours} часов в воздухе, если судить по расстоянию. Настоящие путешествия длиннее.",
+    "flightLabel": "Приблизительное время полёта",
+    "flightValue": "{hours} ч",
+    "flightCaveat": "Основываясь на расстоянии по прямой линии. Реальные путешествия длиннее."
   },
   "corridorPage": {
     "title": "{a} и {b}",

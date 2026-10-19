@@ -847,7 +847,13 @@
     "headingNetwork": "Informazioni su questa rete",
     "headingCorridor": "Informazioni su questo corridoio",
     "consulatePresent": "Consolato",
-    "notCountedSeparately": "non {origin} viene conteggiata separatamente."
+    "notCountedSeparately": "non {origin} viene conteggiata separatamente.",
+    "distanceLabel": "Distanza",
+    "distanceValue": "{km} km / {miles} mi",
+    "flightEstimate": "Circa {hours} ore in aria, stimate dalla distanza. I viaggi veri sono più lunghi.",
+    "flightLabel": "Tempo di volo approssimativo",
+    "flightValue": "{hours} h",
+    "flightCaveat": "Basato sulla distanza in linea retta. I viaggi reali sono più lunghi."
   },
   "corridorPage": {
     "title": "{a} e {b}",

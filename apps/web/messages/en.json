@@ -829,7 +829,12 @@
     "headingNetwork": "About this network",
     "headingCorridor": "About this corridor",
     "consulatePresent": "Consulate",
-    "notCountedSeparately": "{origin} is not counted separately."
+    "notCountedSeparately": "{origin} is not counted separately.",
+    "distanceLabel": "Distance",
+    "distanceValue": "{km} km / {miles} mi",
+    "flightLabel": "Approximate flying time",
+    "flightValue": "{hours} h",
+    "flightCaveat": "Based on the straight-line distance. Real journeys are longer."
   },
   "corridorPage": {
     "title": "{a} and {b}",

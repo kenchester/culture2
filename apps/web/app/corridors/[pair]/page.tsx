@@ -8,6 +8,7 @@ import { corridorIdsFromSlug, corridorSlug, slugWithId } from "@/lib/slug";
 import { getCorridorContext, type CorridorContext } from "@/lib/corridor-context";
 import { CorridorContextBlock } from "@/app/networks/[id]/corridor-context-block";
 import type { Locale } from "@/lib/locale";
+import { approximateFlightHours, kmToMiles } from "@/lib/distance";
 import { getDisplayName, type Author } from "@/lib/profiles";
 import { LocalDateTime } from "@/components/local-datetime";
 import { FormError } from "@/components/ui/form-error";
@@ -426,6 +427,28 @@ export default async function CorridorPage({
       {contexts.length > 0 && (
         <section className="flex flex-col gap-4">
           <h2 className="text-lg font-medium text-ink">{t("factsHeading")}</h2>
+          {/* Symmetric, so it belongs to the corridor rather than to
+              either direction - the per-direction blocks suppress it. */}
+          {contexts.find((c) => c.distanceKm !== null) && (
+            <p className="text-sm text-body tabular-nums">
+              <span className="text-muted">{tCorridorBox("distanceLabel")}</span>{" "}
+              {tCorridorBox("distanceValue", {
+                km: contexts.find((c) => c.distanceKm !== null)!.distanceKm!.toLocaleString(locale),
+                miles: kmToMiles(
+                  contexts.find((c) => c.distanceKm !== null)!.distanceKm!,
+                ).toLocaleString(locale),
+              })}
+              <span className="block">
+                <span className="text-muted">{tCorridorBox("flightLabel")}</span>{" "}
+                {tCorridorBox("flightValue", {
+                  hours: approximateFlightHours(
+                    contexts.find((c) => c.distanceKm !== null)!.distanceKm!,
+                  ),
+                })}
+              </span>
+              <span className="block text-xs text-muted">{tCorridorBox("flightCaveat")}</span>
+            </p>
+          )}
           {directions.map((direction) => {
             const context = contexts.find((c) => c.cityName === direction.to.name);
             if (!context) return null;

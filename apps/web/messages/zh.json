@@ -847,7 +847,13 @@
     "headingNetwork": "关于这个网络",
     "headingCorridor": "关于这条走廊",
     "consulatePresent": "领事馆",
-    "notCountedSeparately": "{origin}不单独计入。"
+    "notCountedSeparately": "{origin}不单独计入。",
+    "distanceLabel": "距离",
+    "distanceValue": "{km}公里/{miles}英里",
+    "flightEstimate": "从远处估计，飞行时间大约{hours}是几个小时。真正的旅程更长。",
+    "flightLabel": "近似飞行时间",
+    "flightValue": "{hours} h",
+    "flightCaveat": "基于直线距离。真实的旅程更长。"
   },
   "corridorPage": {
     "title": "{a}以及{b}",

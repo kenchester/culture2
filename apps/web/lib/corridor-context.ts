@@ -1,6 +1,7 @@
 import "server-only";
 import type { SupabaseClient } from "@supabase/supabase-js";
 import { partnerIsInside } from "@/lib/place-containment";
+import { greatCircleKm } from "@/lib/distance";
 
 /**
  * The reference layer for one corridor, assembled entirely from data the
@@ -43,6 +44,9 @@ export type CorridorContext = {
   /** The actual pair, when one exists - naming it is both more useful and
    *  harder to get quietly wrong than a bare yes. */
   twinning: { cityName: string; partnerName: string } | null;
+  /** Null whenever either end lacks coordinates, which countries mostly
+   *  do - better no figure than an invented centroid. */
+  distanceKm: number | null;
 };
 
 /** A place and everything that contains it, up to the country. */
@@ -179,11 +183,25 @@ export async function getCorridorContext(
   }
   if (!countryIso) return null;
 
-  const { data: city } = await supabase
-    .from("places")
-    .select("name")
-    .eq("id", network.location_place_id)
-    .maybeSingle();
+  const [{ data: city }, { data: originPlace }] = await Promise.all([
+    supabase
+      .from("places")
+      .select("name, lat, lng")
+      .eq("id", network.location_place_id)
+      .maybeSingle(),
+    supabase
+      .from("places")
+      .select("lat, lng")
+      .eq("id", network.origin_place_id)
+      .maybeSingle(),
+  ]);
+  const distanceKm =
+    city && originPlace
+      ? greatCircleKm(
+          { lat: originPlace.lat as number | null, lng: originPlace.lng as number | null },
+          { lat: city.lat as number | null, lng: city.lng as number | null },
+        )
+      : null;
 
   const [{ data: stat }, { data: consulate }, twinning, { count: consulateRows }] =
     await Promise.all([
@@ -229,5 +247,6 @@ export async function getCorridorContext(
       : null,
     consulateDataLoaded,
     twinning,
+    distanceKm,
   };
 }
