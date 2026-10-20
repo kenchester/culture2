@@ -942,5 +942,23 @@
     "factsHeading": "Cos'è questo corridoio",
     "questionsHeading": "Quello che viene chiesto alle persone qui",
     "footer": "culturemesh.com — una comunità per persone di un luogo che vivono in un altro."
+  },
+  "notes": {
+    "heading": "Note di persone qui",
+    "prompt": "Questo corrisponde a quello che vedi? Le statistiche ufficiali trascurano le persone, i consolati si spostano, e un numero non è lo stesso di un quartiere. Se qualcosa qui è sbagliato o incompleto, dillo.",
+    "empty": "Nessuno ha ancora aggiunto una nota.",
+    "addCta": "Aggiungi una nota",
+    "topicLabel": "Di cosa si tratta?",
+    "bodyLabel": "Il tuo biglietto",
+    "bodyPlaceholder": "Ad esempio, questo sottoconteggio — la maggior parte delle persone è arrivata dopo il 2020, e quasi tutti vivono in un solo quartiere.",
+    "submit": "Nota postale",
+    "signIn": "Accedi per aggiungere una nota",
+    "topic": {
+      "population": "La cifra della popolazione",
+      "consulate": "Il consolato",
+      "distance": "La distanza",
+      "twinning": "Il legame tra città gemellate",
+      "general": "Qualcos'altro"
+    }
   }
 }

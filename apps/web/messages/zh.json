@@ -942,5 +942,23 @@
     "factsHeading": "这条走廊是什么",
     "questionsHeading": "这里的人被问到的是什么",
     "footer": "culturemesh.com——一个为来自一个地方、生活在另一个地方的人们而设的社区。"
+  },
+  "notes": {
+    "heading": "这里有人的笔记",
+    "prompt": "这和你看到的相符吗？官方统计会漏掉人，领事馆会搬家，数字和社区不一样。如果这里有错误或不完整的地方，请直说。",
+    "empty": "还没人加说明。",
+    "addCta": "添加一个注释",
+    "topicLabel": "这是怎么回事？",
+    "bodyLabel": "你的便条",
+    "bodyPlaceholder": "例如，这低估了——大多数人是在2020年之后才来到的，几乎所有人都住在同一个社区里。",
+    "submit": "附注",
+    "signIn": "登录以添加备注",
+    "topic": {
+      "population": "人口数据",
+      "consulate": "领事馆",
+      "distance": "距离",
+      "twinning": "姐妹城市的联系",
+      "general": "别的什么"
+    }
   }
 }

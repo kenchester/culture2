@@ -942,5 +942,23 @@
     "factsHeading": "Was dieser Korridor ist",
     "questionsHeading": "Was werden die Leute hier gefragt",
     "footer": "culturemesh.com – eine Gemeinschaft für Menschen aus einem Ort, der an einem anderen Ort lebt."
+  },
+  "notes": {
+    "heading": "Anmerkungen von Leuten hier",
+    "prompt": "Stimmt das mit dem überein, was du siehst? Offizielle Statistiken übersehen Personen, Konsulate verschieben sich, und eine Zahl ist nicht dasselbe wie eine Nachbarschaft. Wenn hier etwas falsch oder unvollständig ist, sag es.",
+    "empty": "Niemand hat bisher eine Notiz hinzugefügt.",
+    "addCta": "Fügen Sie eine Notiz hinzu",
+    "topicLabel": "Worum geht es hier?",
+    "bodyLabel": "Deine Notiz",
+    "bodyPlaceholder": "Zum Beispiel unterschätzt das – die meisten Menschen kamen nach 2020, und fast alle wohnen in einem Viertel.",
+    "submit": "Beitrag",
+    "signIn": "Melden Sie sich an, um eine Notiz hinzuzufügen",
+    "topic": {
+      "population": "Die Einwohnerzahl",
+      "consulate": "Das Konsulat",
+      "distance": "Die Entfernung",
+      "twinning": "Die Schwesterstadtverbindung",
+      "general": "Etwas anderes"
+    }
   }
 }

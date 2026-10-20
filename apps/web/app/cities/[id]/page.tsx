@@ -5,6 +5,7 @@ import { getTranslations } from "next-intl/server";
 import { createClient } from "@/lib/supabase/server";
 import { corridorSlug, idFromSlug, slugWithId } from "@/lib/slug";
 import { recordPageView, viewPath } from "@/lib/page-views";
+import { CommunityNotes } from "@/components/community-notes";
 import { previewText, shareMetadata } from "@/lib/share-metadata";
 import { getPlaceChain } from "@/lib/place-chain";
 import { groupByContinent } from "@/lib/continents";
@@ -205,6 +206,10 @@ export default async function CityPage({ params }: { params: Promise<{ id: strin
   if (networkId === null) notFound();
   const locale = (await getLocale()) as Locale;
   const t = await getTranslations("city");
+  const supabase = await createClient();
+  const {
+    data: { user: viewer },
+  } = await supabase.auth.getUser();
   const [loaded, siteUrl] = await Promise.all([loadCity(networkId, locale), getSiteUrl()]);
   if (!loaded) notFound();
   // Recorded per city: the point of these pages is to be found
@@ -634,6 +639,13 @@ export default async function CityPage({ params }: { params: Promise<{ id: strin
           </ul>
         </section>
       )}
+
+      <CommunityNotes
+        supabase={supabase}
+        placeA={place.id as number}
+        returnTo={`/cities/${slugWithId(place.name as string, place.id as number)}`}
+        signedIn={Boolean(viewer)}
+      />
 
       {/* Organisations working on this - a Global Detroit, a city office,
           a resettlement agency writing a grant application - need a line

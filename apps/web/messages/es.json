@@ -942,5 +942,23 @@
     "factsHeading": "¿Qué es este corredor?",
     "questionsHeading": "Lo que aquí se le pregunta a la gente",
     "footer": "culturemesh.com — una comunidad para personas de un lugar que viven en otro."
+  },
+  "notes": {
+    "heading": "Notas de gente aquí",
+    "prompt": "¿Esto coincide con lo que ves? Las estadísticas oficiales no registran personas, los consulados se mudan y un número no es lo mismo que un barrio. Si algo aquí está mal o está incompleto, dilo.",
+    "empty": "Nadie ha añadido una nota todavía.",
+    "addCta": "Añadir una nota",
+    "topicLabel": "¿De qué va esto?",
+    "bodyLabel": "Tu nota",
+    "bodyPlaceholder": "Por ejemplo, esto subestima — la mayoría de la gente llegó después de 2020, y casi todos viven en un mismo barrio.",
+    "submit": "Nota postal",
+    "signIn": "Inicia sesión para añadir una nota",
+    "topic": {
+      "population": "La cifra de población",
+      "consulate": "El consulado",
+      "distance": "La distancia",
+      "twinning": "El vínculo entre ciudades hermanas",
+      "general": "Otra cosa"
+    }
   }
 }

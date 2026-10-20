@@ -919,5 +919,23 @@
     "factsHeading": "What this corridor is",
     "questionsHeading": "What people here are being asked",
     "footer": "culturemesh.com — a community for people from one place living in another."
+  },
+  "notes": {
+    "heading": "Notes from people here",
+    "prompt": "Does this match what you see? Official statistics miss people, consulates move, and a number is not the same as a neighbourhood. If something here is wrong or incomplete, say so.",
+    "empty": "Nobody has added a note yet.",
+    "addCta": "Add a note",
+    "topicLabel": "What is this about?",
+    "bodyLabel": "Your note",
+    "bodyPlaceholder": "e.g. this undercounts — most people arrived after 2020, and nearly everyone lives in one neighbourhood.",
+    "submit": "Post note",
+    "signIn": "Sign in to add a note",
+    "topic": {
+      "population": "The population figure",
+      "consulate": "The consulate",
+      "distance": "The distance",
+      "twinning": "The sister-city tie",
+      "general": "Something else"
+    }
   }
 }

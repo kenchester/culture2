@@ -942,5 +942,23 @@
     "factsHeading": "Ce qu’est ce couloir",
     "questionsHeading": "Ce qu’on demande ici",
     "footer": "culturemesh.com — une communauté pour les personnes d’un endroit vivant dans un autre."
+  },
+  "notes": {
+    "heading": "Notes de personnes ici",
+    "prompt": "Cela correspond-il à ce que vous voyez ? Les statistiques officielles oublient des personnes, les consulats bougent, et un chiffre n’est pas le même qu’un quartier. Si quelque chose ici est faux ou incomplet, dites-le.",
+    "empty": "Personne n’a encore ajouté de note.",
+    "addCta": "Ajoutez une note",
+    "topicLabel": "De quoi s’agit-il ?",
+    "bodyLabel": "Votre note",
+    "bodyPlaceholder": "Par exemple, ce chiffre sous-estime — la plupart des gens sont arrivés après 2020, et presque tout le monde vit dans un même quartier.",
+    "submit": "Après-note",
+    "signIn": "Connectez-vous pour ajouter une note",
+    "topic": {
+      "population": "Le chiffre de la population",
+      "consulate": "Le consulat",
+      "distance": "La distance",
+      "twinning": "Le lien entre villes jumelées",
+      "general": "Autre chose"
+    }
   }
 }

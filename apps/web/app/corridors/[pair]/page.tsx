@@ -6,6 +6,7 @@ import { createClient } from "@/lib/supabase/server";
 import { previewText, shareMetadata } from "@/lib/share-metadata";
 import { corridorIdsFromSlug, corridorSlug, slugWithId } from "@/lib/slug";
 import { recordPageView, viewPath } from "@/lib/page-views";
+import { CommunityNotes } from "@/components/community-notes";
 import { getCorridorContext, type CorridorContext } from "@/lib/corridor-context";
 import { CorridorContextBlock } from "@/app/networks/[id]/corridor-context-block";
 import type { Locale } from "@/lib/locale";
@@ -432,6 +433,14 @@ export default async function CorridorPage({
           {tTrips("responsibility")}
         </p>
       </section>
+
+      <CommunityNotes
+        supabase={await createClient()}
+        placeA={low.id}
+        placeB={high.id}
+        returnTo={`/corridors/${pairSlug}`}
+        signedIn={Boolean(user)}
+      />
 
       {contexts.length > 0 && (
         <section className="flex flex-col gap-4">
