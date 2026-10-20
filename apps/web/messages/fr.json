@@ -927,5 +927,15 @@
     "peopleColumn": "Personnes sur CultureMesh",
     "empty": "Pas encore de couloirs.",
     "metaDescription": "Des corridors migratoires entre deux endroits, avec les communautés à chaque extrémité."
+  },
+  "handout": {
+    "heading": "Une page que vous pouvez imprimer",
+    "intro": "Pour avoir remis à quelqu’un dans une pièce : les faits du couloir, et un code qui ouvre cette page sur un téléphone.",
+    "link": "Page imprimable",
+    "scanPrompt": "Parcourez pour ouvrir cette page",
+    "printCta": "Imprimé",
+    "factsHeading": "Ce qu’est ce couloir",
+    "questionsHeading": "Ce qu’on demande ici",
+    "footer": "culturemesh.com — une communauté pour les personnes d’un endroit vivant dans un autre."
   }
 }

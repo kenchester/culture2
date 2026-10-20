@@ -927,5 +927,15 @@
     "peopleColumn": "Personen auf CultureMesh",
     "empty": "Noch keine Korridore.",
     "metaDescription": "Migrationskorridore zwischen zwei Orten, mit den Gemeinden an jedem Ende."
+  },
+  "handout": {
+    "heading": "Eine Seite, die du ausdrucken kannst",
+    "intro": "Um jemandem in einem Raum zu geben: die Fakten des Korridors und einen Code, der diese Seite auf einem Handy öffnet.",
+    "link": "Druckbare Seite",
+    "scanPrompt": "Scannen, um diese Seite zu öffnen",
+    "printCta": "Druck",
+    "factsHeading": "Was dieser Korridor ist",
+    "questionsHeading": "Was werden die Leute hier gefragt",
+    "footer": "culturemesh.com – eine Gemeinschaft für Menschen aus einem Ort, der an einem anderen Ort lebt."
   }
 }

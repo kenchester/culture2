@@ -927,5 +927,15 @@
     "peopleColumn": "CultureMesh 上的人物",
     "empty": "还没有走廊。",
     "metaDescription": "两地之间的迁徙走廊，社区分布在两端。"
+  },
+  "handout": {
+    "heading": "一页可以打印出来",
+    "intro": "因为交给房间里的人：走廊的事实，以及一个能在手机上打开这页的密码。",
+    "link": "可打印页面",
+    "scanPrompt": "扫描以打开此页面",
+    "printCta": "印刷",
+    "factsHeading": "这条走廊是什么",
+    "questionsHeading": "这里的人被问到的是什么",
+    "footer": "culturemesh.com——一个为来自一个地方、生活在另一个地方的人们而设的社区。"
   }
 }

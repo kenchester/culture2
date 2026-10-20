@@ -904,5 +904,15 @@
     "peopleColumn": "People on CultureMesh",
     "empty": "No corridors yet.",
     "metaDescription": "Migration corridors between two places, with the communities at each end."
+  },
+  "handout": {
+    "heading": "One page you can print",
+    "intro": "For handing to someone in a room: the corridor's facts, and a code that opens this page on a phone.",
+    "link": "Printable page",
+    "scanPrompt": "Scan to open this page",
+    "printCta": "Print",
+    "factsHeading": "What this corridor is",
+    "questionsHeading": "What people here are being asked",
+    "footer": "culturemesh.com — a community for people from one place living in another."
   }
 }

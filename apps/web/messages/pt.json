@@ -927,5 +927,15 @@
     "peopleColumn": "Pessoas no CultureMesh",
     "empty": "Ainda não há corredores.",
     "metaDescription": "Corredores migratórios entre dois lugares, com as comunidades em cada extremidade."
+  },
+  "handout": {
+    "heading": "Uma página que você pode imprimir",
+    "intro": "Por entregar a alguém em uma sala: os fatos do corredor e um código que abre esta página em um telefone.",
+    "link": "Página imprimível",
+    "scanPrompt": "Escaneie para abrir esta página",
+    "printCta": "Impressão",
+    "factsHeading": "O que é esse corredor",
+    "questionsHeading": "O que as pessoas aqui estão sendo perguntadas",
+    "footer": "culturemesh.com — uma comunidade para pessoas de um lugar que vivem em outro."
   }
 }

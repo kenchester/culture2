@@ -189,6 +189,7 @@ export default async function CorridorPage({
   const tTrips = await getTranslations("trips");
   const tQ = await getTranslations("corridorQuestions");
   const tCorridorBox = await getTranslations("corridor");
+  const tHandout = await getTranslations("handout");
   const pairSlug = corridorSlug(low, high);
   const directionOptions = [
     { value: `${low.id}:${high.id}`, label: `${low.name} → ${high.name}` },
@@ -211,6 +212,12 @@ export default async function CorridorPage({
       </header>
 
       {error && <FormError>{error}</FormError>}
+
+      <p className="text-sm">
+        <Link href={`/corridors/${pairSlug}/handout`} className="text-primary underline">
+          {tHandout("link")}
+        </Link>
+      </p>
 
       <section className="flex flex-col gap-3">
         <h2 className="text-lg font-medium text-ink">{t("directionsHeading")}</h2>

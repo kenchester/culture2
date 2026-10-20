@@ -927,5 +927,15 @@
     "peopleColumn": "Persone su CultureMesh",
     "empty": "Ancora nessun corridoio.",
     "metaDescription": "Corridoi di migrazione tra due luoghi, con le comunità alle estremità."
+  },
+  "handout": {
+    "heading": "Una pagina che puoi stampare",
+    "intro": "Per consegnare a qualcuno in una stanza: i fatti del corridoio e un codice che apre questa pagina su un telefono.",
+    "link": "Pagina stampabile",
+    "scanPrompt": "Scansiona per aprire questa pagina",
+    "printCta": "Stampa",
+    "factsHeading": "Cos'è questo corridoio",
+    "questionsHeading": "Quello che viene chiesto alle persone qui",
+    "footer": "culturemesh.com — una comunità per persone di un luogo che vivono in un altro."
   }
 }

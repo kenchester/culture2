@@ -927,5 +927,15 @@
     "peopleColumn": "CultureMeshの人々",
     "empty": "まだ廊下はない。",
     "metaDescription": "両端にコミュニティが位置する二つの場所間の移動回廊。"
+  },
+  "handout": {
+    "heading": "印刷できる1ページ",
+    "intro": "部屋の誰かに渡すために:廊下の事実と、このページを開くコードを携帯で開くためのものだ。",
+    "link": "印刷可能なページ",
+    "scanPrompt": "このページを開くにはスキャンしてください",
+    "printCta": "印刷物",
+    "factsHeading": "この回廊とは何か",
+    "questionsHeading": "ここで聞かれているのは何でしょうか",
+    "footer": "culturemesh.com — ある場所から別の場所に住む人々のためのコミュニティです。"
   }
 }
