@@ -887,5 +887,22 @@
       "mistake": "What is the mistake newcomers make?"
     },
     "collapsedCta": "Help answer some commonly asked questions"
+  },
+  "cityIndex": {
+    "title": "Cities",
+    "intro": "Where people came from, city by city. Official statistics for each, with the communities that exist there and the gaps where none do yet.",
+    "foreignBornColumn": "Born outside the country",
+    "cityColumn": "City",
+    "topOriginColumn": "Largest origin",
+    "sourceNote": "Figures from the US Census Bureau's American Community Survey. Each city page names its own release.",
+    "metaDescription": "Foreign-born population by city, with the diaspora communities that exist in each."
+  },
+  "corridorIndex": {
+    "title": "Corridors",
+    "intro": "A corridor is one place to another: where people left, and where they arrived. Each runs in both directions.",
+    "corridorColumn": "Corridor",
+    "peopleColumn": "People on CultureMesh",
+    "empty": "No corridors yet.",
+    "metaDescription": "Migration corridors between two places, with the communities at each end."
   }
 }

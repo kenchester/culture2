@@ -4,6 +4,7 @@ import { notFound } from "next/navigation";
 import { getTranslations } from "next-intl/server";
 import { createClient } from "@/lib/supabase/server";
 import { idFromSlug, slugWithId } from "@/lib/slug";
+import { recordPageView, viewPath } from "@/lib/page-views";
 import { previewText, shareMetadata } from "@/lib/share-metadata";
 import { getPlaceChain } from "@/lib/place-chain";
 import { groupByContinent } from "@/lib/continents";
@@ -206,6 +207,9 @@ export default async function CityPage({ params }: { params: Promise<{ id: strin
   const t = await getTranslations("city");
   const [loaded, siteUrl] = await Promise.all([loadCity(networkId, locale), getSiteUrl()]);
   if (!loaded) notFound();
+  // Recorded per city: the point of these pages is to be found
+  // individually, so which ones are found is the whole question.
+  recordPageView(viewPath("/cities", slugWithId(loaded.place.name as string, loaded.place.id as number)));
 
   const { place, chain, sisters, origins, domestic, consulates, networks, coveredCountryIds, placeForIso } =
     loaded;

@@ -910,5 +910,22 @@
       "mistake": "Was ist der Fehler, den Neulinge machen?"
     },
     "collapsedCta": "Hilfe bei der Beantwortung einiger häufig gestellter Fragen"
+  },
+  "cityIndex": {
+    "title": "Städte",
+    "intro": "Woher die Menschen kamen, Stadt für Stadt. Offizielle Statistiken für jede Person, mit den dort existierenden Gemeinden und den Lücken, in denen noch keine existieren.",
+    "foreignBornColumn": "Im Ausland geboren",
+    "cityColumn": "Stadt",
+    "topOriginColumn": "Größter Ursprung",
+    "sourceNote": "Zahlen aus der American Community Survey des US Census Bureau. Jede Stadtseite nennt ihre eigene Veröffentlichung.",
+    "metaDescription": "Im Ausland geborene Bevölkerung nach Stadt, mit den Diaspora-Gemeinschaften, die in jeder existieren."
+  },
+  "corridorIndex": {
+    "title": "Korridore",
+    "intro": "Ein Korridor ist von einem Ort zum anderen: dort, wo die Menschen gegangen sind und wo sie angekommen sind. Jeder verläuft in beide Richtungen.",
+    "corridorColumn": "Korridor",
+    "peopleColumn": "Personen auf CultureMesh",
+    "empty": "Noch keine Korridore.",
+    "metaDescription": "Migrationskorridore zwischen zwei Orten, mit den Gemeinden an jedem Ende."
   }
 }

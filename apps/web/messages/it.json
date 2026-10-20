@@ -910,5 +910,22 @@
       "mistake": "Qual è l'errore che commettono i nuovi arrivati?"
     },
     "collapsedCta": "Aiuto a rispondere ad alcune domande frequenti"
+  },
+  "cityIndex": {
+    "title": "Città",
+    "intro": "Da dove venivano le persone, città per città. Statistiche ufficiali per ciascuna, con le comunità esistenti e le lacune dove ancora non ci sono.",
+    "foreignBornColumn": "Nato all'estero",
+    "cityColumn": "Città",
+    "topOriginColumn": "Origine più grande",
+    "sourceNote": "Dati dall'American Community Survey dell'Ufficio del Censimento degli Stati Uniti. Ogni pagina della città indica il proprio rilascio.",
+    "metaDescription": "Popolazione nata all'estero per città, con le comunità della diaspora che esistono in ciascuna."
+  },
+  "corridorIndex": {
+    "title": "Corridoi",
+    "intro": "Un corridoio è da un posto all'altro: dove le persone se ne sono andate e dove sono arrivate. Ognuno corre in entrambe le direzioni.",
+    "corridorColumn": "Corridoio",
+    "peopleColumn": "Persone su CultureMesh",
+    "empty": "Ancora nessun corridoio.",
+    "metaDescription": "Corridoi di migrazione tra due luoghi, con le comunità alle estremità."
   }
 }

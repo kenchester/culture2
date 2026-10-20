@@ -910,5 +910,22 @@
       "mistake": "Quelle est l’erreur que font les nouveaux venus ?"
     },
     "collapsedCta": "Aidez-moi à répondre à quelques questions fréquemment posées"
+  },
+  "cityIndex": {
+    "title": "Villes",
+    "intro": "D’où les gens venaient, ville par ville. Statistiques officielles pour chacune, avec les communautés existantes et les lacunes où il n’y a pas encore de monde.",
+    "foreignBornColumn": "Né à l’étranger",
+    "cityColumn": "Ville",
+    "topOriginColumn": "Plus grande origine",
+    "sourceNote": "Chiffres de l’American Community Survey du Bureau du recensement américain. Chaque page de ville indique sa propre version.",
+    "metaDescription": "Population née à l’étranger par ville, avec les communautés diasporiques qui existent dans chacune."
+  },
+  "corridorIndex": {
+    "title": "Corridors",
+    "intro": "Un couloir est d’un endroit à l’autre : là où les gens sont partis, et où ils sont arrivés. Chacun va dans les deux sens.",
+    "corridorColumn": "Corridor",
+    "peopleColumn": "Personnes sur CultureMesh",
+    "empty": "Pas encore de couloirs.",
+    "metaDescription": "Des corridors migratoires entre deux endroits, avec les communautés à chaque extrémité."
   }
 }

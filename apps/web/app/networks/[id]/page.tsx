@@ -4,6 +4,7 @@ import { notFound, redirect } from "next/navigation";
 import { getLocale, getTranslations } from "next-intl/server";
 import { createClient } from "@/lib/supabase/server";
 import { corridorSlug, idFromSlug, slugWithId } from "@/lib/slug";
+import { recordPageView, viewPath } from "@/lib/page-views";
 import { previewText, shareMetadata } from "@/lib/share-metadata";
 import { type Author, getAvatarUrl, getDisplayName } from "@/lib/profiles";
 import { getGeoName } from "@/lib/geo-translation";
@@ -172,6 +173,7 @@ export default async function NetworkPage({
   const supabase = await createClient();
   const t = await getTranslations("network");
   const tCorridor = await getTranslations("corridor");
+  recordPageView(viewPath("/networks", String(networkId)));
   const locale = (await getLocale()) as Locale;
 
   const {

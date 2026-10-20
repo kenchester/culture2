@@ -910,5 +910,22 @@
       "mistake": "Qual é o erro que os novatos cometem?"
     },
     "collapsedCta": "Ajuda a responder algumas perguntas frequentes"
+  },
+  "cityIndex": {
+    "title": "Cidades",
+    "intro": "De onde as pessoas vieram, cidade por cidade. Estatísticas oficiais para cada uma, com as comunidades que existem lá e as lacunas onde ainda não existem.",
+    "foreignBornColumn": "Nascido fora do país",
+    "cityColumn": "Cidade",
+    "topOriginColumn": "Maior origem",
+    "sourceNote": "Dados da Pesquisa Comunitária Americana do Censo dos EUA. Cada página da cidade nomeia seu próprio comunicado.",
+    "metaDescription": "População nascida no exterior por cidade, com as comunidades da diáspora que existem em cada uma."
+  },
+  "corridorIndex": {
+    "title": "Corredores",
+    "intro": "Um corredor é de um lugar para outro: onde as pessoas saíram, e onde chegaram. Cada um corre em ambas as direções.",
+    "corridorColumn": "Corredor",
+    "peopleColumn": "Pessoas no CultureMesh",
+    "empty": "Ainda não há corredores.",
+    "metaDescription": "Corredores migratórios entre dois lugares, com as comunidades em cada extremidade."
   }
 }

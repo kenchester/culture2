@@ -910,5 +910,22 @@
       "mistake": "¿Cuál es el error que cometen los recién llegados?"
     },
     "collapsedCta": "Ayuda para responder algunas preguntas frecuentes"
+  },
+  "cityIndex": {
+    "title": "Ciudades",
+    "intro": "De dónde venía la gente, ciudad por ciudad. Estadísticas oficiales para cada una, con las comunidades que existen allí y las lagunas donde aún no hay ninguna.",
+    "foreignBornColumn": "Nacida fuera del país",
+    "cityColumn": "Ciudad",
+    "topOriginColumn": "Origen más grande",
+    "sourceNote": "Datos de la Encuesta a la Comunidad Americana de la Oficina del Censo de EE. UU. Cada página de ciudad nombra su propio comunicado.",
+    "metaDescription": "Población nacida en el extranjero por ciudad, con las comunidades de la diáspora que existen en cada una."
+  },
+  "corridorIndex": {
+    "title": "Pasillos",
+    "intro": "Un corredor es de un lugar a otro: donde la gente se fue y donde llegaron. Cada uno va en ambas direcciones.",
+    "corridorColumn": "Corredor",
+    "peopleColumn": "Personas en CultureMesh",
+    "empty": "Todavía no hay pasillos.",
+    "metaDescription": "Corredores migratorios entre dos lugares, con las comunidades en cada extremo."
   }
 }

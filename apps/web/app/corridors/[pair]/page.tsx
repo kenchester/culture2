@@ -5,6 +5,7 @@ import { getLocale, getTranslations } from "next-intl/server";
 import { createClient } from "@/lib/supabase/server";
 import { previewText, shareMetadata } from "@/lib/share-metadata";
 import { corridorIdsFromSlug, corridorSlug, slugWithId } from "@/lib/slug";
+import { recordPageView, viewPath } from "@/lib/page-views";
 import { getCorridorContext, type CorridorContext } from "@/lib/corridor-context";
 import { CorridorContextBlock } from "@/app/networks/[id]/corridor-context-block";
 import type { Locale } from "@/lib/locale";
@@ -181,6 +182,7 @@ export default async function CorridorPage({
   const t = await getTranslations("corridorPage");
   const loaded = await loadCorridor(pair, locale);
   if (!loaded) notFound();
+  recordPageView(viewPath("/corridors", corridorSlug(loaded.low, loaded.high)));
 
   const { low, high, lowToHigh, highToLow, contexts, trips, questions, answers, user, isMember } =
     loaded;

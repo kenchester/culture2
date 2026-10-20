@@ -910,5 +910,22 @@
       "mistake": "新手犯的错误是什么？"
     },
     "collapsedCta": "帮忙回答一些常见问题"
+  },
+  "cityIndex": {
+    "title": "城市",
+    "intro": "人们来自哪里，一个城市一个城市。每个城市的官方统计数据，包括那里存在的社区和尚未存在的空白。",
+    "foreignBornColumn": "出生于国外",
+    "cityColumn": "城市",
+    "topOriginColumn": "最大起源",
+    "sourceNote": "数据来自美国人口普查局的美国社区调查。每个城市页面都命名自己的新闻稿。",
+    "metaDescription": "按城市划分的外籍人口，以及各城市中存在的侨民社区。"
+  },
+  "corridorIndex": {
+    "title": "走廊",
+    "intro": "走廊是从一个地方到另一个地方：人们离开的地方和到达的地方。它们是双向延伸的。",
+    "corridorColumn": "走廊",
+    "peopleColumn": "CultureMesh 上的人物",
+    "empty": "还没有走廊。",
+    "metaDescription": "两地之间的迁徙走廊，社区分布在两端。"
   }
 }
