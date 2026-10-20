@@ -109,7 +109,12 @@
         "title": "Verbinden Sie sich",
         "body": "Lerne Leute kennen, teile Beiträge und veranstalte oder besuche gemeinsam Events."
       }
-    }
+    },
+    "browseHeading": "Oder schau dich zuerst um",
+    "browseIntro": "Du musst nichts beitreten, um diese zu nutzen. Jede ist aus öffentlichen Statistiken aufgebaut und zeigt an, woher sie stammt.",
+    "browseCities": "Städte – woher die Menschen kamen, Stadt für Stadt",
+    "browseCorridors": "Korridore – von einem Ort zum anderen, in beide Richtungen",
+    "browseOutposts": "Außenposten – Gemeinden ohne offizielle Vertretung"
   },
   "searchResults": {
     "noNetworkYet": "Für diese Kombination existiert noch kein Netzwerk.",
@@ -784,7 +789,7 @@
     "missingHeading": "Gemeinschaften, die es noch nicht gibt,",
     "missingIntro": "Ursprünge mit Menschen, die hier leben, und noch nirgends, damit sie einander finden konnten. Die Zahlen stammen aus der obigen Volkszählung.",
     "missingPeople": "{count, plural, one {# Mensch hier} other {# Menschen hier}}",
-    "missingStart": "Fang an",
+    "missingStart": "Sieh dir diesen Korridor an",
     "originsNote": "Bewohner, die jetzt hier leben und in einem anderen Land geboren wurden. Das ist keine Abstammung – frühere Einwanderungswellen, deren Nachkommen hier geboren wurden, tauchen nicht auf.",
     "consulHeading": "Wer ist hier offiziell vertreten",
     "consulIntro": "Im Folgenden finden Sie eine Liste von Botschaften und Konsulaten, die hier untergebracht sind und mit offiziellen Webseiten verbunden sind, auf denen wir deren Informationen haben.",

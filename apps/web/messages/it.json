@@ -109,7 +109,12 @@
         "title": "Connettiti",
         "body": "Conosci persone, condividi post e organizza o partecipa insieme a eventi."
       }
-    }
+    },
+    "browseHeading": "Oppure guarda prima in giro",
+    "browseIntro": "Non devi unirti a nulla per usarli. Ognuno è costruito da statistiche pubbliche e indica da dove li ha presi.",
+    "browseCities": "Città — da dove venivano le persone, città per città",
+    "browseCorridors": "Corridoi — da un posto all'altro, in entrambe le direzioni",
+    "browseOutposts": "Avamposti — comunità senza rappresentanza ufficiale"
   },
   "searchResults": {
     "noNetworkYet": "Non esiste ancora alcuna rete per questa combinazione.",
@@ -784,7 +789,7 @@
     "missingHeading": "Comunità che ancora non esistono",
     "missingIntro": "Origini con persone che vivono qui e ancora nessun luogo dove si possano trovare tra loro. I conteggi provengono dal censimento sopra.",
     "missingPeople": "{count, plural, one {# persona qui} other {# persone qui}}",
-    "missingStart": "Accendilo",
+    "missingStart": "Vedi questo corridoio",
     "originsNote": "Residenti che vivono qui ora e sono nati in un altro paese. Questa non è ascendenza — le ondate precedenti di immigrazione i cui discendenti sono nati qui non compaiono.",
     "consulHeading": "Chi è ufficialmente rappresentato qui",
     "consulIntro": "Di seguito è riportato un elenco di ambasciate e consolati ospitati qui, collegato a siti web ufficiali dove abbiamo le loro informazioni.",

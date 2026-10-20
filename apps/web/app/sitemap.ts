@@ -24,6 +24,23 @@ import { corridorSlug, slugWithId } from "@/lib/slug";
 // the cap is stated so a future run doesn't silently truncate.
 const MAX_ROWS = 1000;
 
+/**
+ * How large a community has to be before its corridor is listed.
+ *
+ * A corridor page needs no network to be worth reading - Honduras to
+ * Houston carries 71,461 people, a Consulate-General and a distance
+ * whether or not anybody has joined. So the list is drawn from the census
+ * rather than from the 43 networks that happen to exist.
+ *
+ * The threshold is the honest part. A page about forty thousand Hondurans
+ * in Houston is a real subject; a page about eleven Monegasques is thin
+ * content dressed as coverage, and publishing two thousand of those is
+ * how a site teaches a search engine to distrust it. 2,500 keeps roughly
+ * 600 pages, each about a community large enough to have somewhere to
+ * meet.
+ */
+const MIN_CORRIDOR_POPULATION = 2_500;
+
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   // learn.culturemesh.com has its own content and its own gating; it does
   // not want the main site's URL list.
@@ -112,6 +129,40 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     }
   }
 
+  // Corridors the census implies, which is most of them. Paged, because
+  // this is the one query here that exceeds a thousand rows.
+  const censusCorridors: { cityId: number; iso: string; people: number }[] = [];
+  for (let offset = 0; ; offset += MAX_ROWS) {
+    const { data: page } = await supabase
+      .from("city_origin_stats")
+      .select("city_place_id, origin_country_iso, people")
+      .eq("is_total", false)
+      .gte("people", MIN_CORRIDOR_POPULATION)
+      .order("people", { ascending: false })
+      .range(offset, offset + MAX_ROWS - 1);
+    if (!page || page.length === 0) break;
+    for (const row of page) {
+      censusCorridors.push({
+        cityId: row.city_place_id as number,
+        iso: row.origin_country_iso as string,
+        people: row.people as number,
+      });
+    }
+    if (page.length < MAX_ROWS) break;
+  }
+
+  const censusIsos = [...new Set(censusCorridors.map((c) => c.iso))];
+  const { data: originCountries } = censusIsos.length
+    ? await supabase
+        .from("places")
+        .select("id, name, iso_code")
+        .eq("type", "country")
+        .in("iso_code", censusIsos)
+    : { data: [] };
+  const countryForIso = new Map(
+    (originCountries ?? []).map((c) => [c.iso_code as string, c]),
+  );
+
   const cityIds = [...new Set((cities ?? []).map((c) => c.city_place_id as number))];
   const { data: cityPlaces } = cityIds.length
     ? await supabase.from("places").select("id, name").in("id", cityIds)
@@ -122,6 +173,20 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       changeFrequency: "monthly",
       priority: 0.8,
     });
+  }
+
+  const cityNameFor = new Map((cityPlaces ?? []).map((c) => [c.id as number, c.name as string]));
+  for (const corridor of censusCorridors) {
+    const country = countryForIso.get(corridor.iso);
+    const cityName = cityNameFor.get(corridor.cityId);
+    if (!country || !cityName) continue;
+    const slug = corridorSlug(
+      { id: country.id as number, name: country.name as string },
+      { id: corridor.cityId, name: cityName },
+    );
+    if (corridorSeen.has(slug)) continue;
+    corridorSeen.add(slug);
+    entries.push({ url: url(`/corridors/${slug}`), changeFrequency: "monthly", priority: 0.6 });
   }
 
   for (const outpost of outposts ?? []) {

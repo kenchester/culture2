@@ -39,6 +39,28 @@ export default async function Home() {
         </div>
       </section>
 
+      {/* The reference pages were reachable from the sitemap and nothing
+          else - findable by a crawler and by no human. Somebody who is
+          not ready to search for their own community should still have
+          somewhere to go. */}
+      <section className="mx-auto w-full max-w-5xl px-4 pt-12">
+        <div className="flex flex-col gap-3 rounded-lg border border-border bg-surface p-6">
+          <h2 className="font-display text-xl text-ink">{t("browseHeading")}</h2>
+          <p className="text-sm text-body">{t("browseIntro")}</p>
+          <ul className="flex flex-col gap-2 text-sm">
+            <li>
+              <Link href="/cities" className="text-primary underline">{t("browseCities")}</Link>
+            </li>
+            <li>
+              <Link href="/corridors" className="text-primary underline">{t("browseCorridors")}</Link>
+            </li>
+            <li>
+              <Link href="/outposts" className="text-primary underline">{t("browseOutposts")}</Link>
+            </li>
+          </ul>
+        </div>
+      </section>
+
       <section className="mx-auto w-full max-w-5xl px-4 py-16 sm:py-20">
         <div className="grid gap-10 sm:grid-cols-3">
           {stepKeys.map((key, i) => (

@@ -109,7 +109,12 @@
         "title": "Connectez-vous",
         "body": "Rencontrez des gens, partagez des publications, et organisez ou assistez à des événements ensemble."
       }
-    }
+    },
+    "browseHeading": "Ou regardez autour d’elle d’abord",
+    "browseIntro": "Vous n’avez pas besoin de rejoindre quoi que ce soit pour les utiliser. Chacun est construit à partir de statistiques publiques et indique d’où il les a obtenus.",
+    "browseCities": "Villes — d’où venaient les gens, ville par ville",
+    "browseCorridors": "Couloirs — d’un endroit à un autre, dans les deux sens",
+    "browseOutposts": "Avant-postes — communautés sans représentation officielle"
   },
   "searchResults": {
     "noNetworkYet": "Aucun réseau n’existe encore pour cette combinaison.",
@@ -784,7 +789,7 @@
     "missingHeading": "Des communautés qui n’existent pas encore",
     "missingIntro": "Origines chez les habitants ici et encore nulle part où ils se retrouvent. Les décomptes proviennent du recensement ci-dessus.",
     "missingPeople": "{count, plural, one {# personne ici} other {# personnes ici}}",
-    "missingStart": "Démarre-le",
+    "missingStart": "Voyez ce couloir",
     "originsNote": "Des résidents vivant ici aujourd’hui et qui sont nés dans un autre pays. Ce n’est pas de l’ascendance — les vagues précédentes d’immigration dont les descendants sont nés ici n’apparaissent pas.",
     "consulHeading": "Qui est officiellement représenté ici",
     "consulIntro": "Voici une liste des ambassades et consulats hébergés ici, avec des liens hypertextuels vers les sites officiels où nous disposons de leurs informations.",

@@ -109,7 +109,12 @@
         "title": "连接",
         "body": "结识新朋友，分享帖子，一起主持或参加活动。"
       }
-    }
+    },
+    "browseHeading": "或者先看看周围",
+    "browseIntro": "你不需要加入任何组织才能使用这些。每个都是基于公开统计数据构建的，并说明它们的来源。",
+    "browseCities": "城市——人们来自哪里，一个城市一个城市",
+    "browseCorridors": "走廊——从一个地方到另一个地方，双向",
+    "browseOutposts": "前哨站——没有官方代表的社区"
   },
   "searchResults": {
     "noNetworkYet": "目前还没有针对这种组合的网络。",
@@ -784,7 +789,7 @@
     "missingHeading": "尚未存在的社区",
     "missingIntro": "起源于居住在这里的人们，但尚未找到彼此。这些伯爵来自上述人口普查。",
     "missingPeople": "这里有{count}人",
-    "missingStart": "开始吧",
+    "missingStart": "看看这条走廊",
     "originsNote": "现在居住在这里、出生于另一个国家的居民。这不是祖先——早期移民潮中后代出生于此地的移民潮并未出现。",
     "consulHeading": "哪些国家在这里设有官方代表机构",
     "consulIntro": "以下是设在本市的大使馆和领事馆名单，凡我们掌握其官方网站信息的，均已附上链接。",

@@ -499,7 +499,12 @@
         "title": "Connect",
         "body": "Meet people, share posts, and host or attend events together."
       }
-    }
+    },
+    "browseHeading": "Or look around first",
+    "browseIntro": "You don't have to join anything to use these. Each one is built from public statistics and says where it got them.",
+    "browseCities": "Cities — where people came from, city by city",
+    "browseCorridors": "Corridors — one place to another, in both directions",
+    "browseOutposts": "Outposts — communities with no official representation"
   },
   "learn": {
     "heading": "Language Immersion at {name}",
@@ -785,7 +790,7 @@
     "missingHeading": "Communities that don't exist yet",
     "missingIntro": "Origins with people living here and nowhere yet for them to find each other. The counts are from the census above.",
     "missingPeople": "{count, plural, one {# person here} other {# people here}}",
-    "missingStart": "Start it",
+    "missingStart": "See this corridor",
     "originsNote": "Residents living here now who were born in another country. This is not ancestry — earlier waves of immigration whose descendants were born here do not appear.",
     "consulHeading": "Who is officially represented here",
     "consulIntro": "The following is a list of embassies and consulates hosted here, hyperlinked to official websites where we have their information.",

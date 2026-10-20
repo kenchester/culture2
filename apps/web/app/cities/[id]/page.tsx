@@ -3,7 +3,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { getTranslations } from "next-intl/server";
 import { createClient } from "@/lib/supabase/server";
-import { idFromSlug, slugWithId } from "@/lib/slug";
+import { corridorSlug, idFromSlug, slugWithId } from "@/lib/slug";
 import { recordPageView, viewPath } from "@/lib/page-views";
 import { previewText, shareMetadata } from "@/lib/share-metadata";
 import { getPlaceChain } from "@/lib/place-chain";
@@ -615,8 +615,15 @@ export default async function CityPage({ params }: { params: Promise<{ id: strin
                   <span className="text-muted tabular-nums">
                     {t("missingPeople", { count: m.people })}
                   </span>
+                  {/* The corridor page already carries this community's
+                      figures, consulate and distance, so send a curious
+                      reader to something worth reading before sending
+                      them to a form. */}
                   <Link
-                    href={`/search/results?originId=${m.placeId}&originQuery=${encodeURIComponent(m.label)}&locationId=${place.id}&locationQuery=${encodeURIComponent(place.name as string)}`}
+                    href={`/corridors/${corridorSlug(
+                      { id: m.placeId, name: m.label },
+                      { id: place.id as number, name: place.name as string },
+                    )}`}
                     className="text-primary underline"
                   >
                     {t("missingStart")}

@@ -1,5 +1,6 @@
 import type { MetadataRoute } from "next";
 import { headers } from "next/headers";
+import { getSiteUrl } from "@/lib/site-url";
 
 // faith.culturemesh.com and redeemed.culturemesh.com stay out of search
 // results until their markets are properly tested - reading headers()
@@ -20,10 +21,14 @@ export default async function robots(): Promise<MetadataRoute.Robots> {
     };
   }
 
+  const { protocol, host: siteHost } = new URL(await getSiteUrl());
   return {
     rules: {
       userAgent: "*",
       allow: "/",
     },
+    // Pointing at it here is how a crawler finds it without being
+    // submitted by hand in a search console.
+    sitemap: `${protocol}//${siteHost}/sitemap.xml`,
   };
 }
