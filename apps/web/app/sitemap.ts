@@ -57,6 +57,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     "/outposts",
     "/cities",
     "/corridors",
+    "/languages",
     "/outposts/elections",
     "/training",
     "/schools",
@@ -191,6 +192,33 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 
   for (const outpost of outposts ?? []) {
     entries.push({ url: url(`/outposts/${outpost.id}`), changeFrequency: "monthly", priority: 0.5 });
+  }
+
+  // Language pages, but only the ones that have something on them.
+  //
+  // A language with no endangerment status, no census category and no
+  // community here is a page containing its own name, which is the thin
+  // content the corridor threshold above exists to avoid. A language with
+  // a status has a real subject whether or not anybody has signed up -
+  // "Tlingit is nearly extinct, cited" is worth landing on, and is the
+  // whole argument for these pages.
+  const [{ data: languages }, { data: labelled }, { data: languageNetworks }] = await Promise.all([
+    supabase.from("languages").select("id, name, endangerment").limit(MAX_ROWS),
+    supabase.from("language_census_labels").select("language_id"),
+    supabase.from("networks").select("language_id").not("language_id", "is", null),
+  ]);
+  const hasSomething = new Set<number>([
+    ...(labelled ?? []).map((r) => r.language_id as number),
+    ...(languageNetworks ?? []).map((r) => r.language_id as number),
+  ]);
+  for (const language of languages ?? []) {
+    const id = language.id as number;
+    if (!language.endangerment && !hasSomething.has(id)) continue;
+    entries.push({
+      url: url(`/languages/${slugWithId(language.name as string, id)}`),
+      changeFrequency: "monthly",
+      priority: 0.6,
+    });
   }
 
   return entries;

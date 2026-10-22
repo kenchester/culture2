@@ -958,7 +958,127 @@
       "consulate": "领事馆",
       "distance": "距离",
       "twinning": "姐妹城市的联系",
-      "general": "别的什么"
+      "general": "别的什么",
+      "speakers": "使用者人数",
+      "endangerment": "濒危状态"
+    },
+    "promptLanguage": "这是正确的吗？对于大多数语言，人口普查拒绝单独统计使用者，所以上面的图是一个完整的类别，而不是这个语言。如果你知道得更清楚，记下来——在这页上，你就是来源。"
+  },
+  "language": {
+    "metaDescription": "演讲者、濒危状态、社区和录音。",
+    "metaAtRisk": "濒危语言：使用者、地位、社区与录音。",
+    "alsoKnown": "Glottolog称之为： {name}",
+    "intro": "参考资料，列出所有来源。我们自己的社区在页面后面。",
+    "statusHeading": "濒危状态",
+    "statusGroup": "这个名称涵盖了几种相关语言，而非单一语言，它们的情况各不相同——有些仍在家乡传承，有些则几乎没有使用者。群体没有单一的地位，因此这里不显示任何身份。",
+    "statusUnknown": "目前尚未记录该语言的濒危状态。",
+    "statusSource": "来源： {source}",
+    "endangermentMeaning": {
+      "not_endangered": "孩子们仍在家中学习这门语言。",
+      "threatened": "大多数成年人会说，但学习的儿童较少。",
+      "shifting": "最年轻的流利说者是父母年龄。孩子们不是在家里学习。",
+      "moribund": "唯一能流利说话的是祖父母和更年长的。",
+      "nearly_extinct": "如今只剩下少数年长的演讲者。",
+      "extinct": "没有演讲者留下。幸存的是录音、文字和学习者的成果。"
+    },
+    "speakersHeading": "家庭演讲者",
+    "speakersExact": "人口普查单独统计该语言，因此这些数据仅针对该语言。",
+    "speakersLumped": "人口普查并未单独统计这种语言。它被归入一个更广泛的类别，下面的数字是整个类别——而非该语言。有多少人会说这种语言，没有任何记录。类别： {category}",
+    "speakersSigned": "人口普查只询问家庭使用的语言，完全不计入手语，因此这里没有官方数据。",
+    "speakersNoCategory": "人口普查没有涵盖该语言的分类，因此这里没有官方数据。",
+    "speakersPending": "数据尚未加载。",
+    "speakersSource": "来源：{source}， {period}。第二个数字统计英语说得不“非常好”的人。",
+    "networksHeading": "CultureMesh 上的社区",
+    "noNetworks": "目前还没有针对这种语言建立社区。",
+    "memberCount": "成员{count}",
+    "noMembersYet": "目前还没有成员",
+    "startNetwork": "创建一个关于这种语言的社区",
+    "citeHeading": "引用本页",
+    "byState": "按州划分",
+    "byCity": "按城市划分",
+    "cityCoverage": "人口普查发布了该表，涵盖了每个州，但只有少数几个城市。缺少的城市是该列表不公布的城市，不是没有人会说该语言的城市。",
+    "status": {
+      "not_endangered": "未受威胁",
+      "threatened": "脆弱",
+      "shifting": "确有危险",
+      "moribund": "严重危险",
+      "nearly_extinct": "极度危险",
+      "extinct": "已消亡"
+    },
+    "limitedEnglishLabel": "有限的英语"
+  },
+  "languageIndex": {
+    "title": "语言",
+    "metaDescription": "CultureMesh上的所有语言，处于濒危状态——最濒危者优先。",
+    "intro": "这里的社区可以围绕每种语言建立。先列出流失使用者的语言，因为这是它们需要关注的顺序。",
+    "scaleHeading": "刻度",
+    "scaleSource": "这些状态来自Glottolog，该组织整合了EGIDS、联合国教科文组织《世界濒危语言地图集》和濒危语言目录。",
+    "otherHeading": "所有其他语言",
+    "languageColumn": "语言",
+    "statusColumn": "现状",
+    "networksColumn": "社区",
+    "atRiskHeading": "面临风险的语言",
+    "atRiskIntro": "先从最濒危的物种订购。",
+    "status": {
+      "not_endangered": "未受威胁",
+      "threatened": "脆弱",
+      "shifting": "确有危险",
+      "moribund": "严重危险",
+      "nearly_extinct": "极度危险",
+      "extinct": "已消亡"
+    }
+  },
+  "languagePrompts": {
+    "heading": "帮忙记录这门语言",
+    "progress": "{done} / {total}",
+    "intro": "十个小问题，任何会说这门语言的人都能在一分钟内回答。你不需要准备，也不必按顺序做。",
+    "record": "添加录音",
+    "recorded": "录音{count}",
+    "notRecorded": "还没有",
+    "joinToRecord": "加入该语言社区以添加录音",
+    "ownership": "你保留你录制的内容。它会被归功于你，没人能更改，你也可以随时删除。",
+    "aboutLanguage": "关于这种语言，以及还有谁会说它",
+    "prompt": {
+      "greeting": {
+        "title": "问候",
+        "ask": "你如何打招呼，他们又如何回答？"
+      },
+      "counting": {
+        "ask": "从一数到十。",
+        "title": "数字"
+      },
+      "family": {
+        "title": "家庭",
+        "ask": "母亲、父亲、祖母、祖父、孩子的词。"
+      },
+      "goodbye": {
+        "title": "告别",
+        "ask": "你认识的最年长的人是怎么说再见的？"
+      },
+      "food": {
+        "ask": "说出一道菜，说说它是怎么做的。",
+        "title": "食物"
+      },
+      "weather": {
+        "title": "天气与季节",
+        "ask": "描述今天的天气，然后说出季节。"
+      },
+      "placeName": {
+        "title": "一个地名",
+        "ask": "你家乡的名字，以及它的含义。"
+      },
+      "proverb": {
+        "ask": "一句不好翻译的说法。说出来，然后解释。",
+        "title": "一句谚语"
+      },
+      "lullaby": {
+        "title": "一首献给孩子的歌",
+        "ask": "唱一首别人唱给你的歌。"
+      },
+      "story": {
+        "title": "一个故事",
+        "ask": "这是你小时候听过的故事。慢慢来，慢慢来。"
+      }
     }
   }
 }

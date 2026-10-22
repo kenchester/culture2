@@ -23,6 +23,8 @@
     "load-consulates": "tsx scripts/load-consulates.ts",
     "load-city-population": "tsx scripts/load-city-population.ts",
     "load-census-origins": "tsx scripts/load-census-origins.ts",
+    "load-language-endangerment": "tsx scripts/load-language-endangerment.ts",
+    "load-language-census": "tsx scripts/load-language-census.ts",
     "backfill-transcripts": "tsx scripts/backfill-transcripts.ts",
     "test": "tsx --test lib/*.test.ts",
     "test:e2e": "playwright test",

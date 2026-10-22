@@ -7,7 +7,12 @@ import { LocalDateTime } from "@/components/local-datetime";
 import { Field, fieldClass, Label, Textarea } from "@/components/ui/input";
 import { SubmitButton } from "@/components/ui/submit-button";
 
-const TOPICS = ["population", "consulate", "distance", "twinning", "general"] as const;
+const PLACE_TOPICS = ["population", "consulate", "distance", "twinning", "general"] as const;
+// 'speakers' is the one that matters here: for most of these languages
+// the census declines to count them, so the page's own figure is a
+// category total and the people who know the real number are the only
+// source there is.
+const LANGUAGE_TOPICS = ["speakers", "endangerment", "general"] as const;
 
 type Note = {
   id: number;
@@ -34,31 +39,55 @@ export async function CommunityNotes({
   supabase,
   placeA,
   placeB,
+  languageId,
   returnTo,
   signedIn,
 }: {
   supabase: SupabaseClient;
-  placeA: number;
+  /** A city, or the first end of a corridor. Omitted for a language. */
+  placeA?: number;
   /** Null for a city; both ends, in canonical order, for a corridor. */
   placeB?: number | null;
+  /**
+   * A language instead of a place. Exactly one of placeA / languageId is
+   * set, which the community_notes_subject constraint (00000000000100)
+   * enforces at the database rather than trusting every caller here.
+   */
+  languageId?: number;
   returnTo: string;
   signedIn: boolean;
 }) {
   const t = await getTranslations("notes");
 
-  const query = supabase
+  // Which topics are worth offering depends on what the page states. A
+  // city page has no endangerment status to dispute and a language page
+  // has no consulate, and a select full of irrelevant options is how a
+  // form teaches people not to read it.
+  const topics = languageId ? LANGUAGE_TOPICS : PLACE_TOPICS;
+
+  const base = supabase
     .from("community_notes")
     .select("id, topic, body, created_at, profile:user_id(id, username, first_name, last_name, img_path)")
-    .eq("place_a", placeA)
     .is("hidden_at", null)
     .order("created_at", { ascending: false });
-  const { data } = placeB ? await query.eq("place_b", placeB) : await query.is("place_b", null);
+
+  let data: unknown[] | null = null;
+  if (languageId) {
+    ({ data } = await base.eq("language_id", languageId));
+  } else {
+    const query = base.eq("place_a", placeA!);
+    ({ data } = placeB ? await query.eq("place_b", placeB) : await query.is("place_b", null));
+  }
   const notes = (data ?? []) as unknown as Note[];
 
   return (
     <section className="flex flex-col gap-3">
       <h2 className="text-lg font-medium text-ink">{t("heading")}</h2>
-      <p className="text-sm text-body">{t("prompt")}</p>
+      {/* The ask is sharper on a language page, because the gap is
+          sharper: the figure above is usually a census category that
+          names two dozen other languages, so the people reading are the
+          only source there is for the real one. */}
+      <p className="text-sm text-body">{t(languageId ? "promptLanguage" : "prompt")}</p>
 
       {notes.length === 0 ? (
         <p className="text-sm text-muted">{t("empty")}</p>
@@ -81,13 +110,19 @@ export async function CommunityNotes({
 
       {signedIn ? (
         <form action={postNote} className="flex flex-col gap-3 rounded-lg border border-border bg-surface p-4">
-          <input type="hidden" name="placeA" value={placeA} />
-          {placeB ? <input type="hidden" name="placeB" value={placeB} /> : null}
+          {languageId ? (
+            <input type="hidden" name="languageId" value={languageId} />
+          ) : (
+            <>
+              <input type="hidden" name="placeA" value={placeA} />
+              {placeB ? <input type="hidden" name="placeB" value={placeB} /> : null}
+            </>
+          )}
           <input type="hidden" name="returnTo" value={returnTo} />
           <Field>
             <Label htmlFor="topic">{t("topicLabel")}</Label>
-            <select id="topic" name="topic" className={fieldClass} defaultValue="population">
-              {TOPICS.map((topic) => (
+            <select id="topic" name="topic" className={fieldClass} defaultValue={topics[0]}>
+              {topics.map((topic) => (
                 <option key={topic} value={topic}>
                   {t(`topic.${topic}`)}
                 </option>

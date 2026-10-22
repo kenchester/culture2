@@ -144,6 +144,13 @@ export async function createPost(formData: FormData) {
   const summaryText = summaryTextRaw && summaryLanguageRaw ? summaryTextRaw : null;
   const summaryLanguageId = summaryText ? Number(summaryLanguageRaw) : null;
 
+  // Which recording prompt this answers, if the composer was opened from
+  // one (components/language-prompts.tsx). Carried through so a language
+  // page can show which prompts have been answered and which are still
+  // waiting - the progress is what makes a list of ten feel finishable.
+  const languagePromptRaw = (formData.get("languagePromptId") as string) || "";
+  const languagePromptId = languagePromptRaw ? Number(languagePromptRaw) : null;
+
   const supabase = await createClient();
 
   // Issued together rather than one after the other. Neither depends on the
@@ -201,6 +208,7 @@ export async function createPost(formData: FormData) {
       media_duration_seconds: mediaDurationSeconds,
       summary_text: summaryText,
       summary_language_id: summaryLanguageId,
+      language_prompt_id: Number.isFinite(languagePromptId) ? languagePromptId : null,
     })
     .select("id")
     .single();

@@ -935,7 +935,127 @@
       "consulate": "The consulate",
       "distance": "The distance",
       "twinning": "The sister-city tie",
-      "general": "Something else"
+      "general": "Something else",
+      "speakers": "The number of speakers",
+      "endangerment": "The endangerment status"
+    },
+    "promptLanguage": "Is this right? For most languages the census refuses to count speakers separately, so the figure above is a whole category rather than this language. If you know better, write it down — on this page you are the source."
+  },
+  "language": {
+    "metaDescription": "Speakers, endangerment status, communities and recordings.",
+    "metaAtRisk": "An endangered language: speakers, status, communities and recordings.",
+    "alsoKnown": "Glottolog calls it: {name}",
+    "intro": "Reference material, with every source named. Our own communities are further down the page.",
+    "statusHeading": "Endangerment status",
+    "statusGroup": "This name covers several related languages rather than one, and their situations differ — some are still passed on at home, others have very few speakers left. There is no single status for a group, so none is shown here.",
+    "statusUnknown": "No endangerment status has been recorded for this language yet.",
+    "statusSource": "Source: {source}",
+    "endangermentMeaning": {
+      "not_endangered": "Children are still learning this language at home.",
+      "threatened": "Most adults speak it, but fewer children are learning it.",
+      "shifting": "The youngest fluent speakers are of parent age. Children are not learning it at home.",
+      "moribund": "The only fluent speakers left are grandparents and older.",
+      "nearly_extinct": "Only a few elderly speakers remain.",
+      "extinct": "No speakers remain. What survives is recordings, writing, and the work of learners."
+    },
+    "speakersHeading": "Speakers at home",
+    "speakersExact": "The census counts this language on its own, so these figures are for it alone.",
+    "speakersLumped": "The census does not count this language separately. It is folded into a broader category, and the figures below are that whole category — not this language. How many of those people speak it is recorded nowhere. Category: {category}",
+    "speakersSigned": "The census asks which language is spoken at home and does not count sign languages at all, so there is no official figure here.",
+    "speakersNoCategory": "The census has no category that covers this language, so there is no official figure here.",
+    "speakersPending": "Figures have not been loaded yet.",
+    "speakersSource": "Source: {source}, {period}. The second figure counts people who speak English less than “very well”.",
+    "byState": "By state",
+    "byCity": "By city",
+    "cityCoverage": "The census publishes this table for every state but for only a handful of cities. A city missing from this list is one it does not publish, not one where nobody speaks the language.",
+    "networksHeading": "Communities on CultureMesh",
+    "noNetworks": "No community has been started for this language yet.",
+    "memberCount": "members {count}",
+    "noMembersYet": "no members yet",
+    "startNetwork": "Start a community for this language",
+    "citeHeading": "Cite this page",
+    "status": {
+      "not_endangered": "Not endangered",
+      "threatened": "Vulnerable",
+      "shifting": "Definitely endangered",
+      "moribund": "Severely endangered",
+      "nearly_extinct": "Critically endangered",
+      "extinct": "Extinct"
+    },
+    "limitedEnglishLabel": "limited English"
+  },
+  "languageIndex": {
+    "title": "Languages",
+    "metaDescription": "Every language on CultureMesh, with its endangerment status — most endangered first.",
+    "intro": "Every language a community here can be built around. Listed with the languages losing speakers first, because that is the order in which they need attention.",
+    "scaleHeading": "The scale",
+    "scaleSource": "Statuses from Glottolog, which consolidates EGIDS, UNESCO’s Atlas of the World’s Languages in Danger, and the Catalogue of Endangered Languages.",
+    "atRiskHeading": "Languages at risk",
+    "atRiskIntro": "Ordered with the most endangered first.",
+    "otherHeading": "Every other language",
+    "languageColumn": "Language",
+    "statusColumn": "Status",
+    "networksColumn": "Communities",
+    "status": {
+      "not_endangered": "Not endangered",
+      "threatened": "Vulnerable",
+      "shifting": "Definitely endangered",
+      "moribund": "Severely endangered",
+      "nearly_extinct": "Critically endangered",
+      "extinct": "Extinct"
+    }
+  },
+  "languagePrompts": {
+    "heading": "Help record this language",
+    "progress": "{done} / {total}",
+    "intro": "Ten small things, each answerable in under a minute by anyone who speaks the language. You do not need to prepare, and you do not have to do them in order.",
+    "record": "Add a recording",
+    "recorded": "recordings {count}",
+    "notRecorded": "none yet",
+    "joinToRecord": "Join a community for this language to add a recording",
+    "ownership": "You keep what you record. It stays credited to you, nobody else can change it, and you can delete it at any time.",
+    "aboutLanguage": "About this language, and who else speaks it",
+    "prompt": {
+      "greeting": {
+        "title": "A greeting",
+        "ask": "How do you greet someone, and how do they answer?"
+      },
+      "counting": {
+        "title": "Numbers",
+        "ask": "Count from one to ten."
+      },
+      "family": {
+        "title": "Family",
+        "ask": "The words for mother, father, grandmother, grandfather, child."
+      },
+      "goodbye": {
+        "title": "Saying goodbye",
+        "ask": "How did the oldest person you knew say goodbye?"
+      },
+      "food": {
+        "title": "Food",
+        "ask": "Name a dish and say how it is made."
+      },
+      "weather": {
+        "title": "Weather and seasons",
+        "ask": "Describe today’s weather, then name the seasons."
+      },
+      "placeName": {
+        "title": "A place name",
+        "ask": "The name of your home place in this language, and what it means."
+      },
+      "proverb": {
+        "title": "A proverb",
+        "ask": "A saying that does not translate well. Say it, then explain it."
+      },
+      "lullaby": {
+        "title": "A song for a child",
+        "ask": "Sing something that was sung to you."
+      },
+      "story": {
+        "title": "A story",
+        "ask": "A story you were told as a child. Take as long as you need."
+      }
     }
   }
 }

@@ -958,7 +958,127 @@
       "consulate": "영사관",
       "distance": "거리",
       "twinning": "자매 도시 연계",
-      "general": "다른 무언가가"
+      "general": "다른 무언가가",
+      "speakers": "화자 수",
+      "endangerment": "멸종 위기 상태"
+    },
+    "promptLanguage": "이게 맞는 걸까요? 대부분의 언어에서 인구조사는 화자를 따로 집계하지 않기 때문에, 위 그림은 전체 범주에 해당하는 언어가 아닙니다. 더 잘 안다면 적어보세요 — 이 페이지에서 당신이 출처입니다."
+  },
+  "language": {
+    "metaDescription": "연설자, 멸종위기 상태, 지역사회 및 녹음물.",
+    "metaAtRisk": "멸종 위기 언어: 화자, 지위, 공동체 및 녹음.",
+    "alsoKnown": "글로톨로그는 이렇게 부릅니다: {name}",
+    "intro": "참고 자료, 모든 출처가 명시되어 있습니다. 우리 커뮤니티는 페이지 하단에 있습니다.",
+    "statusHeading": "멸종 위기 상태",
+    "statusGroup": "이 이름은 여러 관련 언어를 포함하며, 상황도 다릅니다 — 일부는 여전히 가정에서 전해지고, 다른 일부는 거의 남아 있지 않습니다. 집단에 대한 단일 지위는 없으므로 여기에는 별도로 표시되지 않습니다.",
+    "statusUnknown": "이 언어에 대한 멸종 위기 상태는 아직 기록되지 않았습니다.",
+    "statusSource": "출처: {source}",
+    "endangermentMeaning": {
+      "not_endangered": "아이들은 아직도 집에서 이 언어를 배우고 있습니다.",
+      "threatened": "대부분의 성인은 이 언어를 사용하지만, 배우는 아이들은 적습니다.",
+      "shifting": "가장 어린 유창한 화자들은 부모 연령대입니다. 아이들은 집에서 배우지 않습니다.",
+      "moribund": "유창하게 구사하는 사람은 조부모님과 그 이상뿐입니다.",
+      "nearly_extinct": "현재는 몇 명의 노년 연설자만이 남아 있습니다.",
+      "extinct": "연사는 남아 있지 않습니다. 남아 있는 것은 녹음, 글쓰기, 그리고 학습자들의 작업뿐입니다."
+    },
+    "speakersHeading": "가정 내 스피커",
+    "speakersExact": "인구조사는 이 언어 자체를 포함하므로, 이 수치는 오직 인구조사만을 위한 것입니다.",
+    "speakersLumped": "인구조사는 이 언어를 별도로 집계하지 않습니다. 이 언어는 더 넓은 범주에 통합되어 있으며, 아래 수치들은 이 언어가 아니라 그 전체 범주를 나타냅니다. 그 중 몇 명이 이 언어를 사용하는지는 어디에도 기록되지 않습니다. 분류: {category}",
+    "speakersSigned": "인구조사는 가정에서 사용되는 언어를 묻고 수화는 전혀 포함하지 않아 공식 수치는 없습니다.",
+    "speakersNoCategory": "인구조사에는 이 언어를 포함하는 범주가 없어 공식 수치가 없습니다.",
+    "speakersPending": "아직 수치는 로드되지 않았습니다.",
+    "speakersSource": "출처: {source}, {period}. 두 번째 수치는 영어를 '매우 잘한다'는 것보다 덜 구사하는 사람들을 포함합니다.",
+    "networksHeading": "CultureMesh 커뮤니티",
+    "noNetworks": "아직 이 언어에 대한 커뮤니티는 시작되지 않았습니다.",
+    "memberCount": "멤버 {count}",
+    "noMembersYet": "아직 멤버는 없습니다",
+    "startNetwork": "이 언어를 위한 커뮤니티를 시작하세요",
+    "citeHeading": "이 페이지를 인용하세요",
+    "byState": "주별",
+    "byCity": "도시별",
+    "cityCoverage": "인구조사는 이 표를 모든 주에 대해 공개하지만, 소수의 도시에만 해당합니다. 이 목록에서 빠진 도시는 공개되지 않는 도시이며, 아무도 그 언어를 사용하지 않는 도시가 아닙니다.",
+    "status": {
+      "not_endangered": "소멸 위기 없음",
+      "threatened": "취약",
+      "shifting": "소멸 위기",
+      "moribund": "심각한 소멸 위기",
+      "nearly_extinct": "매우 심각한 소멸 위기",
+      "extinct": "소멸"
+    },
+    "limitedEnglishLabel": "제한된 영어"
+  },
+  "languageIndex": {
+    "title": "언어",
+    "metaDescription": "CultureMesh에 있는 모든 언어는 멸종 위기 상태에서 — 가장 먼저 멸종 위기입니다.",
+    "intro": "이곳 커뮤니티는 모든 언어를 중심으로 만들어질 수 있습니다. 화자를 잃는 언어를 먼저 나열하세요. 왜냐하면 그 언어가 주의를 기울여야 하는 순서이기 때문입니다.",
+    "scaleHeading": "규모",
+    "scaleSource": "Glottolog의 현황은 EGIDS, 유네스코의 세계 위험 언어 아틀라스, 그리고 멸종 위기 언어 목록을 통합한 자료입니다.",
+    "otherHeading": "다른 모든 언어",
+    "languageColumn": "언어",
+    "statusColumn": "현황",
+    "networksColumn": "커뮤니티",
+    "atRiskHeading": "위험에 처한 언어들",
+    "atRiskIntro": "가장 멸종 위기종이 먼저 주문되었습니다.",
+    "status": {
+      "not_endangered": "소멸 위기 없음",
+      "threatened": "취약",
+      "shifting": "소멸 위기",
+      "moribund": "심각한 소멸 위기",
+      "nearly_extinct": "매우 심각한 소멸 위기",
+      "extinct": "소멸"
+    }
+  },
+  "languagePrompts": {
+    "heading": "이 언어를 녹음하는 데 도움을 주세요",
+    "progress": "{done} / {total}",
+    "intro": "10가지 작은 질문들, 각 질문은 그 언어를 구사하는 누구나 1분 이내에 답변할 수 있습니다. 준비할 필요도 없고, 순서대로 할 필요도 없습니다.",
+    "record": "녹음 파일 추가하기",
+    "recorded": "녹음 {count}",
+    "notRecorded": "아직 없습니다",
+    "joinToRecord": "이 언어 커뮤니티에 가입하여 녹음을 추가하세요",
+    "ownership": "녹음한 내용을 유지하세요. 크레딧은 본인에게 남고, 다른 사람은 변경할 수 없으며, 언제든지 삭제할 수 있습니다.",
+    "aboutLanguage": "이 언어에 대해, 그리고 누가 또 그 언어를 쓰는지에 대해요",
+    "prompt": {
+      "greeting": {
+        "title": "인사",
+        "ask": "누군가를 어떻게 인사하고, 그 사람은 어떻게 대답하나요?"
+      },
+      "counting": {
+        "ask": "하나부터 열까지 세어.",
+        "title": "숫자"
+      },
+      "family": {
+        "title": "가족",
+        "ask": "어머니, 아버지, 할머니, 할아버지, 아이를 뜻하는 단어들."
+      },
+      "goodbye": {
+        "title": "작별 인사를 하며",
+        "ask": "당신이 아는 가장 나이 많은 사람은 어떻게 작별 인사를 했나요?"
+      },
+      "food": {
+        "ask": "요리 이름을 말하고 어떻게 만들어졌는지 말해보세요.",
+        "title": "음식"
+      },
+      "weather": {
+        "title": "날씨와 계절",
+        "ask": "오늘의 날씨를 묘사한 다음 계절을 말씀해 주세요."
+      },
+      "placeName": {
+        "title": "지명",
+        "ask": "이 언어로 된 당신의 고향 이름과 그 의미."
+      },
+      "proverb": {
+        "ask": "번역이 잘 안 되는 말이야. 말하고 나서 설명해.",
+        "title": "속담"
+      },
+      "lullaby": {
+        "title": "아이를 위한 노래",
+        "ask": "누군가가 당신에게 불러준 노래를 불러보세요."
+      },
+      "story": {
+        "title": "이야기 하나",
+        "ask": "어릴 적 들었던 이야기. 필요한 만큼 천천히 해."
+      }
     }
   }
 }

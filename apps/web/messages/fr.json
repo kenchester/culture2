@@ -958,7 +958,127 @@
       "consulate": "Le consulat",
       "distance": "La distance",
       "twinning": "Le lien entre villes jumelées",
-      "general": "Autre chose"
+      "general": "Autre chose",
+      "speakers": "Le nombre de locuteurs",
+      "endangerment": "Le statut de danger"
+    },
+    "promptLanguage": "Est-ce exact ? Pour la plupart des langues, le recensement refuse de compter les locuteurs séparément, donc la figure ci-dessus correspond à toute une catégorie plutôt qu’à cette langue. Si vous savez mieux, notez-la — sur cette page, vous êtes la source."
+  },
+  "language": {
+    "metaDescription": "Intervenants, statut de mise en danger, communautés et enregistrements.",
+    "metaAtRisk": "Une langue en danger : locuteurs, statut, communautés et enregistrements.",
+    "alsoKnown": "Glottolog l’appelle ainsi : {name}",
+    "intro": "Matériel de référence, avec chaque source nommée. Nos propres communautés sont plus bas sur la page.",
+    "statusHeading": "Statut en danger",
+    "statusGroup": "Ce nom couvre plusieurs langues apparentées plutôt qu’une seule, et leurs situations diffèrent — certaines sont encore transmises au pays, d’autres ont très peu de locuteurs. Il n’y a pas de statut unique pour un groupe, donc aucun n’est montré ici.",
+    "statusUnknown": "Aucun statut de danger n’a encore été enregistré pour cette langue.",
+    "statusSource": "Source : {source}",
+    "endangermentMeaning": {
+      "not_endangered": "Les enfants apprennent encore cette langue à la maison.",
+      "threatened": "La plupart des adultes la parlent, mais moins d’enfants l’apprennent.",
+      "shifting": "Les plus jeunes locuteurs couramment ont l’âge des parents. Les enfants ne l’apprennent pas à la maison.",
+      "moribund": "Les seuls locuteurs courants restants sont les grands-parents et les aînés.",
+      "nearly_extinct": "Seuls quelques locuteurs âgés subsistent.",
+      "extinct": "Il ne reste plus de locuteurs. Ce qui subsiste, ce sont les enregistrements, l’écriture et le travail des apprenants."
+    },
+    "speakersHeading": "Enceintes à la maison",
+    "speakersExact": "Le recensement compte cette langue seule, donc ces chiffres ne concernent que pour elle.",
+    "speakersLumped": "Le recensement ne compte pas cette langue séparément. Elle est regroupée dans une catégorie plus large, et les chiffres ci-dessous représentent toute cette catégorie — pas cette langue. Le nombre de ces personnes qui la parlent n’est enregistré nulle part. Catégorie : {category}",
+    "speakersSigned": "Le recensement demande quelle langue est parlée à la maison et ne prend pas en compte les langues des signes, il n’y a donc pas de chiffre officiel ici.",
+    "speakersNoCategory": "Le recensement ne comporte pas de catégorie couvrant cette langue, il n’y a donc pas de chiffre officiel ici.",
+    "speakersPending": "Les figurines n’ont pas encore été chargées.",
+    "speakersSource": "Source : {source}, {period}. Le second chiffre compte les personnes qui parlent anglais moins que « très bien ».",
+    "networksHeading": "Communautés sur CultureMesh",
+    "noNetworks": "Aucune communauté n’a encore été créée pour cette langue.",
+    "memberCount": "Membres {count}",
+    "noMembersYet": "Pas encore de membres",
+    "startNetwork": "Créez une communauté pour cette langue",
+    "citeHeading": "Citez cette page",
+    "byState": "Par État",
+    "byCity": "Par ville",
+    "cityCoverage": "Le recensement publie ce tableau pour chaque État mais seulement pour une poignée de villes. Une ville absente de cette liste est une ville qu’elle ne publie pas, pas une ville où personne ne parle la langue.",
+    "status": {
+      "not_endangered": "Non menacée",
+      "threatened": "Vulnérable",
+      "shifting": "En danger",
+      "moribund": "Sérieusement en danger",
+      "nearly_extinct": "En situation critique",
+      "extinct": "Éteinte"
+    },
+    "limitedEnglishLabel": "Anglais limité"
+  },
+  "languageIndex": {
+    "title": "Langues",
+    "metaDescription": "Chaque langue sur CultureMesh, avec son statut de menace — la plupart en danger en premier.",
+    "intro": "Chaque langue autour de laquelle une communauté peut être construite ici. Listée avec les langues perdant les locuteurs en premier, car c’est dans cet ordre qu’elles ont besoin d’attention.",
+    "scaleHeading": "L’échelle",
+    "scaleSource": "Statuts de Glottolog, qui regroupe l’EGIDS, l’Atlas des langues en danger de l’UNESCO et le Catalogue des langues menacées.",
+    "otherHeading": "Toutes les autres langues",
+    "languageColumn": "Langue",
+    "statusColumn": "Statut",
+    "networksColumn": "Communautés",
+    "atRiskHeading": "Langues en danger",
+    "atRiskIntro": "Commandé avec les plus menacés en premier.",
+    "status": {
+      "not_endangered": "Non menacée",
+      "threatened": "Vulnérable",
+      "shifting": "En danger",
+      "moribund": "Sérieusement en danger",
+      "nearly_extinct": "En situation critique",
+      "extinct": "Éteinte"
+    }
+  },
+  "languagePrompts": {
+    "heading": "Aidez à enregistrer cette langue",
+    "progress": "{done} / {total}",
+    "intro": "Dix petites choses, chacune responsable en moins d’une minute par quiconque parle la langue. Vous n’avez pas besoin de vous préparer, et vous n’êtes pas obligé de les faire dans l’ordre.",
+    "record": "Ajouter un enregistrement",
+    "recorded": "Enregistrements {count}",
+    "notRecorded": "Pas encore",
+    "joinToRecord": "Rejoignez une communauté dédiée à cette langue pour ajouter un enregistrement",
+    "ownership": "Vous gardez ce que vous enregistrez. Cela reste crédité à votre nom, personne d’autre ne peut le modifier, et vous pouvez le supprimer à tout moment.",
+    "aboutLanguage": "À propos de cette langue, et de qui d’autre la parle",
+    "prompt": {
+      "greeting": {
+        "title": "Un salut",
+        "ask": "Comment saluer quelqu’un, et comment répond-il ?"
+      },
+      "counting": {
+        "ask": "Comptez de un à dix.",
+        "title": "Chiffres"
+      },
+      "family": {
+        "title": "Famille",
+        "ask": "Les mots pour mère, père, grand-mère, grand-père, enfant."
+      },
+      "goodbye": {
+        "title": "Dire au revoir",
+        "ask": "Comment la personne la plus âgée que tu connaissais a-t-elle dit au revoir ?"
+      },
+      "food": {
+        "ask": "Nomme un plat et explique comment il est préparé.",
+        "title": "Nourriture"
+      },
+      "weather": {
+        "title": "Météo et saisons",
+        "ask": "Décrivez la météo d’aujourd’hui, puis nommez les saisons."
+      },
+      "placeName": {
+        "title": "Un toponyme",
+        "ask": "Le nom de votre lieu d’origine dans cette langue, et ce que cela signifie."
+      },
+      "proverb": {
+        "ask": "Un dicton qui ne se traduit pas bien. Dis-le, puis explique-le.",
+        "title": "Un proverbe"
+      },
+      "lullaby": {
+        "title": "Une chanson pour un enfant",
+        "ask": "Chante quelque chose qui t’a été chanté."
+      },
+      "story": {
+        "title": "Une histoire",
+        "ask": "Une histoire qu’on t’a racontée enfant. Prends tout le temps qu’il te faut."
+      }
     }
   }
 }

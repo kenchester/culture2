@@ -958,7 +958,127 @@
       "consulate": "El consulado",
       "distance": "La distancia",
       "twinning": "El vínculo entre ciudades hermanas",
-      "general": "Otra cosa"
+      "general": "Otra cosa",
+      "speakers": "El número de hablantes",
+      "endangerment": "El estado de peligro"
+    },
+    "promptLanguage": "¿Es esto correcto? Para la mayoría de los idiomas, el censo se niega a contar los hablantes por separado, así que la cifra anterior es una categoría completa en lugar de este idioma. Si sabes mejor, anótalo — en esta página eres la fuente."
+  },
+  "language": {
+    "metaDescription": "Ponentes, estado de peligro, comunidades y grabaciones.",
+    "metaAtRisk": "Una lengua en peligro de extinción: hablantes, estatus, comunidades y grabaciones.",
+    "alsoKnown": "Glottolog lo llama: {name}",
+    "intro": "Material de referencia, con todas las fuentes mencionadas. Nuestras propias comunidades están más abajo en la página.",
+    "statusHeading": "Estado de peligro",
+    "statusGroup": "Este nombre abarca varios idiomas relacionados en lugar de uno, y sus situaciones difieren: algunos aún se transmiten en casa, otros tienen muy pocos hablantes. No existe un único estatus para un grupo, por lo que no se muestra aquí.",
+    "statusUnknown": "Aún no se ha registrado ningún estado de peligro para esta lengua.",
+    "statusSource": "Fuente: {source}",
+    "endangermentMeaning": {
+      "not_endangered": "Los niños todavía están aprendiendo este idioma en casa.",
+      "threatened": "La mayoría de los adultos la hablan, pero menos niños la están aprendiendo.",
+      "shifting": "Los hablantes fluidos más jóvenes tienen edad de padres. Los niños no lo aprenden en casa.",
+      "moribund": "Los únicos hablantes fluidos que quedan son los abuelos y los mayores.",
+      "nearly_extinct": "Solo quedan unos pocos oradores ancianos.",
+      "extinct": "No quedan hablantes. Lo que sobrevive son grabaciones, escritura y el trabajo de los aprendices."
+    },
+    "speakersHeading": "Altavoces en casa",
+    "speakersExact": "El censo cuenta esta lengua por sí sola, así que estas cifras son solo para ella.",
+    "speakersLumped": "El censo no cuenta este idioma por separado. Se integra en una categoría más amplia, y las cifras siguientes son toda esa categoría — no este idioma. No se registra en ningún sitio cuántas de esas personas la hablen. Categoría: {category}",
+    "speakersSigned": "El censo pregunta qué idioma se habla en casa y no cuenta en absoluto las lenguas de signos, por lo que no hay una cifra oficial aquí.",
+    "speakersNoCategory": "El censo no tiene una categoría que cubra este idioma, por lo que no hay una cifra oficial aquí.",
+    "speakersPending": "Las figuras aún no se han cargado.",
+    "speakersSource": "Fuente: {source}, {period}. La segunda cifra cuenta a las personas que hablan inglés menos que \"muy bien\".",
+    "networksHeading": "Comunidades en CultureMesh",
+    "noNetworks": "Aún no se ha creado ninguna comunidad para este idioma.",
+    "memberCount": "Miembros {count}",
+    "noMembersYet": "Aún no hay miembros",
+    "startNetwork": "Crea una comunidad para este idioma",
+    "citeHeading": "Cita esta página",
+    "byState": "Por estado",
+    "byCity": "Por ciudad",
+    "cityCoverage": "El censo publica esta tabla para todos los estados, pero solo para unas pocas ciudades. Una ciudad que falta en esta lista es una que no publica, no una en la que nadie habla el idioma.",
+    "status": {
+      "not_endangered": "No amenazada",
+      "threatened": "Vulnerable",
+      "shifting": "En peligro",
+      "moribund": "En peligro grave",
+      "nearly_extinct": "En situación crítica",
+      "extinct": "Extinta"
+    },
+    "limitedEnglishLabel": "inglés limitado"
+  },
+  "languageIndex": {
+    "title": "Idiomas",
+    "metaDescription": "Cada idioma en CultureMesh, con su estatus de amenaza — la mayoría en peligro primero.",
+    "intro": "Cada idioma en torno a la que se puede construir una comunidad aquí. Listados con los idiomas que pierden hablantes primero, porque ese es el orden en que necesitan atención.",
+    "scaleHeading": "La escala",
+    "scaleSource": "Status de Glottolog, que consolida EGIDS, el Atlas de las Lenguas en Peligro del Mundo de la UNESCO y el Catálogo de Lenguas en Peligro.",
+    "otherHeading": "Todos los demás idiomas",
+    "languageColumn": "Idioma",
+    "statusColumn": "Estado",
+    "networksColumn": "Comunidades",
+    "atRiskHeading": "Lenguas en riesgo",
+    "atRiskIntro": "Ordenado primero con los más amenazados.",
+    "status": {
+      "not_endangered": "No amenazada",
+      "threatened": "Vulnerable",
+      "shifting": "En peligro",
+      "moribund": "En peligro grave",
+      "nearly_extinct": "En situación crítica",
+      "extinct": "Extinta"
+    }
+  },
+  "languagePrompts": {
+    "heading": "Ayuda para registrar este idioma",
+    "progress": "{done} / {total}",
+    "intro": "Diez cosas pequeñas, cada una respondible en menos de un minuto por cualquiera que hable el idioma. No necesitas prepararte, ni hacerlas en orden.",
+    "record": "Añadir una grabación",
+    "recorded": "Grabaciones {count}",
+    "notRecorded": "Todavía no",
+    "joinToRecord": "Únete a una comunidad de esta lengua para añadir una grabación",
+    "ownership": "Tú te quedas con lo que grabas. Te lo acreditas, nadie más puede cambiarlo y puedes borrarlo en cualquier momento.",
+    "aboutLanguage": "Sobre este idioma y quién más lo habla",
+    "prompt": {
+      "greeting": {
+        "title": "Un saludo",
+        "ask": "¿Cómo saludas a alguien y cómo responde?"
+      },
+      "counting": {
+        "ask": "Cuenta de uno a diez.",
+        "title": "Números"
+      },
+      "family": {
+        "title": "Familia",
+        "ask": "Las palabras para madre, padre, abuela, abuelo, hijo."
+      },
+      "goodbye": {
+        "title": "Despedirse",
+        "ask": "¿Cómo se despidió la persona mayor que conocías?"
+      },
+      "food": {
+        "ask": "Nombra un plato y di cómo se prepara.",
+        "title": "Comida"
+      },
+      "weather": {
+        "title": "Clima y estaciones",
+        "ask": "Describe el tiempo de hoy y luego nombra las estaciones."
+      },
+      "placeName": {
+        "title": "Un topónimo",
+        "ask": "El nombre de tu lugar natal en este idioma, y lo que significa."
+      },
+      "proverb": {
+        "ask": "Un dicho que no se traduce bien. Dilo y luego explícalo.",
+        "title": "Un proverbio"
+      },
+      "lullaby": {
+        "title": "Una canción para un niño",
+        "ask": "Canta algo que te hayan cantado."
+      },
+      "story": {
+        "title": "Una historia",
+        "ask": "Una historia que te contaron de niño. Tómate todo el tiempo que necesites."
+      }
     }
   }
 }

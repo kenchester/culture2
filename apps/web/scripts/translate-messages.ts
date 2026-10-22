@@ -207,15 +207,32 @@ async function translateBatch(texts: string[], targetAzureCode: string): Promise
   url.searchParams.set("from", "en");
   url.searchParams.set("to", targetAzureCode);
 
-  const res = await fetch(url, {
-    method: "POST",
-    headers: {
-      "Ocp-Apim-Subscription-Key": key,
-      "Ocp-Apim-Subscription-Region": region,
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(protectedTexts.map(({ protected: text }) => ({ Text: text }))),
-  });
+  // Azure's free tier enforces a short-window request limit and answers
+  // 429 once a run of this size crosses it. That used to abort the whole
+  // script partway through the locales, which is the worst outcome
+  // available: the catalogues that had already been written were fine,
+  // the rest were untouched, and nothing said which was which. 429 is a
+  // "wait" rather than an error, so it is waited out.
+  let res!: Response;
+  for (let attempt = 0; ; attempt++) {
+    res = await fetch(url, {
+      method: "POST",
+      headers: {
+        "Ocp-Apim-Subscription-Key": key,
+        "Ocp-Apim-Subscription-Region": region,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(protectedTexts.map(({ protected: text }) => ({ Text: text }))),
+    });
+    if (res.status !== 429 || attempt >= 5) break;
+    // 2s, 4s, 8s, 16s, 32s. Honours Retry-After when Azure sends one.
+    const retryAfter = Number(res.headers.get("retry-after"));
+    const waitMs = Number.isFinite(retryAfter) && retryAfter > 0
+      ? retryAfter * 1000
+      : 2000 * 2 ** attempt;
+    console.log(`  rate limited, waiting ${Math.round(waitMs / 1000)}s`);
+    await new Promise((resolve) => setTimeout(resolve, waitMs));
+  }
 
   if (!res.ok) {
     const body = await res.text();

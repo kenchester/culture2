@@ -958,7 +958,127 @@
       "consulate": "Das Konsulat",
       "distance": "Die Entfernung",
       "twinning": "Die Schwesterstadtverbindung",
-      "general": "Etwas anderes"
+      "general": "Etwas anderes",
+      "speakers": "Die Anzahl der Sprecher",
+      "endangerment": "Der Gefährdungsstatus"
+    },
+    "promptLanguage": "Stimmt das? Für die meisten Sprachen weigert sich die Volkszählung, Sprecher separat zu zählen, daher ist die obige Abbildung eine ganze Kategorie und nicht diese Sprache. Wenn Sie es besser wissen, schreiben Sie es auf – auf dieser Seite sind Sie die Quelle."
+  },
+  "language": {
+    "metaDescription": "Redner, Gefährdetungsstatus, Gemeinden und Aufnahmen.",
+    "metaAtRisk": "Eine bedrohte Sprache: Sprecher, Status, Gemeinschaften und Aufnahmen.",
+    "alsoKnown": "Glottolog nennt es: {name}",
+    "intro": "Referenzmaterial, mit jeder genannten Quelle. Unsere eigenen Communities sind weiter unten auf der Seite.",
+    "statusHeading": "Gefährdungsstatus",
+    "statusGroup": "Dieser Name umfasst mehrere verwandte Sprachen statt eine, und ihre Situationen unterscheiden sich – einige werden zu Hause weitergegeben, andere haben nur sehr wenige Sprecher übrig. Es gibt keinen einheitlichen Status für eine Gruppe, daher wird hier keiner gezeigt.",
+    "statusUnknown": "Für diese Sprache wurde bisher kein Gefährdungsstatus festgestellt.",
+    "statusSource": "Quelle: {source}",
+    "endangermentMeaning": {
+      "not_endangered": "Kinder lernen diese Sprache noch zu Hause.",
+      "threatened": "Die meisten Erwachsenen sprechen es, aber weniger Kinder lernen es.",
+      "shifting": "Die jüngsten fließenden Sprecher sind im Alter der Eltern. Kinder lernen es nicht zu Hause.",
+      "moribund": "Die einzigen fließenden Sprecher sind Großeltern und ältere.",
+      "nearly_extinct": "Nur wenige ältere Redner sind noch übrig.",
+      "extinct": "Es sind keine Lautsprecher mehr übrig. Erhalten sind Aufnahmen, Schriften und die Arbeit der Lernenden."
+    },
+    "speakersHeading": "Sprecher zu Hause",
+    "speakersExact": "Die Volkszählung zählt diese Sprache allein, daher gelten diese Zahlen ausschließlich für sie.",
+    "speakersLumped": "Die Volkszählung zählt diese Sprache nicht separat. Sie wird in eine größere Kategorie eingeteilt, und die untenstehenden Zahlen sind diese gesamte Kategorie – nicht diese Sprache. Wie viele dieser Personen sie sprechen, wird nirgends erfasst. Kategorie: {category}",
+    "speakersSigned": "Die Volkszählung fragt, welche Sprache zu Hause gesprochen wird, und zählt keine Gebärdensprachen, daher gibt es hier keine offizielle Zahl.",
+    "speakersNoCategory": "Die Volkszählung hat keine Kategorie, die diese Sprache abdeckt, daher gibt es hier keine offizielle Zahl.",
+    "speakersPending": "Die Figuren sind noch nicht geladen.",
+    "speakersSource": "Quelle: {source}, {period}. Die zweite Zahl zählt Menschen, die weniger als \"sehr gut\" Englisch sprechen.",
+    "networksHeading": "Communities auf CultureMesh",
+    "noNetworks": "Für diese Sprache wurde bisher keine Community gegründet.",
+    "memberCount": "Mitglieder {count}",
+    "noMembersYet": "Noch keine Mitglieder",
+    "startNetwork": "Gründet eine Community für diese Sprache",
+    "citeHeading": "Zitieren Sie diese Seite",
+    "byState": "Nach Bundesstaat",
+    "byCity": "Nach Stadt",
+    "cityCoverage": "Die Volkszählung veröffentlicht diese Tabelle für jeden Bundesstaat, aber nur für eine Handvoll Städte. Eine Stadt, die auf dieser Liste fehlt, ist eine, die nicht veröffentlicht wird, nicht eine, in der niemand die Sprache spricht.",
+    "status": {
+      "not_endangered": "Nicht gefährdet",
+      "threatened": "Gefährdet",
+      "shifting": "Deutlich gefährdet",
+      "moribund": "Stark gefährdet",
+      "nearly_extinct": "Vom Aussterben bedroht",
+      "extinct": "Ausgestorben"
+    },
+    "limitedEnglishLabel": "Begrenztes Englisch"
+  },
+  "languageIndex": {
+    "title": "Sprachen",
+    "metaDescription": "Jede Sprache auf CultureMesh, mit ihrem Gefährdetenstatus – am meisten gefährdet zuerst.",
+    "intro": "Jede Sprache, um die eine Gemeinschaft hier herum aufgebaut werden kann. Zuerst werden die Sprachen mit Sprecher-Verlusten aufgeführt, weil sie in dieser Reihenfolge Aufmerksamkeit brauchen.",
+    "scaleHeading": "Die Skala",
+    "scaleSource": "Status aus Glottolog, das EGIDS zusammenfasst, den UNESCO-Atlas der gefährdeten Weltsprachen und den Katalog gefährdeter Sprachen.",
+    "otherHeading": "Jede andere Sprache",
+    "languageColumn": "Sprache",
+    "statusColumn": "Status",
+    "networksColumn": "Gemeinden",
+    "atRiskHeading": "Gefährdete Sprachen",
+    "atRiskIntro": "Bestellt mit dem am stärksten gefährdeten Ersten.",
+    "status": {
+      "not_endangered": "Nicht gefährdet",
+      "threatened": "Gefährdet",
+      "shifting": "Deutlich gefährdet",
+      "moribund": "Stark gefährdet",
+      "nearly_extinct": "Vom Aussterben bedroht",
+      "extinct": "Ausgestorben"
+    }
+  },
+  "languagePrompts": {
+    "heading": "Helfen Sie bei der Aufnahme dieser Sprache",
+    "progress": "{done} / {total}",
+    "intro": "Zehn kleine Dinge, die jeder, der die Sprache spricht, in weniger als einer Minute beantwortet werden können. Du musst dich nicht vorbereiten, und du musst sie nicht der Reihe nach tun.",
+    "record": "Eine Aufnahme hinzufügen",
+    "recorded": "Aufnahmen {count}",
+    "notRecorded": "Noch keine",
+    "joinToRecord": "Tritt einer Community für diese Sprache bei, um eine Aufnahme hinzuzufügen",
+    "ownership": "Du behältst, was du aufnimmst. Es bleibt dir gutgeschrieben, niemand sonst kann es ändern, und du kannst es jederzeit löschen.",
+    "aboutLanguage": "Über diese Sprache und wer sie sonst noch spricht",
+    "prompt": {
+      "greeting": {
+        "title": "Ein Gruß",
+        "ask": "Wie begrüßt man jemanden, und wie antwortet er?"
+      },
+      "counting": {
+        "ask": "Zähle von eins bis zehn.",
+        "title": "Zahlen"
+      },
+      "family": {
+        "title": "Familie",
+        "ask": "Die Worte für Mutter, Vater, Großmutter, Großvater, Kind."
+      },
+      "goodbye": {
+        "title": "Abschied nehmen",
+        "ask": "Wie hat sich die älteste Person, die du kanntest, verabschiedet?"
+      },
+      "food": {
+        "ask": "Nenne ein Gericht und sag mal, wie es zubereitet wird.",
+        "title": "Essen"
+      },
+      "weather": {
+        "title": "Wetter und Jahreszeiten",
+        "ask": "Beschreiben Sie das heutige Wetter und nennen Sie dann die Jahreszeiten."
+      },
+      "placeName": {
+        "title": "Ein Ortsname",
+        "ask": "Der Name deines Heimatortes in dieser Sprache und was er bedeutet."
+      },
+      "proverb": {
+        "ask": "Ein Sprichwort, das sich nicht gut übersetzen lässt. Sag es, dann erkläre es.",
+        "title": "Ein Sprichwort"
+      },
+      "lullaby": {
+        "title": "Ein Lied für ein Kind",
+        "ask": "Sing etwas, das dir vorgesungen wurde."
+      },
+      "story": {
+        "title": "Eine Geschichte",
+        "ask": "Eine Geschichte, die dir als Kind erzählt wurde. Nimm dir so viel Zeit, wie du brauchst."
+      }
     }
   }
 }

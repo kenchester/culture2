@@ -25,6 +25,7 @@ import { DemoNetworkFeed, type RealDemoPost } from "@/app/networks/[id]/demo-net
 import { InviteFriendsBox } from "@/app/networks/[id]/invite-friends-box";
 import { CorridorContextBlock } from "@/app/networks/[id]/corridor-context-block";
 import { getCorridorContext } from "@/lib/corridor-context";
+import { LanguagePrompts } from "@/components/language-prompts";
 import { PostComposer } from "@/app/networks/[id]/post-composer";
 import { PostFeed } from "@/app/networks/[id]/post-feed";
 import { PostingIndicator } from "@/components/posting-indicator";
@@ -161,6 +162,8 @@ export default async function NetworkPage({
     embed?: string;
     invited?: string;
     inviteError?: string;
+    /** A language_prompts id, set by the recording-prompt list. */
+    prompt?: string;
   }>;
 }) {
   const { id } = await params;
@@ -168,11 +171,12 @@ export default async function NetworkPage({
   // in it (lib/slug.ts), so links shared before slugs existed still work.
   const networkId = idFromSlug(id);
   if (networkId === null) notFound();
-  const { error, embed, invited, inviteError } = await searchParams;
+  const { error, embed, invited, inviteError, prompt: promptParam } = await searchParams;
   const isEmbedded = embed === "1";
   const supabase = await createClient();
   const t = await getTranslations("network");
   const tCorridor = await getTranslations("corridor");
+  const tLanguagePrompts = await getTranslations("languagePrompts");
   recordPageView(viewPath("/networks", String(networkId)));
   const locale = (await getLocale()) as Locale;
 
@@ -444,10 +448,53 @@ export default async function NetworkPage({
   // 00000000000072).
   const isSignedLanguage = Boolean((language as { is_signed?: boolean } | null)?.is_signed);
 
+  // Arrived here from a recording prompt on the language page. Looked up
+  // rather than trusted from the URL: the key drives a translated string,
+  // so an unrecognised id has to resolve to nothing rather than render a
+  // raw message key as a heading.
+  const promptId = promptParam ? Number(promptParam) : null;
+  const { data: activePrompt } = promptId && network.language_id
+    ? await supabase
+        .from("language_prompts")
+        .select("id, key")
+        .eq("id", promptId)
+        .eq("active", true)
+        .maybeSingle()
+    : { data: null };
+
   const returnTo = `/networks/${network.id}${isEmbedded ? "?embed=1" : ""}`;
   const signInParams = new URLSearchParams({ returnTo });
   if (isEmbedded) signInParams.set("embed", "1");
   const signInHref = `/sign-in?${signInParams.toString()}`;
+
+  // A language network gets the recording prompts and a link to the
+  // language's own page. Built here rather than inline below so the same
+  // element can be dropped into either of the two slots around the feed
+  // without being constructed twice.
+  //
+  // Not shown in an embed or in a demo network: an embed is somebody
+  // else's page with its own purpose, and Acme is a fixture.
+  const languageTyped = language as { id?: number; name?: string } | null;
+  const languageReference =
+    languageTyped?.id && !isEmbedded && !isExample ? (
+      <div className="flex flex-col gap-4">
+        <LanguagePrompts
+          supabase={supabase}
+          languageId={languageTyped.id}
+          networkId={network.id}
+          canPost={isMember}
+          signInHref={signInHref}
+        />
+        <p className="text-sm text-muted">
+          <Link
+            href={`/languages/${slugWithId(languageTyped.name as string, languageTyped.id)}`}
+            className="text-primary underline"
+          >
+            {tLanguagePrompts("aboutLanguage", { language: languageTyped.name as string })}
+          </Link>
+        </p>
+      </div>
+    ) : null;
 
   // Acme's ephemeral demo mode (DemoNetworkFeed) needs these as a plain
   // serializable array rather than JSX - same per-post values the real
@@ -572,6 +619,13 @@ export default async function NetworkPage({
           />
         )}
 
+        {/* The language half of the same idea, in the same slot and under
+            the same rule: reference material leads while the network is
+            nearly empty, and drops below the feed once there are people
+            posting. A language network has no origin place, so these two
+            blocks never compete for the position. */}
+        {languageReference && contextLeads && languageReference}
+
         {isExample ? (
           <DemoNetworkFeed
             networkId={network.id}
@@ -626,11 +680,30 @@ export default async function NetworkPage({
 
             <div className="flex flex-col gap-4 border-t border-border pt-6">
               {isMember && (
-                <form action={createPost} className="flex flex-col gap-2">
+                <form action={createPost} id="post" className="flex flex-col gap-2">
                   <input type="hidden" name="networkId" value={network.id} />
                   {isEmbedded && <input type="hidden" name="embed" value="1" />}
                   {error && (
                     <FormError>{error}</FormError>
+                  )}
+                  {/* The question, above the box, when the composer was
+                      opened from a recording prompt. Without it the
+                      person lands on an empty textarea having lost the
+                      thing they came to answer. */}
+                  {activePrompt && (
+                    <div className="flex flex-col gap-1 rounded-md border border-primary bg-primary-light/40 p-3">
+                      <p className="text-sm font-medium text-ink">
+                        {tLanguagePrompts(`prompt.${activePrompt.key as string}.title`)}
+                      </p>
+                      <p className="text-sm text-body">
+                        {tLanguagePrompts(`prompt.${activePrompt.key as string}.ask`)}
+                      </p>
+                      <input
+                        type="hidden"
+                        name="languagePromptId"
+                        value={activePrompt.id as number}
+                      />
+                    </div>
                   )}
                   <PostComposer
                     idPrefix="post"
@@ -664,6 +737,8 @@ export default async function NetworkPage({
             heading={tCorridor("headingNetwork")}
           />
         )}
+
+        {languageReference && !contextLeads && languageReference}
       </div>
 
       {!isEmbedded && (user || suggestedNetwork) && (
