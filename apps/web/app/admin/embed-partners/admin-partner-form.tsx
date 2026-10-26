@@ -26,6 +26,9 @@ export function AdminPartnerForm({
   const [isJurisdictionGlobal, setIsJurisdictionGlobal] = useState(false);
   const [jurisdictionPlaceholder, setJurisdictionPlaceholder] = useState<string | undefined>();
   const [isCreatingDemo, setIsCreatingDemo] = useState(false);
+  const [useHomePlace, setUseHomePlace] = useState(false);
+  const [homePlace, setHomePlace] = useState<AutocompleteOption | null>(null);
+  const [direction, setDirection] = useState<"both" | "outbound" | "inbound">("both");
   const [joinHeadingStyle, setJoinHeadingStyle] = useState<
     "partner_name" | "diaspora_network" | "custom_group"
   >("partner_name");
@@ -37,6 +40,11 @@ export function AdminPartnerForm({
   const soleJurisdiction =
     jurisdictions.length === 1 && "type" in jurisdictions[0] ? jurisdictions[0] : null;
   const canLockToRegions = soleJurisdiction?.type === "country";
+
+  // Shown in the direction labels so an admin reads "Only people in
+  // Ningde" rather than a blank, and can tell the two apart before
+  // picking one.
+  const homeLabel = homePlace ? optionLabel(homePlace).split(",")[0] : "this place";
 
   // Suggest a realistic jurisdiction example nested inside whatever origin
   // place is locked, instead of a generic "e.g. Michigan" that has nothing
@@ -114,17 +122,84 @@ export function AdminPartnerForm({
         <Input id="partner-slug" name="slug" placeholder="e.g. indonesia" required />
       </Field>
 
+      {/* A city, rather than an embassy. An embassy has one question -
+          "are you one of ours, abroad?" - so its origin is locked and the
+          visitor says where they live. A city has two questions of equal
+          importance to it, its diaspora and its newcomers, which are the
+          same place on opposite sides of the same relation. */}
       <label className="flex items-center gap-2 text-sm text-body">
         <input
           type="checkbox"
-          name="originIsGlobal"
-          checked={isOriginGlobal}
-          onChange={(e) => setIsOriginGlobal(e.target.checked)}
+          name="useHomePlace"
+          checked={useHomePlace}
+          onChange={(e) => {
+            setUseHomePlace(e.target.checked);
+            // The two are mutually exclusive in the schema
+            // (embed_partners_home_replaces_locked), so clear the other
+            // side rather than submit a pair the insert will reject.
+            if (e.target.checked) {
+              setIsOriginGlobal(false);
+              setLockedOrigin(null);
+            } else {
+              setHomePlace(null);
+            }
+          }}
         />
-        Global (no origin restriction &mdash; visitor picks their own origin)
+        One place, both directions (for a city promoting itself)
       </label>
 
-      {!isOriginGlobal && (
+      {useHomePlace && (
+        <div className="flex flex-col gap-3 rounded-md border border-border bg-surface p-4">
+          <AutocompleteField
+            label="Home place"
+            kind="place"
+            hiddenName="homePlaceId"
+            placeholder="e.g. Ningde"
+            onSelect={setHomePlace}
+          />
+          <div className="flex flex-col gap-1">
+            <span className="text-sm font-medium text-ink">Direction</span>
+            {(
+              [
+                ["both", `Both, with a toggle — recommended`],
+                ["outbound", `Only ${homeLabel} people elsewhere`],
+                ["inbound", `Only people in ${homeLabel}`],
+              ] as const
+            ).map(([value, label]) => (
+              <label key={value} className="flex items-center gap-2 text-sm text-body">
+                <input
+                  type="radio"
+                  name="direction"
+                  value={value}
+                  checked={direction === value}
+                  onChange={() => setDirection(value)}
+                />
+                {label}
+              </label>
+            ))}
+          </div>
+          <p className="text-xs text-muted">
+            In the inbound direction the visitor&rsquo;s origin is searched
+            worldwide, not within the jurisdiction below &mdash; a jurisdiction
+            answers &ldquo;where might this diaspora live&rdquo;, which is the
+            wrong question when asking who has moved here.
+          </p>
+        </div>
+      )}
+
+      {!useHomePlace && (
+        <label className="flex items-center gap-2 text-sm text-body">
+          <input
+            type="checkbox"
+            name="originIsGlobal"
+            checked={isOriginGlobal}
+            onChange={(e) => setIsOriginGlobal(e.target.checked)}
+          />
+          Global (no origin restriction &mdash; visitor picks their own origin)
+        </label>
+      )}
+
+      {!useHomePlace && !isOriginGlobal && (
         <>
           <div className="flex gap-4 text-sm text-body">
             <label className="flex items-center gap-1">

@@ -13,8 +13,10 @@ type PartnerRow = {
   slug: string;
   is_global: boolean;
   origin_is_global: boolean;
+  direction: "outbound" | "inbound" | "both";
   locked_language: { name: string } | null;
   locked_origin_place: { name: string } | null;
+  home_place: { name: string } | null;
   jurisdictions: { place: { name: string } }[];
 };
 
@@ -31,7 +33,7 @@ export default async function AdminEmbedPartnersPage({
   const { data: partners, count } = (await supabase
     .from("embed_partners")
     .select(
-      "id, name, slug, is_global, origin_is_global, locked_language:locked_language_id(name), locked_origin_place:locked_origin_place_id(name), jurisdictions:embed_partner_jurisdictions(place:place_id(name))",
+      "id, name, slug, is_global, origin_is_global, direction, locked_language:locked_language_id(name), locked_origin_place:locked_origin_place_id(name), home_place:home_place_id(name), jurisdictions:embed_partner_jurisdictions(place:place_id(name))",
       { count: "exact" },
     )
     .order("created_at", { ascending: false })
@@ -68,9 +70,25 @@ export default async function AdminEmbedPartnersPage({
             >
               <p className="font-medium text-ink">{partner.name}</p>
               <p className="text-sm text-muted">
-                /embed/{partner.slug} &mdash; locked to{" "}
-                {partner.origin_is_global ? "Global" : lockedOrigin?.name ?? "?"}, jurisdiction:{" "}
-                {partner.is_global ? "Global" : jurisdictionNames.join(", ") || "none"}
+                {partner.home_place ? (
+                  <>
+                    /embed/{partner.slug} &mdash; home: {partner.home_place.name},{" "}
+                    {partner.direction === "both"
+                      ? "both directions"
+                      : partner.direction === "inbound"
+                        ? "people arriving only"
+                        : "diaspora only"}
+                    , jurisdiction:{" "}
+                    {partner.is_global ? "Global" : jurisdictionNames.join(", ") || "none"}
+                  </>
+                ) : (
+                  <>
+                    /embed/{partner.slug} &mdash; locked to{" "}
+                    {partner.origin_is_global ? "Global" : lockedOrigin?.name ?? "?"},
+                    jurisdiction:{" "}
+                    {partner.is_global ? "Global" : jurisdictionNames.join(", ") || "none"}
+                  </>
+                )}
               </p>
               <EmbedCode
                 snippet={`<iframe src="${origin}/embed/${partner.slug}" style="width: 100%; height: 640px; border: none;" title="CultureMesh"></iframe>`}

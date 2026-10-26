@@ -11,6 +11,11 @@ async function insertPartnerFromForm(formData: FormData) {
   const originId = formData.get("originId") as string;
   const hideOriginLabel = formData.get("hideOriginLabel") === "on";
   const originIsGlobal = formData.get("originIsGlobal") === "on";
+  const useHomePlace = formData.get("useHomePlace") === "on";
+  const homePlaceIdRaw = formData.get("homePlaceId") as string | null;
+  // 'outbound' when unused, matching the column default, so an existing
+  // locked-origin partner is created exactly as before.
+  const direction = useHomePlace ? ((formData.get("direction") as string) || "both") : "outbound";
   const jurisdictionIsGlobal = formData.get("jurisdictionIsGlobal") === "on";
   const jurisdictionRegionsOnly = formData.get("jurisdictionRegionsOnly") === "on";
   const joinHeadingStyle = (formData.get("joinHeadingStyle") as string) || "partner_name";
@@ -44,6 +49,17 @@ async function insertPartnerFromForm(formData: FormData) {
     );
   }
 
+  // Caught here rather than left to the constraint, because
+  // embed_partners_direction_needs_home would surface as a raw Postgres
+  // message about a check constraint nobody reading the form has heard
+  // of. The autocomplete can also be typed into without a selection
+  // being made, which leaves the hidden field empty.
+  if (useHomePlace && !homePlaceIdRaw) {
+    redirect(
+      `/admin/embed-partners?error=${encodeURIComponent("Pick the home place from the dropdown — typing the name is not enough.")}`,
+    );
+  }
+
   const isLanguage = originKind === "language";
 
   const { data: partner, error } = await supabase
@@ -51,10 +67,16 @@ async function insertPartnerFromForm(formData: FormData) {
     .insert({
       name,
       slug,
-      locked_language_id: !originIsGlobal && isLanguage ? Number(originId) : null,
-      locked_origin_place_id: !originIsGlobal && !isLanguage ? Number(originId) : null,
+      // A home place takes the locked origin's slot, and the schema
+      // forbids setting both, so these all go null when one is in use.
+      locked_language_id:
+        !useHomePlace && !originIsGlobal && isLanguage ? Number(originId) : null,
+      locked_origin_place_id:
+        !useHomePlace && !originIsGlobal && !isLanguage ? Number(originId) : null,
+      home_place_id: useHomePlace ? Number(homePlaceIdRaw) : null,
+      direction,
       hide_origin_label: hideOriginLabel,
-      origin_is_global: originIsGlobal,
+      origin_is_global: !useHomePlace && originIsGlobal,
       is_global: jurisdictionIsGlobal,
       jurisdiction_regions_only: jurisdictionRegionsOnly,
       join_heading_style: joinHeadingStyle,
