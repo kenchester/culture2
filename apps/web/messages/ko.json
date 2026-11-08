@@ -700,7 +700,8 @@
   "share": {
     "share": "공유하기",
     "copied": "링크 복사됨",
-    "copy": "알겠습니다"
+    "copy": "알겠습니다",
+    "whatsapp": "WhatsApp"
   },
   "consul": {
     "backToOutposts": "모든 전초기지",

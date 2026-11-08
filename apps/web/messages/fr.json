@@ -700,7 +700,8 @@
   "share": {
     "share": "Partager",
     "copied": "Lien copié",
-    "copy": "Bien reçu"
+    "copy": "Bien reçu",
+    "whatsapp": "WhatsApp"
   },
   "consul": {
     "backToOutposts": "Tous les avant-postes",

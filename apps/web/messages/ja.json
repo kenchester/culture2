@@ -700,7 +700,8 @@
   "share": {
     "share": "シェア",
     "copied": "リンクをコピーしました",
-    "copy": "了解"
+    "copy": "了解",
+    "whatsapp": "WhatsApp"
   },
   "consul": {
     "backToOutposts": "すべての前哨基地",

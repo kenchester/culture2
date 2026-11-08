@@ -700,7 +700,8 @@
   "share": {
     "share": "Поделиться",
     "copied": "Ссылка скопирована",
-    "copy": "Принято"
+    "copy": "Принято",
+    "whatsapp": "WhatsApp"
   },
   "consul": {
     "backToOutposts": "Все форпосты",

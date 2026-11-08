@@ -694,7 +694,8 @@
   "share": {
     "share": "Share",
     "copied": "Link copied",
-    "copy": "Copy"
+    "copy": "Copy",
+    "whatsapp": "WhatsApp"
   },
   "consul": {
     "backToOutposts": "All outposts",

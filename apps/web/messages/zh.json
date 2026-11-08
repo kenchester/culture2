@@ -700,7 +700,8 @@
   "share": {
     "share": "分享",
     "copied": "链接已复制",
-    "copy": "收到"
+    "copy": "收到",
+    "whatsapp": "WhatsApp"
   },
   "consul": {
     "backToOutposts": "所有前哨站",

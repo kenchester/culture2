@@ -24,6 +24,7 @@ import { createPost, joinNetwork, leaveNetwork, setNetworkPrompt } from "@/app/n
 import { DemoNetworkFeed, type RealDemoPost } from "@/app/networks/[id]/demo-network-feed";
 import { InviteFriendsBox } from "@/app/networks/[id]/invite-friends-box";
 import { ShareLink } from "@/components/share-link";
+import { WhatsAppShareLink } from "@/components/whatsapp-share-link";
 import { CorridorContextBlock } from "@/app/networks/[id]/corridor-context-block";
 import { getCorridorContext } from "@/lib/corridor-context";
 import { LanguagePrompts } from "@/components/language-prompts";
@@ -857,7 +858,20 @@ export default async function NetworkPage({
             <div className="flex flex-col gap-2 rounded-lg border border-border bg-surface p-4">
               <h2 className="font-medium text-ink">{t("shareHeading")}</h2>
               <p className="text-sm text-muted">{t("shareIntro")}</p>
-              <ShareLink path={`/networks/${network.id}`} title={network.title as string} />
+              <div className="flex flex-wrap gap-2">
+                <ShareLink path={`/networks/${network.id}`} title={network.title as string} />
+                {/* A second, explicit option: the native share sheet
+                    above already reaches WhatsApp on a phone where it's
+                    installed, but this is for desktop, or for someone
+                    who wants WhatsApp specifically rather than whatever
+                    the OS offers first - see whatsapp-share-link.tsx for
+                    why this is the honest ceiling of what's buildable
+                    here without a Business API account. */}
+                <WhatsAppShareLink
+                  path={`/networks/${network.id}`}
+                  text={`${t("joinNetwork")}: ${network.title}`}
+                />
+              </div>
             </div>
           )}
           {user && (

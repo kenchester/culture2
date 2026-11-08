@@ -700,7 +700,8 @@
   "share": {
     "share": "Teilen",
     "copied": "Link kopiert",
-    "copy": "Verstanden"
+    "copy": "Verstanden",
+    "whatsapp": "WhatsApp"
   },
   "consul": {
     "backToOutposts": "Alle Außenposten",
