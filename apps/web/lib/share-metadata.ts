@@ -46,15 +46,29 @@ export async function shareMetadata({
   description,
   path,
   noIndex = false,
+  image,
 }: {
   title: string;
   description: string;
   path: string;
   /** For gated or personal pages: shareable by link, but not crawled. */
   noIndex?: boolean;
+  /**
+   * Overrides the generic brand card with a per-page dynamic image, e.g.
+   * a network's own opengraph-image.tsx route. Defaults to OG_IMAGE, same
+   * as every page that doesn't pass this - so existing callers are
+   * unaffected. The text itself stays off the generic card for a reason
+   * (see app/opengraph-image.tsx: network/place names routinely contain
+   * CJK, Arabic or Cyrillic, and next/og renders glyphs the supplied font
+   * doesn't cover as empty boxes) - a page that opts into a custom image
+   * has to keep that same discipline itself rather than relying on this
+   * function to enforce it.
+   */
+  image?: string;
 }): Promise<Metadata> {
   const [siteUrl, locale] = await Promise.all([getSiteUrl(), getLocale()]);
   const url = new URL(path, siteUrl).toString();
+  const ogImage = image ?? OG_IMAGE;
 
   return {
     // metadataBase comes from the request's own host, so a preview
@@ -71,7 +85,7 @@ export async function shareMetadata({
       title,
       description,
       url,
-      images: [OG_IMAGE],
+      images: [ogImage],
     },
     twitter: {
       // The large card is the difference between a thumbnail and
@@ -79,7 +93,7 @@ export async function shareMetadata({
       card: "summary_large_image",
       title,
       description,
-      images: [OG_IMAGE],
+      images: [ogImage],
     },
   };
 }

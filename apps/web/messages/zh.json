@@ -26,7 +26,11 @@
     "locationPlaceholder": "例如密歇根州底特律",
     "submit": "搜索",
     "pageHeading": "找到你的人脉",
-    "suggestNetwork": "找不到你想要的东西？建议一个网络。"
+    "suggestNetwork": "找不到你想要的东西？建议一个网络。",
+    "describeLabel": "请介绍一下你自己",
+    "describePlaceholder": "比如我刚从福州搬到休斯顿，我家里讲福建话",
+    "describeSubmit": "找到我的人",
+    "orDivider": "或者直接搜索"
   },
   "auth": {
     "title": "登录或创建账户",
@@ -240,7 +244,14 @@
     "reply": "回复",
     "viewAllReplies": "查看全部{count}条回复",
     "metaDescription": "{members}成员、{posts}帖子. 加入拥有相同背景和同一个地方的人们的对话。",
-    "consulLine": "非官方领事： {name}"
+    "consulLine": "非官方领事： {name}",
+    "relatedHeading": "相关社区",
+    "relatedIntro": "附近还有其他同源活跃社区。",
+    "memberCount": "成员： {count}",
+    "shareHeading": "分享这个网络",
+    "shareIntro": "把链接发到你自己社区已经存在的地方——群聊、论坛、社交帖子。",
+    "foundingHeading": "成为这里第一个声音",
+    "foundingBody": "还没人发帖。30秒的语音录音——你好，你来自哪里，为什么加入——是最简单的入门方式。如果你更想写，文字依然有效。"
   },
   "editableEntry": {
     "save": "保存",
@@ -825,7 +836,8 @@
       "Midwest": "中西部",
       "South": "南部",
       "West": "西部"
-    }
+    },
+    "summaryLabel": "摘要，基于本页数据生成"
   },
   "corridor": {
     "heading": "关于这条走廊",
@@ -1005,7 +1017,8 @@
       "nearly_extinct": "极度危险",
       "extinct": "已消亡"
     },
-    "limitedEnglishLabel": "有限的英语"
+    "limitedEnglishLabel": "有限的英语",
+    "summaryLabel": "摘要，基于本页数据生成"
   },
   "languageIndex": {
     "title": "语言",
@@ -1080,5 +1093,14 @@
         "ask": "这是你小时候听过的故事。慢慢来，慢慢来。"
       }
     }
+  },
+  "reactions": {
+    "looksRight": "看起来对",
+    "looksOff": "看起来怪怪的",
+    "signInToReact": "登录以表示",
+    "summary": "准确："
+  },
+  "presence": {
+    "label": "现在就在这里："
   }
 }

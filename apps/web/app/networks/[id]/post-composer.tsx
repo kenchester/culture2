@@ -29,6 +29,7 @@ export function PostComposer({
   bodyPlaceholder,
   submitLabel,
   isSignedLanguage = false,
+  defaultMode = "text",
 }: {
   idPrefix: string;
   bodyLabel: string;
@@ -36,9 +37,19 @@ export function PostComposer({
   submitLabel: string;
   /** networks.language -> languages.is_signed. Hides Audio and offers a summary. */
   isSignedLanguage?: boolean;
+  /**
+   * Which tab opens first. Every caller but one wants "text", so that
+   * stays the default - the exception is the empty-feed founder prompt
+   * (app/networks/[id]/page.tsx), which opens straight to Audio because
+   * writing the very first post into a network with nobody reading it is
+   * the actual obstacle, and talking for thirty seconds isn't. Every tab
+   * stays reachable either way; this only changes which one is already
+   * selected.
+   */
+  defaultMode?: Mode;
 }) {
   const t = useTranslations("editableEntry");
-  const [mode, setMode] = useState<Mode>("text");
+  const [mode, setMode] = useState<Mode>(defaultMode);
   // The textarea is deliberately UNCONTROLLED. When it held its value in
   // React state, a successful post left the text sitting in the box: the
   // server action revalidates and the feed re-renders, but this client

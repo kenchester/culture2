@@ -26,7 +26,11 @@
     "locationPlaceholder": "예: 미시간주 디트로이트",
     "submit": "검색",
     "pageHeading": "당신의 네트워크를 찾아보세요",
-    "suggestNetwork": "찾으시는 걸 못 찾으셨나요? 네트워크를 제안해 보세요."
+    "suggestNetwork": "찾으시는 걸 못 찾으셨나요? 네트워크를 제안해 보세요.",
+    "describeLabel": "자기소개를 해 주세요",
+    "describePlaceholder": "예를 들어, 저는 푸저우에서 휴스턴으로 막 이사 왔고, 우리 가족은 복건어를 사용합니다",
+    "describeSubmit": "내 사람들을 찾아",
+    "orDivider": "또는 직접 검색할 수도 있습니다"
   },
   "auth": {
     "title": "로그인하거나 계정을 생성하세요",
@@ -240,7 +244,14 @@
     "reply": "답글",
     "viewAllReplies": "답글 {count}개 모두 보기",
     "metaDescription": "회원 {members}명, 게시물 {posts}개. 같은 배경과 이 지역을 공유하는 사람들의 대화에 참여하세요.",
-    "consulLine": "비공식 영사: {name}"
+    "consulLine": "비공식 영사: {name}",
+    "relatedHeading": "관련 커뮤니티",
+    "relatedIntro": "같은 기원의 다른 활발한 공동체들도 인근에 있습니다.",
+    "memberCount": "회원: {count}",
+    "shareHeading": "이 네트워크를 공유하세요",
+    "shareIntro": "이미 커뮤니티에 있는 곳 어디에나 링크를 올려보세요 - 단체 채팅방, 포럼, 소셜 게시물 등.",
+    "foundingHeading": "여기서 가장 먼저 목소리를 내세요",
+    "foundingBody": "아직 아무도 글을 올리지 않았어요. 30초 정도의 음성 녹음 - 안녕하세요, 어디서 왔는지, 왜 가입하셨는지 - 이 가장 쉬운 시작 방법입니다. 글을 쓰고 싶으면 텍스트도 여전히 가능합니다."
   },
   "editableEntry": {
     "save": "저장",
@@ -825,7 +836,8 @@
       "Midwest": "중서부",
       "South": "남부",
       "West": "서부"
-    }
+    },
+    "summaryLabel": "요약: 이 페이지의 데이터를 바탕으로 작성됨"
   },
   "corridor": {
     "heading": "이 복도에 대해",
@@ -1005,7 +1017,8 @@
       "nearly_extinct": "매우 심각한 소멸 위기",
       "extinct": "소멸"
     },
-    "limitedEnglishLabel": "제한된 영어"
+    "limitedEnglishLabel": "제한된 영어",
+    "summaryLabel": "요약: 이 페이지의 데이터를 바탕으로 작성됨"
   },
   "languageIndex": {
     "title": "언어",
@@ -1080,5 +1093,14 @@
         "ask": "어릴 적 들었던 이야기. 필요한 만큼 천천히 해."
       }
     }
+  },
+  "reactions": {
+    "looksRight": "맞는 것 같아",
+    "looksOff": "이상해 보인다",
+    "signInToReact": "로그인하여 말씀하세요",
+    "summary": "정확함:"
+  },
+  "presence": {
+    "label": "지금 여기:"
   }
 }

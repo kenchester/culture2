@@ -99,6 +99,16 @@ export function renderSignupReminderEmail(body: string, cta: Cta): { text: strin
   );
 }
 
+// The lone-founder rescue nudge (app/api/cron/network-rescue) - cta is
+// the network's own invite link.
+export function renderNetworkRescueEmail(body: string, cta: Cta): { text: string; html: string } {
+  return renderBrandedEmail(
+    body,
+    { tagline: "Connecting Global Diasporas", footerLabel: "CultureMesh" },
+    cta,
+  );
+}
+
 // Table-based layout throughout, not flexbox/grid - Outlook desktop's Word
 // rendering engine ignores most modern CSS, so tables remain the one
 // layout primitive that behaves the same across every major mail client.

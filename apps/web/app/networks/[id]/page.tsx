@@ -23,6 +23,7 @@ import type { Locale } from "@/lib/locale";
 import { createPost, joinNetwork, leaveNetwork, setNetworkPrompt } from "@/app/networks/actions";
 import { DemoNetworkFeed, type RealDemoPost } from "@/app/networks/[id]/demo-network-feed";
 import { InviteFriendsBox } from "@/app/networks/[id]/invite-friends-box";
+import { ShareLink } from "@/components/share-link";
 import { CorridorContextBlock } from "@/app/networks/[id]/corridor-context-block";
 import { getCorridorContext } from "@/lib/corridor-context";
 import { LanguagePrompts } from "@/components/language-prompts";
@@ -99,6 +100,81 @@ async function getSuggestedSpeakerNetwork(
   return best ?? null;
 }
 
+type RelatedNetworkRow = SuggestedNetworkRow & {
+  match_kind: "exact" | "related_broader" | "related_narrower";
+};
+
+// A network with no activity of its own has nothing to show except its
+// own emptiness. search_networks already computes exactly the relation
+// this needs - same origin, a broader or narrower location - because the
+// corridor and embed pages use it for the same purpose; this reuses it
+// rather than writing a second traversal.
+//
+// The one rule that makes this a rescue rather than a shuffle: never
+// recommend another network with zero activity. Pointing a stuck founder
+// at an equally silent network would just move the loneliness, not solve
+// it.
+const MIN_RELATED_ACTIVITY = 1;
+const MAX_RELATED = 3;
+
+async function getRelatedNetworks(
+  supabase: Awaited<ReturnType<typeof createClient>>,
+  network: {
+    id: number;
+    language_id: number | null;
+    origin_place_id: number | null;
+    religion_id: number | null;
+    location_place_id: number;
+  },
+): Promise<RelatedNetworkRow[]> {
+  if (!network.language_id && !network.origin_place_id) return [];
+
+  const { data } = await supabase.rpc("search_networks", {
+    p_language_id: network.language_id,
+    p_origin_place_id: network.origin_place_id,
+    p_religion_id: network.religion_id,
+    p_location_place_id: network.location_place_id,
+  });
+
+  const candidates = ((data ?? []) as RelatedNetworkRow[])
+    .filter((row) => row.network_id !== network.id)
+    .filter((row) => row.member_count >= MIN_RELATED_ACTIVITY || row.post_count >= MIN_RELATED_ACTIVITY);
+  if (candidates.length === 0) return [];
+
+  // search_networks has no concept of organisation gating - it walks the
+  // places hierarchy alone, with no hidden_from_search check anywhere in
+  // it (00000000000005, 00000000000031). That has been safe so far only
+  // because every existing caller is one-directional: the embed page
+  // scopes to one partner's own jurisdiction, and the org "connect with
+  // speakers" widget only ever runs FROM a gated network looking OUT at a
+  // public one, never the reverse. This widget runs on every network
+  // page, including public ones, so it is the first caller that could
+  // surface a gated network's name and location TO the public side - an
+  // organisation network is identified by its location being hidden
+  // (matching app/sitemap.ts and the city page's own network listing),
+  // and a university is ordinarily inside the very state or city a
+  // public network would widen into, so this is not a hypothetical edge
+  // case so much as the normal geography.
+  const { data: locations } = await supabase
+    .from("places")
+    .select("id, hidden_from_search")
+    .in(
+      "id",
+      candidates.map((row) => row.location_place_id),
+    );
+  const hiddenLocationIds = new Set(
+    (locations ?? []).filter((p) => p.hidden_from_search).map((p) => p.id as number),
+  );
+
+  return candidates
+    .filter((row) => !hiddenLocationIds.has(row.location_place_id))
+    // Broader first: a stuck founder is more likely to find real activity
+    // by widening ("...in Texas") than by narrowing to one more specific
+    // spot that is just as likely to be as quiet as this one.
+    .sort((a, b) => Number(a.match_kind !== "related_broader") - Number(b.match_kind !== "related_broader"))
+    .slice(0, MAX_RELATED);
+}
+
 /**
  * A network link is the most-forwarded thing on the site, so it needs a
  * preview. Organisation networks are gated (00000000000078), so their
@@ -149,6 +225,12 @@ export async function generateMetadata({
     ),
     path: `/networks/${slugWithId(network.title as string, network.id as number)}`,
     noIndex: Boolean(place?.hidden_from_search),
+    // The real name still reaches whoever this is shared to - that's
+    // og:title above, plain text rendered in the recipient's own font.
+    // This image is numeric-only (app/networks/[id]/opengraph-image.tsx)
+    // specifically so it can safely show something the generic brand
+    // card can't: this network's own member count, as the hook.
+    image: `/networks/${network.id}/opengraph-image`,
   });
 }
 
@@ -302,6 +384,7 @@ export default async function NetworkPage({
     { data: canManagePrompt },
     suggestedNetwork,
     isExample,
+    relatedNetworks,
   ] = await Promise.all([
     network.language_id
       ? supabase
@@ -346,6 +429,7 @@ export default async function NetworkPage({
       : Promise.resolve({ data: false }),
     getSuggestedSpeakerNetwork(supabase, network),
     isExampleNetwork(supabase, network.location_place_id),
+    getRelatedNetworks(supabase, network),
   ]);
 
   const [translatedLanguageName, translatedOriginName, translatedLocationName, translatedSuggestedLocationName] =
@@ -461,6 +545,8 @@ export default async function NetworkPage({
         .eq("active", true)
         .maybeSingle()
     : { data: null };
+
+  const isFoundingPost = (network.post_count ?? 0) === 0 && !activePrompt;
 
   const returnTo = `/networks/${network.id}${isEmbedded ? "?embed=1" : ""}`;
   const signInParams = new URLSearchParams({ returnTo });
@@ -686,6 +772,24 @@ export default async function NetworkPage({
                   {error && (
                     <FormError>{error}</FormError>
                   )}
+                  {/* The actual obstacle on an empty network is not that
+                      nobody has anything to say - it's that typing into
+                      a textarea with zero readers feels like talking to
+                      a wall. Thirty seconds of voice feels like far less
+                      of a commitment than a paragraph of text, so the
+                      founding post defaults to Audio (Video for a signed
+                      language, which has no audio tab at all) rather
+                      than asking the founder to write first. Skipped
+                      when a language prompt already set the frame - that
+                      banner is more specific than this one, and showing
+                      both would bury the actual question under a second,
+                      more generic one. */}
+                  {isFoundingPost && (
+                    <div className="flex flex-col gap-1 rounded-md border border-primary bg-primary-light/40 p-3">
+                      <p className="text-sm font-medium text-ink">{t("foundingHeading")}</p>
+                      <p className="text-sm text-body">{t("foundingBody")}</p>
+                    </div>
+                  )}
                   {/* The question, above the box, when the composer was
                       opened from a recording prompt. Without it the
                       person lands on an empty textarea having lost the
@@ -711,6 +815,7 @@ export default async function NetworkPage({
                     bodyPlaceholder={t("postPlaceholder")}
                     submitLabel={t("postSubmit")}
                     isSignedLanguage={isSignedLanguage}
+                    defaultMode={isFoundingPost ? (isSignedLanguage ? "video" : "audio") : "text"}
                   />
                   <PostingIndicator />
                 </form>
@@ -741,14 +846,47 @@ export default async function NetworkPage({
         {languageReference && !contextLeads && languageReference}
       </div>
 
-      {!isEmbedded && (user || suggestedNetwork) && (
+      {!isEmbedded && (user || suggestedNetwork || relatedNetworks.length > 0) && (
         <aside className="flex flex-col gap-4">
+          {user && isMember && (network.member_count ?? 0) <= 1 && (
+            // Only for the person most likely to need it: a member of a
+            // network that is currently alone or about to be. Posting
+            // this card (app/networks/[id]/opengraph-image.tsx) wherever
+            // this person already is - WhatsApp, a group chat - is a
+            // recruiting surface a lonely founder never had before.
+            <div className="flex flex-col gap-2 rounded-lg border border-border bg-surface p-4">
+              <h2 className="font-medium text-ink">{t("shareHeading")}</h2>
+              <p className="text-sm text-muted">{t("shareIntro")}</p>
+              <ShareLink path={`/networks/${network.id}`} title={network.title as string} />
+            </div>
+          )}
           {user && (
             <InviteFriendsBox
               networkId={network.id}
               invited={invited === "1"}
               inviteError={inviteError}
             />
+          )}
+          {relatedNetworks.length > 0 && (
+            <div className="flex flex-col gap-2 rounded-lg border border-border bg-surface p-4">
+              <h2 className="font-medium text-ink">{t("relatedHeading")}</h2>
+              <p className="text-sm text-muted">{t("relatedIntro")}</p>
+              <ul className="flex flex-col gap-2">
+                {relatedNetworks.map((row) => (
+                  <li key={row.network_id} className="flex flex-col">
+                    <Link
+                      href={`/networks/${row.network_id}`}
+                      className="text-sm font-medium text-primary hover:underline"
+                    >
+                      {row.network_title}
+                    </Link>
+                    <span className="text-xs text-muted tabular-nums">
+                      {t("memberCount", { count: row.member_count })}
+                    </span>
+                  </li>
+                ))}
+              </ul>
+            </div>
           )}
           {suggestedNetwork && (
             <div className="flex flex-col gap-2 rounded-lg border border-border bg-surface p-4">

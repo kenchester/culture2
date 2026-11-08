@@ -26,7 +26,11 @@
     "locationPlaceholder": "例:ミシガン州デトロイト",
     "submit": "検索",
     "pageHeading": "自分のネットワークを見つけてください",
-    "suggestNetwork": "探しているものが見つからない?ネットワークを提案してください。"
+    "suggestNetwork": "探しているものが見つからない?ネットワークを提案してください。",
+    "describeLabel": "ご自身について教えてください",
+    "describePlaceholder": "例えば、私は福州からヒューストンに引っ越してきたばかりで、家族は福建話を話します",
+    "describeSubmit": "私の仲間を見つけてください",
+    "orDivider": "または直接検索"
   },
   "auth": {
     "title": "サインインまたはアカウント作成",
@@ -240,7 +244,14 @@
     "reply": "返信",
     "viewAllReplies": "{count}件の返信をすべて見る",
     "metaDescription": "{members}メンバー、{posts}投稿. 同じ背景とこの場所を共有する人々の会話に参加しましょう。",
-    "consulLine": "非公式領事: {name}"
+    "consulLine": "非公式領事: {name}",
+    "relatedHeading": "関連コミュニティ",
+    "relatedIntro": "同じ起源を持つ他の活発なコミュニティも近くにあります。",
+    "memberCount": "メンバー: {count}",
+    "shareHeading": "このネットワークを共有する",
+    "shareIntro": "自分のコミュニティがある場所ならどこでもリンクを投稿してください。グループチャット、フォーラム、ソーシャル投稿などです。",
+    "foundingHeading": "ここで最初の声を発してください",
+    "foundingBody": "まだ誰も投稿していません。30秒の音声録音(こんにちは、出身地、参加理由)が一番簡単な始め方です。書きたいならテキストでも使えます。"
   },
   "editableEntry": {
     "save": "セーブ",
@@ -825,7 +836,8 @@
       "Midwest": "中西部",
       "South": "南部",
       "West": "西部"
-    }
+    },
+    "summaryLabel": "このページのデータをもとに作成された概要"
   },
   "corridor": {
     "heading": "この廊下について",
@@ -1005,7 +1017,8 @@
       "nearly_extinct": "極めて深刻な危険",
       "extinct": "消滅"
     },
-    "limitedEnglishLabel": "限られた英語"
+    "limitedEnglishLabel": "限られた英語",
+    "summaryLabel": "このページのデータをもとに作成された概要"
   },
   "languageIndex": {
     "title": "言語",
@@ -1080,5 +1093,14 @@
         "ask": "子供の頃に聞かされた物語だ。必要なだけ時間をかけて。"
       }
     }
+  },
+  "reactions": {
+    "looksRight": "正しい見た目だ",
+    "looksOff": "おかしいですね",
+    "signInToReact": "サインインして",
+    "summary": "正確:"
+  },
+  "presence": {
+    "label": "今すぐこちら:"
   }
 }

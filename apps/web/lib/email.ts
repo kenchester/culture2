@@ -24,6 +24,26 @@ const FROM = "CultureMesh <noreply@culturemesh.com>";
  */
 const EMAIL_ENABLED = process.env.VERCEL_ENV === "production";
 
+/**
+ * Whether sendEmail/sendBulkEmails actually dispatch anything right now.
+ *
+ * sendEmail returns the same way (resolves, throws nothing) whether a
+ * message really went out or was logged-and-skipped, so a caller cannot
+ * tell the difference from its return value alone. That is fine for
+ * every existing caller - each is triggered by a real user action, so
+ * "we didn't really send it" only ever happens outside production,
+ * where nobody is waiting on the mail anyway.
+ *
+ * It stops being fine for a caller that persists state contingent on a
+ * send having actually happened - a cron job stamping "already notified
+ * this person" so it never repeats. Running that job locally or on a
+ * preview deploy would stamp the row while genuinely sending nothing,
+ * silently consuming the real cooldown for a notification that never
+ * reached anyone. Exported so such a caller can gate its own bookkeeping
+ * on this instead of assuming a non-throwing call means mail went out.
+ */
+export const EMAIL_SEND_ENABLED = EMAIL_ENABLED;
+
 function logSuppressed(recipients: string[], subject: string) {
   console.info(
     `[email] suppressed (VERCEL_ENV=${process.env.VERCEL_ENV ?? "unset"}): ` +

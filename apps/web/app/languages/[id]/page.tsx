@@ -8,6 +8,9 @@ import { recordPageView, viewPath } from "@/lib/page-views";
 import { previewText, shareMetadata } from "@/lib/share-metadata";
 import { CommunityNotes } from "@/components/community-notes";
 import { LanguagePrompts } from "@/components/language-prompts";
+import { PagePresence } from "@/components/page-presence";
+import { StatReaction } from "@/components/stat-reaction";
+import { getPageSummary } from "@/lib/page-summary";
 import { censusCoverage, isAtRisk } from "@/lib/language-reference";
 import { CopyTextButton } from "@/components/copy-text-button";
 import { getSiteUrl } from "@/lib/site-url";
@@ -148,7 +151,8 @@ export default async function LanguagePage({ params }: { params: Promise<{ id: s
   const { language, coverage, stats, networks, placeById } = loaded;
   const name = language.name as string;
   const slug = slugWithId(name, language.id as number);
-  recordPageView(viewPath("/languages", slug));
+  const pageViewPath = viewPath("/languages", slug);
+  recordPageView(pageViewPath);
 
   const status = language.endangerment as string | null;
   const isGroup = language.coverage === "group";
@@ -159,6 +163,35 @@ export default async function LanguagePage({ params }: { params: Promise<{ id: s
     { kind: "region" as const, rows: stateRows },
     { kind: "city" as const, rows: cityRows },
   ].filter((group) => group.rows.length > 0);
+
+  // See app/cities/[id]/page.tsx for the same reasoning: one paragraph
+  // connecting status, coverage and figures that otherwise sit in three
+  // separate sections, wrapped so a model having a bad day can never be
+  // the reason this page 500s.
+  let summary: string | null = null;
+  try {
+    summary = await getPageSummary(
+      { languageId: language.id as number },
+      {
+        language: name,
+        // The page's own UNESCO-worded label, not Glottolog's raw term
+        // (status, e.g. "shifting") - the whole reason that translation
+        // exists is that "Moribund" and friends are opaque jargon a
+        // reader was never meant to see; the summary has to use the same
+        // words the rest of the page does, not reach past them to the
+        // internal vocabulary underneath.
+        endangermentStatus: isGroup ? null : status ? t(`status.${status}`) : null,
+        isGroupOfLanguages: isGroup,
+        censusCoversThisLanguageExactly: coverage?.is_exact ?? null,
+        topPlacesBySpeakers: stats.slice(0, 5).map((s) => ({
+          place: placeById.get(s.place_id)?.name ?? null,
+          speakers: s.speakers,
+        })),
+      },
+    );
+  } catch {
+    summary = null;
+  }
 
   // Which network a recording would go to: one the viewer has joined, if
   // any. Resolved here rather than in LanguagePrompts so the prompt list
@@ -195,7 +228,15 @@ export default async function LanguagePage({ params }: { params: Promise<{ id: s
           </p>
         )}
         <p className="text-sm text-muted">{t("intro")}</p>
+        <PagePresence channelPath={pageViewPath} />
       </header>
+
+      {summary && (
+        <section className="flex flex-col gap-1 rounded-lg border border-border bg-primary-light/20 p-4">
+          <p className="text-xs uppercase tracking-wide text-muted">{t("summaryLabel")}</p>
+          <p className="text-sm text-body">{summary}</p>
+        </section>
+      )}
 
       {/* 1. Status. The first thing a revitalisation group looks for, and
              the line that tells them whether this site understands what
@@ -265,7 +306,21 @@ export default async function LanguagePage({ params }: { params: Promise<{ id: s
         ) : (
           <>
             {coverage.is_exact ? (
-              <p className="text-sm text-muted">{t("speakersExact", { language: name })}</p>
+              <>
+                <p className="text-sm text-muted">{t("speakersExact", { language: name })}</p>
+                {/* Only offered when the figure is actually this
+                    language's own - a tap on a lumped category's number
+                    would be agreeing to something that isn't a claim
+                    about this language at all. */}
+                <StatReaction
+                  supabase={supabase}
+                  languageId={language.id as number}
+                  topic="speakers"
+                  returnTo={`/languages/${slug}`}
+                  signedIn={Boolean(viewer)}
+                  viewerId={viewer?.id}
+                />
+              </>
             ) : (
               // The most important paragraph on most of these pages. The
               // census openly declines to count this language, and the

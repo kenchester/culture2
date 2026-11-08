@@ -26,7 +26,11 @@
     "locationPlaceholder": "par exemple Detroit, Michigan",
     "submit": "Recherche",
     "pageHeading": "Trouvez votre réseau",
-    "suggestNetwork": "Vous ne trouvez pas ce que vous cherchez ? Suggérez un réseau."
+    "suggestNetwork": "Vous ne trouvez pas ce que vous cherchez ? Suggérez un réseau.",
+    "describeLabel": "Parlez-nous de vous",
+    "describePlaceholder": "Par exemple, je viens d’emménager à Houston depuis Fuzhou, et ma famille parle le hokkien",
+    "describeSubmit": "Trouve mon peuple",
+    "orDivider": "ou rechercher directement"
   },
   "auth": {
     "title": "Connectez-vous ou créez un compte",
@@ -240,7 +244,14 @@
     "reply": "Répondre",
     "viewAllReplies": "Voir les {count, plural, one {# réponse} other {# réponses}}",
     "metaDescription": "{members, plural, one {# membre} other {# membres}} · {posts, plural, one {# publication} other {# publications}}. Rejoignez la conversation entre des personnes qui partagent cette origine et ce lieu.",
-    "consulLine": "Consul non officiel : {name}"
+    "consulLine": "Consul non officiel : {name}",
+    "relatedHeading": "Communautés apparentées",
+    "relatedIntro": "D’autres communautés actives de la même origine sont à proximité.",
+    "memberCount": "Membres : {count}",
+    "shareHeading": "Partagez ce réseau",
+    "shareIntro": "Publie le lien partout où se trouve déjà ta propre communauté – un groupe de discussion, un forum, un post social.",
+    "foundingHeading": "Sois la première voix ici",
+    "foundingBody": "Personne n’a encore posté. Un enregistrement vocal de trente secondes – bonjour, d’où vous venez, pourquoi vous avez rejoint – est la façon la plus simple de commencer. Le texte fonctionne toujours si vous préférez écrire."
   },
   "editableEntry": {
     "save": "Sauvegarder",
@@ -825,7 +836,8 @@
       "Midwest": "Midwest",
       "South": "Sud",
       "West": "Ouest"
-    }
+    },
+    "summaryLabel": "Résumé, généré à partir des données de cette page"
   },
   "corridor": {
     "heading": "À propos de ce corridor",
@@ -1005,7 +1017,8 @@
       "nearly_extinct": "En situation critique",
       "extinct": "Éteinte"
     },
-    "limitedEnglishLabel": "Anglais limité"
+    "limitedEnglishLabel": "Anglais limité",
+    "summaryLabel": "Résumé, généré à partir des données de cette page"
   },
   "languageIndex": {
     "title": "Langues",
@@ -1080,5 +1093,14 @@
         "ask": "Une histoire qu’on t’a racontée enfant. Prends tout le temps qu’il te faut."
       }
     }
+  },
+  "reactions": {
+    "looksRight": "Ça a l’air correct",
+    "looksOff": "Ça ne fait pas",
+    "signInToReact": "Connectez-vous pour dire",
+    "summary": "Précis :"
+  },
+  "presence": {
+    "label": "Ici et maintenant :"
   }
 }

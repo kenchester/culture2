@@ -26,7 +26,11 @@
     "locationPlaceholder": "z. B. Detroit, Michigan",
     "submit": "Suche",
     "pageHeading": "Finde dein Netzwerk",
-    "suggestNetwork": "Findest du nicht, wonach du suchst? Schlage ein Netzwerk vor."
+    "suggestNetwork": "Findest du nicht, wonach du suchst? Schlage ein Netzwerk vor.",
+    "describeLabel": "Erzählen Sie uns etwas über sich selbst",
+    "describePlaceholder": "Zum Beispiel bin ich gerade von Fuzhou nach Houston gezogen, und meine Familie spricht Hokkien",
+    "describeSubmit": "Finde meine Leute",
+    "orDivider": "oder direkt suchen"
   },
   "auth": {
     "title": "Melden Sie sich an oder erstellen Sie ein Konto",
@@ -240,7 +244,14 @@
     "reply": "Antworten",
     "viewAllReplies": "Alle {count, plural, one {# Antwort} other {# Antworten}} anzeigen",
     "metaDescription": "{members, plural, one {# Mitglied} other {# Mitglieder}} · {posts, plural, one {# Beitrag} other {# Beiträge}}. Nimm am Gespräch mit Menschen teil, die diese Herkunft und diesen Ort teilen.",
-    "consulLine": "Inoffizieller Konsul: {name}"
+    "consulLine": "Inoffizieller Konsul: {name}",
+    "relatedHeading": "Verwandte Gemeinden",
+    "relatedIntro": "Weitere aktive Gemeinden desselben Ursprungs sind in der Nähe.",
+    "memberCount": "Mitglieder: {count}",
+    "shareHeading": "Teilen Sie dieses Netzwerk",
+    "shareIntro": "Poste den Link überall dort, wo deine eigene Community bereits ist – in einem Gruppenchat, einem Forum, einem sozialen Beitrag.",
+    "foundingHeading": "Sei die erste Stimme hier",
+    "foundingBody": "Niemand hat bisher etwas gepostet. Eine dreißigsekündige Sprachaufnahme – hallo, woher du kommst, warum du beigetreten bist – ist der einfachste Anfang. Text funktioniert trotzdem, wenn du lieber schreiben möchtest."
   },
   "editableEntry": {
     "save": "Speichern",
@@ -825,7 +836,8 @@
       "Midwest": "Mittlerer Westen",
       "South": "Süden",
       "West": "Westen"
-    }
+    },
+    "summaryLabel": "Zusammenfassung, erstellt aus den Daten auf dieser Seite"
   },
   "corridor": {
     "heading": "Über diesen Korridor",
@@ -1005,7 +1017,8 @@
       "nearly_extinct": "Vom Aussterben bedroht",
       "extinct": "Ausgestorben"
     },
-    "limitedEnglishLabel": "Begrenztes Englisch"
+    "limitedEnglishLabel": "Begrenztes Englisch",
+    "summaryLabel": "Zusammenfassung, erstellt aus den Daten auf dieser Seite"
   },
   "languageIndex": {
     "title": "Sprachen",
@@ -1080,5 +1093,14 @@
         "ask": "Eine Geschichte, die dir als Kind erzählt wurde. Nimm dir so viel Zeit, wie du brauchst."
       }
     }
+  },
+  "reactions": {
+    "looksRight": "Sieht richtig aus",
+    "looksOff": "Sieht komisch aus",
+    "signInToReact": "Melde dich an, um zu sagen",
+    "summary": "Genau:"
+  },
+  "presence": {
+    "label": "Hier und jetzt:"
   }
 }

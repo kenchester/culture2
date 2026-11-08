@@ -6,6 +6,9 @@ import { createClient } from "@/lib/supabase/server";
 import { corridorSlug, idFromSlug, slugWithId } from "@/lib/slug";
 import { recordPageView, viewPath } from "@/lib/page-views";
 import { CommunityNotes } from "@/components/community-notes";
+import { PagePresence } from "@/components/page-presence";
+import { StatReaction } from "@/components/stat-reaction";
+import { getPageSummary } from "@/lib/page-summary";
 import { previewText, shareMetadata } from "@/lib/share-metadata";
 import { getPlaceChain } from "@/lib/place-chain";
 import { groupByContinent } from "@/lib/continents";
@@ -213,14 +216,44 @@ export default async function CityPage({ params }: { params: Promise<{ id: strin
   const [loaded, siteUrl] = await Promise.all([loadCity(networkId, locale), getSiteUrl()]);
   if (!loaded) notFound();
   // Recorded per city: the point of these pages is to be found
-  // individually, so which ones are found is the whole question.
-  recordPageView(viewPath("/cities", slugWithId(loaded.place.name as string, loaded.place.id as number)));
+  // individually, so which ones are found is the whole question. Reused
+  // below as the presence channel's own key, so "visited this month" and
+  // "here right now" are scoped to the exact same page.
+  const pageViewPath = viewPath(
+    "/cities",
+    slugWithId(loaded.place.name as string, loaded.place.id as number),
+  );
+  recordPageView(pageViewPath);
 
   const { place, chain, sisters, origins, domestic, consulates, networks, coveredCountryIds, placeForIso } =
     loaded;
 
   const total = origins.find((o) => o.is_total) ?? null;
   const countries = origins.filter((o) => !o.is_total);
+
+  // The one paragraph that reads the sections below as a whole, rather
+  // than as four separately-sourced blocks a visitor has to assemble
+  // themselves. Compact inputs on purpose - the top origins and a handful
+  // of sister cities, not all twelve/seventeen rows - so the model
+  // synthesises rather than just re-lists everything on the page. Wrapped
+  // here (not just inside the function) because this is the one call on
+  // the page that reaches an external API mid-render, and a model having
+  // a bad day must never be the reason a city page 500s.
+  let summary: string | null = null;
+  try {
+    summary = await getPageSummary(
+      { placeA: place.id as number },
+      {
+        city: chain || place.name,
+        foreignBornTotal: total?.people ?? null,
+        topOrigins: countries.slice(0, 5).map((c) => ({ country: c.origin_label, people: c.people })),
+        sisterCities: sisters.slice(0, 5).map((s) => s.partner_name),
+        consulateCount: consulates.length || null,
+      },
+    );
+  } catch {
+    summary = null;
+  }
 
   const incoming = networks.filter((n) => n.location_place_id === place.id);
   const outgoing = networks.filter((n) => n.origin_place_id === place.id);
@@ -279,12 +312,34 @@ export default async function CityPage({ params }: { params: Promise<{ id: strin
           {chain || (place.name as string)}
         </h1>
         {total && (
-          <p className="text-body tabular-nums">
-            {t("foreignBorn", { count: total.people })}
-          </p>
+          <>
+            <p className="text-body tabular-nums">
+              {t("foreignBorn", { count: total.people })}
+            </p>
+            <StatReaction
+              supabase={supabase}
+              placeA={place.id as number}
+              topic="population"
+              returnTo={`/cities/${slugWithId(place.name as string, place.id as number)}`}
+              signedIn={Boolean(viewer)}
+              viewerId={viewer?.id}
+            />
+          </>
         )}
         <p className="text-sm text-muted">{t("intro")}</p>
+        <PagePresence channelPath={pageViewPath} />
       </header>
+
+      {/* Labelled unmistakably, every time it renders - never phrased as
+          if a person wrote it. The sourced figures it draws from are
+          cited properly in the sections below; this paragraph exists to
+          connect them, not to replace their citations. */}
+      {summary && (
+        <section className="flex flex-col gap-1 rounded-lg border border-border bg-primary-light/20 p-4">
+          <p className="text-xs uppercase tracking-wide text-muted">{t("summaryLabel")}</p>
+          <p className="text-sm text-body">{summary}</p>
+        </section>
+      )}
 
       {/* 1. Official statistics. Present for every US city once loaded,
              which is what keeps this page from being empty on day one. */}

@@ -17,6 +17,7 @@ import { FormError } from "@/components/ui/form-error";
 import { Field, fieldClass, Input, Label, Textarea } from "@/components/ui/input";
 import { SubmitButton } from "@/components/ui/submit-button";
 import { cancelTrip, postCorridorAnswer, postTrip } from "@/app/corridors/[pair]/actions";
+import { PagePresence } from "@/components/page-presence";
 
 type Trip = {
   id: number;
@@ -183,7 +184,8 @@ export default async function CorridorPage({
   const t = await getTranslations("corridorPage");
   const loaded = await loadCorridor(pair, locale);
   if (!loaded) notFound();
-  recordPageView(viewPath("/corridors", corridorSlug(loaded.low, loaded.high)));
+  const pageViewPath = viewPath("/corridors", corridorSlug(loaded.low, loaded.high));
+  recordPageView(pageViewPath);
 
   const { low, high, lowToHigh, highToLow, contexts, trips, questions, answers, user, isMember } =
     loaded;
@@ -210,6 +212,7 @@ export default async function CorridorPage({
           {t("title", { a: low.name, b: high.name })}
         </h1>
         <p className="text-body">{t("intro")}</p>
+        <PagePresence channelPath={pageViewPath} />
       </header>
 
       {error && <FormError>{error}</FormError>}

@@ -26,7 +26,11 @@
     "locationPlaceholder": "por ejemplo, Detroit, Michigan",
     "submit": "Búsqueda",
     "pageHeading": "Encuentra tu red",
-    "suggestNetwork": "¿No encuentras lo que buscas? Sugiere una red de contactos."
+    "suggestNetwork": "¿No encuentras lo que buscas? Sugiere una red de contactos.",
+    "describeLabel": "Cuéntanos sobre ti",
+    "describePlaceholder": "Por ejemplo, acabo de mudarme a Houston desde Fuzhou, y mi familia habla hokkien",
+    "describeSubmit": "Encuentra a mi gente",
+    "orDivider": "o buscar directamente"
   },
   "auth": {
     "title": "Inicia sesión o crea una cuenta",
@@ -240,7 +244,14 @@
     "reply": "Responder",
     "viewAllReplies": "Ver las {count, plural, one {# respuesta} other {# respuestas}}",
     "metaDescription": "{members, plural, one {# miembro} other {# miembros}} · {posts, plural, one {# publicación} other {# publicaciones}}. Únete a la conversación entre personas que comparten este origen y este lugar.",
-    "consulLine": "Cónsul no oficial: {name}"
+    "consulLine": "Cónsul no oficial: {name}",
+    "relatedHeading": "Comunidades relacionadas",
+    "relatedIntro": "Otras comunidades activas del mismo origen, cercanas.",
+    "memberCount": "Miembros: {count}",
+    "shareHeading": "Comparte esta red",
+    "shareIntro": "Publica el enlace en cualquier sitio donde ya esté tu propia comunidad: un chat grupal, un foro, una publicación en redes sociales.",
+    "foundingHeading": "Sé la primera voz aquí",
+    "foundingBody": "Nadie ha publicado aún. Una grabación de voz de treinta segundos —hola, de dónde eres, por qué te uniste— es la forma más sencilla de empezar. El texto sigue funcionando si prefieres escribir."
   },
   "editableEntry": {
     "save": "Salvar",
@@ -825,7 +836,8 @@
       "Midwest": "Medio Oeste",
       "South": "Sur",
       "West": "Oeste"
-    }
+    },
+    "summaryLabel": "Resumen, generado a partir de los datos de esta página"
   },
   "corridor": {
     "heading": "Sobre este corredor",
@@ -1005,7 +1017,8 @@
       "nearly_extinct": "En situación crítica",
       "extinct": "Extinta"
     },
-    "limitedEnglishLabel": "inglés limitado"
+    "limitedEnglishLabel": "inglés limitado",
+    "summaryLabel": "Resumen, generado a partir de los datos de esta página"
   },
   "languageIndex": {
     "title": "Idiomas",
@@ -1080,5 +1093,14 @@
         "ask": "Una historia que te contaron de niño. Tómate todo el tiempo que necesites."
       }
     }
+  },
+  "reactions": {
+    "looksRight": "Parece correcto",
+    "looksOff": "Parece raro",
+    "signInToReact": "Inicia sesión para decir",
+    "summary": "Preciso:"
+  },
+  "presence": {
+    "label": "Aquí y ahora:"
   }
 }

@@ -26,7 +26,11 @@
     "locationPlaceholder": "ad esempio Detroit, Michigan",
     "submit": "Ricerca",
     "pageHeading": "Trova la tua rete",
-    "suggestNetwork": "Non trovi quello che cerchi? Suggerisci una rete."
+    "suggestNetwork": "Non trovi quello che cerchi? Suggerisci una rete.",
+    "describeLabel": "Parlaci di te",
+    "describePlaceholder": "Ad esempio, mi sono appena trasferito a Houston da Fuzhou e la mia famiglia parla Hokkien",
+    "describeSubmit": "Trova la mia gente",
+    "orDivider": "oppure cerca direttamente"
   },
   "auth": {
     "title": "Accedi o crea un account",
@@ -240,7 +244,14 @@
     "reply": "Rispondi",
     "viewAllReplies": "Vedi tutte le {count, plural, one {# risposta} other {# risposte}}",
     "metaDescription": "{members, plural, one {# membro} other {# membri}} · {posts, plural, one {# post} other {# post}}. Unisciti alla conversazione tra persone che condividono questa origine e questo luogo.",
-    "consulLine": "Console non ufficiale: {name}"
+    "consulLine": "Console non ufficiale: {name}",
+    "relatedHeading": "Comunità correlate",
+    "relatedIntro": "Altre comunità attive della stessa origine, nelle vicinanze.",
+    "memberCount": "Membri: {count}",
+    "shareHeading": "Condividi questa rete",
+    "shareIntro": "Pubblica il link ovunque la tua comunità sia già presente - una chat di gruppo, un forum, un post social.",
+    "foundingHeading": "Sii la prima voce qui",
+    "foundingBody": "Nessuno ha ancora pubblicato. Una registrazione vocale di trenta secondi - ciao, da dove vieni, perché ti sei unito - è il modo più semplice per iniziare. Il testo funziona comunque se preferisci scrivere."
   },
   "editableEntry": {
     "save": "Salva",
@@ -825,7 +836,8 @@
       "Midwest": "Midwest",
       "South": "Sud",
       "West": "Ovest"
-    }
+    },
+    "summaryLabel": "Riassunto, generato dai dati presenti in questa pagina"
   },
   "corridor": {
     "heading": "Informazioni su questo corridoio",
@@ -1005,7 +1017,8 @@
       "nearly_extinct": "In situazione critica",
       "extinct": "Estinta"
     },
-    "limitedEnglishLabel": "Inglese limitato"
+    "limitedEnglishLabel": "Inglese limitato",
+    "summaryLabel": "Riassunto, generato dai dati presenti in questa pagina"
   },
   "languageIndex": {
     "title": "Lingue",
@@ -1080,5 +1093,14 @@
         "ask": "Una storia che ti hanno raccontato da bambino. Prenditi tutto il tempo che ti serve."
       }
     }
+  },
+  "reactions": {
+    "looksRight": "Sembra giusto",
+    "looksOff": "Sembra strano",
+    "signInToReact": "Accedi per dire",
+    "summary": "Accuratezza:"
+  },
+  "presence": {
+    "label": "Qui e ora:"
   }
 }

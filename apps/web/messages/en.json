@@ -26,7 +26,11 @@
     "locationPlaceholder": "e.g. Detroit, Michigan",
     "submit": "Search",
     "pageHeading": "Find your network",
-    "suggestNetwork": "Can't find what you're looking for? Suggest a network."
+    "suggestNetwork": "Can't find what you're looking for? Suggest a network.",
+    "describeLabel": "Tell us about yourself",
+    "describePlaceholder": "e.g. I just moved to Houston from Fuzhou, and my family speaks Hokkien",
+    "describeSubmit": "Find my people",
+    "orDivider": "or search directly"
   },
   "common": {
     "loading": "Loading…",
@@ -274,7 +278,14 @@
     "reply": "Reply",
     "viewAllReplies": "View all {count, plural, one {# reply} other {# replies}}",
     "metaDescription": "{members, plural, one {# member} other {# members}} · {posts, plural, one {# post} other {# posts}}. Join the conversation among people who share this background and this place.",
-    "consulLine": "Unofficial Consul: {name}"
+    "consulLine": "Unofficial Consul: {name}",
+    "relatedHeading": "Related communities",
+    "relatedIntro": "Other active communities for the same origin, nearby.",
+    "memberCount": "Members: {count}",
+    "shareHeading": "Share this network",
+    "shareIntro": "Post the link anywhere your own community already is - a group chat, a forum, a social post.",
+    "foundingHeading": "Be the first voice here",
+    "foundingBody": "Nobody has posted yet. A thirty-second voice recording - hello, where you're from, why you joined - is the easiest way to start. Text still works if you'd rather write."
   },
   "demoNetwork": {
     "studentView": "Student view",
@@ -814,7 +825,8 @@
       "europe": "Europe",
       "oceania": "Oceania",
       "other": "Elsewhere"
-    }
+    },
+    "summaryLabel": "Summary, generated from the data on this page"
   },
   "corridor": {
     "bornLabel": "Place of birth",
@@ -982,7 +994,8 @@
       "nearly_extinct": "Critically endangered",
       "extinct": "Extinct"
     },
-    "limitedEnglishLabel": "limited English"
+    "limitedEnglishLabel": "limited English",
+    "summaryLabel": "Summary, generated from the data on this page"
   },
   "languageIndex": {
     "title": "Languages",
@@ -1057,5 +1070,14 @@
         "ask": "A story you were told as a child. Take as long as you need."
       }
     }
+  },
+  "presence": {
+    "label": "Here right now:"
+  },
+  "reactions": {
+    "looksRight": "Looks right",
+    "looksOff": "Looks off",
+    "signInToReact": "Sign in to say",
+    "summary": "Accurate:"
   }
 }
